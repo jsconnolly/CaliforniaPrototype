@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:gravity="center"
+        android:text="@string/we_sent_a_6_digit_code_to_your_number" />
+
+    <!-- Their number goes here -->
+    <TextView
+        android:id="@+id/fragment_smsverification_user_number_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:text="" />
+
+    <!-- Edit number clickable tv -->
+    <TextView
+        android:id="@+id/fragment_smsverification_edit_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginBottom="@dimen/top_bottom_margins"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:gravity="center"
+        android:text="@string/edit_number"
+        android:textColor="@color/CornflowerBlue"
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginBottom="@dimen/top_bottom_margins"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:gravity="center"
+        android:text="@string/enter_verification_code" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- 6 number layout for boxes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="6"
+                >
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusRight="@+id/fragment_smsverification_code_box_2"
+                    android:imeOptions="actionNext"
+                    />
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+                    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusRight="@+id/fragment_smsverification_code_box_3"
+                    android:imeOptions="actionNext"
+                    />
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+                    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusRight="@+id/fragment_smsverification_code_box_4"
+                    android:imeOptions="actionNext"
+                    />
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+                    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusRight="@+id/fragment_smsverification_code_box_5"
+                    android:imeOptions="actionNext"
+                    />
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginEnd="@dimen/left_right_side_margins_very_small"
+                    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusRight="@+id/fragment_smsverification_code_box_6"
+                    android:imeOptions="actionNext"
+                    />
+
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:id="@+id/fragment_smsverification_code_box_6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:hint="0"
+                    android:layout_marginStart="@dimen/left_right_side_margins_very_small"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:imeOptions="actionSend"
+                    />
+
+            </LinearLayout>
+
+            <!-- Error text on problems -->
+            <TextView
+                android:id="@+id/fragment_smsverification_error_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="@color/red"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                />
+
+            <!-- Verify button -->
+            <Button
+                android:id="@+id/fragment_smsverification_verify_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/multipurpose_button"
+                android:text="@string/verify"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/top_bottom_margins"
+                android:layout_marginBottom="@dimen/top_bottom_margins"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                android:text="@string/haven_t_received_your_verification_code"
+                android:layout_marginBottom="@dimen/left_right_side_margins_very_small"
+                android:layout_marginTop="@dimen/left_right_side_margins_very_small"
+                />
+            <TextView
+                android:id="@+id/fragment_smsverification_resent_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/CornflowerBlue"
+                android:text="@string/resend_verification_code"
+                android:layout_gravity="center|center_horizontal"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

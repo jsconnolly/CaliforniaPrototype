@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Email and PW tv / ets -->
+            <RelativeLayout
+                android:id="@+id/fragment_email_login_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                >
+
+                <!-- Email TV title -->
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_tv_1"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:text="@string/enter_your_email_address"
+                    />
+
+                <!-- Email ET -->
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_email_et"
+                    android:layout_below="@+id/fragment_email_login_tv_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/CustomEditTextTheme"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    android:hint="@string/youremail_email_com"
+                    />
+
+                <!-- Hidden TV, shown for errors on Email Entry -->
+                <TextView
+                    android:id="@+id/fragment_email_login_email_error"
+                    android:layout_below="@+id/fragment_email_login_email_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    />
+
+                <!-- Password TV title -->
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_tv_2"
+                    android:layout_below="@+id/fragment_email_login_email_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:text="@string/enter_your_password"
+                    />
+
+                <!-- password ET -->
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_pw_et"
+                    android:layout_below="@+id/fragment_email_login_tv_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/CustomEditTextTheme"
+                    android:inputType="textPassword"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    android:hint="@string/pw_stars"
+                    />
+
+                <!-- Hidden TV, shown for errors on PW Entry -->
+                <TextView
+                    android:id="@+id/fragment_email_login_pw_error"
+                    android:layout_below="@+id/fragment_email_login_pw_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    />
+
+            </RelativeLayout>
+
+            <!-- Enter Phone Number Info (switched visibility section -->
+            <RelativeLayout
+                android:id="@+id/fragment_email_login_input_layout_phone"
+                android:layout_below="@+id/fragment_email_login_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:visibility="gone"
+                >
+
+                <!-- Email TV title -->
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_tv_1_phone"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:text="@string/enter_your_phone_number"
+                    />
+
+                <!-- Email ET -->
+                <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:id="@+id/fragment_email_login_email_et_phone"
+                    android:layout_below="@+id/fragment_email_login_tv_1_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/CustomEditTextTheme"
+                    android:inputType="number"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    android:hint="@string/youremail_email_com"
+                    />
+
+                <!-- Hidden TV, shown for errors on Email Entry -->
+                <TextView
+                    android:id="@+id/fragment_email_login_email_error_phone"
+                    android:layout_below="@+id/fragment_email_login_email_et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/top_bottom_margins"
+                    android:layout_marginBottom="@dimen/top_bottom_margins"
+                    />
+
+            </RelativeLayout>
+
+            <!-- Continue Button -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:layout_below="@+id/fragment_email_login_input_layout_phone"
+                android:id="@+id/fragment_email_login_button"
+                android:text="@string/continue_button"
+                android:background="@drawable/multipurpose_button"
+                />
+
+            <!-- Other Clickable Text links -->
+            <LinearLayout
+                android:layout_marginTop="@dimen/left_right_side_margins"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_email_login_button"
+                android:id="@+id/fragment_email_login_bottom_layout"
+                >
+
+                <TextView
+                    android:id="@+id/fragment_email_login_forgot_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    android:text="@string/forgot_my_password"
+                    android:textColor="@color/CornflowerBlue"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:text="Log in with your phone number instead?"
+                    android:textColor="@color/Black"
+                    />
+                <TextView
+                    android:id="@+id/fragment_email_login_with_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    android:text="@string/login_with_my_phone_number"
+                    android:textColor="@color/CornflowerBlue"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:text="@string/don_t_have_an_account"
+                    android:textColor="@color/Black"
+                    />
+                <TextView
+                    android:id="@+id/fragment_email_login_skip_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    android:text="@string/continue_without_an_account"
+                    android:textColor="@color/CornflowerBlue"
+                    />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

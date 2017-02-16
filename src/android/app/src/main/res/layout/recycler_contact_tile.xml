@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/White"
+    >
+
+    <!-- Secondary layout (For the background stuff) right side -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="8dp"
+        android:visibility="gone"
+        android:id="@+id/recycler_contact_tile_background_right_button"
+        android:src="@drawable/checkmark"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/recycler_contact_tile_main_layout0"
+        />
+
+    <!-- Secondary layout (For the background stuff) left side -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="4dp"
+        android:visibility="gone"
+        android:id="@+id/recycler_contact_tile_background_left_button"
+        android:src="@drawable/checkmark"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/recycler_contact_tile_main_layout0"
+        />
+
+    <!-- Main Layout (With the foreground stuff) -->
+    <RelativeLayout
+        android:id="@+id/recycler_contact_tile_main_layout0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="visible"
+        android:layout_toStartOf="@+id/recycler_contact_tile_background_right_button"
+        android:layout_toEndOf="@+id/recycler_contact_tile_background_left_button"
+        >
+
+        <!-- Top divider -->
+        <View
+            android:id="@+id/top_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/gray" />
+
+        <!-- Parent Layout of all stuff -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_divider">
+
+            <!-- Image of user -->
+            <ImageView
+                android:id="@+id/recycler_contact_tile_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:foregroundGravity="center"
+                android:padding="4dp" />
+
+            <!-- Relative Layout with texts -->
+            <RelativeLayout
+                android:id="@+id/recycler_contact_tile_main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/recycler_contact_tile_checkmark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
+                android:minHeight="40dp"
+                android:background="@color/Transparent"
+                >
+
+                <!-- Top Text Layout -->
+                <RelativeLayout
+                    android:id="@+id/recycler_contact_tile_top_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="100"
+                    android:background="@color/Transparent"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    >
+
+                    <!-- Name of Contact -->
+                    <TextView
+                        android:id="@+id/recycler_contact_tile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="200dp"
+                        android:minHeight="35dp"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:layout_weight="70"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/Transparent"
+                        android:text="Name"
+                        android:textColor="@color/CaliforniaBlue"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:layout_alignParentTop="true"
+                        />
+
+
+                </RelativeLayout>
+                <!--
+                android:layout_above="@+id/recycler_contact_tile_dynamic_data"
+                -->
+                <!-- Bottom Text layout -->
+                <RelativeLayout
+                    android:id="@+id/recycler_contact_tile_bottom_layout"
+                    android:layout_below="@+id/recycler_contact_tile_top_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="100"
+                    android:background="@color/Transparent"
+                    android:gravity="top">
+
+                    <!-- Dynamic data (email, phone number, etc) -->
+                    <TextView
+                        android:id="@+id/recycler_contact_tile_dynamic_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/Transparent"
+                        android:text="email@email.com"
+                        android:textColor="@color/CaliforniaBlue"
+                        android:textSize="17sp"
+                        android:maxLines="3"
+                        android:layout_toEndOf="@+id/recycler_contact_tile_llverified_iv"
+                        />
+
+                    <ImageView
+                        android:id="@+id/recycler_contact_tile_llverified_iv"
+                        android:visibility="gone"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="8dp"
+                        />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <!-- Checkmark -->
+            <ImageView
+                android:id="@+id/recycler_contact_tile_checkmark"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:foregroundGravity="center_vertical"
+                android:src="@drawable/checkmark" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
