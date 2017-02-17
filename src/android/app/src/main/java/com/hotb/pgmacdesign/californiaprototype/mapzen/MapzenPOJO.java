@@ -96,7 +96,7 @@ public class MapzenPOJO {
         @SerializedName("focus.point.lat")
         private double focusPointLat;
         @SerializedName("focus.point.lon")
-        private boolean focusPointLng;
+        private double focusPointLng;
 
         public int getSize() {
             return size;
@@ -122,11 +122,11 @@ public class MapzenPOJO {
             this.focusPointLat = focusPointLat;
         }
 
-        public boolean isFocusPointLng() {
+        public double isFocusPointLng() {
             return focusPointLng;
         }
 
-        public void setFocusPointLng(boolean focusPointLng) {
+        public void setFocusPointLng(double focusPointLng) {
             this.focusPointLng = focusPointLng;
         }
     }

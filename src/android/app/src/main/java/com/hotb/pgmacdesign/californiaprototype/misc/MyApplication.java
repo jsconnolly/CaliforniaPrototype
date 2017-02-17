@@ -65,9 +65,11 @@ public class MyApplication extends MultiDexApplication {
 
     //Location getters
     public static synchronized double getLastKnownLat(){
+        L.m("LAST KNOWN LATITUDE = " + lastKnownLat);
         return lastKnownLat;
     }
     public static synchronized double getLastKnownLng(){
+        L.m("LAST KNOWN LONGITUDE = " + lastKnownLng);
         return lastKnownLng;
     }
     public static synchronized long getLastGPSCheckTime(){

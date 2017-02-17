@@ -29,13 +29,25 @@
         map:cameraTargetLng="-118.2437"
     -->
     <!-- Search View -->
-    <android.support.v7.widget.SearchView
+    <SearchView
+        android:theme="@style/CustomSearchViewTheme"
         android:id="@+id/fragment_map_searchview"
         android:background="@drawable/custom_background_white_back_blue_edges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginStart="@dimen/searchview_narrow_margins"
+        android:layout_marginEnd="@dimen/searchview_narrow_margins"
+        />
+
+    <!-- SearchView Responses -->
+    <android.support.v7.widget.ListViewCompat
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_map_searchview"
+        android:id="@+id/fragment_map_search_listview"
         android:layout_marginStart="@dimen/searchview_narrow_margins"
         android:layout_marginEnd="@dimen/searchview_narrow_margins"
         />

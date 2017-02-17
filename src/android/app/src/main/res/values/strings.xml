@@ -27,4 +27,6 @@
     <string name="invalid_phone_number">You have entered an invalid phone number. Please enter a 10 digit phone number, IE (213) 555 - 5555</string>
     <string name="continue_without_an_account">Continue without an account</string>
     <string name="login_with_email">Login with Email</string>
+    <string name="no_search_results">There were no search results from your query</string>
+    <string name="unknown_location">Unknown Location</string>
 </resources>
