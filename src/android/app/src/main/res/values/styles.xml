@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+
+    <!-- Dark TV Background Theme -->
+    <style name="DarkTVTheme.Title" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/Transparent</item>
+        <item name="android:textColorPrimary">@color/White</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <!-- Light TV Background Theme -->
+    <style name="LightTVTheme.Title" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/Transparent</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <!-- Edit Text Change to black on focus and error functionality theme -->
+    <style name="CustomEditTextTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@drawable/multipurpose_edit_text</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textColorHint">@color/LightGrey</item>
+    </style>
+
+
+    <!-- Dark Toolbar Theme -->
+    <style name="ToolbarTransparentTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/Transparent</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <!-- Semi-Transparent Toolbar Theme -->
+    <style name="ToolbarColoredTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- TODO: add in custom states once the color scheme is decided upon -->
+
+    <!-- Enabled, Not Clicked -->
+    <item
+        android:state_enabled="true"
+        android:state_pressed="false"
+        android:drawable="@drawable/custom_background_white_back_black_edges"
+        />
+
+    <!-- Not Enabled, Not Clicked -->
+    <item
+        android:state_enabled="false"
+        android:state_pressed="false"
+        android:drawable="@drawable/custom_background_white_back_lightgrey_edges"
+        />
+
+    <!-- Not Enabled, Clicked -->
+    <item
+        android:state_enabled="false"
+        android:state_pressed="true"
+        android:drawable="@drawable/custom_background_white_back_lightgrey_edges"
+        />
+
+    <!-- Enabled, Clicked -->
+    <item
+        android:state_enabled="true"
+        android:state_pressed="true"
+        android:drawable="@drawable/custom_background_grey_back_blue_edges"
+        />
+
+</selector>

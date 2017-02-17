@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme">
+
+    <!-- Map Fragment -->
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_map_map"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.hotb.pgmacdesign.californiaprototype.activities.MapsActivity"
+        map:mapType="normal"
+        map:uiCompass="true"
+        map:uiRotateGestures="false"
+        map:uiScrollGestures="true"
+        map:uiTiltGestures="true"
+        map:uiZoomControls="true"
+        map:uiZoomGestures="true"
+        map:cameraZoom="15"
+        />
+
+    <!--
+        map:cameraTargetLat="34.0522"
+        map:cameraTargetLng="-118.2437"
+    -->
+    <!-- Search View -->
+    <android.support.v7.widget.SearchView
+        android:id="@+id/fragment_map_searchview"
+        android:background="@drawable/custom_background_white_back_blue_edges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginStart="@dimen/searchview_narrow_margins"
+        android:layout_marginEnd="@dimen/searchview_narrow_margins"
+        />
+
+</RelativeLayout>

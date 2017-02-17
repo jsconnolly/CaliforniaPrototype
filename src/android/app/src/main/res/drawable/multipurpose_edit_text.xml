@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Not Focused (in error) -->
+    <item
+        android:state_focused="false"
+        app:state_error="true"
+        android:drawable="@drawable/custom_background_white_back_red_edges"
+        />
+
+    <!-- Focused (in error) -->
+    <item
+        android:state_focused="true"
+        app:state_error="true"
+        android:drawable="@drawable/custom_background_white_back_red_edges"
+        />
+
+    <!-- Not Focused (not in error) -->
+    <item
+        android:state_focused="false"
+        app:state_error="false"
+        android:drawable="@drawable/custom_background_white_back_lightgrey_edges"
+        />
+
+    <!-- Focused (not in error) -->
+    <item
+        android:state_focused="true"
+        app:state_error="false"
+        android:drawable="@drawable/custom_background_white_back_black_edges"
+        />
+
+</selector>

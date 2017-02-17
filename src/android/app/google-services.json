@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "117881650429",
+    "firebase_url": "https://california-prototype-hotb.firebaseio.com",
+    "project_id": "california-prototype-hotb",
+    "storage_bucket": "california-prototype-hotb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117881650429:android:34e53ef6e72c13f5",
+        "android_client_info": {
+          "package_name": "com.hotb.pgmacdesign.californiaprototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117881650429-h8i43ak0vcn2f3p0tb5591ona456ko4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hotb.pgmacdesign.californiaprototype",
+            "certificate_hash": "9A538BB6EC18F19D29A1AAB0C3D586AC1F1CBF3D"
+          }
+        },
+        {
+          "client_id": "117881650429-5pgmcj8atpljr2lv4emimg9d0ikcqk3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkuKNxI16DUtA9JbaWIrxGDw614H07niI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117881650429-5pgmcj8atpljr2lv4emimg9d0ikcqk3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

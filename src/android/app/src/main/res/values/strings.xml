@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">California Prototype</string>
+    <string name="currently_on_screen_string">You are currently on the screen: </string>
+    <string name="aws_access_id">123456789</string>
+    <string name="aws_client_secret">987654321</string>
+    <string name="map_content_description">This is a map. If location permissions have been granted, it will default to your location. If location permissions have not been granted, it will default to Los Angeles, CA</string>
+    <string name="gps_must_be_enabled">GPS must be enabled before this operation can run</string>
+    <string name="loading_last_known_loc">Location is disabled, loading your last known location</string>
+    <string name="enter_your_email_address">Enter Your Email Address</string>
+    <string name="youremail_email_com">youremail@email.com</string>
+    <string name="pw_stars">********</string>
+    <string name="enter_your_password">Enter Your Password</string>
+    <string name="continue_button">Continue</string>
+    <string name="forgot_my_password">Forgot My Password</string>
+    <string name="login_with_my_phone_number">Login With My Phone Number</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="invalid_email_address">Invalid email address. Example: Mark@email.com</string>
+    <string name="password_error_help">Your password must be at least 6 characters long and contain at least one number and letter</string>
+    <string name="edit_number">Edit Number</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
+    <string name="we_sent_a_6_digit_code_to_your_number">We sent a 6-digit code to your number</string>
+    <string name="verify">Verify</string>
+    <string name="haven_t_received_your_verification_code">Haven\'t received your verification code?</string>
+    <string name="resend_verification_code">Resend Verification Code</string>
+    <string name="invalid_verification_code">Invalid verification code. Please check your text message and enter the information again</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="invalid_phone_number">You have entered an invalid phone number. Please enter a 10 digit phone number, IE (213) 555 - 5555</string>
+    <string name="continue_without_an_account">Continue without an account</string>
+    <string name="login_with_email">Login with Email</string>
+</resources>
