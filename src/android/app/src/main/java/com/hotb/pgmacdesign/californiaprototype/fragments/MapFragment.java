@@ -50,7 +50,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
  */
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener, SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener {
+        GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener, SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -77,7 +77,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     //Misc
     private Timer timer;
-
+    private String query;
+    private boolean callInProgress, secondaryCall;
     private  MapzenAPICalls api;
 
     //Gap so that it doesn't query every single time they type a letter
@@ -102,6 +103,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.mapHasLoaded = false;
         this.locationIsEnabled = true;
         this.api = new MapzenAPICalls(getActivity(), this);
+        this.callInProgress = false;
+        this.secondaryCall = false;
         //Utilize instanceState here
     }
 
@@ -124,6 +127,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.searchView.setIconified(false);
         this.searchView.clearFocus();
         this.searchView.setOnQueryTextListener(this);
+        this.searchView.setOnFocusChangeListener(this);
         this.fragment_map_search_listview = (ListView) view.findViewById(
                 R.id.fragment_map_search_listview);
         this.fragment_map_search_listview.setOnItemClickListener(this);
@@ -207,6 +211,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    /**
+     * Simple hide or show listview
+     * @param bool true to show, false to hide
+     */
     private void showListview(boolean bool){
         if(bool){
             fragment_map_search_listview.setVisibility(View.VISIBLE);
@@ -214,6 +222,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             fragment_map_search_listview.setVisibility(View.GONE);
         }
     }
+
     /**
      * Sets map results to null and hides the listview
      * @param mapData MapData retrieved from the API Call
@@ -386,6 +395,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void queryMaps(final String query){
+        this.query = query;
         if(timer == null){
             timer = new Timer();
         }
@@ -394,16 +404,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Double lastKnownLat = MyApplication.getLastKnownLat();
-                Double lastKnownLng = MyApplication.getLastKnownLng();
-
-                if(lastKnownLat == -1){
-                    lastKnownLat = null;
-                }
-                if(lastKnownLng == -1){
-                    lastKnownLng = null;
-                }
-                api.searchMap(query, lastKnownLat, lastKnownLng);
+                makeSearchCall();
             }
         }, TYPING_GAP);
     }
@@ -415,6 +416,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
         return false;
+    }
+
+    private void makeSearchCall(){
+        if(callInProgress){
+            return;
+        }
+        callInProgress = true;
+        Double lastKnownLat = MyApplication.getLastKnownLat();
+        Double lastKnownLng = MyApplication.getLastKnownLng();
+
+        if(lastKnownLat == -1){
+            lastKnownLat = null;
+        }
+        if(lastKnownLng == -1){
+            lastKnownLng = null;
+        }
+        api.searchMap(MapFragment.this.query, lastKnownLat, lastKnownLng);
     }
 
     @Override
@@ -429,6 +447,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
+        callInProgress = false;
         switch(customTag){
             case MapzenAPICalls.TAG_MAPZEN_CONNECTIVITY_ISSUE:
                 //todo Make call here to update snackbar with no internet;
@@ -436,6 +455,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
             case MapzenAPICalls.TAG_MAPZEN_SUCCESS:
                 MapzenPOJO pojo = (MapzenPOJO) result;
+                List<MapzenPOJO.MapzenFeatures> checkingFeatures = pojo.getFeatures();
+                if(MiscUtilities.isListNullOrEmpty(checkingFeatures)){
+                    if(this.secondaryCall){
+                        this.secondaryCall = false;
+                    } else {
+                        String str = query;
+                        if(!StringUtilities.isNullOrEmpty(str)){
+                            if(Character.isDigit(str.charAt(0))){
+                                int pos = 0;
+                                for(int i = 0; i < str.length(); i++){
+                                    try {
+                                        if (Character.isDigit(str.charAt(i))) {
+                                            pos = i;
+                                        } else {
+                                            break;
+                                        }
+                                    } catch (Exception e){
+                                        pos = i - 1;
+                                        if(pos < 0){
+                                            pos = 0;
+                                        }
+                                        break;
+                                    }
+                                }
+                                String sub1 = str.substring(pos);
+                                if(!StringUtilities.isNullOrEmpty(sub1)){
+                                    this.query = sub1;
+                                    this.secondaryCall = true;
+                                    makeSearchCall();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
                 this.setSearchResults(pojo);
                 break;
 
@@ -478,6 +532,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             double longitude = pojo.getLongitude();
             if(latitude !=  0 && longitude != 0){
                 moveCamera(latitude, longitude);
+            }
+            showListview(false);
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(v == this.searchView){
+            if(hasFocus){
+                if(fragment_map_search_listview.getVisibility() != View.VISIBLE){
+                    showListview(true);
+                }
+            } else {
+                if(fragment_map_search_listview.getVisibility() == View.VISIBLE){
+                    showListview(false);
+                }
             }
         }
     }
