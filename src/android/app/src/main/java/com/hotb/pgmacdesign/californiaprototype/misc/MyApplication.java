@@ -53,7 +53,9 @@ public class MyApplication extends MultiDexApplication {
         setupLocationServices();
     }
 
-
+    /**
+     * Setup location services
+     */
     private void setupLocationServices(){
         lastKnownLat = getSharedPrefsInstance().getDouble(Constants.LOCATION_LATITUDE, -1);
         lastKnownLng = getSharedPrefsInstance().getDouble(Constants.LOCATION_LONGITUDE, -1);

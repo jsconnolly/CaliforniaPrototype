@@ -342,29 +342,6 @@ public class DateUtilities {
     }
 
     /**
-     * For when I need a quick date in the year 1985. Don't judge me, I get lazy and don't
-     * want to type my birthday multiple times.
-     * @return Date object
-     */
-    public static Date get1985(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(1985, 10, 8, 11, 11, 11);
-        Date date = calendar.getTime();
-        return date;
-    }
-
-    /**
-     * My son's birthday! This serves no purpose OTHER than a shoutout to him, love ya kid.
-     * @return Date object
-     */
-    public static Date getLiamsBirthday(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2016, 7, 4, 12, 29, 30);
-        Date date = calendar.getTime();
-        return date;
-    }
-
-    /**
      * Used to compare the start and end dates
      * @param startDateStr start date of event in Date object format
      * @param endDateStr end date of event in Date object format

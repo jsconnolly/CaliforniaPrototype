@@ -186,14 +186,12 @@ public class AdapterContactList extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if(combinedEmails != null){
 
                     holder.recycler_contact_tile_dynamic_data.setText(combinedEmails);
-                    //LoveLabUtil.setFont(context, holder.recycler_contact_tile_dynamic_data, null, null, false);
                 } else {
                     holder.recycler_contact_tile_dynamic_data.setText("No Email");
                 }
 
                 if(combinedEmailTypes != null){
                     holder.recycler_contact_tile_type.setText(combinedEmailTypes);
-                    //LoveLabUtil.setFont(context, holder.recycler_contact_tile_type, null, null, false);
                 } else {
                     holder.recycler_contact_tile_type.setText("");
                 }
