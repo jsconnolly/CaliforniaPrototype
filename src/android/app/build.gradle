@@ -25,6 +25,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //NOTE! This value is hidden from public git repo, enter in a Google API Key into gradle.properties to use this feature
         resValue "string", "google_string_api_key", googleApiKey
+        resValue "string", "mapzen_string_api_key", mapzenApiKey
+
     }
     buildTypes {
         release {
