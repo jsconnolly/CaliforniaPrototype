@@ -145,8 +145,7 @@ public class MyApplication extends MultiDexApplication {
     }
 
     /**
-     * Get an instance of the application. This will cascade down and define/ initialize
-     * other variables like context as well.
+     * Get an instance of the application.
      * @return {@link MyApplication}
      */
     public static synchronized MyApplication getInstance(){
