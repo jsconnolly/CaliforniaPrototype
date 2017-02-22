@@ -46,14 +46,21 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilitie
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ThreadUtilities;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import geocoding.GeocodingAPICalls;
+import geocoding.GeocodingPOJO;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
@@ -64,7 +71,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
         SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener,
-        View.OnFocusChangeListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -100,6 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private String query;
     private boolean callInProgress, secondaryCall;
     private MapzenAPICalls api;
+    private GeocodingAPICalls apiGeocoding;
     private Handler handler;
     private DisplayManagerUtilities dmu;
 
@@ -125,6 +133,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.mapHasLoaded = false;
         this.locationIsEnabled = true;
         this.api = new MapzenAPICalls(getActivity(), this);
+        this.apiGeocoding = new GeocodingAPICalls(getActivity(), this);
         this.callInProgress = false;
         this.secondaryCall = false;
         this.handler = ThreadUtilities.getHandlerWithCallback(this);
@@ -137,6 +146,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         initVariables();
         initUi(view);
+        initCustomListeners();
         return view;
     }
 
@@ -151,7 +161,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.searchView.setIconified(false);
         this.searchView.clearFocus();
         this.searchView.setOnQueryTextListener(this);
-        this.searchView.setOnFocusChangeListener(this);
         this.fragment_map_search_listview = (ListView) view.findViewById(
                 R.id.fragment_map_search_listview);
         this.fragment_map_search_listview.setOnItemClickListener(this);
@@ -165,6 +174,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
     }
 
+    private void initCustomListeners(){
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if(isOpen){
+                            showListview(true);
+                        } else {
+                            showListview(false);
+                        }
+                    }
+                });
+    }
 
     /**
      * Switch to a different fragment
@@ -275,11 +298,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(MiscUtilities.isListNullOrEmpty(featuresList)){
             String noResults = getString(R.string.no_search_results);
             this.searchResultsToShow.add(noResults);
-            this.adapter = new ArrayAdapter<String>(getActivity(),
-                    R.layout.simple_listview_layout, this.searchResultsToShow);
-            this.fragment_map_search_listview.setAdapter(this.adapter);
-            this.adapter.notifyDataSetChanged();
-
+            adjustAdapters();
             return;
         }
 
@@ -339,12 +358,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             return;
         }
 
+        adjustAdapters();
+    }
+
+    /**
+     * Reload the adapters and the listview to include new return results
+     */
+    private void adjustAdapters(){
         this.adapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.simple_listview_layout, this.searchResultsToShow);
         this.fragment_map_search_listview.setAdapter(this.adapter);
         this.adapter.notifyDataSetChanged();
-
-
     }
 
     /**
@@ -442,7 +466,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public boolean onQueryTextSubmit(String query) {
         if(query != null){
             if(query.length() > 1){
-                queryMaps(query);
+                checkWhichApi(query);
             }
         }
         return false;
@@ -462,24 +486,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(lastKnownLng == -1){
             lastKnownLng = null;
         }
-        api.searchMap(MapFragment.this.query, lastKnownLat, lastKnownLng);
+
+        if(this.query.length() == 5 && NumberUtilities.isNumber(this.query)){
+            apiGeocoding.searchMap(this.query);
+        } else {
+            api.searchMap(MapFragment.this.query, lastKnownLat, lastKnownLng);
+        }
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
         if(newText != null){
             if(newText.length() > 1){
-                queryMaps(newText);
+                checkWhichApi(newText);
             }
         }
         return false;
+    }
+
+    private void checkWhichApi(String str){
+        if(StringUtilities.isNullOrEmpty(str)){
+            return;
+        }
+        queryMaps(str);
     }
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
         callInProgress = false;
         switch(customTag){
-            case MapzenAPICalls.TAG_MAPZEN_CONNECTIVITY_ISSUE:
+            case MapzenAPICalls.TAG_ERROR_CONNECTIVITY_ISSUE:
                 //todo Make call here to update snackbar with no internet;
                 break;
 
@@ -531,12 +567,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 this.setSearchResults(null);
                 break;
 
-            case MapzenAPICalls.TAG_MAPZEN_TBD_1:
+            case MapzenAPICalls.TAG_GEOCODING_CALL_ERROR:
                 this.setSearchResults(null);
                 break;
 
-            case MapzenAPICalls.TAG_MAPZEN_TBD_2:
-                this.setSearchResults(null);
+            case MapzenAPICalls.TAG_GEOCODING_CALL_SUCCESS:
+                GeocodingPOJO pojo1 = (GeocodingPOJO) result;
+                MapzenPOJO pojo2 = GeocodingAPICalls
+                        .convertGeocodingResponseToMapzen(pojo1);
+                this.searchResultsToShow = new ArrayList<>();
+                this.searchResultsList = new ArrayList<>();
+                try {
+                    String str = pojo2.getFeatures().get(0).getType();
+                    double[] coord = pojo2.getFeatures().get(0).getGeometry().getCoordinates();
+                    MapzenSimpleObject simpleObject = new MapzenSimpleObject();
+                    simpleObject.setSimpleLocation(str);
+                    simpleObject.setLongitude(coord[0]);
+                    simpleObject.setLatitude(coord[1]);
+                    this.searchResultsToShow.add(str);
+                    this.searchResultsList.add(simpleObject);
+                    adjustAdapters();
+                } catch (Exception e){
+                    this.setSearchResults(null);
+                }
                 break;
         }
     }
@@ -564,22 +617,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 moveCamera(latitude, longitude);
             }
             showListview(false);
+            try {
+                //Set the string they clicked on into their search query
+                String str = searchResultsList.get(position).getSimpleLocation();
+                if(!StringUtilities.isNullOrEmpty(str)){
+                    searchView.setQuery(str, false);
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if(v == this.searchView){
-            if(hasFocus){
-                if(fragment_map_search_listview.getVisibility() != View.VISIBLE){
-                    showListview(true);
-                }
-            } else {
-                if(fragment_map_search_listview.getVisibility() == View.VISIBLE){
-                    showListview(false);
-                }
-            }
-        }
+    /**
+     * Calculate the meters per inch on the screen
+     * @param projection
+     * @return
+     */
+    private float getMetersPerInch(Projection projection){
+        float xdpi = this.dmu.getXdpi();
+        View view = getChildFragmentManager().findFragmentById(R.id.fragment_map_map).getView();
+
+        int point1, point2;
+        point1 = (int) (((view.getWidth() / 2) - (xdpi / 2)));
+        point2 =  (int) (view.getHeight() / 2);
+        LatLng p1 = projection.fromScreenLocation(
+                new Point(point1, point2));
+
+        int point3, point4;
+        point3 = (int) (((view.getWidth() / 2) + (xdpi / 2)));
+        point4 =  (int) (view.getHeight() / 2);
+        LatLng p2 = projection.fromScreenLocation(
+                new Point(point3, point4));
+
+        Location locationP1 = new Location(ScaleBar.SCALEBAR_LOCATION_PART_1);
+        Location locationP2 = new Location(ScaleBar.SCALEBAR_LOCATION_PART_2);
+
+        locationP1.setLatitude(p1.latitude);
+        locationP2.setLatitude(p2.latitude);
+        locationP1.setLongitude(p1.longitude);
+        locationP2.setLongitude(p2.longitude);
+        float xMetersPerInch = locationP1.distanceTo(locationP2);
+        //If happy with 1 inch on screen, return, else, multiply by a % and return
+        return xMetersPerInch;
     }
 
     @Override
@@ -588,31 +668,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             this.lastDrawnCircle.remove();
         }
         Projection projection = googleMap.getProjection();
-        View view = getChildFragmentManager().findFragmentById(R.id.fragment_map_map).getView();
-        double screenHeight = view.getHeight();
-        L.m("screenHeight = " + screenHeight);
-        float currentZoom = googleMap.getCameraPosition().zoom;
-        L.m("currentZoom = " + currentZoom);
-        double dpPerdegree = 256.0 * Math.pow(2, currentZoom) / 170.0;
-        L.m("dpPerdegree = " + dpPerdegree);
-        double currentLat = point.latitude;
-        L.m("currentLat = " + currentLat);
-        double currentLng = point.longitude;
-        L.m("currentLng = " + currentLng);
-        double screenHeight10 = 10 * (screenHeight / 100);
-        L.m("screenHeight30 = " + screenHeight10);
-        double degree10 = screenHeight10 / dpPerdegree;
-        L.m("degree30 = " + degree10);
-
-        googleMap.getProjection();
-        //Point center = ();
-        LatLng radiusLatLng = googleMap.getProjection().fromScreenLocation(
-                new Point((int) (currentLat + degree10), (int)(currentLng + degree10)));
+        float xMetersPerInch = getMetersPerInch(projection);
 
         // Create the circle.
         CircleOptions options = new CircleOptions();
         options.center(point);
-        options.radius(50); //toRadiusMeters(point, radiusLatLng) // TODO: 2017-02-21 insert code here to match pull from scalebar
+        options.radius(xMetersPerInch);
         options.strokeColor(R.color.white);
         options.fillColor(R.color.SemiTransparentBlue);
         options.clickable(true);
@@ -656,6 +717,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onCameraMove() {
         //Used to invalidate the scale bar when they move
+        showListview(false);
         if(mScaleBar != null){
             mScaleBar.invalidate();
             //mScaleBar.invalidateNumbersOnly();
@@ -696,15 +758,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public boolean handleMessage(Message msg) {
-        L.m("684");
         if(msg != null){
             Bundle bundle = msg.getData();
             if(bundle != null){
-
-                L.m("689");
                 boolean bool = bundle.getBoolean(DISMISS_SCALE_BAR, false);
                 if(bool){
-                    L.m("692");
 
                 }
             }

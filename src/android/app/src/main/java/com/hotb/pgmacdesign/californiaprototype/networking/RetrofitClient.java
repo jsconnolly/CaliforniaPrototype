@@ -63,9 +63,11 @@ public class RetrofitClient {
      * This should be used after the class is initialized and the setters are all set
      * @param <T> Service Interface class
      * @return Service client for making calls. Will be directly linked to the Interface passed in
-     *         as well as to its calls. For an example, see
+     *         as well as to its calls.
+     * @throws IllegalArgumentException If the BASE_URL String does not end in a forward slash
+     *                                  (/), this will throw an illegal argument exception.
      */
-    public <T> T buildServiceClient(){
+    public <T> T buildServiceClient() throws IllegalArgumentException{
         T t = this.buildRetrofitClient();
         return t;
     }

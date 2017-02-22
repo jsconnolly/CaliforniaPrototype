@@ -17,6 +17,7 @@ import retrofit2.Response;
  * This is a Rest API to interface with the Mapzen back-end. Calls can be made here to return
  * lists MapzenPOJO objects {@link MapzenPOJO}, which contain location data.
  * This utilizes {@link MapzenInterface} and {@link RetrofitClient} for calls
+ * Mapzen Documentation - https://mapzen.com/documentation/search/reverse/
  * Created by pmacdowell on 2017-02-17.
  */
 public class MapzenAPICalls {
@@ -28,13 +29,13 @@ public class MapzenAPICalls {
     private OnTaskCompleteListener listener;
 
     //Final Var Strings and Int Tags
-    private static final String URL_BASE = "https://search.mapzen.com";
+    private static final String URL_BASE = "https://search.mapzen.com/";
     public static final int TAG_MAPZEN_SUCCESS = 790;
     public static final int TAG_MAPZEN_FAILURE = 791;
     public static final int TAG_MAPZEN_INVALID_QUERY = 792;
-    public static final int TAG_MAPZEN_CONNECTIVITY_ISSUE = 793;
-    public static final int TAG_MAPZEN_TBD_1 = 794;
-    public static final int TAG_MAPZEN_TBD_2 = 795;
+    public static final int TAG_ERROR_CONNECTIVITY_ISSUE = 793;
+    public static final int TAG_GEOCODING_CALL_ERROR = 794;
+    public static final int TAG_GEOCODING_CALL_SUCCESS = 795;
 
 
     public MapzenAPICalls(@NonNull Context context, @NonNull OnTaskCompleteListener listener) {
@@ -332,7 +333,7 @@ public class MapzenAPICalls {
     private boolean checkForInternetConnectivity() {
         boolean bool = NetworkUtilities.haveNetworkConnection(this.context);
         if (!bool) {
-            listener.onTaskComplete(null, TAG_MAPZEN_CONNECTIVITY_ISSUE);
+            listener.onTaskComplete(null, TAG_ERROR_CONNECTIVITY_ISSUE);
         }
         return bool;
     }

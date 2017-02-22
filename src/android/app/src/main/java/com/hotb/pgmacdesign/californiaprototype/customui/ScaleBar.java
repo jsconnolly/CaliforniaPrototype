@@ -43,8 +43,8 @@ public class ScaleBar extends ImageView {
     private Canvas currentCanvas;
 
     private static final int NUM_DIGITS_TO_ROUND = 0;
-    private static final String SCALEBAR_LOCATION_PART_1 = "ScaleBar location p1";
-    private static final String SCALEBAR_LOCATION_PART_2 = "ScaleBar location p2";
+    public static final String SCALEBAR_LOCATION_PART_1 = "ScaleBar location p1";
+    public static final String SCALEBAR_LOCATION_PART_2 = "ScaleBar location p2";
 
     private DisplayManagerUtilities dmu;
 
