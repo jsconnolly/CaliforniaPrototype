@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
-import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
@@ -65,7 +64,6 @@ public class ScaleBar extends ImageView {
     }
 
     private void startDrawProcess(Canvas canvas){
-        //ScaleBar s = new ScaleBar(null, null);
         canvas.save();
         drawScaleBarPicture(canvas);
         canvas.restore();
@@ -103,8 +101,6 @@ public class ScaleBar extends ImageView {
             int point1, point2;
             point1 = (int) (((getWidth() / 2) - (mXdpi / 2)));
             point2 =  (int) (getHeight() / 2);
-            L.m("point1 in drawXMetric = " + point1);
-            L.m("point2 in drawXMetric = " + point2);
             LatLng p1 = projection.fromScreenLocation(
                     new Point(point1, point2));
 
