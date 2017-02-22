@@ -1,9 +1,12 @@
 package com.hotb.pgmacdesign.californiaprototype.fragments;
 
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,15 +17,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
+import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.hotb.pgmacdesign.californiaprototype.R;
+import com.hotb.pgmacdesign.californiaprototype.customui.ScaleBar;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.MyLocationListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
@@ -32,11 +40,13 @@ import com.hotb.pgmacdesign.californiaprototype.mapzen.MapzenSimpleObject;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ThreadUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +60,19 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
  */
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener, SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener, View.OnFocusChangeListener {
+        GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
+        SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener,
+        View.OnFocusChangeListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback {
 
     //Tag
     public final static String TAG = "MapFragment";
+    private static final double DEFAULT_RADIUS_METERS = 1000000;
+    private static final double RADIUS_OF_EARTH_METERS = 6371009;
+    private static final String DISMISS_SCALE_BAR = "dismiss_scale_bar";
 
     //Map Objects
     private GoogleMap googleMap;
+    private Circle lastDrawnCircle;
     private Location location;
     private List<MapzenSimpleObject> searchResultsList;
     private List<String> searchResultsToShow;
@@ -65,6 +81,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     //UI
     private SearchView searchView;
     private ListView fragment_map_search_listview;
+    private RelativeLayout fragment_map_main_layout;
+    private ScaleBar mScaleBar;
 
     //Adapters
     private ArrayAdapter adapter;
@@ -76,14 +94,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             .permissionsEnum.ACCESS_FINE_LOCATION;
 
     //Misc
-    private Timer timer;
+    private Timer timer, scaleBarTimer;
     private String query;
     private boolean callInProgress, secondaryCall;
-    private  MapzenAPICalls api;
+    private MapzenAPICalls api;
+    private Handler handler;
 
     //Gap so that it doesn't query every single time they type a letter
     private static final long TYPING_GAP = ((int)(Constants.ONE_SECOND * 0.35));
-
+    private static final int NUM_SECONDS_ON_SCALEBAR_HIDE = 2;
 
     //Listeners
     private MyLocationListener locationListener;
@@ -105,6 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.api = new MapzenAPICalls(getActivity(), this);
         this.callInProgress = false;
         this.secondaryCall = false;
+        this.handler = ThreadUtilities.getHandlerWithCallback(this);
         //Utilize instanceState here
     }
 
@@ -131,6 +151,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.fragment_map_search_listview = (ListView) view.findViewById(
                 R.id.fragment_map_search_listview);
         this.fragment_map_search_listview.setOnItemClickListener(this);
+        this.fragment_map_main_layout = (RelativeLayout) view.findViewById(
+                R.id.fragment_map_main_layout);
     }
 
     private void setupMap(){
@@ -178,13 +200,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     /**
      * Map loaded. Initialize it and make it ready to manipulate
-     * @param googleMap
+     * @param aGoogleMap
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.googleMap = googleMap;
+    public void onMapReady(GoogleMap aGoogleMap) {
+        this.googleMap = aGoogleMap;
         this.mapHasLoaded = true;
+        this.enableScaleBar();
+        this.googleMap.setOnCameraMoveListener(this);
+        this.googleMap.setOnMapLongClickListener(this);
         this.googleMap.setIndoorEnabled(false);
+        this.googleMap.getUiSettings().setCompassEnabled(true);
         this.googleMap.setContentDescription(getString(R.string.map_content_description));
         try {
             this.googleMap.setMyLocationEnabled(true);
@@ -550,5 +576,130 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 }
             }
         }
+    }
+
+    @Override
+    public void onMapLongClick(LatLng point) {
+        if(this.lastDrawnCircle != null){
+            this.lastDrawnCircle.remove();
+        }
+        L.m("mapLongclick == " + point.latitude + ", " + point.longitude);
+        // We know the center, let's place the outline at a point 3/4 along the view.
+        View view = getChildFragmentManager().findFragmentById(R.id.fragment_map_map).getView();
+        double heightSplit = view.getHeight();
+        double widthSplit = view.getWidth();
+        double heightSplit1 = view.getMeasuredHeight();
+        double widthSplit1 = view.getMeasuredWidth();
+
+        L.m("heightSplit = " + heightSplit);
+        L.m("widthSplit = " + widthSplit);
+        L.m("heightSplit1 = " + heightSplit1);
+        L.m("widthSplit1 = " + widthSplit1);
+        googleMap.getProjection();
+        LatLng radiusLatLng = googleMap.getProjection().fromScreenLocation(new Point(
+                view.getHeight() * 3 / 4, view.getWidth() * 3 / 4));
+
+        // Create the circle.
+        CircleOptions options = new CircleOptions();
+        options.center(point);
+        options.radius(toRadiusMeters(point, radiusLatLng));
+        options.strokeColor(R.color.white);
+        options.fillColor(R.color.SemiTransparentBlue);
+        options.clickable(true);
+        this.lastDrawnCircle = googleMap.addCircle(options);
+        this.googleMap.setOnCircleClickListener(this);
+    }
+
+    /** Generate LatLng of radius marker */
+    private static LatLng toRadiusLatLng(LatLng center, double radiusMeters) {
+        double radiusAngle = Math.toDegrees(radiusMeters / RADIUS_OF_EARTH_METERS) /
+                Math.cos(Math.toRadians(center.latitude));
+        return new LatLng(center.latitude, center.longitude + radiusAngle);
+    }
+
+    /** Convert Lat long center + radius to meters */
+    private static double toRadiusMeters(LatLng center, LatLng radius) {
+        float[] result = new float[1];
+        Location.distanceBetween(center.latitude, center.longitude,
+                radius.latitude, radius.longitude, result);
+        return result[0];
+    }
+
+    @Override
+    public void onCircleClick(Circle circle) {
+        //Do something here with circle click
+        L.m("circle clicked");
+    }
+
+    private void enableScaleBar(){
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(800, 800);
+
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        //params.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        mScaleBar = new ScaleBar(getActivity(), this.googleMap);
+        mScaleBar.setLayoutParams(params);
+        fragment_map_main_layout.addView(mScaleBar);
+    }
+
+    @Override
+    public void onCameraMove() {
+        //Used to invalidate the scale bar when they move
+        if(mScaleBar != null){
+            mScaleBar.invalidate();
+            //mScaleBar.invalidateNumbersOnly();
+            AnimationUtilities.animateMyView(mScaleBar, (100), Techniques.FadeIn);
+            dismissScalebarAfterXSeconds(NUM_SECONDS_ON_SCALEBAR_HIDE);
+        }
+    }
+
+    /**
+     * Hide / dismiss the scale bar after X seconds so that it will fade away and not
+     * stay permanently on the screen.
+     * @param seconds Num seconds to stay on the screen before it disappears
+     */
+    private void dismissScalebarAfterXSeconds(int seconds){
+        seconds *= 1000; //Milliseconds
+        if(scaleBarTimer == null){
+            scaleBarTimer = new Timer();
+        }
+        scaleBarTimer.cancel();
+        scaleBarTimer = new Timer();
+        scaleBarTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            AnimationUtilities.animateMyView(mScaleBar,
+                                    (int)(Constants.ONE_SECOND * 1.4), Techniques.FadeOut);
+                        }
+                    });
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, seconds);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        L.m("684");
+        if(msg != null){
+            Bundle bundle = msg.getData();
+            if(bundle != null){
+
+                L.m("689");
+                boolean bool = bundle.getBoolean(DISMISS_SCALE_BAR, false);
+                if(bool){
+                    L.m("692");
+
+                }
+            }
+
+        }
+        return false;
     }
 }
