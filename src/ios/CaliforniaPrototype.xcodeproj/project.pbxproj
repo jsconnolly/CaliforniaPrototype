@@ -10,6 +10,10 @@
 		9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */; };
 		9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */; };
 		9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */; };
+		9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */; };
+		9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */; };
+		9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */; };
+		9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB47301E5E180700D351AA /* ValidationMethods.swift */; };
 		9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */; };
 		9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */; };
 		9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */; };
@@ -20,6 +24,10 @@
 		9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandingViewController.xib; sourceTree = "<group>"; };
 		9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectButton.swift; sourceTree = "<group>"; };
+		9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
+		9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailLoginViewController.xib; sourceTree = "<group>"; };
+		9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlinedTextField.swift; sourceTree = "<group>"; };
+		9CBB47301E5E180700D351AA /* ValidationMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationMethods.swift; sourceTree = "<group>"; };
 		9CE3C2D81E5CF36B00B7C6A3 /* CaliforniaPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaliforniaPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,8 +53,18 @@
 			isa = PBXGroup;
 			children = (
 				9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */,
+				9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */,
 			);
 			name = "Custom Views";
+			sourceTree = "<group>";
+		};
+		9CBB47321E5E1C9200D351AA /* Onboarding/Login */ = {
+			isa = PBXGroup;
+			children = (
+				9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */,
+				9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */,
+			);
+			name = Onboarding/Login;
 			sourceTree = "<group>";
 		};
 		9CE3C2CF1E5CF36B00B7C6A3 = {
@@ -73,6 +91,8 @@
 				9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */,
 				9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */,
 				9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */,
+				9CBB47321E5E1C9200D351AA /* Onboarding/Login */,
+				9CBB47301E5E180700D351AA /* ValidationMethods.swift */,
 				9C32A2E41E5D105A0099ABF6 /* Custom Views */,
 				9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */,
 				9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */,
@@ -158,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */,
+				9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */,
 				9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */,
 				9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */,
 			);
@@ -171,7 +192,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */,
+				9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */,
 				9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */,
+				9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */,
+				9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */,
 				9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

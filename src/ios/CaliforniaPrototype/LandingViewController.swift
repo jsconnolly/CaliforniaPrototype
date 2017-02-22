@@ -23,6 +23,7 @@ class LandingViewController: UIViewController {
     }
     
     @IBAction func loginWithEmailButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(EmailLoginViewController(), animated: true)
     }
     
 }
