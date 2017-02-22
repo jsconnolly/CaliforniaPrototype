@@ -25,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -41,6 +42,7 @@ import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
@@ -99,6 +101,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private boolean callInProgress, secondaryCall;
     private MapzenAPICalls api;
     private Handler handler;
+    private DisplayManagerUtilities dmu;
 
     //Gap so that it doesn't query every single time they type a letter
     private static final long TYPING_GAP = ((int)(Constants.ONE_SECOND * 0.35));
@@ -125,6 +128,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.callInProgress = false;
         this.secondaryCall = false;
         this.handler = ThreadUtilities.getHandlerWithCallback(this);
+        this.dmu = new DisplayManagerUtilities(getActivity());
         //Utilize instanceState here
     }
 
@@ -583,26 +587,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(this.lastDrawnCircle != null){
             this.lastDrawnCircle.remove();
         }
-        L.m("mapLongclick == " + point.latitude + ", " + point.longitude);
-        // We know the center, let's place the outline at a point 3/4 along the view.
+        Projection projection = googleMap.getProjection();
         View view = getChildFragmentManager().findFragmentById(R.id.fragment_map_map).getView();
-        double heightSplit = view.getHeight();
-        double widthSplit = view.getWidth();
-        double heightSplit1 = view.getMeasuredHeight();
-        double widthSplit1 = view.getMeasuredWidth();
+        double screenHeight = view.getHeight();
+        L.m("screenHeight = " + screenHeight);
+        float currentZoom = googleMap.getCameraPosition().zoom;
+        L.m("currentZoom = " + currentZoom);
+        double dpPerdegree = 256.0 * Math.pow(2, currentZoom) / 170.0;
+        L.m("dpPerdegree = " + dpPerdegree);
+        double currentLat = point.latitude;
+        L.m("currentLat = " + currentLat);
+        double currentLng = point.longitude;
+        L.m("currentLng = " + currentLng);
+        double screenHeight10 = 10 * (screenHeight / 100);
+        L.m("screenHeight30 = " + screenHeight10);
+        double degree10 = screenHeight10 / dpPerdegree;
+        L.m("degree30 = " + degree10);
 
-        L.m("heightSplit = " + heightSplit);
-        L.m("widthSplit = " + widthSplit);
-        L.m("heightSplit1 = " + heightSplit1);
-        L.m("widthSplit1 = " + widthSplit1);
         googleMap.getProjection();
-        LatLng radiusLatLng = googleMap.getProjection().fromScreenLocation(new Point(
-                view.getHeight() * 3 / 4, view.getWidth() * 3 / 4));
+        //Point center = ();
+        LatLng radiusLatLng = googleMap.getProjection().fromScreenLocation(
+                new Point((int) (currentLat + degree10), (int)(currentLng + degree10)));
 
         // Create the circle.
         CircleOptions options = new CircleOptions();
         options.center(point);
-        options.radius(toRadiusMeters(point, radiusLatLng));
+        options.radius(50); //toRadiusMeters(point, radiusLatLng) // TODO: 2017-02-21 insert code here to match pull from scalebar
         options.strokeColor(R.color.white);
         options.fillColor(R.color.SemiTransparentBlue);
         options.clickable(true);
