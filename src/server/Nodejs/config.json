@@ -1,5 +1,9 @@
 {
-  "db": "ec2-52-9-73-238.us-west-1.compute.amazonaws.com",
-  "port": 80
-
+  "db": "",
+  "port": 80,
+  "accessKeyId":"",
+  "secretAccessKey":"/",
+  "region":"",
+  "topic":"",
+  "secretKey":""
 }
