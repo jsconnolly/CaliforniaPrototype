@@ -1,4 +1,4 @@
-package geocoding;
+package com.hotb.pgmacdesign.californiaprototype.geocoding;
 
 import com.google.gson.annotations.SerializedName;
 

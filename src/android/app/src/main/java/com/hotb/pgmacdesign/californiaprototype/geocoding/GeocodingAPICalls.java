@@ -1,4 +1,4 @@
-package geocoding;
+package com.hotb.pgmacdesign.californiaprototype.geocoding;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

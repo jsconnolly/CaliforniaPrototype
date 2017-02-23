@@ -1,4 +1,4 @@
-package geocoding;
+package com.hotb.pgmacdesign.californiaprototype.geocoding;
 
 
 import retrofit2.Call;
@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 /**
- * Custom Geocoding interface. This mirrors the standard google geocoding, but is open
+ * Custom Geocoding interface. This mirrors the standard google com.hotb.pgmacdesign.californiaprototype.geocoding, but is open
  * code instead of using an sdk.
  * Link: https://developers.google.com/maps/documentation/geocoding/start
  * Created by pmacdowell on 2017-02-17.

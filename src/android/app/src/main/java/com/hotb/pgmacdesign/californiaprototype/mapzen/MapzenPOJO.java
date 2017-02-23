@@ -12,7 +12,7 @@ public class MapzenPOJO {
 
     @SerializedName("type")
     private String type;
-    @SerializedName("geocoding")
+    @SerializedName("com/hotb/pgmacdesign/californiaprototype/geocoding")
     private Geocoding geocoding;
     @SerializedName("features")
     private List<MapzenFeatures> features;

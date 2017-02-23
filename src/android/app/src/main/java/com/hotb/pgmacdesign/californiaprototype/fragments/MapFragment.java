@@ -63,8 +63,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import geocoding.GeocodingAPICalls;
-import geocoding.GeocodingPOJO;
+import com.hotb.pgmacdesign.californiaprototype.geocoding.GeocodingAPICalls;
+import com.hotb.pgmacdesign.californiaprototype.geocoding.GeocodingPOJO;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
