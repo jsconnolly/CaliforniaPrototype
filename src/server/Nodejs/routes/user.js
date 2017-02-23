@@ -38,12 +38,12 @@ exports.test = function (req, res) {
 exports.add = function (req, res) {
     var userinfo = req.body;
         if(!userinfo.email||!userinfo.phone){
-                res.send({ 'success': 0, 'result': 'Phone and email is required' });
+                res.status(400).send({ 'Error': 'Phone and email is required' });
                 return;            
         }
         userDB.findOne({$or:[{ 'email': userinfo.email==undefined?"---":userinfo.email },{ 'phone': userinfo.phone==undefined?"---":userinfo.phone }]}, function (err, item) {
             if (item) {
-                res.send({ 'success': 0, 'result': 'Records already exist' });
+                res.status(400).send({ 'Error': 'Records already exist' });
                 return;
             } 
 
@@ -51,10 +51,12 @@ exports.add = function (req, res) {
                     userinfo.password = hash;
                     // append date stamp when record was created //
                     userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    userinfo.locations=[];
+                    userinfo.contacts=[];
                     //userobj.token=generateToken(userobj.id);
                     userDB.insert(userinfo, { safe: true }, function (err, result) {
                         if (err) {
-                            res.send({ 'success':0,'result': 'An error has occurred' });
+                            res.status(400).send({ 'Error': 'An error has occurred' });
                         } else {
                             console.log('success: --' + JSON.stringify(result));
                             result.ops[0].token=generateToken(result.ops[0]._id);
@@ -65,7 +67,7 @@ exports.add = function (req, res) {
                             delete userobj._id;
                             delete userobj.password;
                             
-                            res.send({ 'success':1, 'result': userobj });
+                            res.status(200).send(userobj);
                         }
 
                     });
@@ -84,24 +86,46 @@ exports.add = function (req, res) {
 
 
 };
+exports.getUserByPhone = function(req, res)
+{
+	var userinfo = req.body;
+    var userheader=req.headers;
+    if(!verifyToken(userheader.token)){
+       res.status(401).send({ 'Error': 'Invalid token' });
+       return;
+    };
+     userDB.findOne({'phone':req.params.phone}, function(e, result){ 
+        if(result){
+            result.id=result._id;
+            delete result._id;
+            delete result.password;
+            res.status(200).send(result);
+        }else{
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+        
+    
+    });
+   
 
+}
 
 exports.getUserByEmail = function(req, res)
 {
 	var userinfo = req.body;
     var userheader=req.headers;
     if(!verifyToken(userheader.token)){
-       res.send({ 'success':0, 'result': 'Invalid token' });
+       res.status(401).send({ 'Error': 'Invalid token' });
        return;
     };
-     userDB.findOne({'email':userinfo['email']}, function(e, result){ 
+     userDB.findOne({'email':req.params.email}, function(e, result){ 
         if(result){
             result.id=result._id;
             delete result._id;
             delete result.password;
-            res.send({ 'success':1, 'result': result });
+            res.status(200).send(result);
         }else{
-            res.send({ 'success':0, 'result': 'Record not found' });
+            res.status(404).send({ 'Error': 'Record not found' });
         }
         
     
@@ -117,14 +141,14 @@ exports.getUserById = function(req, res)
     var inputid=null;
     var userheader=req.headers;
     if(!verifyToken(userheader.token)){
-       res.send({ 'success':0, 'result': 'Invalid token' });
+       res.status(401).send({ 'Error': 'Invalid token' });
        return;
     };
 
   try {
-     inputid=getObjectId(userinfo['id']);
+     inputid=getObjectId(req.params.id);
   } catch (ex) {
-    res.send({ 'success':0, 'result': 'Record not found' });
+    res.status(404).send({ 'Error': 'Record not found' });
     return;
   }
 
@@ -135,9 +159,9 @@ exports.getUserById = function(req, res)
             result.id=result._id;
             delete result._id;
             delete result.password;
-            res.send({ 'success':1, 'result': result });
+            res.status(200).send(result);
         }else{
-            res.send({ 'success':0, 'result': 'Record not found' });
+            res.status(404).send({ 'Error': 'Record not found' });
         }
         
     
@@ -152,16 +176,16 @@ exports.login = function(req, res)
 
    userDB.findOne({'email':userinfo.email}, function(e, result) {
 		if (result == null){
-			res.send({ 'success':0, 'result': 'Login failed' });
+			res.status(400).send({ 'Error': 'Login failed' });
 		}	else{
 			validatePassword(userinfo['password'], result.password, function(err, o) {
 				if (o){
                     result.token=generateToken(result._id);
                     userDB.save(result, {safe: true}, function(e) {
 			        });
-					res.send({ 'success':1, 'result': {token:result.token} });
+					res.status(200).send({token:result.token});
 				}	else{
-					res.send({ 'success':0, 'result': 'Login failed'}); 
+					res.status(400).send({ 'Error': 'Login failed'}); 
 				}
 			});
 		}
@@ -174,16 +198,16 @@ exports.phoneLogin = function(req, res)
 
    userDB.findOne({'phone':userinfo.phone}, function(e, result) {
 		if (result == null){
-			res.send({ 'success':0, 'result': 'Login failed' });
+			res.status(400).send({ 'Error': 'Login failed' });
 		}	else{
 			validatePassword(userinfo.password, result.password, function(err, o) {
 				if (o){
                     result.token=generateToken(result._id);
                     userDB.save(result, {safe: true}, function(e) {
 			        });
-					res.send({ 'success':1, 'result': {token:result.token} });
+					res.status(200).send({token:result.token});
 				}	else{
-					res.send({ 'success':0, 'result': 'Login failed'}); 
+					res.status(400).send({ 'Error': 'Login failed'}); 
 				}
 			});
 		}
@@ -196,15 +220,15 @@ exports.phoneCode = function(req, res)
 
    userDB.findOne({'phone':userinfo.phone}, function(e, result) {
 		if (result == null){
-			res.send({ 'success':0, 'result': 'Phone number not found' });
+			res.status(401).send({ 'Error': 'Phone number not found' });
 		}	else{
             var code=getRandomIntInclusive(123456,999999);
 			sendSMS(userinfo.phone,'Your phone verification code is: '+code, function(err, o) {
                   console.log("sms result", err);
                   if(!err){
-                      res.send({ 'success':1, 'result': {'code':code} });
+                      res.status(200).send({'code':code});
                   }else{
-                      res.send({ 'success':0, 'result': 'SMS failed' });
+                      res.status(500).send({ 'Error': 'SMS failed' });
                   }
 			});
 
@@ -217,18 +241,18 @@ exports.phoneCode = function(req, res)
 exports.update = function(req, res)
 {
 	var userinfo = req.body;
-    var userid=null;
+    var userid= null;
     var userheader=req.headers;
     if(!verifyToken(userheader.token)){
-       res.send({ 'success':0, 'result': 'Invalid token' });
+       res.status(401).send({ 'Error': 'Invalid token' });
        return;
     };
 
 
   try {
-     userid=getObjectId(userinfo['id']);
+     userid=getObjectId(req.params.id);
   } catch (ex) {
-    res.send({ 'success':0, 'result': 'Record not found' });
+    res.status(404).send({ 'Error': 'Record not found' });
     return;
   }   
     userDB.findOne({'_id':userid}, function(e, o){
@@ -237,8 +261,8 @@ exports.update = function(req, res)
         if(userinfo['phone'])o.phone=userinfo.phone;
 		if(userinfo['zip'])o.zip 	= userinfo['zip'];
 			userDB.save(o, {safe: true}, function(e) {
-				if (e) res.send({ 'success':0, 'result': 'Error found' });
-				else res.send({ 'success':1, 'result': 'Update is Successful' });
+				if (e) res.status(500).send({ 'Error': 'Error found' });
+				else res.status(200).send({});
 			});
 
 	});
@@ -250,25 +274,25 @@ exports.updatePassword = function(req, res)
      var userid=null;
     var userheader=req.headers;
     if(!verifyToken(userheader.token)){
-       res.send({ 'success':0, 'result': 'Invalid token' });
+       res.status(401).send({ 'Error': 'Invalid token' });
        return;
     };
 
   try {
      userid=getObjectId(userinfo['id']);
   } catch (ex) {
-    res.send({ 'success':0, 'result': 'Record not found' });
+    res.status(404).send({ 'Error': 'Record not found' });
     return;
   }       
     userDB.findOne({'_id':userid}, function(e, o){
 		if (e){
-			res.send({ 'success':0, 'result': 'Error found' });
+			res.status(404).send({ 'Error': 'Error found' });
 		}	else{
 			saltAndHash(userinfo['password'], function(hash){
 		        o.password = hash;
 		        userDB.save(o, {safe: true}, function(ex) {
-				if (ex) res.send({ 'success':0, 'result': 'Error found' });
-				else res.send({ 'success':1, 'result': 'Update is Successful' });
+				if (ex) res.status(500).send({ 'Error': 'Error found' });
+				else res.status(200).send({ });
 			});
 			});
 		}
@@ -286,19 +310,19 @@ exports.resetPassword = function(req, res)
        var decoded = jwt.verify(userheader.token, config.secretKey);
        userid=getObjectId(decoded.user);
     }catch(ex){
-       res.send({ 'success':0, 'result': 'Invalid token' });
+       res.status(401).send({ 'Error': 'Invalid token' });
        return;       
     }
 
     userDB.findOne({'_id':userid}, function(e, o){
 		if (e){
-			res.send({ 'success':0, 'result': 'Error found' });
+			res.status(404).send({ 'Error': 'Error found' });
 		}	else{
 			saltAndHash(userinfo.password, function(hash){
 		        o.password = hash;
 		        userDB.save(o, {safe: true}, function(ex) {
-				if (ex) res.send({ 'success':0, 'result': 'Error found' });
-				else res.send({ 'success':1, 'result': 'Update is Successful' });
+				if (ex) res.status(500).send({ 'Error': 'Error found' });
+				else res.status(200).send({ });
 			});
 			});
 		}

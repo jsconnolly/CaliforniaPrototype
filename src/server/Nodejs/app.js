@@ -10,13 +10,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post('/users/phoneCode',user.phoneCode);
 app.post('/users/changePassword',user.updatePassword);
 app.post('/users/resetPassword',user.resetPassword);
-app.post('/users/update',user.update);
+app.put('/users/:id',user.update);
 app.post('/users/signin',user.login);
 app.post('/users/phoneSignin',user.phoneLogin);
-app.post('/users/email',user.getUserByEmail);
-app.post('/users/id',user.getUserById);
+app.get('/users/phone/:phone',user.getUserByPhone);
+app.get('/users/email/:email',user.getUserByEmail);
+app.get('/users/:id',user.getUserById);
 app.post('/users/', user.add);
-app.get('/user/:id/location/:lid', user.test);
 app.get('/', function(req, res){
 
     res.type('html');
