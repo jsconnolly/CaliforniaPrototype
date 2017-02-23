@@ -70,10 +70,10 @@
     <!-- SearchView Theme -->
     <style name="CustomSearchViewTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
-        <item name="android:background">@drawable/custom_background_white_back_blue_edges</item>
+        <item name="android:background">@color/Transparent</item>
         <item name="android:textColorPrimary">@color/Black</item>
         <item name="android:textColorSecondary">@color/LightGrey</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textColor">@color/Black</item>
         <item name="android:textColorHint">@color/LightGrey</item>
         <item name="android:editTextColor">@color/Black</item>

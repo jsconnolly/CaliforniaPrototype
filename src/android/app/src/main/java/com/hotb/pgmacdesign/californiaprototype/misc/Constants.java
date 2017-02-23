@@ -24,7 +24,7 @@ public class Constants {
     public static final int FRAGMENT_MAP = 1;
     public static final int FRAGMENT_EMAIL_LOGIN = 2;
     public static final int FRAGMENT_SMS_VERIFICATION = 3;
-    public static final int FRAGMENT_2= 4;
+    public static final int FRAGMENT_PERMISSIONS_REQUEST= 4;
     public static final int FRAGMENT_3 = 5;
     public static final int FRAGMENT_4 = 6;
     public static final int FRAGMENT_5 = 7;

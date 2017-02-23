@@ -29,4 +29,8 @@
     <string name="login_with_email">Login with Email</string>
     <string name="no_search_results">There were no search results from your query</string>
     <string name="unknown_location">Unknown Location</string>
+    <string name="error_could_not_find">We couldn\'t find this location. Modify your search and try again.</string>
+    <string name="error_message">Error Message</string>
+    <string name="access_location_perm_title">Access Location</string>
+    <string name="access_location_perm_message">This permission is used to access your current location when the app opens. It does not track when the app is closed and will only run when on the map page.</string>
 </resources>

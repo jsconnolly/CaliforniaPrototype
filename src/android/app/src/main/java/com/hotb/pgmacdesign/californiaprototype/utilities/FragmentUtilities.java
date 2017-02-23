@@ -3,6 +3,7 @@ package com.hotb.pgmacdesign.californiaprototype.utilities;
 import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.HomeFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.MapFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.PermissionsRequestFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.SMSVerificationFragment;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
@@ -44,6 +45,10 @@ public class FragmentUtilities {
                 parentInterface.setFragment(smsVerificationFragment, SMSVerificationFragment.TAG);
                 break;
 
+            case Constants.FRAGMENT_PERMISSIONS_REQUEST:
+                PermissionsRequestFragment permissionsRequestFragment = PermissionsRequestFragment.newInstance();
+                parentInterface.setFragment(permissionsRequestFragment, PermissionsRequestFragment.TAG);
+                break;
         }
     }
 

@@ -16,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.google.android.gms.maps.CameraUpdate;
@@ -44,6 +47,7 @@ import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ImageUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
@@ -71,7 +75,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
         SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, SearchView.OnCloseListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -90,7 +94,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     //UI
     private SearchView searchView;
     private ListView fragment_map_search_listview;
-    private RelativeLayout fragment_map_main_layout;
+    private RelativeLayout fragment_map_main_layout, scale_view_layout_holder;
+    private LinearLayout fragment_map_search_error_view;
+    private ImageView fragment_map_error_image;
+    private TextView fragment_map_error_top_tv, fragment_map_error_bottom_tv;
     private ScaleBar mScaleBar;
 
     //Adapters
@@ -161,11 +168,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.searchView.setIconified(false);
         this.searchView.clearFocus();
         this.searchView.setOnQueryTextListener(this);
+        this.searchView.setOnCloseListener(this);
         this.fragment_map_search_listview = (ListView) view.findViewById(
                 R.id.fragment_map_search_listview);
         this.fragment_map_search_listview.setOnItemClickListener(this);
         this.fragment_map_main_layout = (RelativeLayout) view.findViewById(
                 R.id.fragment_map_main_layout);
+        this.scale_view_layout_holder = (RelativeLayout) view.findViewById(
+                R.id.scale_view_layout_holder);
+        this.fragment_map_error_top_tv = (TextView) view.findViewById(
+                R.id.fragment_map_error_top_tv);
+        this.fragment_map_error_bottom_tv = (TextView) view.findViewById(
+                R.id.fragment_map_error_bottom_tv);
+        this.fragment_map_error_image = (ImageView) view.findViewById(
+                R.id.fragment_map_error_image);
+        this.fragment_map_search_error_view = (LinearLayout) view.findViewById(
+                R.id.fragment_map_search_error_view);
     }
 
     private void setupMap(){
@@ -365,10 +383,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      * Reload the adapters and the listview to include new return results
      */
     private void adjustAdapters(){
-        this.adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.simple_listview_layout, this.searchResultsToShow);
-        this.fragment_map_search_listview.setAdapter(this.adapter);
-        this.adapter.notifyDataSetChanged();
+        boolean useLV;
+        try {
+            if(this.searchResultsToShow.get(0).equals(getString(R.string.no_search_results))){
+                useLV = false;
+            } else {
+                useLV = true;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            useLV = true;
+        }
+
+        if(useLV) {
+            this.fragment_map_search_error_view.setVisibility(View.GONE);
+            this.adapter = new ArrayAdapter<String>(getActivity(),
+                    R.layout.simple_listview_layout, this.searchResultsToShow);
+            this.fragment_map_search_listview.setAdapter(this.adapter);
+            this.adapter.notifyDataSetChanged();
+        } else {
+            showListview(false);
+            this.fragment_map_search_error_view.setVisibility(View.VISIBLE);
+            ImageUtilities.setCircularImageWithPicasso(null, this.fragment_map_error_image,
+                    R.color.white, getActivity());
+        }
     }
 
     /**
@@ -708,7 +746,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         //params.addRule(RelativeLayout.CENTER_VERTICAL);
-
+        params.setMarginStart((int)(dmu.getPixelsWidth() * 0.3));
         mScaleBar = new ScaleBar(getActivity(), this.googleMap);
         mScaleBar.setLayoutParams(params);
         fragment_map_main_layout.addView(mScaleBar);
@@ -768,6 +806,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
 
         }
+        return false;
+    }
+
+    @Override
+    public boolean onClose() {
+        this.showListview(false);
+        this.searchView.setQuery("", false);
+        this.searchView.setIconified(false);
+        this.searchView.clearFocus();
         return false;
     }
 }
