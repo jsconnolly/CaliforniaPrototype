@@ -15,12 +15,12 @@ class LocationPermissionsViewController: UIViewController, CLLocationManagerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
+        //self.navigationController?.isNavigationBarHidden = true
         self.locationManager.delegate = self
     }
 
     @IBAction func denyButtonTapped(_ sender: Any) {
-        
+        self.navigationController?.pushViewController(NotificationsPermissionViewController(), animated: true)
     }
     
     @IBAction func allowButtonTapped(_ sender: Any) {

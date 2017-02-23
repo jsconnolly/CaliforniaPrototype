@@ -18,10 +18,11 @@ class NotificationsPermissionViewController: UIViewController {
 
     @IBAction func allowButtonTapped(_ sender: Any) {
         self.allowNotifications()
+        self.navigationController?.pushViewController(EmailRegistrationViewController(), animated: true)
     }
     
     @IBAction func denyButtonTapped(_ sender: Any) {
-        
+        self.navigationController?.pushViewController(EmailRegistrationViewController(), animated: true)
     }
     
     func allowNotifications() {
