@@ -13,7 +13,7 @@ class OutlinedTextField: UITextField {
     override public func awakeFromNib() {
         layer.cornerRadius = 4.0
         layer.borderWidth = 1.0
-        layer.borderColor = UIColor.darkGray.cgColor
+        layer.borderColor = UIColor.textFieldBorderGray().cgColor
     }
 
 }

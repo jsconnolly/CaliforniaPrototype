@@ -15,6 +15,7 @@
                 <outlet property="fifthCodeTextField" destination="CXt-OA-0lU" id="WVc-u4-a81"/>
                 <outlet property="firstCodeTextField" destination="LiP-od-ixy" id="kE4-87-QN1"/>
                 <outlet property="fourthCodeTextField" destination="rg5-b4-Fzc" id="JcG-Yd-i5G"/>
+                <outlet property="invalidPhoneNumberLabel" destination="BK7-0J-J3E" id="72K-dY-Gm4"/>
                 <outlet property="phoneNumberLabel" destination="LN5-0B-5QS" id="osx-d4-E5m"/>
                 <outlet property="secondCodeTextField" destination="lER-KZ-iaT" id="vOb-iv-h6V"/>
                 <outlet property="sixthCodeTextField" destination="2WC-pI-Ghp" id="FbR-bS-7LB"/>

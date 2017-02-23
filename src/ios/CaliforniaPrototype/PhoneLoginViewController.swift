@@ -66,14 +66,11 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
     func setTextFieldBorderActive(_ textField: UITextField) {
         if textField == self.phoneTextField {
             textField.layer.borderColor = UIColor.black.cgColor
-            self.phoneTextField.layer.borderColor = UIColor.gray.cgColor
-        } else {
-            textField.layer.borderColor = UIColor.black.cgColor
-            self.phoneTextField.layer.borderColor = UIColor.gray.cgColor
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.window?.endEditing(true)
+        self.phoneTextField.layer.borderColor = UIColor.textFieldBorderGray().cgColor
     }
 }

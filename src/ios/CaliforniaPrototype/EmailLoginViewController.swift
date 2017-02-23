@@ -84,11 +84,15 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
     func setTextFieldBorderActive(_ textField: UITextField) {
         if textField == self.emailTextField {
             textField.layer.borderColor = UIColor.black.cgColor
-            self.passwordTextField.layer.borderColor = UIColor.gray.cgColor
+            self.passwordTextField.layer.borderColor = UIColor.textFieldBorderGray().cgColor
         } else {
             textField.layer.borderColor = UIColor.black.cgColor
-            self.emailTextField.layer.borderColor = UIColor.gray.cgColor
+            self.emailTextField.layer.borderColor = UIColor.textFieldBorderGray().cgColor
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.window?.endEditing(true)
     }
     
 }
