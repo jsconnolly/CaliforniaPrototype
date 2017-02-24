@@ -21,11 +21,23 @@ class MapViewController: UIViewController {
             self.addLocationOverlayView.isHidden = true
         }
         
+        self.setupView()
+        
+    }
+    
+        
+    func setupView() {
+        let addLocationNavButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(pushToMapView))
+        navigationItem.rightBarButtonItem = addLocationNavButton
+    }
+    
+    func pushToMapView() {
+        navigationController?.pushViewController(AddLocationViewController(), animated: true)
     }
     
     @IBAction func addLocationButtonTapped(_ sender: Any) {
         UserDefaultManager.setAddLocationPopupViewed(true)
-        navigationController?.pushViewController(AddLocationViewController(), animated: true)
+        pushToMapView()
     }
 
     @IBAction func skipButtonTapped(_ sender: Any) {

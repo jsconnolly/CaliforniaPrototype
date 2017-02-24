@@ -38,6 +38,9 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="California Prototype Would Like to Access Your Location" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="bxm-g1-7CZ">
                             <rect key="frame" x="8" y="8" width="254" height="38.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38.5" id="8wO-B5-AMs"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>

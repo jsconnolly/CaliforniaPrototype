@@ -38,12 +38,15 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="California Prototype Would Like to Send You Notifications" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="tPQ-0m-UWS">
                             <rect key="frame" x="8" y="8" width="254" height="38.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38.5" id="6rr-dQ-MEg"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications may include alerts, sounds and icon badges. These can be configured in Settings." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="d9n-o2-nYQ">
-                            <rect key="frame" x="8" y="61" width="254" height="50.5"/>
+                            <rect key="frame" x="8" y="54.5" width="254" height="50.5"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="50.5" id="lU2-bs-6bB"/>
                             </constraints>
@@ -72,7 +75,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="1QJ-HM-Tva" secondAttribute="trailing" id="1fk-mU-hjh"/>
-                        <constraint firstItem="d9n-o2-nYQ" firstAttribute="top" secondItem="tPQ-0m-UWS" secondAttribute="bottom" constant="14.5" id="73d-LE-wfN"/>
+                        <constraint firstItem="d9n-o2-nYQ" firstAttribute="top" secondItem="tPQ-0m-UWS" secondAttribute="bottom" constant="8" id="73d-LE-wfN"/>
                         <constraint firstAttribute="trailing" secondItem="tPQ-0m-UWS" secondAttribute="trailing" constant="8" id="8ze-9E-kgN"/>
                         <constraint firstItem="1QJ-HM-Tva" firstAttribute="centerY" secondItem="VDs-mq-6kl" secondAttribute="centerY" id="Aex-j0-Uyd"/>
                         <constraint firstItem="VDs-mq-6kl" firstAttribute="leading" secondItem="Zhd-RF-qV8" secondAttribute="leading" id="DYv-ni-f9Y"/>
