@@ -61,7 +61,7 @@ class EmailRegistrationViewController: UIViewController {
     }
 
     @IBAction func canelButtonTapped(_ sender: Any) {
-        
+        self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
     }
 }
 
