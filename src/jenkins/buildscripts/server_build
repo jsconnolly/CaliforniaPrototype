@@ -9,7 +9,7 @@ node {
 
     stage ('Build') {
         // Add configuration to project
-        sh "mv ~/CaliforniaPrototype/server/config.json ./src/server"
+        sh "cp ~/CaliforniaPrototype/server/config.json ./src/server"
 
         // Build Docker Container
         sh "docker build -t ca-prototype-main-repository ./src/server"
