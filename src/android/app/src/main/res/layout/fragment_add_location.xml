@@ -3,57 +3,108 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-    <!-- TEST-->
-    <fragment
-        android:id="@+id/place_autocomplete_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-        />
-
+    <!-- Autocomplete Search -->
     <RelativeLayout
-        android:id="@+id/fragment_add_location_top_layout"
+        android:id="@+id/fragment_add_location_autocomplete_layout"
+        android:background="@drawable/custom_background_white_back_lightgrey_edges"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/left_right_side_margins_small"
-        android:visibility="gone"
-        >
+        android:layout_height="wrap_content">
 
-        <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+        <!-- Autocomplete fragment -->
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/square_image_sizing"
-            style="@style/CustomEditTextTheme"
-            android:id="@+id/fragment_add_location_et"
-            android:gravity="center_horizontal|center"
-            android:hint="@string/fake_address_hint"
-            android:maxLines="1"
-            android:imeOptions="actionSend"
-            android:visibility="gone"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             />
-
 
     </RelativeLayout>
 
-    <!-- No results TV -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal"
-        android:id="@+id/fragment_add_location_error"
-        android:layout_below="@+id/fragment_add_location_top_layout"
-        android:visibility="gone"
-        />
 
-    <!-- Search Responses -->
-    <ListView
+    <!-- Maps, buttons, and info container -->
+    <RelativeLayout
+        android:layout_below="@+id/fragment_add_location_autocomplete_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_add_location_lv"
-        android:layout_below="@+id/fragment_add_location_error"
-        android:visibility="gone"
-        />
+        android:layout_height="match_parent">
+
+
+        <!-- Map Fragment -->
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fragment_add_location_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:mapType="normal"
+            map:uiCompass="true"
+            map:uiRotateGestures="false"
+            map:uiScrollGestures="true"
+            map:uiTiltGestures="true"
+            map:uiZoomControls="true"
+            map:uiZoomGestures="true"
+            map:cameraZoom="15"
+            />
+
+        <!-- Title and body description TVs -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_add_location_title"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_large"
+            android:gravity="center_horizontal|center"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginBottom="@dimen/left_right_side_margins_small"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text=""
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:id="@+id/fragment_add_location_body"
+            android:gravity="center_horizontal|center"
+            android:layout_below="@+id/fragment_add_location_title"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text=""
+            />
+
+        <!-- Confirm button -->
+        <Button
+            android:id="@+id/fragment_add_location_confirm_button"
+            android:layout_above="@+id/fragment_add_location_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/add_location"
+            android:background="@drawable/multipurpose_button"
+            />
+
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/fragment_add_location_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/cancel"
+            android:background="@drawable/multipurpose_button"
+            />
+
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>

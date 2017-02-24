@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initVariables();
-        this.setupUI();
         this.setupToolbar();
+        this.setupUI();
         FragmentUtilities.switchFragments(Constants.FRAGMENT_ADD_LOCATION, this);
     }
 
@@ -221,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     public void setToolbarDetails(String title, Integer color) {
+        if(this.toolbar == null){
+            return;
+        }
         if(color != null){
             this.toolbar.setBackgroundColor(color);
         }

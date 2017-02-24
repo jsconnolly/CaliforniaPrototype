@@ -35,4 +35,7 @@
     <string name="access_location_perm_message">This permission is used to access your current location when the app opens. It does not track when the app is closed and will only run when on the map page.</string>
     <string name="current_state_emergency">Current State: EMERGENCY</string>
     <string name="fake_address_hint">123 Fake St, Irvine, CA 92618</string>
+    <string name="add_location">Add Location</string>
+    <string name="cancel">Cancel</string>
+    <string name="autocomplete_hint">92618</string>
 </resources>
