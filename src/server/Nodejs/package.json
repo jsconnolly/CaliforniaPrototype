@@ -1,0 +1,27 @@
+{
+
+  "name": "CaliforniaPrototype",
+  "version": "1.0.0",
+  "description": "California Prototype",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HOTB-Software/CaliforniaPrototype"
+  },
+  "author": "Homeowner Toolbox, Inc.",
+  "license": "MIT",
+  "dependencies": {
+    "basic-auth": "~1.0.4",
+    "body-parser": "~1.15.2",
+    "express": "^4.14.1",
+    "moment": "2.10.3",
+    "jwt-simple": "^0.3.1",
+    "aws-sdk": "*",
+    "jsonwebtoken":"~7.3.0"
+  }
+
+}
