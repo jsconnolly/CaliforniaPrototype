@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.put('/users/:id/locations/:displayName',user.updateLocation);
+app.put('/users/:id/contacts/:cid',user.updateContact);
+app.put('/users/:id/contacts',user.addContact);
+app.put('/users/:id/locations/:lid',user.updateLocation);
 app.put('/users/:id/locations',user.addLocation);
 app.post('/users/phoneCode',user.phoneCode);
 app.post('/users/changePassword',user.updatePassword);
@@ -25,13 +27,19 @@ app.get('/', function(req, res){
     res.send("<!DOCTYPE html><html><head><title>Hello</title><meta charset=\"utf-8\" /></head><body><p>Hello, World!</p></body></html>");
 });
 setInterval(function(){
-  console.log('test');
+
 }, 1000 * 1000);
 
-process.on('uncaughtException', function (err) {
-  console.log('Caught exception: ' + err);
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.send({
+        'Error': err.message
+    });
 });
+//process.on('uncaughtException', function (err) {
+//  console.log('Caught exception: ' + err);
+//});
 
 app.listen(config.port, function() {
-    console.log('3 Listening on port:' + config.port);
+    console.log('4 Listening on port:' + config.port);
 });
