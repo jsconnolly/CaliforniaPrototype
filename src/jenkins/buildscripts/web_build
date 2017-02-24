@@ -1,0 +1,26 @@
+node {
+
+    String BRANCH_PLATFORM = ""
+
+    stage ('Checkout') {
+        // Checkout code for the pushed branch
+        checkout scm
+    }
+
+    stage ('Build') {
+
+        def nodeHome = tool 'NodeTool'
+        env.PATH="${env.PATH}:${nodeHome}/bin"
+
+        sh '''#!/bin/bash
+            cd src/web
+            npm install
+            bower install
+            grunt
+        '''
+    }
+
+    stage ('Deploy') {
+        println "Add Commands: Deploy to aws s3"
+    }
+}
