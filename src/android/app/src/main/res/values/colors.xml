@@ -13,6 +13,7 @@
 
     <color name="Transparent">#00000000</color>
 
+    <color name="SemiTransparentRed">#50FF0000</color>
     <color name="SemiTransparentBlue">#30191970</color>
     <color name="ErrorMessageOrange">#F5A528</color>
     <color name="CaliforniaGold">#FFD700</color>

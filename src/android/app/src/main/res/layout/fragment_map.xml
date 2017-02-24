@@ -9,7 +9,8 @@
     android:theme="@style/AppTheme">
 
     <!-- Map Fragment -->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_map_map"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -119,15 +120,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- SearchView Responses -->
-    <android.support.v7.widget.ListViewCompat
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_map_search_error_view"
-        android:id="@+id/fragment_map_search_listview"
-        android:layout_marginStart="@dimen/searchview_narrow_margins"
-        android:layout_marginEnd="@dimen/searchview_narrow_margins"
-        />
+
 
 </RelativeLayout>

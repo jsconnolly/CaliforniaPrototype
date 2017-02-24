@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hotb.pgmacdesign.californiaprototype.R;
@@ -26,11 +29,13 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.SystemDrawableUtilitie
 /**
  * Created by pmacdowell on 2017-02-13.
  */
-public class MainActivity extends AppCompatActivity implements CustomFragmentListener {
+public class MainActivity extends AppCompatActivity implements CustomFragmentListener, View.OnClickListener {
 
     //UI
     private Toolbar toolbar;
-    private TextView toolbar_title;
+    private TextView toolbar_title, activity_main_emergency_tv,
+            activity_main_emergency_sos_button;
+    private RelativeLayout activity_main_bottom_nav_bar, activity_main_emergency_sos_layout;
 
     //Misc Variables
     private DatabaseUtilities dbUtilities;
@@ -41,15 +46,22 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     private int fragmentContainerId, currentFragment;
     private Fragment fragmentActive;
 
+    private EmergencyStates currentEmergencyState;
 
+
+
+    enum EmergencyStates {
+        CALM, EMERGENCY
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initVariables();
+        this.setupUI();
         this.setupToolbar();
-        FragmentUtilities.switchFragments(Constants.FRAGMENT_MAP, this);
+        FragmentUtilities.switchFragments(Constants.FRAGMENT_ADD_LOCATION, this);
     }
 
     /**
@@ -65,6 +77,21 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         //MyAmazonClient.subscribeToTopic("testing");
     }
 
+    private void setupUI(){
+
+        this.activity_main_emergency_sos_layout = (RelativeLayout) this.findViewById(
+                R.id.activity_main_emergency_sos_layout);
+        this.activity_main_bottom_nav_bar = (RelativeLayout) this.findViewById(
+                R.id.activity_main_bottom_nav_bar);
+        this.activity_main_emergency_sos_button = (TextView) this.findViewById(
+                R.id.activity_main_emergency_sos_button);
+        this.activity_main_emergency_tv = (TextView) this.findViewById(
+                R.id.activity_main_emergency_tv);
+
+        this.setEmergencyState(EmergencyStates.CALM, null);
+
+        this.activity_main_emergency_sos_button.setOnClickListener(this);
+    }
     /**
      * Setup the toolbar up top
      */
@@ -92,9 +119,34 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         GUIUtilities.setBackButtonContentDescription(this);
 
         this.toolbar.bringToFront();
+
     }
 
+    // TODO: 2017-02-23  add this into onboarding as well
+    public void setEmergencyState(EmergencyStates state, String emergencyStateText){
+        switch (state){
+            case CALM:
+                this.activity_main_emergency_tv.setBackgroundColor(
+                        ContextCompat.getColor(this, R.color.white));
+                this.activity_main_emergency_tv.setVisibility(View.GONE);
+                this.activity_main_emergency_tv.setText("");
+                this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
+                this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
+                        ContextCompat.getColor(this, R.color.colorPrimary));
+                break;
 
+            case EMERGENCY:
+                this.activity_main_emergency_tv.setBackgroundColor(
+                        ContextCompat.getColor(this, R.color.red));
+                this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
+                this.activity_main_emergency_tv.setText(R.string.current_state_emergency
+                        + "\n" + emergencyStateText);
+                this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
+                this.setToolbarDetails("EMERGENCY",
+                        ContextCompat.getColor(this, R.color.red));
+                break;
+        }
+    }
 
     /**
      * Back button hit
@@ -179,6 +231,16 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         }
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.activity_main_emergency_sos_button:
+
+                break;
+        }
+    }
+
     //////////////////////////////
     //Activity Lifecycle Methods//
     //////////////////////////////
@@ -204,4 +266,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         }
         super.onStop();
     }
+
+
+
 }

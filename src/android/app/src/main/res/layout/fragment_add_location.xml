@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <!-- TEST-->
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+        />
+
+    <RelativeLayout
+        android:id="@+id/fragment_add_location_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/left_right_side_margins_small"
+        android:visibility="gone"
+        >
+
+        <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/square_image_sizing"
+            style="@style/CustomEditTextTheme"
+            android:id="@+id/fragment_add_location_et"
+            android:gravity="center_horizontal|center"
+            android:hint="@string/fake_address_hint"
+            android:maxLines="1"
+            android:imeOptions="actionSend"
+            android:visibility="gone"
+            />
+
+
+    </RelativeLayout>
+
+    <!-- No results TV -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_horizontal"
+        android:id="@+id/fragment_add_location_error"
+        android:layout_below="@+id/fragment_add_location_top_layout"
+        android:visibility="gone"
+        />
+
+    <!-- Search Responses -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_add_location_lv"
+        android:layout_below="@+id/fragment_add_location_error"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

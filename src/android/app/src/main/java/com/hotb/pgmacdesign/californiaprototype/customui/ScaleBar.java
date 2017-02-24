@@ -274,4 +274,5 @@ public class ScaleBar extends ImageView {
         }
     }
 
+
 }

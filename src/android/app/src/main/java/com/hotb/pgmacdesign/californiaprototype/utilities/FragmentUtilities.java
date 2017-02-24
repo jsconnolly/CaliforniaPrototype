@@ -1,5 +1,7 @@
 package com.hotb.pgmacdesign.californiaprototype.utilities;
 
+import com.hotb.pgmacdesign.californiaprototype.fragments.AddLocationFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.AlertBeaconPopupFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.HomeFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.MapFragment;
@@ -49,9 +51,41 @@ public class FragmentUtilities {
                 PermissionsRequestFragment permissionsRequestFragment = PermissionsRequestFragment.newInstance();
                 parentInterface.setFragment(permissionsRequestFragment, PermissionsRequestFragment.TAG);
                 break;
+
+            case Constants.FRAGMENT_ALERT_BEACON_POPUP:
+                AlertBeaconPopupFragment alertBeaconPopupFragment = AlertBeaconPopupFragment.newInstance();
+                parentInterface.setFragment(alertBeaconPopupFragment, AlertBeaconPopupFragment.TAG);
+                break;
+
+            case Constants.FRAGMENT_ADD_LOCATION:
+                AddLocationFragment addLocationFragment = AddLocationFragment.newInstance();
+                parentInterface.setFragment(addLocationFragment, AddLocationFragment.TAG);
+                break;
         }
     }
 
+    public static String getFragmentName(int fragmentId){
+        switch (fragmentId){
+            case Constants.FRAGMENT_MAP:
+                return "Home"; // TODO: 2017-02-23 ask about this one name...
+
+            case Constants.FRAGMENT_HOME:
+                return "Home"; // TODO: 2017-02-23 ask about this one name...
+
+            case Constants.FRAGMENT_EMAIL_LOGIN:
+                return "Login";
+
+            case Constants.FRAGMENT_SMS_VERIFICATION:
+                return "SMS Verification";
+
+            case Constants.FRAGMENT_PERMISSIONS_REQUEST:
+                return "Permissions";
+
+            case Constants.FRAGMENT_ALERT_BEACON_POPUP:
+                return "Information";
+        }
+        return "";
+    }
     /**
      * Overloaded method, allows for objects to be persisted into the DB before switching fragments
      * @param x int x corresponding to a specific fragment {@link Constants}

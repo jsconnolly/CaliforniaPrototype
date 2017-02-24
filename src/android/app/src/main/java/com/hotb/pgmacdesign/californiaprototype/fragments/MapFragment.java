@@ -14,13 +14,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -33,38 +29,30 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.customui.ScaleBar;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.MyLocationListener;
-import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
-import com.hotb.pgmacdesign.californiaprototype.mapzen.MapzenAPICalls;
-import com.hotb.pgmacdesign.californiaprototype.mapzen.MapzenPOJO;
-import com.hotb.pgmacdesign.californiaprototype.mapzen.MapzenSimpleObject;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.ImageUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ThreadUtilities;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.hotb.pgmacdesign.californiaprototype.geocoding.GeocodingAPICalls;
-import com.hotb.pgmacdesign.californiaprototype.geocoding.GeocodingPOJO;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
@@ -74,8 +62,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
-        SearchView.OnQueryTextListener, OnTaskCompleteListener, AdapterView.OnItemClickListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, SearchView.OnCloseListener {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback{
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -85,23 +72,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     //Map Objects
     private GoogleMap googleMap;
-    private Circle lastDrawnCircle;
+    private Circle lastManuallyDrawnCircle;
     private Location location;
-    private List<MapzenSimpleObject> searchResultsList;
-    private List<String> searchResultsToShow;
-    private MapzenPOJO lastMapQueryData;
+    private List<Marker> markersOnMap;
+    private List<AlertBeacon> alertBeacons;
 
     //UI
-    private SearchView searchView;
-    private ListView fragment_map_search_listview;
     private RelativeLayout fragment_map_main_layout, scale_view_layout_holder;
     private LinearLayout fragment_map_search_error_view;
     private ImageView fragment_map_error_image;
     private TextView fragment_map_error_top_tv, fragment_map_error_bottom_tv;
     private ScaleBar mScaleBar;
 
-    //Adapters
-    private ArrayAdapter adapter;
 
     //Variables
     private int DEFAULT_ZOOM_LEVEL = 15;
@@ -110,16 +92,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             .permissionsEnum.ACCESS_FINE_LOCATION;
 
     //Misc
-    private Timer timer, scaleBarTimer;
-    private String query;
-    private boolean callInProgress, secondaryCall;
-    private MapzenAPICalls api;
-    private GeocodingAPICalls apiGeocoding;
+    private Timer scaleBarTimer;
+
     private Handler handler;
     private DisplayManagerUtilities dmu;
 
-    //Gap so that it doesn't query every single time they type a letter
-    private static final long TYPING_GAP = ((int)(Constants.ONE_SECOND * 0.35));
     private static final int NUM_SECONDS_ON_SCALEBAR_HIDE = 2;
 
     //Listeners
@@ -139,10 +116,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         this.mapHasLoaded = false;
         this.locationIsEnabled = true;
-        this.api = new MapzenAPICalls(getActivity(), this);
-        this.apiGeocoding = new GeocodingAPICalls(getActivity(), this);
-        this.callInProgress = false;
-        this.secondaryCall = false;
         this.handler = ThreadUtilities.getHandlerWithCallback(this);
         this.dmu = new DisplayManagerUtilities(getActivity());
         //Utilize instanceState here
@@ -153,25 +126,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         initVariables();
         initUi(view);
-        initCustomListeners();
         return view;
     }
 
     private void initVariables(){
-        locationListener = new MyLocationListener(MyApplication.getInstance(), this);
+        this.locationListener = new MyLocationListener(MyApplication.getInstance(), this);
+        this.alertBeacons = new ArrayList<>();
+        this.markersOnMap = new ArrayList<>();
     }
 
     private void initUi(View view) {
         setupMap();
-        this.searchView = (SearchView) view.findViewById(
-                R.id.fragment_map_searchview);
-        this.searchView.setIconified(false);
-        this.searchView.clearFocus();
-        this.searchView.setOnQueryTextListener(this);
-        this.searchView.setOnCloseListener(this);
-        this.fragment_map_search_listview = (ListView) view.findViewById(
-                R.id.fragment_map_search_listview);
-        this.fragment_map_search_listview.setOnItemClickListener(this);
+
         this.fragment_map_main_layout = (RelativeLayout) view.findViewById(
                 R.id.fragment_map_main_layout);
         this.scale_view_layout_holder = (RelativeLayout) view.findViewById(
@@ -192,20 +158,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
     }
 
-    private void initCustomListeners(){
-        KeyboardVisibilityEvent.setEventListener(
-                getActivity(),
-                new KeyboardVisibilityEventListener() {
-                    @Override
-                    public void onVisibilityChanged(boolean isOpen) {
-                        if(isOpen){
-                            showListview(true);
-                        } else {
-                            showListview(false);
-                        }
-                    }
-                });
-    }
 
     /**
      * Switch to a different fragment
@@ -237,11 +189,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
         LatLng latLng = new LatLng(latitude, longitude);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL);
-        L.m("move camera to lat = " + latitude + " and lng = " + longitude);
         this.googleMap.animateCamera(cameraUpdate);
     }
-
-
 
     /**
      * Map loaded. Initialize it and make it ready to manipulate
@@ -264,7 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             //locationError(getString(R.string.gps_must_be_enabled));
         }
         this.onMyLocationButtonClick();
-        startLocationServices();
+        this.startLocationServices();
 
     }
 
@@ -282,132 +231,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    /**
-     * Simple hide or show listview
-     * @param bool true to show, false to hide
-     */
-    private void showListview(boolean bool){
-        if(bool){
-            fragment_map_search_listview.setVisibility(View.VISIBLE);
-        } else {
-            fragment_map_search_listview.setVisibility(View.GONE);
-        }
-    }
 
-    /**
-     * Sets map results to null and hides the listview
-     * @param mapData MapData retrieved from the API Call
-     * {@link com.hotb.pgmacdesign.californiaprototype.mapzen.MapzenAPICalls}
-     */
-    private void setSearchResults(MapzenPOJO mapData){
-        this.lastMapQueryData = null;
-        if(mapData == null){
-            showListview(false);
-            return;
-        } else {
-            showListview(true);
-        }
 
-        this.searchResultsList = new ArrayList<>();
-        this.searchResultsToShow = new ArrayList<>();
-        this.lastMapQueryData = mapData;
 
-        List<MapzenPOJO.MapzenFeatures> featuresList = this.lastMapQueryData.getFeatures();
-        if(MiscUtilities.isListNullOrEmpty(featuresList)){
-            String noResults = getString(R.string.no_search_results);
-            this.searchResultsToShow.add(noResults);
-            adjustAdapters();
-            return;
-        }
-
-        for(MapzenPOJO.MapzenFeatures features : featuresList){
-            String str = null;
-            MapzenSimpleObject simpleObject = new MapzenSimpleObject();
-
-            MapzenPOJO.MapzenGeometry geometry = features.getGeometry();
-            MapzenPOJO.MapzenProperties properties = features.getProperties();
-
-            if(geometry != null){
-                double[] coords = geometry.getCoordinates();
-                if(coords != null){
-                    if(coords.length == 2){
-                        simpleObject.setLongitude(coords[0]);
-                        simpleObject.setLatitude(coords[1]);
-                    }
-                }
-            }
-            if(properties != null){
-                simpleObject.setId(properties.getId());
-                simpleObject.setName(properties.getName());
-                simpleObject.setCity(properties.getCity());
-                simpleObject.setState(properties.getState());
-                simpleObject.setCounty(properties.getCounty());
-                simpleObject.setCountry(properties.getCountry());
-                simpleObject.setSimpleLocation(properties.getLabel());
-                simpleObject.setPostalcode(properties.getPostalcode());
-                simpleObject.setNeighbourhood(properties.getNeighbourhood());
-                simpleObject.setStateAbbreviation(properties.getStateAbbreviation());
-                simpleObject.setDistanceFromEnteredLocation(properties.getDistance());
-
-                if(!StringUtilities.isNullOrEmpty(properties.getPostalcode())){
-                    String label = simpleObject.getSimpleLocation();
-                    label = label + ", " + properties.getPostalcode();
-                    simpleObject.setSimpleLocation(label);
-                }
-            }
-
-            str = simpleObject.getSimpleLocation();
-            if(StringUtilities.isNullOrEmpty(str)){
-                String ss1 = simpleObject.getName();
-                String ss2 = simpleObject.getCity();
-                if(StringUtilities.isNullOrEmpty(ss1) && StringUtilities.isNullOrEmpty(ss2)){
-                    str = getString(R.string.unknown_location);
-                } else {
-                    str = ss1 + ", " + ss2;
-                }
-            }
-
-            this.searchResultsToShow.add(str);
-            this.searchResultsList.add(simpleObject);
-        }
-
-        if(searchResultsList.size() == 0){
-            this.setSearchResults(null);
-            return;
-        }
-
-        adjustAdapters();
-    }
-
-    /**
-     * Reload the adapters and the listview to include new return results
-     */
-    private void adjustAdapters(){
-        boolean useLV;
-        try {
-            if(this.searchResultsToShow.get(0).equals(getString(R.string.no_search_results))){
-                useLV = false;
-            } else {
-                useLV = true;
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            useLV = true;
-        }
-
-        if(useLV) {
-            this.fragment_map_search_error_view.setVisibility(View.GONE);
-            this.adapter = new ArrayAdapter<String>(getActivity(),
-                    R.layout.simple_listview_layout, this.searchResultsToShow);
-            this.fragment_map_search_listview.setAdapter(this.adapter);
-            this.adapter.notifyDataSetChanged();
-        } else {
-            showListview(false);
-            this.fragment_map_search_error_view.setVisibility(View.VISIBLE);
-            ImageUtilities.setCircularImageWithPicasso(null, this.fragment_map_error_image,
-                    R.color.white, getActivity());
-        }
-    }
 
     /**
      * Manage permission results
@@ -486,186 +312,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void queryMaps(final String query){
-        this.query = query;
-        if(timer == null){
-            timer = new Timer();
-        }
-        timer.cancel();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                makeSearchCall();
-            }
-        }, TYPING_GAP);
-    }
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        if(query != null){
-            if(query.length() > 1){
-                checkWhichApi(query);
-            }
-        }
-        return false;
-    }
 
-    private void makeSearchCall(){
-        if(callInProgress){
-            return;
-        }
-        callInProgress = true;
-        Double lastKnownLat = MyApplication.getLastKnownLat();
-        Double lastKnownLng = MyApplication.getLastKnownLng();
-
-        if(lastKnownLat == -1){
-            lastKnownLat = null;
-        }
-        if(lastKnownLng == -1){
-            lastKnownLng = null;
-        }
-
-        if(this.query.length() == 5 && NumberUtilities.isNumber(this.query)){
-            apiGeocoding.searchMap(this.query);
-        } else {
-            api.searchMap(MapFragment.this.query, lastKnownLat, lastKnownLng);
-        }
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if(newText != null){
-            if(newText.length() > 1){
-                checkWhichApi(newText);
-            }
-        }
-        return false;
-    }
-
-    private void checkWhichApi(String str){
-        if(StringUtilities.isNullOrEmpty(str)){
-            return;
-        }
-        queryMaps(str);
-    }
-
-    @Override
-    public void onTaskComplete(Object result, int customTag) {
-        callInProgress = false;
-        switch(customTag){
-            case MapzenAPICalls.TAG_ERROR_CONNECTIVITY_ISSUE:
-                //todo Make call here to update snackbar with no internet;
-                break;
-
-            case MapzenAPICalls.TAG_MAPZEN_SUCCESS:
-                MapzenPOJO pojo = (MapzenPOJO) result;
-                List<MapzenPOJO.MapzenFeatures> checkingFeatures = pojo.getFeatures();
-                if(MiscUtilities.isListNullOrEmpty(checkingFeatures)){
-                    if(this.secondaryCall){
-                        this.secondaryCall = false;
-                    } else {
-                        String str = query;
-                        if(!StringUtilities.isNullOrEmpty(str)){
-                            if(Character.isDigit(str.charAt(0))){
-                                int pos = 0;
-                                for(int i = 0; i < str.length(); i++){
-                                    try {
-                                        if (Character.isDigit(str.charAt(i))) {
-                                            pos = i;
-                                        } else {
-                                            break;
-                                        }
-                                    } catch (Exception e){
-                                        pos = i - 1;
-                                        if(pos < 0){
-                                            pos = 0;
-                                        }
-                                        break;
-                                    }
-                                }
-                                String sub1 = str.substring(pos);
-                                if(!StringUtilities.isNullOrEmpty(sub1)){
-                                    this.query = sub1;
-                                    this.secondaryCall = true;
-                                    makeSearchCall();
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-                this.setSearchResults(pojo);
-                break;
-
-            case MapzenAPICalls.TAG_MAPZEN_FAILURE:
-                this.setSearchResults(null);
-                break;
-
-            case MapzenAPICalls.TAG_MAPZEN_INVALID_QUERY:
-                this.setSearchResults(null);
-                break;
-
-            case MapzenAPICalls.TAG_GEOCODING_CALL_ERROR:
-                this.setSearchResults(null);
-                break;
-
-            case MapzenAPICalls.TAG_GEOCODING_CALL_SUCCESS:
-                GeocodingPOJO pojo1 = (GeocodingPOJO) result;
-                MapzenPOJO pojo2 = GeocodingAPICalls
-                        .convertGeocodingResponseToMapzen(pojo1);
-                this.searchResultsToShow = new ArrayList<>();
-                this.searchResultsList = new ArrayList<>();
-                try {
-                    String str = pojo2.getFeatures().get(0).getType();
-                    double[] coord = pojo2.getFeatures().get(0).getGeometry().getCoordinates();
-                    MapzenSimpleObject simpleObject = new MapzenSimpleObject();
-                    simpleObject.setSimpleLocation(str);
-                    simpleObject.setLongitude(coord[0]);
-                    simpleObject.setLatitude(coord[1]);
-                    this.searchResultsToShow.add(str);
-                    this.searchResultsList.add(simpleObject);
-                    adjustAdapters();
-                } catch (Exception e){
-                    this.setSearchResults(null);
-                }
-                break;
-        }
-    }
 
     /**
-     * Manage clicks on the list
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
+     * Add a marker to the list and to the map
+     * @param lat Latitude
+     * @param lng Longitude
+     * @param locationName Name of location
      */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        if(this.searchResultsList == null){
-            this.searchResultsList = new ArrayList<>();
-        }
-        if(this.searchResultsList.size() == 0){
+    private void addMarker(Double lat, Double lng, String locationName){
+        if(lat == null || lng == null || locationName == null){
             return;
-        } else {
-            MapzenSimpleObject pojo = searchResultsList.get(position);
-            double latitude = pojo.getLatitude();
-            double longitude = pojo.getLongitude();
-            if(latitude !=  0 && longitude != 0){
-                moveCamera(latitude, longitude);
-            }
-            showListview(false);
-            try {
-                //Set the string they clicked on into their search query
-                String str = searchResultsList.get(position).getSimpleLocation();
-                if(!StringUtilities.isNullOrEmpty(str)){
-                    searchView.setQuery(str, false);
-                }
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+        }
+
+        MarkerOptions options = new MarkerOptions();
+        options.position(CaliforniaPrototypeCustomUtils.convertToLatLng(lat, lng));
+        options.draggable(false);
+        options.title(locationName);
+        Marker marker = googleMap.addMarker(options);
+        if(!CaliforniaPrototypeCustomUtils.isMarkerOnList(this.markersOnMap, marker)){
+            this.markersOnMap.add(marker);
         }
     }
+
+
 
     /**
      * Calculate the meters per inch on the screen
@@ -702,8 +372,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapLongClick(LatLng point) {
-        if(this.lastDrawnCircle != null){
-            this.lastDrawnCircle.remove();
+        if(this.lastManuallyDrawnCircle != null){
+            this.lastManuallyDrawnCircle.remove();
         }
         Projection projection = googleMap.getProjection();
         float xMetersPerInch = getMetersPerInch(projection);
@@ -715,29 +385,94 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         options.strokeColor(R.color.white);
         options.fillColor(R.color.SemiTransparentBlue);
         options.clickable(true);
-        this.lastDrawnCircle = googleMap.addCircle(options);
-        this.googleMap.setOnCircleClickListener(this);
+        this.lastManuallyDrawnCircle = googleMap.addCircle(options);
+        this.googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+            @Override
+            public void onCircleClick(Circle circle) {
+                //Do whatever here with manually created circle
+                //This Needs to be different than the listener for the alert beacon circles
+            }
+        });
     }
 
-    /** Generate LatLng of radius marker */
-    private static LatLng toRadiusLatLng(LatLng center, double radiusMeters) {
-        double radiusAngle = Math.toDegrees(radiusMeters / RADIUS_OF_EARTH_METERS) /
-                Math.cos(Math.toRadians(center.latitude));
-        return new LatLng(center.latitude, center.longitude + radiusAngle);
-    }
+    /**
+     * Adds alert beacons to the map that are clickable
+     * @param alertBeacons {@link AlertBeacon}
+     */
+    private void addAlertBeacons(List<AlertBeacon> alertBeacons){
+        this.alertBeacons = alertBeacons;
+        if(MiscUtilities.isListNullOrEmpty(alertBeacons)){
+            return;
+        }
 
-    /** Convert Lat long center + radius to meters */
-    private static double toRadiusMeters(LatLng center, LatLng radius) {
-        float[] result = new float[1];
-        Location.distanceBetween(center.latitude, center.longitude,
-                radius.latitude, radius.longitude, result);
-        return result[0];
+        for(int i = 0; i < alertBeacons.size(); i++){
+            AlertBeacon beacon = alertBeacons.get(i);
+            double radius = beacon.getCircleRadius();
+            double lat = beacon.getLat();
+            double lng = beacon.getLng();
+
+            if(lat == 0 && lng == 0){
+                continue;
+            }
+
+            Projection projection = googleMap.getProjection();
+            float xMetersPerInch = getMetersPerInch(projection);
+
+            // Create the circle.
+            CircleOptions options = new CircleOptions();
+            options.center(CaliforniaPrototypeCustomUtils.convertToLatLng(lat, lng));
+            if(radius < 50) {
+                //Too small, use the xMeters per inch metric instead
+                options.radius(xMetersPerInch);
+            } else {
+                options.radius(radius);
+            }
+            options.strokeColor(R.color.white);
+            options.fillColor(R.color.SemiTransparentRed);
+            options.clickable(true);
+            Circle aCircle = googleMap.addCircle(options);
+            beacon.setCircleId(aCircle.getId());
+            alertBeacons.set(i, beacon);
+            this.googleMap.setOnCircleClickListener(this);
+        }
     }
 
     @Override
     public void onCircleClick(Circle circle) {
-        //Do something here with circle click
-        L.m("circle clicked");
+        if(circle == null){
+            return;
+        }
+        if(MiscUtilities.isListNullOrEmpty(this.alertBeacons)){
+            return;
+        }
+        String id = circle.getId();
+        if(StringUtilities.isNullOrEmpty(id)){
+            return;
+        }
+
+        AlertBeacon beacon = null;
+        for(AlertBeacon beacon1 : this.alertBeacons){
+            String newId = beacon1.getCircleId();
+            if(!StringUtilities.isNullOrEmpty(newId)){
+                if(newId.equals(id)){
+                    beacon = beacon1;
+                }
+            }
+        }
+
+        if(beacon != null){
+            showPopupForBeacon(beacon);
+        }
+    }
+
+    private void showPopupForBeacon(AlertBeacon beacon){
+        if(beacon == null){
+            return;
+        }
+
+        if(MyApplication.getDatabaseInstance().persistObject(AlertBeacon.class, beacon)){
+            switchFragment(Constants.FRAGMENT_ALERT_BEACON_POPUP);
+        }
     }
 
     private void enableScaleBar(){
@@ -755,7 +490,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onCameraMove() {
         //Used to invalidate the scale bar when they move
-        showListview(false);
         if(mScaleBar != null){
             mScaleBar.invalidate();
             //mScaleBar.invalidateNumbersOnly();
@@ -809,12 +543,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
-    @Override
-    public boolean onClose() {
-        this.showListview(false);
-        this.searchView.setQuery("", false);
-        this.searchView.setIconified(false);
-        this.searchView.clearFocus();
-        return false;
-    }
 }
