@@ -46,33 +46,49 @@
             map:cameraZoom="15"
             />
 
-        <!-- Title and body description TVs -->
-        <TextView
+        <RelativeLayout
+            android:id="@+id/fragment_add_location_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fragment_add_location_title"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_large"
-            android:gravity="center_horizontal|center"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/top_bottom_margins"
-            android:layout_marginBottom="@dimen/left_right_side_margins_small"
-            android:layout_marginStart="@dimen/left_right_side_margins"
-            android:layout_marginEnd="@dimen/left_right_side_margins"
-            android:text=""
-            />
+            android:background="@color/Semi_Transparent2"
+            android:padding="@dimen/left_right_side_margins_small"
+            >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
-            android:id="@+id/fragment_add_location_body"
-            android:gravity="center_horizontal|center"
-            android:layout_below="@+id/fragment_add_location_title"
-            android:layout_marginStart="@dimen/left_right_side_margins"
-            android:layout_marginEnd="@dimen/left_right_side_margins"
-            android:text=""
-            />
+            <!-- Title and body description TVs -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_add_location_title"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_large"
+                android:background="@color/Transparent"
+                android:gravity="center_horizontal|center"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/top_bottom_margins"
+                android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                android:layout_marginStart="@dimen/left_right_side_margins"
+                android:layout_marginEnd="@dimen/left_right_side_margins"
+                android:textColor="@color/White"
+                android:text=""
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size"
+                android:background="@color/Transparent"
+                android:id="@+id/fragment_add_location_body"
+                android:gravity="center_horizontal|center"
+                android:layout_below="@+id/fragment_add_location_title"
+                android:layout_marginStart="@dimen/left_right_side_margins"
+                android:layout_marginEnd="@dimen/left_right_side_margins"
+                android:textColor="@color/White"
+                android:text=""
+                />
+
+
+        </RelativeLayout>
+
 
         <!-- Confirm button -->
         <Button

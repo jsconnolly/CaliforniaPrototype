@@ -27,7 +27,7 @@ public class Constants {
     public static final int FRAGMENT_PERMISSIONS_REQUEST= 4;
     public static final int FRAGMENT_ALERT_BEACON_POPUP = 5;
     public static final int FRAGMENT_ADD_LOCATION = 6;
-    public static final int FRAGMENT_5 = 7;
+    public static final int FRAGMENT_ADD_CONTACT = 7;
     public static final int FRAGMENT_6 = 8;
     public static final int FRAGMENT_7 = 9;
     public static final int FRAGMENT_8 = 10;

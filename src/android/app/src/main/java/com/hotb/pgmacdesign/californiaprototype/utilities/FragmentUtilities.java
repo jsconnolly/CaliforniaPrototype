@@ -1,5 +1,6 @@
 package com.hotb.pgmacdesign.californiaprototype.utilities;
 
+import com.hotb.pgmacdesign.californiaprototype.fragments.AddContactFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.AddLocationFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.AlertBeaconPopupFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
@@ -60,6 +61,11 @@ public class FragmentUtilities {
             case Constants.FRAGMENT_ADD_LOCATION:
                 AddLocationFragment addLocationFragment = AddLocationFragment.newInstance();
                 parentInterface.setFragment(addLocationFragment, AddLocationFragment.TAG);
+                break;
+
+            case Constants.FRAGMENT_ADD_CONTACT:
+                AddContactFragment addContactFragment = AddContactFragment.newInstance();
+                parentInterface.setFragment(addContactFragment, AddContactFragment.TAG);
                 break;
         }
     }

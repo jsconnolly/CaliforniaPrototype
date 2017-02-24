@@ -1,7 +1,9 @@
 package com.hotb.pgmacdesign.californiaprototype.utilities;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.hotb.pgmacdesign.californiaprototype.pojos.PlaceChosen;
 
 import java.util.List;
 
@@ -49,5 +51,43 @@ public class CaliforniaPrototypeCustomUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * Converter method to convert into a persistable, custom object
+     * @param place {@link Place}
+     * @return {@link PlaceChosen}
+     */
+    public static PlaceChosen convertPlaceToPlaceChosen(Place place){
+        if(place == null){
+            return null;
+        }
+        PlaceChosen placeChosen = new PlaceChosen();
+        try {
+            placeChosen.setAttributions(place.getAttributions().toString());
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setAddress(place.getAddress().toString());
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setLat(place.getLatLng().latitude);
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setLng(place.getLatLng().longitude);
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setName(place.getName().toString());
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setPhoneNumber(place.getPhoneNumber().toString());
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setWebsite(place.getWebsiteUri().toString());
+        } catch (NullPointerException npe){}
+        try {
+            placeChosen.setPlaceId(place.getId());
+        } catch (NullPointerException npe){}
+
+        return placeChosen;
     }
 }

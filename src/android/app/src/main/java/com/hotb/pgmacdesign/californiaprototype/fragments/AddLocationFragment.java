@@ -1,5 +1,6 @@
 package com.hotb.pgmacdesign.californiaprototype.fragments;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -8,11 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
@@ -24,16 +25,24 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.MyLocationListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.pojos.PlaceChosen;
+import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.GUIUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.MapUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
@@ -44,7 +53,8 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
  */
 
 public class AddLocationFragment extends Fragment implements OnMapReadyCallback, MyLocationListener.LocationLoadedListener,
-        GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener, View.OnClickListener {
+        GoogleMap.OnCameraMoveListener, GoogleMap.OnMyLocationButtonClickListener,
+        View.OnClickListener, OnTaskCompleteListener {
 
     public final static String TAG = "AddLocationFragment";
 
@@ -55,13 +65,17 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     private MyLocationListener locationListener;
 
     //UI
+    private RelativeLayout fragment_add_location_info_layout;
     private TextView fragment_add_location_title, fragment_add_location_body;
     private Button fragment_add_location_confirm_button, fragment_add_location_cancel_button;
     private GoogleMap googleMap;
+    private Marker lastMarkerAdded;
+    private Circle lastCircleAdded;
 
     //Variables
     private int DEFAULT_ZOOM_LEVEL = 15;
-    private boolean mapHasLoaded, locationIsEnabled;
+    private float currentZoomLevel;
+    private boolean mapHasLoaded, locationIsEnabled, myLocationButtonHit;
     private PermissionUtilities.permissionsEnum locPerm = PermissionUtilities
             .permissionsEnum.ACCESS_FINE_LOCATION;
     private Place currentPlaceSelected;
@@ -77,6 +91,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.locationIsEnabled = true;
+        this.currentZoomLevel = DEFAULT_ZOOM_LEVEL;
+        this.myLocationButtonHit = false;
         //Utilize instanceState here
     }
 
@@ -91,6 +107,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     private void initUi(View view) {
         this.locationListener = new MyLocationListener(MyApplication.getInstance(), this);
 
+        this.fragment_add_location_info_layout = (RelativeLayout) view.findViewById(
+                R.id.fragment_add_location_info_layout);
         this.fragment_add_location_title = (TextView) view.findViewById(
                 R.id.fragment_add_location_title);
         this.fragment_add_location_body = (TextView) view.findViewById(
@@ -130,6 +148,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         setupAutocomplete();
         setupMap();
         setTVs(null);
+        showButtons(false);
+        createMarkerAndCircle(null);
     }
 
     /**
@@ -149,14 +169,79 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 GUIUtilities.hideKeyboard(getActivity());
                 showButtons(true);
                 setTVs(currentPlaceSelected);
+                createMarkerAndCircle(currentPlaceSelected);
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
+                L.toast(getActivity(), getString(R.string.generic_error_text));
             }
         });
+
+    }
+
+    private void createMarkerAndCircle(Place place){
+        //Remove all markers
+        if(this.lastMarkerAdded != null) {
+            this.lastMarkerAdded.remove();
+        }
+        if(this.lastCircleAdded != null){
+            this.lastCircleAdded.remove();
+        }
+        if(place == null){
+            this.lastMarkerAdded = null;
+            this.lastCircleAdded = null;
+            return;
+        }
+
+        String title = null;
+        try {
+            title = place.getAddress().toString();
+        } catch (Exception e){
+            try {
+                title = place.getName().toString();
+            } catch (Exception e1){
+                title = getString(R.string.backup_selected_loc_text);
+            }
+        }
+        MarkerOptions options = new MarkerOptions();
+        options.position(place.getLatLng());
+        options.draggable(false);
+        options.title(title);
+        this.lastMarkerAdded = googleMap.addMarker(options);
+
+        float xMetersPerInch = 100;
+        if(false){
+            // TODO: 2017-02-24 check from server if we are manually adding radius here
+        } else {
+            xMetersPerInch = getMetersPerInch();
+        }
+
+        // Create the circle.
+        CircleOptions options2 = new CircleOptions();
+        options2.center(place.getLatLng());
+        options2.radius(xMetersPerInch);
+        options2.strokeColor(R.color.white);
+        options2.fillColor(R.color.SemiTransparentBlue);
+        options2.clickable(true);
+        this.lastCircleAdded = googleMap.addCircle(options2);
+        this.googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+            @Override
+            public void onCircleClick(Circle circle) {
+                //Clicked within circle
+            }
+        });
+    }
+
+    /**
+     * Calculate the meters per inch on the screen
+     * {@link MapUtilities#getMetersPerInch(Context, GoogleMap, View)}
+     * @return
+     */
+    private float getMetersPerInch(){
+        return MapUtilities.getMetersPerInch(getActivity(), googleMap,
+                getChildFragmentManager().findFragmentById(
+                        R.id.fragment_add_location_map).getView());
     }
 
     /**
@@ -180,11 +265,11 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
      */
     private void setTVs(Place place){
         if(place == null){
+            fragment_add_location_info_layout.setVisibility(View.GONE);
             fragment_add_location_body.setText("");
             fragment_add_location_title.setText("");
             fragment_add_location_body.setVisibility(View.GONE);
             fragment_add_location_title.setVisibility(View.GONE);
-            showButtons(false);
         } else {
             String title = place.getAddress().toString();
             String details = null;
@@ -199,6 +284,9 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             if(StringUtilities.isNullOrEmpty(details)){
                 details = "";
             }
+            fragment_add_location_body.setVisibility(View.VISIBLE);
+            fragment_add_location_title.setVisibility(View.VISIBLE);
+            fragment_add_location_info_layout.setVisibility(View.VISIBLE);
             fragment_add_location_body.setText(title);
             fragment_add_location_title.setText(details);
         }
@@ -215,6 +303,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         this.googleMap.setOnCameraMoveListener(this);
         this.googleMap.setIndoorEnabled(false);
         this.googleMap.getUiSettings().setCompassEnabled(true);
+        this.googleMap.setOnMyLocationButtonClickListener(this);
         this.googleMap.setContentDescription(getString(R.string.map_content_description));
         try {
             this.googleMap.setMyLocationEnabled(true);
@@ -302,17 +391,30 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             longitude = Constants.DEFAULT_LONGITUDE;
         }
         LatLng latLng = new LatLng(latitude, longitude);
+
+        if(!this.myLocationButtonHit) {
+            try {
+                this.currentZoomLevel = googleMap.getCameraPosition().zoom;
+            } catch (Exception e) {
+                this.currentZoomLevel = DEFAULT_ZOOM_LEVEL;
+                e.printStackTrace();
+            }
+        } else {
+            this.myLocationButtonHit = false;
+        }
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                latLng, DEFAULT_ZOOM_LEVEL);
+                latLng, this.currentZoomLevel);
         this.googleMap.animateCamera(cameraUpdate);
     }
 
 
     @Override
     public boolean onMyLocationButtonClick() {
+        this.myLocationButtonHit = true;
         if(!this.locationIsEnabled){
             L.Toast(getActivity(), getString(R.string.loading_last_known_loc));
         }
+        this.currentZoomLevel = DEFAULT_ZOOM_LEVEL;
         moveCamera(MyApplication.getLastKnownLat(), MyApplication.getLastKnownLng());
         return false;
     }
@@ -346,12 +448,36 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.fragment_add_location_confirm_button:
+                if(currentPlaceSelected == null){
+                    L.toast(getActivity(), getString(R.string.no_location_selected_error_message));
+                    return;
+                }
+
+                /*
                 //Confirm place here, move on to next
+                this.lastCircleAdded;
+                this.lastMarkerAdded;
+                this.currentPlaceSelected;
+
+                */
+                PlaceChosen place = CaliforniaPrototypeCustomUtils
+                        .convertPlaceToPlaceChosen(currentPlaceSelected);
+                MyApplication.getDatabaseInstance().persistObject(PlaceChosen.class, place);
+                // TODO: 2017-02-24 add place, upon success, set options for adding contact
+
                 break;
 
             case R.id.fragment_add_location_cancel_button:
-                //Cancel, popbackstack here
+                this.currentPlaceSelected = null;
+                setTVs(null);
+                showButtons(false);
+                createMarkerAndCircle(null);
                 break;
         }
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        //Used for parsing server responses
     }
 }
