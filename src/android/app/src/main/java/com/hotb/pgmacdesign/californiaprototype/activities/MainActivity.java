@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     private Toolbar toolbar;
     private TextView toolbar_title, activity_main_emergency_tv,
             activity_main_emergency_sos_button;
-    private RelativeLayout activity_main_bottom_nav_bar, activity_main_emergency_sos_layout;
+    private LinearLayout activity_main_bottom_nav_bar;
+    private RelativeLayout activity_main_emergency_sos_layout;
     private ImageView activity_main_map_icon, activity_main_user_icon, app_bar_top_right_button;
 
     //Fragments
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     private DatabaseUtilities dbUtilities;
     private SharedPrefs sharedPrefs;
     private DisplayManagerUtilities dmu;
+    private long lastBackPressTime;
 
     //Fragment Variables
     private int fragmentContainerId, currentFragment;
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.sharedPrefs = MyApplication.getSharedPrefsInstance();
         this.dmu = MyApplication.getDMU();
         this.currentFragment = sharedPrefs.getInt(Constants.CURRENT_FRAGMENT, -1);
-
+        this.lastBackPressTime = 0;
         //MyAmazonClient.subscribeToTopic("testing");
     }
 
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
         this.activity_main_emergency_sos_layout = (RelativeLayout) this.findViewById(
                 R.id.activity_main_emergency_sos_layout);
-        this.activity_main_bottom_nav_bar = (RelativeLayout) this.findViewById(
+        this.activity_main_bottom_nav_bar = (LinearLayout) this.findViewById(
                 R.id.activity_main_bottom_nav_bar);
         this.activity_main_emergency_sos_button = (TextView) this.findViewById(
                 R.id.activity_main_emergency_sos_button);
@@ -200,8 +203,20 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     }
     private void backHit(){
         //Check current fragment, send them back to home if not at home.
+        if(getCurrentFragment() != Constants.FRAGMENT_MAP
+                || getCurrentFragment() != Constants.FRAGMENT_HOME){
+            setNewFragment(Constants.FRAGMENT_MAP);
+            return;
+        }
 
-        this.finish();
+        //Checks where the first time they press the button,
+        // it sets the time. If they press it once more within 3 seconds, exits
+        if (this.lastBackPressTime < System.currentTimeMillis() - 3000) {
+            L.Toast(this, "Press back once more to exit");
+            this.lastBackPressTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -248,9 +263,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.currentFragment = idFragment;
     }
 
+
     @Override
     public void setNewFragment(int x) {
-
 
         if(x < 0){
             x = Constants.FRAGMENT_HOME;
@@ -262,6 +277,11 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                     mapFragment = MapFragment.newInstance();
                 }
                 MainActivity.this.setFragment(mapFragment, MapFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.CaliforniaGold));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
                 break;
 
             /* todo Using map as home until further notice
@@ -272,32 +292,16 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 break;
             */
 
-            case Constants.FRAGMENT_EMAIL_LOGIN:
-                if(emailLoginFragment == null) {
-                    emailLoginFragment = EmailLoginFragment.newInstance();
-                }
-                MainActivity.this.setFragment(emailLoginFragment, EmailLoginFragment.TAG);
-                break;
-
-            case Constants.FRAGMENT_SMS_VERIFICATION:
-                if(smsVerificationFragment == null) {
-                    smsVerificationFragment = SMSVerificationFragment.newInstance();
-                }
-                MainActivity.this.setFragment(smsVerificationFragment, SMSVerificationFragment.TAG);
-                break;
-
-            case Constants.FRAGMENT_PERMISSIONS_REQUEST:
-                if(permissionsRequestFragment == null) {
-                    permissionsRequestFragment = PermissionsRequestFragment.newInstance();
-                }
-                MainActivity.this.setFragment(permissionsRequestFragment, PermissionsRequestFragment.TAG);
-                break;
-
             case Constants.FRAGMENT_ALERT_BEACON_POPUP:
                 if(alertBeaconPopupFragment == null) {
                     alertBeaconPopupFragment = AlertBeaconPopupFragment.newInstance();
                 }
                 MainActivity.this.setFragment(alertBeaconPopupFragment, AlertBeaconPopupFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
                 break;
 
             case Constants.FRAGMENT_ADD_LOCATION:
@@ -305,6 +309,11 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                     addLocationFragment = AddLocationFragment.newInstance();
                 }
                 MainActivity.this.setFragment(addLocationFragment, AddLocationFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
                 break;
 
             case Constants.FRAGMENT_ADD_CONTACT:
@@ -312,6 +321,11 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                     addContactFragment = AddContactFragment.newInstance();
                 }
                 MainActivity.this.setFragment(addContactFragment, AddContactFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
                 break;
 
             case Constants.FRAGMENT_PROFILE:
@@ -319,6 +333,11 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                     profileFragment = ProfileFragment.newInstance();
                 }
                 MainActivity.this.setFragment(profileFragment, ProfileFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.CaliforniaGold));
                 break;
 
             case Constants.ACTIVITY_ONBOARDING: //For logout
