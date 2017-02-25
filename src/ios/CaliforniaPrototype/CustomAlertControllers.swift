@@ -34,4 +34,10 @@ struct CustomAlertControllers {
         
         return alertController
     }
+    
+    static func controllerWith(title titleString: String, message messageString: String) -> UIAlertController {
+        let alertController = UIAlertController(title: titleString, message: messageString, preferredStyle: .alert)
+        
+        return alertController
+    }
 }

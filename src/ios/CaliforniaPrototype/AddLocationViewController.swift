@@ -18,14 +18,20 @@ class AddLocationViewController: UIViewController {
     @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet var locationDetailView: UIView!
     @IBOutlet weak var locationDetailsLabel: UILabel!
-    @IBOutlet weak var addLocationButton: UIButton!
-    @IBOutlet weak var cancelAddLocationButton: UIButton!
+    @IBOutlet var successfulLocationAddView: UIView!
+    
+    @IBOutlet weak var addLocationButton: RoundedRectButton!
+    @IBOutlet weak var cancelAddLocationButton: RoundedRectButton!
+    @IBOutlet weak var addPersonToLocationButton: RoundedRectButton!
+    @IBOutlet weak var addAnotherLocationButton: RoundedRectButton!
+    
     
     fileprivate var searchResultsArray = [MKMapItem]()
     fileprivate var searchTimer: Timer?
     
     fileprivate var locationManager = CLLocationManager()
     fileprivate var currentLocation : CLLocation?
+    fileprivate var postponedLocationAcceptance = false
  
     //MARK: - UIViewController delegate methods
     override func viewDidLoad() {
@@ -79,22 +85,74 @@ class AddLocationViewController: UIViewController {
         mapView.setRegion(coordinateRegion, animated: false)
     }
     
+    //MARK: - Add Location Functions
     @IBAction func addLocationButtonTapped(_ sender: Any) {
+        self.addLocationButton.alpha = 0.0
+        self.cancelAddLocationButton.alpha = 0.0
+        
+        self.addPersonToLocationButton.alpha = 1.0
+        self.addAnotherLocationButton.alpha = 1.0
+        self.addPersonToLocationButton.isHidden = false
+        self.addAnotherLocationButton.isHidden = false
+        
+        self.successfulLocationAddView.frame.origin = CGPoint(x: 0, y: 0)
+        self.successfulLocationAddView.frame.size.width = self.view.frame.size.width
+        self.locationDetailView.removeFromSuperview()
+        self.view.addSubview(self.successfulLocationAddView)
+        self.successfulLocationAddView.alpha = 1.0
+        
+        UIView.animate(withDuration: 0.35, animations: { 
+            self.view.layoutIfNeeded()
+        }) { (completed) in
+                self.addLocationButton.isHidden = true
+                self.cancelAddLocationButton.isHidden = true
+            
+        }
+        
+        
+        
+//        if let rootVC = self.navigationController?.viewControllers[0]  {
+//            self.navigationController?.setViewControllers([rootVC, ProfileViewController()], animated: false)
+//        } else {
+//            self.navigationController?.setViewControllers([MapViewController(), ProfileViewController()], animated: false)
+//        }
         
     }
     
     @IBAction func cancelAddLocationButtonTapped(_ sender: Any) {
-        self.addLocationButton.isHidden = true
-        self.cancelAddLocationButton.isHidden = true
-        self.locationDetailView.removeFromSuperview()
+        self.addLocationButton.alpha = 0.0
+        self.cancelAddLocationButton.alpha = 0.0
+        self.locationDetailView.alpha = 0.0
         self.tableViewBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.3, animations: { 
             self.view.layoutIfNeeded()
         }) { (completed) in
             if completed {
-                
+                self.locationDetailView.removeFromSuperview()
+                self.addLocationButton.isHidden = true
+                self.cancelAddLocationButton.isHidden = true
             }
         }
+    }
+    
+    @IBAction func addAnotherLocationButtonTapped(_ sender: Any) {
+        self.addAnotherLocationButton.alpha = 0.0
+        self.addPersonToLocationButton.alpha = 0.0
+        self.successfulLocationAddView.alpha = 0.0
+        self.tableViewBottomConstraint.constant = 0
+        UIView.animate(withDuration: 0.35, animations: { 
+            self.view.layoutIfNeeded()
+        }) { (completed) in
+            if completed {
+                self.successfulLocationAddView.removeFromSuperview()
+                self.addPersonToLocationButton.isHidden = true
+                self.addAnotherLocationButton.isHidden = true
+            }
+        }
+    }
+    
+    @IBAction func addPersonToLocationButtonTapped(_ sender: Any) {
+    
     }
     
 }
@@ -152,16 +210,13 @@ extension AddLocationViewController: UISearchBarDelegate {
         self.tableView.reloadData()
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = searchString
-//        if let coordinates = self.currentLocation?.coordinate {
-//            request.region = MKCoordinateRegion(center: coordinates,
-//                                                span: MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1))
-//        } else {
-//            request.region = MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: 0.0, longitude: 0.0),
-//                                                span: MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1))
-//        }
-        //33.632440, -117.733962
-        request.region = MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: 33.632440, longitude: -117.733962),
-                                            span: MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+        if let coordinates = self.currentLocation?.coordinate {
+            request.region = MKCoordinateRegion(center: coordinates,
+                                                span: MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+        } else {
+            request.region = MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: 33.632440, longitude: -117.733962),
+                                                span: MKCoordinateSpan.init(latitudeDelta: 0.1, longitudeDelta: 0.1))
+        }
         
         let localSearcher = MKLocalSearch(request: request)
         localSearcher.start { (response: MKLocalSearchResponse?, error: Error?) in
@@ -186,7 +241,16 @@ extension AddLocationViewController: CLLocationManagerDelegate {
         case .authorizedAlways:
             self.locationManager.requestLocation()
         case .notDetermined:
-            self.locationManager.requestWhenInUseAuthorization()
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Would you like to do that now?")
+            let retry = UIAlertAction(title: "Allow Access", style: .default) { (action:UIAlertAction) in
+                self.locationManager.requestLocation()
+            }
+            alertController.addAction(retry)
+            let cancel = UIAlertAction(title: "Not now", style: .cancel) { (action) in
+                self.postponedLocationAcceptance = true
+            }
+            alertController.addAction(cancel)
+            self.present(alertController, animated: true, completion: nil)
         case .denied:
             let deniedLocationString = String.localizedStringWithFormat(NSLocalizedString("You have previously denied location access. Please enable it for app to locate you.", comment: "denied location service"), [:])
             let alertController = CustomAlertControllers.controllerWith(message: deniedLocationString)
@@ -199,11 +263,16 @@ extension AddLocationViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        //        let restrictedLocationString = String.localizedStringWithFormat(NSLocalizedString("We could not obtain your location. Error is \(error.localizedDescription)", comment: "can't obtain location"), [:])
-        let alertController = UIAlertController(title: "Error", message: "There was an error obtaining your location. \(error.localizedDescription)", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(cancel)
-        self.present(alertController, animated: true, completion: nil)
+        if !self.postponedLocationAcceptance {
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error obtaining your location. \(error.localizedDescription)")
+            let retry = UIAlertAction(title: "Try again", style: .default) { (action:UIAlertAction) in
+                self.locationManager.requestLocation()
+            }
+            alertController.addAction(retry)
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancel)
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -276,6 +345,8 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource 
         self.locationDetailView.frame.size.width = self.view.frame.size.width
         self.view.addSubview(self.locationDetailView)
         
+        self.addLocationButton.alpha = 1.0
+        self.cancelAddLocationButton.alpha = 1.0
         self.addLocationButton.isHidden = false
         self.cancelAddLocationButton.isHidden = false
     }
