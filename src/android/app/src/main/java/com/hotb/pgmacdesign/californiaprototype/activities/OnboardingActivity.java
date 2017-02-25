@@ -168,7 +168,7 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
     @Override
     public void setNewFragment(int x) {
 
-        if(x < 0){
+        if(x == -1){
             x = Constants.FRAGMENT_EMAIL_LOGIN;
         }
 

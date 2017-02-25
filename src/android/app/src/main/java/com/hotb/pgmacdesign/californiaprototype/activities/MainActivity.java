@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     @Override
     public void setNewFragment(int x) {
 
-        if(x < 0){
+        if(x == -1){
             x = Constants.FRAGMENT_HOME;
         }
         switch(x){
