@@ -92,7 +92,7 @@
         <!-- Hidden add a person button -->
         <Button
             android:id="@+id/fragment_add_location_add_person_button"
-            android:layout_above="@+id/fragment_add_location_cancel_button"
+            android:layout_below="@+id/fragment_add_location_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/top_bottom_margins"
