@@ -67,7 +67,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     //UI
     private RelativeLayout fragment_add_location_info_layout;
     private TextView fragment_add_location_title, fragment_add_location_body;
-    private Button fragment_add_location_confirm_button, fragment_add_location_cancel_button;
+    private Button fragment_add_location_confirm_button, fragment_add_location_cancel_button,
+            fragment_add_location_add_person_button;
     private GoogleMap googleMap;
     private Marker lastMarkerAdded;
     private Circle lastCircleAdded;
@@ -117,13 +118,20 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 R.id.fragment_add_location_confirm_button);
         this.fragment_add_location_cancel_button = (Button) view.findViewById(
                 R.id.fragment_add_location_cancel_button);
+        this.fragment_add_location_add_person_button = (Button) view.findViewById(
+                R.id.fragment_add_location_add_person_button);
 
-        fragment_add_location_confirm_button.setTransformationMethod(null);
-        fragment_add_location_cancel_button.setTransformationMethod(null);
-        fragment_add_location_confirm_button.setEnabled(true);
-        fragment_add_location_cancel_button.setEnabled(true);
-        fragment_add_location_confirm_button.setOnClickListener(this);
-        fragment_add_location_cancel_button.setOnClickListener(this);
+        this.fragment_add_location_confirm_button.setTransformationMethod(null);
+        this.fragment_add_location_cancel_button.setTransformationMethod(null);
+        this.fragment_add_location_add_person_button.setTransformationMethod(null);
+
+        this.fragment_add_location_confirm_button.setEnabled(true);
+        this.fragment_add_location_cancel_button.setEnabled(true);
+        this.fragment_add_location_add_person_button.setEnabled(true);
+
+        this.fragment_add_location_confirm_button.setOnClickListener(this);
+        this.fragment_add_location_cancel_button.setOnClickListener(this);
+        this.fragment_add_location_add_person_button.setOnClickListener(this);
 
     }
 
@@ -147,9 +155,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
 
         setupAutocomplete();
         setupMap();
-        setTVs(null);
-        showButtons(false);
-        createMarkerAndCircle(null);
+        clearUI();
     }
 
     /**
@@ -163,6 +169,9 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                //Get rid of any other buttons on the screen
+                showButtons(false);
+                setTVs(null);
                 currentPlaceSelected = place;
                 LatLng latLng = place.getLatLng();
                 moveCamera(latLng.latitude, latLng.longitude);
@@ -250,12 +259,13 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
      */
     private void showButtons(boolean bool){
         if(bool){
-            fragment_add_location_confirm_button.setVisibility(View.VISIBLE);
-            fragment_add_location_cancel_button.setVisibility(View.VISIBLE);
+            this.fragment_add_location_confirm_button.setVisibility(View.VISIBLE);
+            this.fragment_add_location_cancel_button.setVisibility(View.VISIBLE);
 
         } else {
-            fragment_add_location_confirm_button.setVisibility(View.GONE);
-            fragment_add_location_cancel_button.setVisibility(View.GONE);
+            this.fragment_add_location_confirm_button.setVisibility(View.GONE);
+            this.fragment_add_location_cancel_button.setVisibility(View.GONE);
+            this.fragment_add_location_add_person_button.setVisibility(View.GONE);
         }
     }
 
@@ -458,26 +468,60 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 this.lastCircleAdded;
                 this.lastMarkerAdded;
                 this.currentPlaceSelected;
-
                 */
+
                 PlaceChosen place = CaliforniaPrototypeCustomUtils
                         .convertPlaceToPlaceChosen(currentPlaceSelected);
                 MyApplication.getDatabaseInstance().persistObject(PlaceChosen.class, place);
                 // TODO: 2017-02-24 add place, upon success, set options for adding contact
-
+                // TODO: 2017-02-24 Moving this code into the onTaskComplete listener for now
                 break;
 
             case R.id.fragment_add_location_cancel_button:
                 this.currentPlaceSelected = null;
-                setTVs(null);
-                showButtons(false);
-                createMarkerAndCircle(null);
+                clearUI();
+                break;
+
+            case R.id.fragment_add_location_add_person_button:
+                // TODO: 2017-02-24 switch to the add contact fragment
+                switchFragment(Constants.FRAGMENT_ADD_CONTACT);
+                break;
+        }
+    }
+
+    /**
+     * Clear UI on the screen
+     */
+    private void clearUI(){
+        setTVs(null);
+        showButtons(false);
+        createMarkerAndCircle(null);
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        clearUI();
+        //Used for parsing server responses
+        switch(customTag){
+            case Constants.TAG_API_LOCATION_ADDED:
+                fragment_add_location_body.setVisibility(View.VISIBLE);
+                fragment_add_location_title.setVisibility(View.VISIBLE);
+                fragment_add_location_info_layout.setVisibility(View.VISIBLE);
+                fragment_add_location_body.setText(R.string.location_successfully_added);
+                fragment_add_location_title.setText(R.string.add_person_button_explanation_1);
+                this.fragment_add_location_add_person_button.setVisibility(View.VISIBLE);
+                // TODO: 2017-02-24 ask about any other UI elements visible here
                 break;
         }
     }
 
     @Override
-    public void onTaskComplete(Object result, int customTag) {
-        //Used for parsing server responses
+    public void onResume() {
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_ADD_LOCATION) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    getString(R.string.add_location_fragment_name), null, true, false);
+        }
+        super.onResume();
     }
 }

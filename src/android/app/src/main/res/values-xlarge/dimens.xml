@@ -12,5 +12,6 @@
     <dimen name="searchview_narrow_margins">64dp</dimen>
     <dimen name="toolbar_center_tv_width">400dp</dimen>
     <dimen name="toolbar_center_tv_height">54dp</dimen>
-    <dimen name="square_image_sizing">66dp</dimen>
+    <dimen name="square_image_sizing">54dp</dimen>
+    <dimen name="toolbar_top_right_tv_size">50dp</dimen>
 </resources>

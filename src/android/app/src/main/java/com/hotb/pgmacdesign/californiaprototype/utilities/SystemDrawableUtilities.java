@@ -58,10 +58,14 @@ public class SystemDrawableUtilities {
         //final Drawable upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         Drawable upArrow;
         try {
-            upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        } catch (Exception e){
-            upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_material);
+            upArrow = ContextCompat.getDrawable(context, R.drawable.back_arrow);
+        } catch (Exception e3){
+            try {
+                upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            } catch (Exception e){
+                upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_material);
 
+            }
         }
         if(upArrow == null){
             upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_material);

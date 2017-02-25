@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
@@ -92,5 +93,15 @@ public class AlertBeaconPopupFragment extends Fragment {
         alert_beacon_popup_body.setText(body);
     }
 
+    @Override
+    public void onResume() {
+        L.m("onResume in alertbeaconpopupfragment");
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_ALERT_BEACON_POPUP) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    " ", null, true, false);
+        }
+        super.onResume();
+    }
 }
 

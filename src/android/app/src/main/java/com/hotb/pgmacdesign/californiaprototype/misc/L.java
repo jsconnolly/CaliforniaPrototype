@@ -122,7 +122,7 @@ public class L {
      */
     public static <E> void toast(Context context, E myObject){
         String str = myObject + ""; //Cast it to a String
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MyApplication.getContext(), str, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -132,8 +132,11 @@ public class L {
      */
     public static <E> void Toast(Context context, E myObject){
         String str = myObject + ""; //Cast it to a String
-        Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+        Toast.makeText(MyApplication.getContext(), str, Toast.LENGTH_LONG).show();
+
+
     }
+
 
     /**
      * Long toast. Overloaded to include option to alter length

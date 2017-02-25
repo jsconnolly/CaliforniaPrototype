@@ -41,4 +41,21 @@
     <string name="no_location_selected_error_message">You must select a location first</string>
     <string name="backup_selected_loc_text">Selected Location</string>
     <string name="generic_error_text">An error has occurred, please try again</string>
+    <string name="location_successfully_added">Location Successfully Added</string>
+    <string name="add_person_button_explanation_1">If you want to add a contact to the location, just click on the \'Add a person\' button below</string>
+    <string name="or">Or</string>
+    <string name="your_friend_s_name">Your Friend\'s Name</string>
+    <string name="sample_number">(123) 456 - 7890</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="add_from_phone_contacts">Add from phone contacts</string>
+    <string name="contact_error_text">Contact cannot be used, missing phone number or name</string>
+    <string name="add_a_contact">Add a Contact</string>
+    <string name="add_location_fragment_name">Add a Location</string>
+    <string name="map_fragment_name">Disaster Planning</string>
+    <string name="permission_requests_fragment">Permissions Request</string>
+    <string name="your_profile_fragment">Your Profile</string>
+    <string name="sms_verification">SMS Verification</string>
+    <string name="debug_popup_skipping">CURRENTLY NOT LINKED TO BACK-END, SKIPPING</string>
+    <string name="register_for_one">Register for one</string>
+    <string name="register_for_account">Register For Account</string>
 </resources>

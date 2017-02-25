@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 
@@ -22,7 +24,7 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
  * Created by pmacdowell on 2017-02-22.
  */
 
-public class PermissionsRequestFragment extends Fragment {
+public class PermissionsRequestFragment extends Fragment implements OnTaskCompleteListener{
 
     public final static String TAG = "PermissionsRequestFragment";
 
@@ -94,7 +96,7 @@ public class PermissionsRequestFragment extends Fragment {
     }
 
     private void moveToNextActivity(){
-
+        onTaskComplete(null, 0);
     }
 
     @Override
@@ -120,6 +122,21 @@ public class PermissionsRequestFragment extends Fragment {
         FragmentUtilities.switchFragments(x, ((CustomFragmentListener)getActivity()));
     }
 
+    @Override
+    public void onResume() {
+        L.m("onResume in permissionrequestfragment");
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_PERMISSIONS_REQUEST) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    getString(R.string.permission_requests_fragment), null, false, null);
+        }
+        super.onResume();
+    }
 
-
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        // TODO: 2017-02-24 insert check from server here
+        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
+        switchFragment(Constants.ACTIVITY_MAIN);
+    }
 }

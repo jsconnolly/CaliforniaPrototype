@@ -171,6 +171,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_MAP);
+        L.m("onViewCreated in mapfragment");
 
     }
 
@@ -543,4 +544,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
+
+    @Override
+    public void onResume() {
+        L.m("onResume in mapfragment");
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_MAP) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    getString(R.string.map_fragment_name), null, false, true);
+        }
+        super.onResume();
+    }
 }

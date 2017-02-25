@@ -89,6 +89,19 @@
 
         </RelativeLayout>
 
+        <!-- Hidden add a person button -->
+        <Button
+            android:id="@+id/fragment_add_location_add_person_button"
+            android:layout_above="@+id/fragment_add_location_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/add_location"
+            android:background="@drawable/multipurpose_button"
+            />
 
         <!-- Confirm button -->
         <Button

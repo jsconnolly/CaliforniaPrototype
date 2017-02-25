@@ -1,5 +1,6 @@
 package com.hotb.pgmacdesign.californiaprototype.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.hotb.pgmacdesign.californiaprototype.R;
+import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.PermissionsRequestFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.SMSVerificationFragment;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
@@ -37,6 +41,11 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
     //Fragment Variables
     private int fragmentContainerId, currentFragment;
     private Fragment fragmentActive;
+
+    //Fragments
+    private SMSVerificationFragment smsVerificationFragment;
+    private EmailLoginFragment emailLoginFragment;
+    private PermissionsRequestFragment permissionsRequestFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +91,7 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
                 getToolbarBackArrow(this, R.color.black));
 
         //Set the textView
-        setToolbarDetails("ddddddddd", null);
+        setToolbarDetails("", null, true, null);
 
         GUIUtilities.setBackButtonContentDescription(this);
 
@@ -157,12 +166,56 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
     }
 
     @Override
+    public void setNewFragment(int x) {
+
+        if(x < 0){
+            x = Constants.FRAGMENT_EMAIL_LOGIN;
+        }
+
+        switch(x){
+
+            case Constants.FRAGMENT_EMAIL_LOGIN:
+                if(emailLoginFragment == null) {
+                    emailLoginFragment = EmailLoginFragment.newInstance();
+                }
+                OnboardingActivity.this.setFragment(emailLoginFragment, EmailLoginFragment.TAG);
+                break;
+
+            case Constants.FRAGMENT_SMS_VERIFICATION:
+                if(smsVerificationFragment == null) {
+                    smsVerificationFragment = SMSVerificationFragment.newInstance();
+                }
+                OnboardingActivity.this.setFragment(smsVerificationFragment, SMSVerificationFragment.TAG);
+                break;
+
+            case Constants.FRAGMENT_PERMISSIONS_REQUEST:
+                if(permissionsRequestFragment == null) {
+                    permissionsRequestFragment = PermissionsRequestFragment.newInstance();
+                }
+                OnboardingActivity.this.setFragment(permissionsRequestFragment, PermissionsRequestFragment.TAG);
+                break;
+
+            case Constants.ACTIVITY_MAIN:
+                Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                OnboardingActivity.this.startActivity(intent);
+                break;
+        }
+
+    }
+
+    @Override
     public int getCurrentFragment() {
         return this.currentFragment;
     }
 
+
     @Override
-    public void setToolbarDetails(String title, Integer color) {
+    public void setToolbarDetails(String title, Integer color,
+                                  Boolean enableBackButton, Boolean enableTopRightPicture) {
+        if(this.toolbar == null){
+            return;
+        }
         if(color != null){
             this.toolbar.setBackgroundColor(color);
         }
@@ -170,6 +223,23 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
             this.toolbar_title.setText(title);
             String currentScreen = getString(R.string.currently_on_screen_string);
             this.toolbar_title.setContentDescription(currentScreen + title);
+        }
+
+        if(enableBackButton != null){
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(enableBackButton);
+            if(enableBackButton){
+                //Set the back arrow to the respective color
+                //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                //getToolbarBackArrow(this, R.color.white));
+            } else {
+                //Set the back arrow to the respective color
+                //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                //getToolbarBackArrow(this, R.color.white));
+            }
+        }
+
+        if(enableTopRightPicture != null){
+            //Do nothing here as the top right button is not in onboarding
         }
     }
 

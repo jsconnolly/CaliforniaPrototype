@@ -8,7 +8,7 @@
     <!-- App Bar -->
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar"
+        layout="@layout/app_bar_2_buttons"
         />
 
     <!-- Alert TV For emergencies -->
@@ -65,7 +65,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/square_image_sizing"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            >
 
+            <!-- Map Icon (tabview) -->
+            <ImageView
+                android:layout_width="@dimen/square_image_sizing"
+                android:layout_height="@dimen/square_image_sizing"
+                android:id="@+id/activity_main_map_icon"
+                android:layout_weight="50"
+                android:src="@mipmap/map_icon"
+                />
+
+            <!-- Simple divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/LightGrey"
+                />
+
+            <!-- User Icon (tabview) -->
+            <ImageView
+                android:layout_width="@dimen/square_image_sizing"
+                android:layout_height="@dimen/square_image_sizing"
+                android:id="@+id/activity_main_user_icon"
+                android:layout_weight="50"
+                android:src="@mipmap/user_icon"
+                />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

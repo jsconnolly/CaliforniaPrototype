@@ -20,6 +20,9 @@ public class Constants {
     //Fragment ints//
     /////////////////
 
+    public static final int ACTIVITY_MAIN = -10;
+    public static final int ACTIVITY_ONBOARDING = -11;
+
     public static final int FRAGMENT_HOME = 0;
     public static final int FRAGMENT_MAP = 1;
     public static final int FRAGMENT_EMAIL_LOGIN = 2;
@@ -28,7 +31,7 @@ public class Constants {
     public static final int FRAGMENT_ALERT_BEACON_POPUP = 5;
     public static final int FRAGMENT_ADD_LOCATION = 6;
     public static final int FRAGMENT_ADD_CONTACT = 7;
-    public static final int FRAGMENT_6 = 8;
+    public static final int FRAGMENT_PROFILE = 8;
     public static final int FRAGMENT_7 = 9;
     public static final int FRAGMENT_8 = 10;
 
@@ -76,6 +79,9 @@ public class Constants {
     public static final int TAG_PERMISSIONS_ACCESS_COARSE_LOCATION = 4409;
     public static final int TAG_PERMISSIONS_RECEIVE_BOOT_COMPLETED = 4410;
     public static final int TAG_PERMISSIONS_SYSTEM_ALERT_WINDOW = 4411;
+
+    //API Call Tags
+    public static final int TAG_API_LOCATION_ADDED = 4412;
 
     //File Creation Tags
     public static final int TAG_TXT_FILE_CREATION = 4404;
