@@ -474,7 +474,10 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                         .convertPlaceToPlaceChosen(currentPlaceSelected);
                 MyApplication.getDatabaseInstance().persistObject(PlaceChosen.class, place);
                 // TODO: 2017-02-24 add place, upon success, set options for adding contact
+                L.Toast(getActivity(), "IN DEBUG MODE, LOCATION ADDED");
+                onTaskComplete(place, Constants.TAG_API_LOCATION_ADDED);
                 // TODO: 2017-02-24 Moving this code into the onTaskComplete listener for now
+
                 break;
 
             case R.id.fragment_add_location_cancel_button:
@@ -512,6 +515,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 this.fragment_add_location_add_person_button.setVisibility(View.VISIBLE);
                 // TODO: 2017-02-24 ask about any other UI elements visible here
                 break;
+
         }
     }
 
