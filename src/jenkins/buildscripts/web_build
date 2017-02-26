@@ -1,14 +1,10 @@
 node {
-
-    String BRANCH_PLATFORM = ""
-
     stage ('Checkout') {
         // Checkout code for the pushed branch
         checkout scm
     }
 
     stage ('Build') {
-
         def nodeHome = tool 'NodeTool'
         env.PATH="${env.PATH}:${nodeHome}/bin"
 
@@ -20,7 +16,17 @@ node {
         '''
     }
 
-    stage ('Deploy') {
-        println "Add Commands: Deploy to aws s3"
+    stage ('Deploy to Staging') {
+        sh '''#!/bin/bash
+            aws s3 sync ./src/web/dist/ s3://ca-prototype-hotb-staging --acl "public-read"
+        '''
+    }
+
+    stage ('Test') {
+
+    }
+
+    stage ('Deploy to Production') {
+
     }
 }

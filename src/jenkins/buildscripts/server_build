@@ -1,7 +1,4 @@
 node {
-
-    String BRANCH_PLATFORM = ""
-
     stage ('Checkout') {
         // Checkout code for specific branch
         checkout scm
