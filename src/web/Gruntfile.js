@@ -132,6 +132,16 @@ module.exports = function(grunt) {
                         dest: '<%= site.assets %>/js/'
                     },
                 ]
+            },
+            js: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'content/js',
+                        src: ['*.js'],
+                        dest: '<%= site.assets %>/js/'
+                    },
+                ]
             }
         },
 
@@ -200,7 +210,7 @@ module.exports = function(grunt) {
 
     // Build HTML, compile LESS and watch for changes. You must first run "bower install" and "grunt setup"
     // to install Bootstrap to the "vendor" directory before running this command.
-    grunt.registerTask('build', ['clean:html', 'assemble', 'less:site']);
+    grunt.registerTask('build', ['clean:html', 'assemble', 'less:site', 'copy:js']);
 
     grunt.registerTask('serve', ['build', 'connect', 'localhost', 'watch']);
 

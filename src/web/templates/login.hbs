@@ -1,16 +1,13 @@
 ---
-title: Login
-layout: admin-login.hbs
+title: Register
 ---
 
 <div class="container-table">
     <div class="row vertical-center-row">
-      <div class="login">
-        <h1>Admin Login Header</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-        <form action="/admin/landing.html">
+      <div class="user-reg col-md-4 col-md-offset-4">
+            <a href="/" class="btn btn-primary btn-block">Back to Map</a>
+        <h1>User Log In</h1>
+        <form action="/user/landing.html">
           <div class="form-group">
             <label>Username</label>
             <input type="text" class="form-control" placeholder="username" />
@@ -19,11 +16,11 @@ layout: admin-login.hbs
             <label>Password</label>
             <input type="password" class="form-control" placeholder="password" />
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
         <p>
-          <a href="/admin/accountrecovery.html">Click here if you have trouble logging in</a>
-        </p>
+              <a href="/accountrecovery.html">Click here if you have trouble logging in</a>
+            </p>
       </div>
     </div>
   </div>
