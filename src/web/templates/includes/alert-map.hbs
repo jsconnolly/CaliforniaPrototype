@@ -1,16 +1,25 @@
-<div id="map" class="alert-map"></div>
+{{#if map}}
+    <div class="map-overlay">
+        {{#if loggedin}}
+            <a href="/user/addlocations.html" class="btn btn-primary">Add Location</a>
+        {{/if}}
+        <div id="map" class="user-map"></div>
+    </div>
+{{else}}
+    <div id="map" class="alert-map"></div>
+{{/if}}
 <script>
     /*function initMap() {
-                var test = {lat: 33.632478, lng: -117.734862};
-                var map = new google.maps.Map(document.getElementById('map'), {
-                  zoom: 7,
-                  center: test
-                });
-                var marker = new google.maps.Marker({
-                  position: test,
-                  map: map
-                });
-              }*/
+                    var test = {lat: 33.632478, lng: -117.734862};
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                      zoom: 7,
+                      center: test
+                    });
+                    var marker = new google.maps.Marker({
+                      position: test,
+                      map: map
+                    });
+                  }*/
 
     var map;
 

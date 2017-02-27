@@ -1,12 +1,34 @@
 /*
 *Alert Maps
 */
-
 .alert-map {
     width: 100%;
     height: 200px;
-
     @media screen and (min-width:@screen-sm-min) {
         height: 400px;
+    }
+}
+
+.user-map {
+    width: 100%;
+    height: 300px;
+    @media screen and (min-width:@screen-sm-min) {
+        height: 550px;
+    }
+}
+
+.map-overlay {
+    position: relative;
+
+    .btn {
+        position: absolute;
+        width: 100%;
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 5px;
+        z-index: 1;
     }
 }

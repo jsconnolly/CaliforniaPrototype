@@ -52,15 +52,17 @@ module.exports = function(grunt) {
                 }
             },
             admin: {
-                files: [{
-                    cwd: '<%= site.templates %>/admin',
-                    dest: '<%= site.dest %>/admin',
-                    expand: true,
-                    src: ['*.hbs', '**/*.md']
-                }],
+                files: {
+                    '<%= site.dest %>/admin': ['<%= site.templates %>/admin/*.hbs']
+                },
                 options: {
                     layout: 'admin.hbs',
                 },
+            },
+            user: {
+                files: {
+                    '<%= site.dest %>/user': ['<%= site.templates %>/user/*.hbs']
+                }
             },
         },
 
