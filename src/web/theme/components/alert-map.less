@@ -1,0 +1,57 @@
+/*
+*Alert Maps
+*/
+.alert-map {
+    width: 100%;
+    height: 200px;
+    @media screen and (min-width:@screen-sm-min) {
+        height: 400px;
+    }
+}
+
+.user-map {
+    width: 100%;
+    height: 500px;
+    @media screen and (min-width:@screen-sm-min) {
+        height: 600px;
+    }
+}
+
+.map-overlay {
+    position: relative;
+
+    .btn-location {
+        position: absolute;
+        width: 100%;
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 5px;
+        z-index: 1;
+    }
+
+    .sos-banner {
+        background: fade(@brand-danger, 90%);
+        color: #fff;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        padding: 15px 15px 30px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+
+        .btn {
+            width: 100%;
+            max-width: 250px;
+        }
+
+        @media screen and (min-width: @screen-md-min) {
+            width: 40%;
+        }
+    }
+}
