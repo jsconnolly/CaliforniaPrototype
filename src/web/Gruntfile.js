@@ -205,17 +205,13 @@ module.exports = function(grunt) {
 
     // Run this task once before running other tasks.
     grunt.registerTask('setup', ['copy:once', 'clean:once']);
-
-    grunt.registerTask('localhost', function() {
-        grunt.log.writeln('View on http://localhost:8000');
-    });
+    grunt.registerTask('init', ['clean:html', 'jshint', 'copy:assets', 'assemble', 'less']);
 
     // Build HTML, compile LESS and watch for changes. You must first run "bower install" and "grunt setup"
     // to install Bootstrap to the "vendor" directory before running this command.
     grunt.registerTask('build', ['clean:html', 'assemble', 'less:site', 'copy:js']);
+    grunt.registerTask('default', ['build']);
 
+    // Build, serve to localhost, and watch for changes (for editing and debugging)
     grunt.registerTask('serve', ['build', 'connect', 'localhost', 'watch']);
-
-    // Default tasks to be run.
-    grunt.registerTask('default', ['clean:html', 'jshint', 'copy:assets', 'assemble', 'less']);
 };
