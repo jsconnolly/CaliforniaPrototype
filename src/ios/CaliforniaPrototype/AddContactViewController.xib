@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddContactViewController" customModule="CaliforniaPrototype" customModuleProvider="target">
+            <connections>
+                <outlet property="enterNameTextField" destination="cGl-V8-XSc" id="yuX-5z-n7w"/>
+                <outlet property="enterPhoneNumberTextField" destination="jkU-gi-Sl3" id="Ico-Wk-vHf"/>
+                <outlet property="locationDetailLabel" destination="wz9-sH-Br6" id="h61-lM-UEf"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cGl-V8-XSc" customClass="OutlinedTextField" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="124" width="343" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="kue-2k-go1"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Phone Number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jkU-gi-Sl3" customClass="OutlinedTextField" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="171" width="343" height="35"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Location Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3L-if-4iB">
+                    <rect key="frame" x="16" y="30" width="343" height="20"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wz9-sH-Br6">
+                    <rect key="frame" x="16" y="58" width="343" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aI2-vX-MCe">
+                    <rect key="frame" x="180" y="232" width="15" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLs-Pg-82Q" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="275" width="343" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="qvn-9j-6tD"/>
+                    </constraints>
+                    <state key="normal" title="Add from Phone Contacts"/>
+                    <connections>
+                        <action selector="addPhoneContactButtonTapped:" destination="-1" eventType="touchUpInside" id="iMf-SA-pfM"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="cGl-V8-XSc" firstAttribute="top" secondItem="wz9-sH-Br6" secondAttribute="bottom" constant="46.5" id="39i-gh-zh4"/>
+                <constraint firstItem="wz9-sH-Br6" firstAttribute="top" secondItem="K3L-if-4iB" secondAttribute="bottom" constant="7.5" id="5fK-uf-3xV"/>
+                <constraint firstAttribute="trailing" secondItem="wz9-sH-Br6" secondAttribute="trailing" constant="16" id="8G5-8R-sIj"/>
+                <constraint firstItem="jkU-gi-Sl3" firstAttribute="top" secondItem="cGl-V8-XSc" secondAttribute="bottom" constant="12" id="B4W-ct-CJG"/>
+                <constraint firstAttribute="trailing" secondItem="cGl-V8-XSc" secondAttribute="trailing" constant="16" id="Gyw-3I-G8a"/>
+                <constraint firstItem="K3L-if-4iB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="KCr-9g-SHg"/>
+                <constraint firstAttribute="trailing" secondItem="jkU-gi-Sl3" secondAttribute="trailing" constant="16" id="L07-fv-BYV"/>
+                <constraint firstItem="K3L-if-4iB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="LNB-JQ-7vi"/>
+                <constraint firstItem="cGl-V8-XSc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="R7B-vV-pTY"/>
+                <constraint firstItem="aI2-vX-MCe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="VZO-8N-lMx"/>
+                <constraint firstItem="gLs-Pg-82Q" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="cGs-ck-QqV"/>
+                <constraint firstItem="wz9-sH-Br6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="jfn-pN-JjT"/>
+                <constraint firstItem="jkU-gi-Sl3" firstAttribute="height" secondItem="cGl-V8-XSc" secondAttribute="height" id="kch-EP-I3a"/>
+                <constraint firstItem="gLs-Pg-82Q" firstAttribute="top" secondItem="aI2-vX-MCe" secondAttribute="bottom" constant="22.5" id="obj-VH-Y1C"/>
+                <constraint firstItem="jkU-gi-Sl3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="pIs-9y-wrB"/>
+                <constraint firstItem="aI2-vX-MCe" firstAttribute="top" secondItem="jkU-gi-Sl3" secondAttribute="bottom" constant="26" id="vWk-Gd-sOz"/>
+                <constraint firstAttribute="trailing" secondItem="gLs-Pg-82Q" secondAttribute="trailing" constant="16" id="x8e-Yb-vEe"/>
+                <constraint firstAttribute="trailing" secondItem="K3L-if-4iB" secondAttribute="trailing" constant="16" id="zSQ-Db-jCE"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
+        </view>
+    </objects>
+</document>

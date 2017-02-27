@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -24,6 +25,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    //MARK: - Remote Notification registration methods
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        print(deviceTokenString)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("error registering for remote notifications with \(error.localizedDescription)")
+    }
+    
+    func getStatus() {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+                switch settings.authorizationStatus {
+                case UNAuthorizationStatus.authorized:
+                    print("Authorized!")
+                case UNAuthorizationStatus.denied:
+                    print("Not authorized")
+                case UNAuthorizationStatus.notDetermined:
+                    print("Not determined")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func registerForPushNotifications(application: UIApplication) {
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+                if error == nil {
+                    application.registerForRemoteNotifications()
+                }
+            }
+        } else {
+            let settings: UIUserNotificationSettings = UIUserNotificationSettings.init(types: [.alert, .badge], categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddLocationViewController" customModule="CaliforniaPrototype" customModuleProvider="target">
+            <connections>
+                <outlet property="addAnotherLocationButton" destination="0HW-0R-EnJ" id="R5s-Kr-m3X"/>
+                <outlet property="addLocationButton" destination="3kW-cE-Yz3" id="YoV-j2-dCt"/>
+                <outlet property="cancelAddLocationButton" destination="5CG-Ed-nEY" id="tgs-9b-p2P"/>
+                <outlet property="locationDetailView" destination="f2U-im-h33" id="mTe-ZM-HGa"/>
+                <outlet property="locationDetailsLabel" destination="mrx-3t-DbO" id="1GQ-5Z-feq"/>
+                <outlet property="mapView" destination="w0S-wG-WkT" id="sKd-PH-l7y"/>
+                <outlet property="searchBar" destination="DFo-wz-eXe" id="QI4-u6-hoO"/>
+                <outlet property="successfulLocationAddView" destination="ktg-Of-AJd" id="TE7-Qm-1G1"/>
+                <outlet property="tableView" destination="B4a-98-GTS" id="QY0-a6-clm"/>
+                <outlet property="tableViewBottomConstraint" destination="PKW-VN-o75" id="tby-qI-8V6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="DFo-wz-eXe">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <textInputTraits key="textInputTraits" spellCheckingType="no"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="ke0-5R-ddx"/>
+                    </connections>
+                </searchBar>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w0S-wG-WkT">
+                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                </mapView>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3kW-cE-Yz3" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="547" width="343" height="35"/>
+                    <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="Yzq-or-IpI"/>
+                    </constraints>
+                    <state key="normal" title="Add Location">
+                        <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="addLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="doC-V2-oqF"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5CG-Ed-nEY" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="602" width="343" height="35"/>
+                    <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="n3w-mo-NMm"/>
+                    </constraints>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelAddLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="hh4-Tp-frh"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="B4a-98-GTS">
+                    <rect key="frame" x="0.0" y="44" width="375" height="0.0"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Ry4-3T-ER6"/>
+                        <outlet property="delegate" destination="-1" id="e09-yE-b0j"/>
+                    </connections>
+                </tableView>
+                <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0HW-0R-EnJ" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="276" width="343" height="35"/>
+                    <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="Kvf-Eu-ECw"/>
+                    </constraints>
+                    <state key="normal" title="Add Another Location">
+                        <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="addAnotherLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="8oZ-eh-y9h"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXR-w6-1I0" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="356" width="343" height="35"/>
+                    <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="kdq-mG-eOl"/>
+                    </constraints>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="3kW-cE-Yz3" secondAttribute="trailing" constant="16" id="0Kw-rr-Dbx"/>
+                <constraint firstAttribute="bottom" secondItem="5CG-Ed-nEY" secondAttribute="bottom" constant="30" id="2Dh-Z8-kY4"/>
+                <constraint firstAttribute="trailing" secondItem="rXR-w6-1I0" secondAttribute="trailing" constant="16" id="4wu-Dh-IGO"/>
+                <constraint firstAttribute="trailing" secondItem="0HW-0R-EnJ" secondAttribute="trailing" constant="16" id="F55-at-eee"/>
+                <constraint firstItem="DFo-wz-eXe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="FaN-DJ-pG6"/>
+                <constraint firstAttribute="trailing" secondItem="w0S-wG-WkT" secondAttribute="trailing" id="HRZ-WQ-M6D"/>
+                <constraint firstItem="B4a-98-GTS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Mnt-eV-q2o"/>
+                <constraint firstItem="0HW-0R-EnJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="NwJ-A2-hDh"/>
+                <constraint firstAttribute="bottom" secondItem="B4a-98-GTS" secondAttribute="bottom" id="PKW-VN-o75"/>
+                <constraint firstItem="5CG-Ed-nEY" firstAttribute="top" secondItem="3kW-cE-Yz3" secondAttribute="bottom" constant="20" id="R3E-zR-Xol"/>
+                <constraint firstItem="5CG-Ed-nEY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="RpS-Kn-fSR"/>
+                <constraint firstAttribute="trailing" secondItem="B4a-98-GTS" secondAttribute="trailing" id="Rxt-hc-VZz"/>
+                <constraint firstAttribute="trailing" secondItem="DFo-wz-eXe" secondAttribute="trailing" id="b16-1S-Vef"/>
+                <constraint firstItem="B4a-98-GTS" firstAttribute="top" secondItem="DFo-wz-eXe" secondAttribute="bottom" id="bUE-Vk-rjr"/>
+                <constraint firstItem="rXR-w6-1I0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="c2W-YB-4Iz"/>
+                <constraint firstAttribute="trailing" secondItem="5CG-Ed-nEY" secondAttribute="trailing" constant="16" id="cjZ-BQ-WV1"/>
+                <constraint firstItem="w0S-wG-WkT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dXL-gQ-3G1"/>
+                <constraint firstItem="3kW-cE-Yz3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="eB6-MF-LtS"/>
+                <constraint firstAttribute="bottom" secondItem="w0S-wG-WkT" secondAttribute="bottom" id="eQb-Fe-eIs"/>
+                <constraint firstItem="0HW-0R-EnJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-40" id="kZf-zx-r8Y"/>
+                <constraint firstItem="w0S-wG-WkT" firstAttribute="top" secondItem="DFo-wz-eXe" secondAttribute="bottom" id="pkr-sl-9FY"/>
+                <constraint firstItem="rXR-w6-1I0" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="40" id="s5O-CG-M87"/>
+                <constraint firstItem="DFo-wz-eXe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="x9q-zy-Rr0"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
+        </view>
+        <view alpha="0.80000000000000004" contentMode="scaleToFill" id="f2U-im-h33">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Location Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUk-IS-4h1">
+                    <rect key="frame" x="16" y="8" width="343" height="19.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mrx-3t-DbO">
+                    <rect key="frame" x="16" y="35.5" width="343" height="36.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="mrx-3t-DbO" firstAttribute="top" secondItem="KUk-IS-4h1" secondAttribute="bottom" constant="8" id="1Ix-Ku-TJX"/>
+                <constraint firstAttribute="trailing" secondItem="KUk-IS-4h1" secondAttribute="trailing" constant="16" id="Ubs-yY-4oi"/>
+                <constraint firstItem="KUk-IS-4h1" firstAttribute="top" secondItem="f2U-im-h33" secondAttribute="top" constant="8" id="Vjq-gc-yWL"/>
+                <constraint firstItem="mrx-3t-DbO" firstAttribute="leading" secondItem="f2U-im-h33" secondAttribute="leading" constant="16" id="e4D-QT-FWw"/>
+                <constraint firstItem="KUk-IS-4h1" firstAttribute="leading" secondItem="f2U-im-h33" secondAttribute="leading" constant="16" id="iwm-Cl-0vG"/>
+                <constraint firstAttribute="trailing" secondItem="mrx-3t-DbO" secondAttribute="trailing" constant="16" id="v54-ik-K2C"/>
+                <constraint firstAttribute="bottom" secondItem="mrx-3t-DbO" secondAttribute="bottom" constant="8" id="wLx-aI-Ujo"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="517" y="-239"/>
+        </view>
+        <view alpha="0.75" contentMode="scaleToFill" id="ktg-Of-AJd">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Success" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q66-B9-XwW">
+                    <rect key="frame" x="16" y="8" width="343" height="20"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="You successfully added a location" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NSc-0u-afo">
+                    <rect key="frame" x="16" y="35.5" width="343" height="36.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.49411764705882355" green="0.82745098039215681" blue="0.12941176470588234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="NSc-0u-afo" firstAttribute="leading" secondItem="ktg-Of-AJd" secondAttribute="leading" constant="16" id="A92-ta-IT6"/>
+                <constraint firstAttribute="bottom" secondItem="NSc-0u-afo" secondAttribute="bottom" constant="8" id="MnA-A8-sp5"/>
+                <constraint firstAttribute="trailing" secondItem="NSc-0u-afo" secondAttribute="trailing" constant="16" id="NfH-d9-xe9"/>
+                <constraint firstItem="NSc-0u-afo" firstAttribute="top" secondItem="q66-B9-XwW" secondAttribute="bottom" constant="8" id="Vbe-NL-MHk"/>
+                <constraint firstItem="q66-B9-XwW" firstAttribute="leading" secondItem="ktg-Of-AJd" secondAttribute="leading" constant="16" id="b47-0y-tJe"/>
+                <constraint firstItem="q66-B9-XwW" firstAttribute="top" secondItem="ktg-Of-AJd" secondAttribute="top" constant="8" id="tRw-n0-gys"/>
+                <constraint firstAttribute="trailing" secondItem="q66-B9-XwW" secondAttribute="trailing" constant="16" id="ujj-YI-Rjk"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="517" y="-106"/>
+        </view>
+    </objects>
+</document>
