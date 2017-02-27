@@ -213,5 +213,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['build']);
 
     // Build, serve to localhost, and watch for changes (for editing and debugging)
-    grunt.registerTask('serve', ['build', 'connect', 'localhost', 'watch']);
+    grunt.registerTask('serve', ['build', 'connect', 'watch']);
 };
