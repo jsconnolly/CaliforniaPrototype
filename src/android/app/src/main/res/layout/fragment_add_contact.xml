@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fragment_add_contact_tv_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:text=""
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fragment_add_contact_tv_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:gravity="center_horizontal|center"
+            android:text=""
+            android:textSize="@dimen/text_size" />
+
+        <!-- Add a contact from the contact list -->
+        <Button
+            android:id="@+id/fragment_add_contact_button_from_contactlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:background="@drawable/multipurpose_button"
+            android:gravity="center_horizontal|center"
+            android:text="@string/add_from_phone_contacts" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:gravity="center"
+            android:text="@string/or"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold" />
+
+        <!-- Name -->
+        <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+            android:id="@+id/fragment_add_contact_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:textColor="@color/black"
+            android:textColorHint="@color/LightGrey"
+            android:gravity="center_horizontal|center"
+            android:hint="@string/your_friend_s_name" />
+
+        <!-- Phone Number -->
+        <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+            android:id="@+id/fragment_add_contact_et_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:textColorHint="@color/LightGrey"
+            android:gravity="center_horizontal|center"
+            android:hint="@string/sample_number" />
+
+        <!-- Add a contact from the ET data -->
+        <Button
+            android:id="@+id/fragment_add_contact_button_from_ets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:background="@drawable/multipurpose_button"
+            android:gravity="center_horizontal|center"
+            android:text="@string/add_contact" />
+
+    </LinearLayout>
+</ScrollView>

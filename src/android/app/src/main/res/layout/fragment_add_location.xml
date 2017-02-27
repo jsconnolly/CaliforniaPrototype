@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Autocomplete Search -->
+    <RelativeLayout
+        android:id="@+id/fragment_add_location_autocomplete_layout"
+        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Autocomplete fragment -->
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+            />
+
+    </RelativeLayout>
+
+
+    <!-- Maps, buttons, and info container -->
+    <RelativeLayout
+        android:layout_below="@+id/fragment_add_location_autocomplete_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!-- Map Fragment -->
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fragment_add_location_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:mapType="normal"
+            map:uiCompass="true"
+            map:uiRotateGestures="false"
+            map:uiScrollGestures="true"
+            map:uiTiltGestures="true"
+            map:uiZoomControls="true"
+            map:uiZoomGestures="true"
+            map:cameraZoom="15"
+            />
+
+        <RelativeLayout
+            android:id="@+id/fragment_add_location_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Semi_Transparent2"
+            android:padding="@dimen/left_right_side_margins_small"
+            >
+
+            <!-- Title and body description TVs -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_add_location_title"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_large"
+                android:background="@color/Transparent"
+                android:gravity="center_horizontal|center"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/top_bottom_margins"
+                android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                android:layout_marginStart="@dimen/left_right_side_margins"
+                android:layout_marginEnd="@dimen/left_right_side_margins"
+                android:textColor="@color/White"
+                android:text=""
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size"
+                android:background="@color/Transparent"
+                android:id="@+id/fragment_add_location_body"
+                android:gravity="center_horizontal|center"
+                android:layout_below="@+id/fragment_add_location_title"
+                android:layout_marginStart="@dimen/left_right_side_margins"
+                android:layout_marginEnd="@dimen/left_right_side_margins"
+                android:textColor="@color/White"
+                android:text=""
+                />
+
+
+        </RelativeLayout>
+
+        <!-- Hidden add a person button -->
+        <Button
+            android:id="@+id/fragment_add_location_add_person_button"
+            android:layout_below="@+id/fragment_add_location_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/add_a_contact"
+            android:background="@drawable/multipurpose_button"
+            />
+
+        <!-- Confirm button -->
+        <Button
+            android:id="@+id/fragment_add_location_confirm_button"
+            android:layout_above="@+id/fragment_add_location_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/add_location"
+            android:background="@drawable/multipurpose_button"
+            />
+
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/fragment_add_location_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:layout_marginTop="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/cancel"
+            android:background="@drawable/multipurpose_button"
+            />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

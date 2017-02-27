@@ -88,6 +88,9 @@ android {
         //Multi-dex. For more info: https://developer.android.com/studio/build/multidex.html
         compile 'com.android.support:multidex:1.0.1'
 
+        //Keyboard up and down listener
+        compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.0.1'
+
         //Amazon SNS and Core: http://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/setup.html
         compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
         compile 'com.amazonaws:aws-android-sdk-sns:2.2.+'

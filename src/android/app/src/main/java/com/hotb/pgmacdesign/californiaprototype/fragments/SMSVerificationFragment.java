@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
@@ -29,7 +31,7 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
  * Created by pmacdowell on 2017-02-16.
  */
 
-public class SMSVerificationFragment extends Fragment implements TextWatcher, View.OnClickListener, View.OnFocusChangeListener {
+public class SMSVerificationFragment extends Fragment implements TextWatcher, OnTaskCompleteListener, View.OnClickListener, View.OnFocusChangeListener {
 
     public final static String TAG = "SMSVerificationFragment";
 
@@ -165,7 +167,8 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, Vi
         String code6 = fragment_smsverification_code_box_6.getText().toString();
         code6 = code6.trim();
 
-        //todo do something here with 6 digit code once back-end has server up
+        //todo setup link to server here once implemented
+        onTaskComplete(null, 0);
     }
 
     /**
@@ -299,11 +302,13 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, Vi
             //Resend SMS TV
             case R.id.fragment_smsverification_resent_sms:
                 //resend sms
+                L.Toast(getActivity(), "Resending text message");
                 break;
 
             //Edit Number
             case R.id.fragment_smsverification_edit_number:
                 //edit the user's number
+                L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
                 break;
 
         }
@@ -389,6 +394,25 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, Vi
         fragment_smsverification_code_box_4.setState(StateSelectedEditText.EditTextState.ERROR);
         fragment_smsverification_code_box_5.setState(StateSelectedEditText.EditTextState.ERROR);
         fragment_smsverification_code_box_6.setState(StateSelectedEditText.EditTextState.ERROR);
+    }
+
+
+    @Override
+    public void onResume() {
+        L.m("onResume in smsverificationfragment");
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_SMS_VERIFICATION) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    getString(R.string.sms_verification), null, false, null);
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        // TODO: 2017-02-24 insert check from server here
+        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
+        switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
     }
 }
 

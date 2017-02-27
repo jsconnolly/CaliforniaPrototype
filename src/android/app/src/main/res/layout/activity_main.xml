@@ -5,16 +5,103 @@
     android:theme="@style/AppTheme"
     >
 
+    <!-- App Bar -->
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar"
+        layout="@layout/app_bar_2_buttons"
         />
 
+    <!-- Alert TV For emergencies -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:id="@+id/activity_main_emergency_tv"
+        android:layout_below="@+id/app_bar"
+        android:gravity="center"
+        android:text=""
+        android:paddingTop="@dimen/left_right_side_margins"
+        android:paddingBottom="@dimen/left_right_side_margins"
+        android:visibility="gone"
+        />
+
+    <!-- Fragment layout -->
     <RelativeLayout
         android:id="@+id/activity_main_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar"
+        android:layout_below="@+id/activity_main_emergency_tv"
+        android:layout_above="@+id/activity_main_bottom_nav_bar"
         />
+
+    <!-- Emergency SOS Layout -->
+    <RelativeLayout
+        android:id="@+id/activity_main_emergency_sos_layout"
+        android:layout_above="@+id/activity_main_bottom_nav_bar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/activity_main_emergency_sos_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_large"
+            android:layout_marginStart="@dimen/left_right_side_margins_large"
+            android:layout_marginEnd="@dimen/left_right_side_margins_large"
+            android:textColor="@color/red"
+            android:text="SOS"
+            android:layout_marginBottom="@dimen/top_bottom_margins"
+            android:gravity="center|center_horizontal"
+            android:background="@drawable/custom_background_white_back_red_edges"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/LightGrey"
+        android:layout_above="@+id/activity_main_bottom_nav_bar"
+        />
+
+    <!-- Bottom Nav Bar Layout -->
+    <LinearLayout
+        android:id="@+id/activity_main_bottom_nav_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:layout_height="@dimen/square_image_sizing"
+        >
+
+        <!-- Map Icon (tabview) -->
+        <ImageView
+            android:layout_width="@dimen/square_image_sizing"
+            android:layout_height="@dimen/square_image_sizing"
+            android:id="@+id/activity_main_map_icon"
+            android:layout_weight="50"
+            android:src="@mipmap/map_icon"
+            android:padding="4dp"
+            />
+
+        <!-- Simple divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/LightGrey"
+            />
+
+        <!-- User Icon (tabview) -->
+        <ImageView
+            android:layout_width="@dimen/square_image_sizing"
+            android:layout_height="@dimen/square_image_sizing"
+            android:id="@+id/activity_main_user_icon"
+            android:layout_weight="50"
+            android:src="@mipmap/user_icon"
+            android:padding="4dp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_map_main_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme">
 
     <!-- Map Fragment -->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_map_map"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.hotb.pgmacdesign.californiaprototype.activities.MapsActivity"
         map:mapType="normal"
         map:uiCompass="true"
         map:uiRotateGestures="false"
@@ -24,14 +26,28 @@
         map:cameraZoom="15"
         />
 
+    <!-- Custom Scalebar layout -->
+    <RelativeLayout
+        android:id="@+id/scale_view_layout_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/fragment_map_map"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/left_right_side_margins"
+        android:layout_marginBottom="@dimen/left_right_side_margins_large"
+        >
+
+    </RelativeLayout>
     <!--
         map:cameraTargetLat="34.0522"
         map:cameraTargetLng="-118.2437"
     -->
     <!-- Search View -->
-    <android.support.v7.widget.SearchView
+    <SearchView
+        android:theme="@style/CustomSearchViewTheme"
         android:id="@+id/fragment_map_searchview"
-        android:background="@drawable/custom_background_white_back_blue_edges"
+        android:background="@drawable/custom_background_white_back_black_edges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -39,5 +55,70 @@
         android:layout_marginStart="@dimen/searchview_narrow_margins"
         android:layout_marginEnd="@dimen/searchview_narrow_margins"
         />
+
+    <!-- Error Message -->
+    <LinearLayout
+        android:id="@+id/fragment_map_search_error_view"
+        android:layout_below="@+id/fragment_map_searchview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/searchview_narrow_margins"
+        android:layout_marginEnd="@dimen/searchview_narrow_margins"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:background="@color/ErrorMessageOrange"
+        >
+
+        <ImageView
+            android:id="@+id/fragment_map_error_image"
+            android:layout_width="@dimen/square_image_sizing"
+            android:layout_height="@dimen/square_image_sizing"
+            android:layout_weight="15"
+            android:layout_gravity="center_vertical|center"
+            android:foregroundGravity="center_vertical|center"
+            android:src="@color/white"
+
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_weight="85"
+            android:background="@color/ErrorMessageOrange"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ErrorMessageOrange"
+                android:id="@+id/fragment_map_error_top_tv"
+                android:gravity="bottom|center"
+                android:layout_gravity="bottom|center"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                android:paddingBottom="@dimen/left_right_side_margins_small"
+                android:textSize="@dimen/text_size"
+                android:text="@string/error_message"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ErrorMessageOrange"
+                android:id="@+id/fragment_map_error_bottom_tv"
+                android:gravity="top|center"
+                android:layout_gravity="top|center"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                android:paddingTop="@dimen/left_right_side_margins_small"
+                android:text="@string/error_could_not_find"
+                android:textSize="@dimen/text_size"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
 
 </RelativeLayout>
