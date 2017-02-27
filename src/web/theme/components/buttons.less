@@ -1,0 +1,24 @@
+.btn-inverted {
+    background: #fff;
+    font-weight: 600;
+
+    &:hover {
+        background: #fff;
+    }
+
+    &.btn-primary {
+        color: @btn-primary-bg;
+        border-color: @btn-primary-bg;
+        &:hover {
+            color: darken(@btn-primary-bg, 15%)
+        }
+    }
+
+    &.btn-danger {
+        color: @btn-danger-bg;
+        border-color: @btn-danger-bg;
+        &:hover {
+            color: darken(@btn-danger-bg, 15%);
+        }
+    }
+}
