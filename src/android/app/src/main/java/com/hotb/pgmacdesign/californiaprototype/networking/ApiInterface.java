@@ -23,6 +23,7 @@ public interface ApiInterface {
     //Endpoints
     static final String SIGNIN_EMAIL = "/signin";
     static final String SIGNIN_PHONE = "/phoneSignin";
+    static final String RESET_PASSWORD = "/resetPassword";
 
     /**
      * Register User with new account
@@ -58,11 +59,28 @@ public interface ApiInterface {
                             @Path("userId") String userId,
                             @Body CAUser body);
 
+    /**
+     * Reset a password
+     * @param body {@link CAUser} Required params: email && password
+     * @return {@link CAUser} Returns an empty object if successful, contains Error string if not
+     */
+    @PUT(VERSION + USERS + RESET_PASSWORD)
+    Call<CAUser> resetPassword(@Header("token") String authToken,
+                               @Body CAUser body);
+
+    /**
+     * Send an SMS for verification
+     * @param body {@link CAUser} Required params: phone
+     * @return {@link CAUser} Returns an empty object if successful, contains Error string if not
+     */
+    @PUT(VERSION + USERS + "{userId}")
+    Call<CAUser> phoneVerification(@Header("token") String authToken,
+                            @Path("userId") String userId,
+                            @Body CAUser body);
+
     /*
 
 
-    PUT - updateUser
-    POST - resetPassword
     POST - phoneVerification
     POST - changePassword
     GET - getUserByEmail
