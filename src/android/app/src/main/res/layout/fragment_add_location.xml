@@ -99,7 +99,7 @@
             android:layout_marginTop="@dimen/top_bottom_margins"
             android:layout_marginStart="@dimen/left_right_side_margins"
             android:layout_marginEnd="@dimen/left_right_side_margins"
-            android:text="@string/add_location"
+            android:text="@string/add_a_contact"
             android:background="@drawable/multipurpose_button"
             />
 
