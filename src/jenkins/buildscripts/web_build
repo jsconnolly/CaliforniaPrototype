@@ -29,4 +29,11 @@ node {
     stage ('Deploy to Production') {
 
     }
+
+    stage ('Clean Up') {
+        // Clean Up Workspace
+        sh '''#!/bin/bash
+            rm -rf ~/workspace/*
+        '''
+    }
 }

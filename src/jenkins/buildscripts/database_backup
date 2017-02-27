@@ -1,0 +1,17 @@
+node {
+    stage ('Backup') {
+        // Create a backup of the current database
+        sh '''#!/bin/bash
+            mkdir ~/CaliforniaPrototype/database/backups/$(date +%Y-%m-%d)
+            mongodump --host ec2-52-53-135-106.us-west-1.compute.amazonaws.com --port 49541 -d ca --out ~/CaliforniaPrototype/database/backups/
+        '''
+
+    }
+
+    stage ('Clean Up') {
+        // Remove previous backups older than 10 days
+        sh '''#!/bin/bash
+            find ~/CaliforniaPrototype/database/backups/ -mtime +10 -print0 | xargs -0 rm -f
+        '''
+    }
+}
