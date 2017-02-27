@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-            <a href="{{relative page.dest "index.html"}}" class="navbar-brand">{{default site.title 'CA Prototype'}}</a>
+            <a href="../index.html" class="navbar-brand">{{default site.title 'CA Prototype'}}</a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <ul class="nav navbar-nav">
@@ -15,15 +15,15 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Navigation <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{relative page.dest "user/index.html"}}">Back to Map</a></li>
-                            <li><a href="{{relative page.dest "user/addphone.html"}}">Get Notifications by Phone</a></li>
-                            <li><a href="{{relative page.dest "user/addlocations.html"}}">Add Locations</a></li>
-                            <li><a href="{{relative page.dest "user/addcontacts.html"}}">Add Contacts</a></li>
+                            <li><a href="index.html">Back to Map</a></li>
+                            <li><a href="addphone.html">Get Notifications by Phone</a></li>
+                            <li><a href="addlocations.html">Add Locations</a></li>
+                            <li><a href="addcontacts.html">Add Contacts</a></li>
                             <li><a href="#">Edit My Account</a></li>
                             <li><a href="#">Change Password</a></li>
                             <li><a href="#">Unsubscribe</a></li>
                             <li><a href="#">Recent Events</a></li>
-                            <li><a href="{{relative page.dest "index.html"}}">Log Out</a></li>
+                            <li><a href="../index.html">Log Out</a></li>
                         </ul>
                     </li>
                 {{else}}
@@ -36,17 +36,17 @@
                         <p class="navbar-btn"><a href="#" class="btn btn-primary btn-block">Settings</a></p>
                     </li>
                     <li>
-                        <p class="navbar-btn"> <a href="{{relative page.dest "user/index.html"}}" class="btn btn-primary btn-block">Map</a></p>
+                        <p class="navbar-btn"> <a href="index.html" class="btn btn-primary btn-block">Map</a></p>
                     </li>
                 {{else}}
                     <li>
-                        <p class="navbar-btn"> <a href="/" class="btn btn-primary btn-block">Map</a></p>
+                        <p class="navbar-btn"> <a href="index.html" class="btn btn-primary btn-block">Map</a></p>
                     </li>
                     <li>
-                        <p class="navbar-btn"><a href="{{relative page.dest "register.html"}}" class="btn btn-primary btn-block">Register</a></p>
+                        <p class="navbar-btn"><a href="register.html" class="btn btn-primary btn-block">Register</a></p>
                     </li>
                     <li>
-                        <p class="navbar-btn"><a href="{{relative page.dest "login.html"}}" class="btn btn-primary btn-block">Log In</a></p>
+                        <p class="navbar-btn"><a href="login.html" class="btn btn-primary btn-block">Log In</a></p>
                     </li>
                 {{/if}}
             </ul>
