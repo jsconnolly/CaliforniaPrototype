@@ -11,6 +11,26 @@ public class NumberUtilities {
 
 
     /**
+     * Checks if a string passed in is a number (IE, "12345" would return true)
+     * @param str String to check
+     * @return true if number, false if not
+     */
+    public static boolean isNumber(String str){
+        if(StringUtilities.isNullOrEmpty(str)){
+            return false;
+        }
+
+        str = str.trim();
+        for(int i = 0; i < str.length(); i++){
+            boolean bool = Character.isDigit(str.charAt(i));
+            if(!bool){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Rounds a double via passed in amount and places
      * @param value
      * @param places

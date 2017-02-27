@@ -10,7 +10,7 @@
         <item name="android:background">@color/white</item>
         <item name="android:textColorPrimary">@color/Black</item>
         <item name="android:textColor">@color/Black</item>
-        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textColorSecondary">@color/Black</item>
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
@@ -38,5 +38,19 @@
         <item name="android:translationZ">4dp</item>
     </style>
 
+    <!-- SearchView Theme -->
+    <style name="CustomSearchViewTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/Transparent</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColorSecondary">@color/LightGrey</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textColorHint">@color/LightGrey</item>
+        <item name="android:editTextColor">@color/Black</item>
+        <item name="android:editTextBackground">@color/White</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:translationZ">4dp</item>
+    </style>
 
 </resources>

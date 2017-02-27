@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/alert_beacon_popup_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_bottom_margins"
+        android:layout_marginStart="@dimen/left_right_side_margins"
+        android:layout_marginEnd="@dimen/left_right_side_margins"
+        android:text=""
+        android:textSize="@dimen/text_size_large"
+        android:gravity="center|center_horizontal"
+        android:textStyle="bold"
+        />
+
+    <ScrollView
+        android:layout_below="@+id/alert_beacon_popup_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/alert_beacon_popup_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_size"/>
+
+    </ScrollView>
+
+</RelativeLayout>

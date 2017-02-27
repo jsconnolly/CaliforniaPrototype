@@ -1,15 +1,30 @@
 package com.hotb.pgmacdesign.californiaprototype.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hotb.pgmacdesign.californiaprototype.R;
+import com.hotb.pgmacdesign.californiaprototype.fragments.AddContactFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.AddLocationFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.AlertBeaconPopupFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.HomeFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.MapFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.PermissionsRequestFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.ProfileFragment;
+import com.hotb.pgmacdesign.californiaprototype.fragments.SMSVerificationFragment;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
@@ -26,22 +41,45 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.SystemDrawableUtilitie
 /**
  * Created by pmacdowell on 2017-02-13.
  */
-public class MainActivity extends AppCompatActivity implements CustomFragmentListener {
+public class MainActivity extends AppCompatActivity implements CustomFragmentListener,
+        View.OnClickListener {
 
     //UI
     private Toolbar toolbar;
-    private TextView toolbar_title;
+    private TextView toolbar_title, activity_main_emergency_tv,
+            activity_main_emergency_sos_button;
+    private LinearLayout activity_main_bottom_nav_bar;
+    private RelativeLayout activity_main_emergency_sos_layout;
+    private ImageView activity_main_map_icon, activity_main_user_icon, app_bar_top_right_button;
+
+    //Fragments
+    private MapFragment mapFragment;
+    private HomeFragment homeFragment;
+    private EmailLoginFragment emailLoginFragment;
+    private SMSVerificationFragment smsVerificationFragment;
+    private PermissionsRequestFragment permissionsRequestFragment;
+    private AlertBeaconPopupFragment alertBeaconPopupFragment;
+    private AddLocationFragment addLocationFragment;
+    private AddContactFragment addContactFragment;
+    private ProfileFragment profileFragment;
 
     //Misc Variables
     private DatabaseUtilities dbUtilities;
     private SharedPrefs sharedPrefs;
     private DisplayManagerUtilities dmu;
+    private long lastBackPressTime;
 
     //Fragment Variables
     private int fragmentContainerId, currentFragment;
     private Fragment fragmentActive;
 
+    private EmergencyStates currentEmergencyState;
 
+
+
+    enum EmergencyStates {
+        CALM, EMERGENCY
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         setContentView(R.layout.activity_main);
         this.initVariables();
         this.setupToolbar();
+        this.setupUI();
         FragmentUtilities.switchFragments(Constants.FRAGMENT_MAP, this);
     }
 
@@ -61,10 +100,31 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.sharedPrefs = MyApplication.getSharedPrefsInstance();
         this.dmu = MyApplication.getDMU();
         this.currentFragment = sharedPrefs.getInt(Constants.CURRENT_FRAGMENT, -1);
-
+        this.lastBackPressTime = 0;
         //MyAmazonClient.subscribeToTopic("testing");
     }
 
+    private void setupUI(){
+
+        this.activity_main_emergency_sos_layout = (RelativeLayout) this.findViewById(
+                R.id.activity_main_emergency_sos_layout);
+        this.activity_main_bottom_nav_bar = (LinearLayout) this.findViewById(
+                R.id.activity_main_bottom_nav_bar);
+        this.activity_main_emergency_sos_button = (TextView) this.findViewById(
+                R.id.activity_main_emergency_sos_button);
+        this.activity_main_emergency_tv = (TextView) this.findViewById(
+                R.id.activity_main_emergency_tv);
+        this.activity_main_user_icon = (ImageView) this.findViewById(
+                R.id.activity_main_user_icon);
+        this.activity_main_map_icon = (ImageView) this.findViewById(
+                R.id.activity_main_map_icon);
+
+        this.setEmergencyState(EmergencyStates.CALM, null);
+
+        this.activity_main_emergency_sos_button.setOnClickListener(this);
+        this.activity_main_map_icon.setOnClickListener(this);
+        this.activity_main_user_icon.setOnClickListener(this);
+    }
     /**
      * Setup the toolbar up top
      */
@@ -74,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
         //Textview defined
         this.toolbar_title = (TextView) toolbar.findViewById(R.id.app_bar_title);
+        this.app_bar_top_right_button = (ImageView) toolbar.findViewById(
+                R.id.app_bar_top_right_button);
+        this.app_bar_top_right_button.setOnClickListener(this);
 
         //Set up (back button) as enabled
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -87,14 +150,39 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 getToolbarBackArrow(this, R.color.white));
 
         //Set the textView
-        setToolbarDetails("ddddddddd", null);
+        setToolbarDetails("", null, true, true);
 
         GUIUtilities.setBackButtonContentDescription(this);
 
         this.toolbar.bringToFront();
+
     }
 
+    // TODO: 2017-02-23  add this into onboarding as well
+    public void setEmergencyState(EmergencyStates state, String emergencyStateText){
+        switch (state){
+            case CALM:
+                this.activity_main_emergency_tv.setBackgroundColor(
+                        ContextCompat.getColor(this, R.color.white));
+                this.activity_main_emergency_tv.setVisibility(View.GONE);
+                this.activity_main_emergency_tv.setText("");
+                this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
+                this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
+                        ContextCompat.getColor(this, R.color.colorPrimary), null, null);
+                break;
 
+            case EMERGENCY:
+                this.activity_main_emergency_tv.setBackgroundColor(
+                        ContextCompat.getColor(this, R.color.red));
+                this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
+                this.activity_main_emergency_tv.setText(R.string.current_state_emergency
+                        + "\n" + emergencyStateText);
+                this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
+                this.setToolbarDetails("EMERGENCY",
+                        ContextCompat.getColor(this, R.color.red), null, null);
+                break;
+        }
+    }
 
     /**
      * Back button hit
@@ -115,8 +203,20 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     }
     private void backHit(){
         //Check current fragment, send them back to home if not at home.
+        if(getCurrentFragment() != Constants.FRAGMENT_MAP
+                || getCurrentFragment() != Constants.FRAGMENT_HOME){
+            setNewFragment(Constants.FRAGMENT_MAP);
+            return;
+        }
 
-        this.finish();
+        //Checks where the first time they press the button,
+        // it sets the time. If they press it once more within 3 seconds, exits
+        if (this.lastBackPressTime < System.currentTimeMillis() - 3000) {
+            L.Toast(this, "Press back once more to exit");
+            this.lastBackPressTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -126,7 +226,6 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     public void setFragment(Fragment fragment, String TAG) {
-        L.m("setting fragment - " + fragment.toString());
         if(fragment == null){
             return;
         }
@@ -147,7 +246,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         transaction.commit();
         getSupportFragmentManager().executePendingTransactions();
 
-        L.m("added fragment");
+        //Update the onResume here for each fragment upon loading
+        this.fragmentActive.onResume();
+
         //Execute other things here
 
         //...update images
@@ -162,13 +263,102 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.currentFragment = idFragment;
     }
 
+
+    @Override
+    public void setNewFragment(int x) {
+
+        if(x == -1){
+            x = Constants.FRAGMENT_HOME;
+        }
+        switch(x){
+            case Constants.FRAGMENT_HOME:
+            case Constants.FRAGMENT_MAP:
+                if(mapFragment == null) {
+                    mapFragment = MapFragment.newInstance();
+                }
+                MainActivity.this.setFragment(mapFragment, MapFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.CaliforniaGold));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                break;
+
+            /* todo Using map as home until further notice
+                if(homeFragment == null) {
+                    homeFragment = HomeFragment.newInstance();
+                }
+                MainActivity.this.setFragment(homeFragment, HomeFragment.TAG);
+                break;
+            */
+
+            case Constants.FRAGMENT_ALERT_BEACON_POPUP:
+                if(alertBeaconPopupFragment == null) {
+                    alertBeaconPopupFragment = AlertBeaconPopupFragment.newInstance();
+                }
+                MainActivity.this.setFragment(alertBeaconPopupFragment, AlertBeaconPopupFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                break;
+
+            case Constants.FRAGMENT_ADD_LOCATION:
+                if(addLocationFragment == null) {
+                    addLocationFragment = AddLocationFragment.newInstance();
+                }
+                MainActivity.this.setFragment(addLocationFragment, AddLocationFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                break;
+
+            case Constants.FRAGMENT_ADD_CONTACT:
+                if(addContactFragment == null) {
+                    addContactFragment = AddContactFragment.newInstance();
+                }
+                MainActivity.this.setFragment(addContactFragment, AddContactFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                break;
+
+            case Constants.FRAGMENT_PROFILE:
+                if(profileFragment == null) {
+                    profileFragment = ProfileFragment.newInstance();
+                }
+                MainActivity.this.setFragment(profileFragment, ProfileFragment.TAG);
+
+                activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.White));
+                activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
+                        this, R.color.CaliforniaGold));
+                break;
+
+            case Constants.ACTIVITY_ONBOARDING: //For logout
+                Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                MainActivity.this.startActivity(intent);
+                break;
+        }
+    }
+
     @Override
     public int getCurrentFragment() {
         return this.currentFragment;
     }
 
     @Override
-    public void setToolbarDetails(String title, Integer color) {
+    public void setToolbarDetails(String title, Integer color,
+                                  Boolean enableBackButton, Boolean enableTopRightPicture) {
+        if(this.toolbar == null){
+            return;
+        }
         if(color != null){
             this.toolbar.setBackgroundColor(color);
         }
@@ -176,6 +366,49 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
             this.toolbar_title.setText(title);
             String currentScreen = getString(R.string.currently_on_screen_string);
             this.toolbar_title.setContentDescription(currentScreen + title);
+        }
+
+        if(enableBackButton != null){
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(enableBackButton);
+            if(enableBackButton){
+                //Set the back arrow to the respective color
+                //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                        //getToolbarBackArrow(this, R.color.white));
+            } else {
+                //Set the back arrow to the respective color
+                //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                        //getToolbarBackArrow(this, R.color.white));
+            }
+        }
+
+        if(enableTopRightPicture != null){
+            if(enableTopRightPicture){
+                this.app_bar_top_right_button.setVisibility(View.VISIBLE);
+            } else {
+                this.app_bar_top_right_button.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.activity_main_emergency_sos_button:
+
+                break;
+
+            case R.id.activity_main_map_icon:
+                setNewFragment(Constants.FRAGMENT_MAP);
+                break;
+
+            case R.id.activity_main_user_icon:
+                setNewFragment(Constants.FRAGMENT_PROFILE);
+                break;
+
+            case R.id.app_bar_top_right_button:
+                setNewFragment(Constants.FRAGMENT_ADD_LOCATION);
+                break;
         }
     }
 
@@ -186,9 +419,15 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     protected void onResume() {
-        super.onResume();
         L.m("onResume hit in main activity");
+        super.onResume();
 
+    }
+
+    @Override
+    protected void onStart() {
+        L.m("onStart hit in main activity");
+        super.onStart();
     }
 
     @Override
@@ -198,10 +437,16 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     protected void onStop() {
+        L.m("onStop hit in main activity");
+        MyApplication.getSharedPrefsInstance().save(
+                Constants.CURRENT_FRAGMENT, getCurrentFragment());
         if(ProgressBarUtilities.isDialogShowing()){
             //Dismiss progress bar if onStop called, prevents NPEs
             ProgressBarUtilities.dismissProgressDialog();
         }
         super.onStop();
     }
+
+
+
 }

@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
@@ -25,9 +27,11 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
  * Created by pmacdowell on 2017-02-15.
  */
 
-public class EmailLoginFragment extends Fragment implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
+public class EmailLoginFragment extends Fragment implements OnTaskCompleteListener,
+        View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 
     public final static String TAG = "EmailLoginFragment";
+
 
     private enum WhichActive {
         EMAIL, PHONE
@@ -140,6 +144,8 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
                 fragment_email_login_with_phone.setText(R.string.login_with_email);
                 fragment_email_login_input_layout_phone.setVisibility(View.VISIBLE);
                 fragment_email_login_input_layout.setVisibility(View.GONE);
+                ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                        getString(R.string.login_with_my_phone_number), null, null, null);
 
                 AnimationUtilities.animateMyView(
                         fragment_email_login_tv_1_phone, 400, Constants.IN_FADE_DOWN);
@@ -154,6 +160,8 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
                 fragment_email_login_with_phone.setText(R.string.login_with_my_phone_number);
                 fragment_email_login_input_layout_phone.setVisibility(View.GONE);
                 fragment_email_login_input_layout.setVisibility(View.VISIBLE);
+                ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                        getString(R.string.login_with_email), null, null, null);
 
                 AnimationUtilities.animateMyView(
                         fragment_email_login_tv_1, 400, Constants.IN_FADE_DOWN);
@@ -375,11 +383,14 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
             //Continue Button
             case R.id.fragment_email_login_button:
                 //Login with credentials
+                // TODO: 2017-02-24 insert api calls here:
+                onTaskComplete(null, 0);
                 break;
 
             //Continue without signin
-            case R.id.fragment_email_login_skip_login:
-                //Skip login
+            case R.id.fragment_email_login_skip_login: //Re-purposed to register
+                ((CustomFragmentListener)getActivity()).setToolbarDetails(
+                        getString(R.string.register_for_account), null, true, null);
                 break;
 
             //Login with phone
@@ -422,5 +433,24 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
             return;
         }
         focusSetter(v, hasFocus);
+    }
+
+    @Override
+    public void onResume() {
+        L.m("onResume in emailLoginFragment");
+        if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
+                Constants.FRAGMENT_EMAIL_LOGIN) {
+            ((CustomFragmentListener) getActivity()).setToolbarDetails(
+                    getString(R.string.login_with_email), null, true, null);
+        }
+        super.onResume();
+    }
+
+
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        // TODO: 2017-02-24 insert check from server here
+        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
+        switchFragment(Constants.FRAGMENT_SMS_VERIFICATION);
     }
 }
