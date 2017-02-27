@@ -61,7 +61,7 @@ module.exports = function(grunt) {
             },
             user: {
                 files: {
-                    '<%= site.dest %>/user': ['<%= site.templates %>/user/*.hbs']
+                    '<%= site.dest %>/user/': ['<%= site.templates %>/user/*.hbs']
                 }
             },
         },

@@ -1,7 +1,14 @@
 {{#if map}}
     <div class="map-overlay">
         {{#if loggedin}}
-            <a href="/user/addlocations.html" class="btn btn-primary">Add Location</a>
+            <a href="/user/addlocations.html" class="btn btn-primary btn-location hidden-xs">Add Location</a>
+            <div class="sos-banner">
+                <h2> Alert Your Emergency Contacts and Emergency Services</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non arcu eget mi egestas semper.
+                </p>
+                <a href="#" class="btn btn-danger btn-inverted">SOS</a>
+            </div>
         {{/if}}
         <div id="map" class="user-map"></div>
     </div>
