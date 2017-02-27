@@ -22,7 +22,7 @@ class AddLocationViewController: UIViewController {
     
     @IBOutlet weak var addLocationButton: RoundedRectButton!
     @IBOutlet weak var cancelAddLocationButton: RoundedRectButton!
-    @IBOutlet weak var addPersonToLocationButton: RoundedRectButton!
+//    @IBOutlet weak var addPersonToLocationButton: RoundedRectButton!
     @IBOutlet weak var addAnotherLocationButton: RoundedRectButton!
     
     
@@ -90,9 +90,9 @@ class AddLocationViewController: UIViewController {
         self.addLocationButton.alpha = 0.0
         self.cancelAddLocationButton.alpha = 0.0
         
-        self.addPersonToLocationButton.alpha = 1.0
+//        self.addPersonToLocationButton.alpha = 1.0
         self.addAnotherLocationButton.alpha = 1.0
-        self.addPersonToLocationButton.isHidden = false
+//        self.addPersonToLocationButton.isHidden = false
         self.addAnotherLocationButton.isHidden = false
         
         self.successfulLocationAddView.frame.origin = CGPoint(x: 0, y: 0)
@@ -108,14 +108,6 @@ class AddLocationViewController: UIViewController {
                 self.cancelAddLocationButton.isHidden = true
             
         }
-        
-        
-        
-//        if let rootVC = self.navigationController?.viewControllers[0]  {
-//            self.navigationController?.setViewControllers([rootVC, ProfileViewController()], animated: false)
-//        } else {
-//            self.navigationController?.setViewControllers([MapViewController(), ProfileViewController()], animated: false)
-//        }
         
     }
     
@@ -137,7 +129,7 @@ class AddLocationViewController: UIViewController {
     
     @IBAction func addAnotherLocationButtonTapped(_ sender: Any) {
         self.addAnotherLocationButton.alpha = 0.0
-        self.addPersonToLocationButton.alpha = 0.0
+//        self.addPersonToLocationButton.alpha = 0.0
         self.successfulLocationAddView.alpha = 0.0
         self.tableViewBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.35, animations: { 
@@ -145,7 +137,7 @@ class AddLocationViewController: UIViewController {
         }) { (completed) in
             if completed {
                 self.successfulLocationAddView.removeFromSuperview()
-                self.addPersonToLocationButton.isHidden = true
+//                self.addPersonToLocationButton.isHidden = true
                 self.addAnotherLocationButton.isHidden = true
             }
         }
