@@ -213,5 +213,9 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['build']);
 
     // Build, serve to localhost, and watch for changes (for editing and debugging)
+<<<<<<< bcd13d86b050bef1359b7e4569ce4b980738c625
     grunt.registerTask('serve', ['build', 'connect', 'watch']);
+=======
+    grunt.registerTask('serve', ['build', 'connect', 'localhost', 'watch']);
+>>>>>>> gruntfile edit, testing build to jenkins
 };
