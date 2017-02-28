@@ -646,6 +646,7 @@ public class APICalls {
             return;
         }
 
+        String pw = responseObject.getPassword();
         String userId = responseObject.getId();
         String token = responseObject.getToken();
         String email = responseObject.getEmail();
@@ -662,6 +663,9 @@ public class APICalls {
         }
         if (!StringUtilities.isNullOrEmpty(phone)) {
             MyApplication.getSharedPrefsInstance().save(Constants.USER_PHONE_NUMBER, phone);
+        }
+        if (!StringUtilities.isNullOrEmpty(pw)){
+            MyApplication.getSharedPrefsInstance().save(Constants.USER_PW, pw);
         }
         if(!StringUtilities.isNullOrEmpty(userId) && !StringUtilities.isNullOrEmpty(token)){
             //If this procs, it means it is a full login object, can parse and save

@@ -156,6 +156,7 @@ public class Constants {
     public static final String AUTH_TOKEN = "auth_token";
     public static final String USER_ID = "user_id";
     public static final String USER_PHONE_NUMBER = "user_phone_number";
+    public static final String USER_PW = "user_pw";
     public static final String USER_EMAIL = "user_email";
 
     ///////////////////

@@ -62,4 +62,5 @@
     <string name="username_pw_incorrect">Username or password incorrect. Please check your input and try again</string>
     <string name="enter_a_valid_phone_number">Please enter a valid phone number</string>
     <string name="phone_number_didnt_save">An error has occurred, please enter your phone number again</string>
+    <string name="account_null_error">There was an error retrieving your account. Please log in again</string>
 </resources>

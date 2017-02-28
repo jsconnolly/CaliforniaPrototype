@@ -578,6 +578,18 @@
     </string-array>
 
 
+	<string-array name="circle_color_options">
+		<item>@color/SemiTransparentBlue</item>
+		<item>@color/SemiTransparentSalmon</item>
+		<item>@color/SemiTransparentViolet</item>
+		<item>@color/SemiTransparentOrchid</item>
+		<item>@color/SemiTransparentChocolate</item>
+		<item>@color/SemiTransparentGreen</item>
+		<item>@color/SemiTransparentLightBlue</item>
+		<item>@color/SemiTransparentDarkBlue</item>
+		<item>@color/SemiTransparentKakhi</item>
+		<item>@color/SemiTransparentFuchsia</item>
+	</string-array>
 
 
 </resources>

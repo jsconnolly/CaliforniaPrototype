@@ -20,6 +20,16 @@ public class CALocation extends CAMasterObject{
     private Boolean enableEmail;
     @SerializedName("coordinates")
     private Coordinates coordinates;
+    //Intentionally not serialized
+    private String circleId;
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public String getDisplayName() {
         return displayName;

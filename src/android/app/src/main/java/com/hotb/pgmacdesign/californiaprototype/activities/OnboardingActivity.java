@@ -15,9 +15,11 @@ import com.hotb.pgmacdesign.californiaprototype.fragments.EmailLoginFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.PermissionsRequestFragment;
 import com.hotb.pgmacdesign.californiaprototype.fragments.SMSVerificationFragment;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DatabaseUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
@@ -27,7 +29,7 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.SharedPrefs;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.SystemDrawableUtilities;
 
-public class OnboardingActivity extends AppCompatActivity implements CustomFragmentListener {
+public class OnboardingActivity extends AppCompatActivity implements CustomFragmentListener, OnTaskCompleteListener {
 
     //UI
     private Toolbar toolbar;
@@ -37,6 +39,8 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
     private DatabaseUtilities dbUtilities;
     private SharedPrefs sharedPrefs;
     private DisplayManagerUtilities dmu;
+    private APICalls api;
+    private boolean anAttemptWasMade;
 
     //Fragment Variables
     private int fragmentContainerId, currentFragment;
@@ -53,7 +57,21 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
         setContentView(R.layout.activity_onboarding);
         this.initVariables();
         this.setupToolbar();
-        FragmentUtilities.switchFragments(Constants.FRAGMENT_EMAIL_LOGIN, this);
+        this.api = new APICalls(this, this);
+        this.anAttemptWasMade = false;
+
+        //Check for logged in user
+        String userId = MyApplication.getSharedPrefsInstance().getString(Constants.USER_ID, null);
+        String token = MyApplication.getSharedPrefsInstance().getString(Constants.AUTH_TOKEN, null);
+
+        //Determine which direction to go
+        if(!StringUtilities.isNullOrEmpty(userId) && !StringUtilities.isNullOrEmpty(token)){
+            //Check token validity:
+            ProgressBarUtilities.showSVGProgressDialog(this, false);
+            api.getUserById(userId);
+        } else {
+            FragmentUtilities.switchFragments(Constants.FRAGMENT_EMAIL_LOGIN, this);
+        }
     }
 
     /**
@@ -251,7 +269,6 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
     @Override
     protected void onResume() {
         super.onResume();
-        L.m("onResume hit in main activity");
 
     }
 
@@ -267,5 +284,49 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
             ProgressBarUtilities.dismissProgressDialog();
         }
         super.onStop();
+    }
+
+    /**
+     * Attempt to log the user in again without them having to input their credentials.
+     * If it fails, it will clear saved creds and try again
+     */
+    private void attemptToLoginAgain(){
+        String email = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_EMAIL, null);
+        String phone = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PHONE_NUMBER, null);
+        String pw = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PW, null);
+        if(!StringUtilities.isNullOrEmpty(email) && !StringUtilities.isNullOrEmpty(pw)){
+            ProgressBarUtilities.showSVGProgressDialog(this, false);
+            api.loginWithEmail(email, pw);
+        } else if(!StringUtilities.isNullOrEmpty(phone) && !StringUtilities.isNullOrEmpty(pw)){
+            ProgressBarUtilities.showSVGProgressDialog(this, false);
+            api.loginWithPhone(phone, pw);
+        } else {
+            this.onTaskComplete(null, -1);
+        }
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        ProgressBarUtilities.dismissProgressDialog();
+        if(customTag != Constants.TAG_CA_USER){
+
+            if(!this.anAttemptWasMade){
+                //This means that the sessionId / Auth token is invalid and user needs to login again
+                this.attemptToLoginAgain();
+                this.anAttemptWasMade = true;
+            } else {
+                //This means sessionId timed out AND their creds were bad, clear the saved data
+                MyApplication.getSharedPrefsInstance().clearAllPrefs();
+                MyApplication.getDatabaseInstance().deleteAllPersistedObjects(true, false);
+                FragmentUtilities.switchFragments(
+                        Constants.FRAGMENT_EMAIL_LOGIN, OnboardingActivity.this);
+            }
+        } else {
+            FragmentUtilities.switchFragments(
+                    Constants.ACTIVITY_MAIN, OnboardingActivity.this);
+        }
     }
 }

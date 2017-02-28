@@ -73,12 +73,10 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     private int fragmentContainerId, currentFragment;
     private Fragment fragmentActive;
 
+    //Emergency status to show
     private EmergencyStates currentEmergencyState;
-
-
-
     enum EmergencyStates {
-        CALM, EMERGENCY
+        CALM, EMERGENCY;
     }
 
     @Override
@@ -341,6 +339,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 break;
 
             case Constants.ACTIVITY_ONBOARDING: //For logout
+                MyApplication.getSharedPrefsInstance().clearAllPrefs();
+                MyApplication.getDatabaseInstance().deleteAllPersistedObjects(true, false);
                 Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 MainActivity.this.startActivity(intent);

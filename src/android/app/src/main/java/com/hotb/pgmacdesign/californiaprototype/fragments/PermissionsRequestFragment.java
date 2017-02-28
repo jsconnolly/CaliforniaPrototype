@@ -135,8 +135,6 @@ public class PermissionsRequestFragment extends Fragment implements OnTaskComple
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
-        // TODO: 2017-02-24 insert check from server here
-        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
         switchFragment(Constants.ACTIVITY_MAIN);
     }
 }

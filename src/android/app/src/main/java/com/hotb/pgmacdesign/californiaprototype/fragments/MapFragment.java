@@ -35,17 +35,23 @@ import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.customui.ScaleBar;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.MyLocationListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
 import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ColorUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ThreadUtilities;
 
@@ -62,7 +68,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback{
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -84,16 +90,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private TextView fragment_map_error_top_tv, fragment_map_error_bottom_tv;
     private ScaleBar mScaleBar;
 
-
     //Variables
     private int DEFAULT_ZOOM_LEVEL = 15;
     private boolean mapHasLoaded, locationIsEnabled;
     private PermissionUtilities.permissionsEnum locPerm = PermissionUtilities
             .permissionsEnum.ACCESS_FINE_LOCATION;
+    private String email, phone, id, pw;
+    private CAUser user;
+    private CALocation[] userSavedLocations;
+    private List<CALocation> userSavedLocationsList;
+    private List<Circle> userSavedLocationCircles;
+    private String[] colorArray;
 
     //Misc
     private Timer scaleBarTimer;
-
+    private APICalls api;
     private Handler handler;
     private DisplayManagerUtilities dmu;
 
@@ -118,6 +129,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.locationIsEnabled = true;
         this.handler = ThreadUtilities.getHandlerWithCallback(this);
         this.dmu = new DisplayManagerUtilities(getActivity());
+        this.api = new APICalls(getActivity(), this);
+        this.phone = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PHONE_NUMBER, null);
+        this.email = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_EMAIL, null);
+        this.id = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_ID, null);
+        this.pw = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PW, null);
         //Utilize instanceState here
     }
 
@@ -171,8 +191,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_MAP);
-        L.m("onViewCreated in mapfragment");
+        this.colorArray = getActivity().getResources().getStringArray(R.array.circle_color_options);
+    }
 
+    /**
+     * Last call, init the web calls and set the respective views
+     */
+    private void initWebCalls(){
+        ProgressBarUtilities.showSVGProgressDialog(getActivity(), true);
+        if(!StringUtilities.isNullOrEmpty(email) && !StringUtilities.isNullOrEmpty(pw)){
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.loginWithEmail(email, pw);
+        } else if (!StringUtilities.isNullOrEmpty(phone) && !StringUtilities.isNullOrEmpty(pw)){
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.loginWithPhone(phone, pw);
+        } else {
+            L.m("User is null, make them log in again");
+            L.toast(getActivity(), getString(R.string.account_null_error));
+            switchFragment(Constants.ACTIVITY_ONBOARDING);
+        }
     }
 
     /**
@@ -215,7 +252,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
         this.onMyLocationButtonClick();
         this.startLocationServices();
-
+        this.initWebCalls();
     }
 
     /**
@@ -554,5 +591,105 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     getString(R.string.map_fragment_name), null, false, true);
         }
         super.onResume();
+    }
+
+    /**
+     * Load the user saved locations. this should only ping if the array is not null and >0
+     * todo look into whether or not we are persisting secondary list to show here (Emergencies)
+     */
+    private void loadUserSavedLocs(){
+
+        if(this.userSavedLocationCircles == null){
+            this.userSavedLocationCircles = new ArrayList<>();
+        }
+        if(this.userSavedLocationsList == null){
+            this.userSavedLocationsList = new ArrayList<>();
+        }
+        //Iterate to remove any previous ones they had saved
+        for(Circle circle : this.userSavedLocationCircles){
+            circle.remove();
+        }
+        //Checking to be sure
+        if(userSavedLocations == null){
+            return;
+        }
+        if(userSavedLocations.length <= 0){
+            return;
+        }
+
+        this.userSavedLocationCircles = new ArrayList<>();
+        this.userSavedLocationsList = new ArrayList<>();
+
+        for(int i = 0; i < this.userSavedLocations.length; i++){
+            CALocation location = this.userSavedLocations[i];
+            if(location == null){
+                continue;
+            }
+            String radiusS = location.getAlertRadius();
+            CALocation.Coordinates coordinates = location.getCoordinates();
+            String name = location.getDisplayName();
+
+            if(coordinates == null){
+                continue;
+            }
+
+            float localRadius;
+            try {
+                localRadius = Float.parseFloat(radiusS);
+            } catch (Exception e){
+                localRadius = -1;
+            }
+
+            if(localRadius < 0){
+                localRadius = getMetersPerInch(this.googleMap.getProjection());
+            }
+            double localLat = coordinates.getLat();
+            double localLng = coordinates.getLng();
+
+            if(StringUtilities.isNullOrEmpty(name)){
+                name = "";
+            }
+            String whichColor = null;
+            if(i > 9){
+                int random = (int )(Math.random() * 9);
+                whichColor = this.colorArray[random];
+            } else {
+                whichColor = this.colorArray[i];
+            }
+            int circleColor = ColorUtilities.parseMyColor(whichColor);
+            CircleOptions options = new CircleOptions();
+            options.center(new LatLng(localLat, localLng));
+            options.radius(localRadius);
+            options.strokeColor(R.color.white);
+            options.fillColor(circleColor);
+            options.clickable(true);
+            Circle circleAdded = googleMap.addCircle(options);
+            location.setCircleId(circleAdded.getId());
+            this.userSavedLocationCircles.add(circleAdded);
+            this.userSavedLocationsList.add(location);
+        }
+    }
+
+    /**
+     * Handle responses from the server
+     * @param result
+     * @param customTag
+     */
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        switch(customTag){
+            case Constants.TAG_CA_USER:
+                user = (CAUser) result;
+                CALocation[] locations = user.getLocations();
+                if(locations != null){
+                    if(locations.length > 0){
+                        this.userSavedLocations = locations;
+                        loadUserSavedLocs();
+                    }
+                }
+                break;
+
+            //todo Count for other cases here once back-end finishes
+        }
     }
 }
