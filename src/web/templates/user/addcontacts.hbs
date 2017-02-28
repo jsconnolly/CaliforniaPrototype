@@ -15,22 +15,20 @@ loggedin: true
         <p>
             Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor.
         </p>
-        <form>
+        <form data-toggle="validator" role="form">
             <div class="form-group">
                 <label>Contact Name</label>
-                <input type="text" class="form-control" placeholder="First Name, Last Name" />
+                <input type="text" class="form-control" placeholder="First Name, Last Name" required />
             </div>
             <div class="form-group">
                 <label>Contact Phone Number</label>
-                <input type="text" class="form-control" placeholder="888-888-8888" />
+                <input type="text" id="phone" class="form-control phone" placeholder="888-888-8888" data-minlength="12" required />
             </div>
             <div class="form-group">
                 <label>Re-Type Contact Phone Number</label>
-                <input type="text" class="form-control" placeholder="888-888-8888" />
+                <input type="text" class="form-control phone" placeholder="888-888-8888" data-match="#phone" data-match-error="Phone numbers must match" placeholder="888-888-8888" data-minlength="12" required>
+        <div class="help-block with-errors"></div>
             </div>
-            <p class="text-danger">
-                Phone numbers must match
-            </p>
             <button type="submit" class="btn btn-primary btn-block">Add To Contacts</button>
         </form>
     </div>
