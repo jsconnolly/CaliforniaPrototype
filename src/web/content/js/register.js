@@ -1,17 +1,17 @@
 $(document).ready(function(){
-    
+
     var RegisterData = {
     email: "",
     password: "",
     name:"",
     phone:""
 };
-    
-    
-    
-    
+
+
+
+
     $('#subscribe').click(function(e){
-        
+
         var password = $('#password').val();
         var confirmpassword = $('#confirmpassword').val();
         var email = $('#email').val();
@@ -39,8 +39,14 @@ $(document).ready(function(){
                         $('#email').val("");
                         $('#password').val("");
                         $('#confirmpassword').val("");
-                        alert("You have successfully registered. Please login");
-                        window.location.href = "login.html";
+                        $('#popupAlert').on('show.bs.modal', function (event) {
+                          var modal = $(this);
+                          modal.find('#alertTitle').text('Successfully Registered');
+                          modal.find('#alertBody').text('You have successfully registered. Please log in.');
+                          modal.find('#alertFooter').html('<a href="/login.html" class="btn btn-default">Log In</a>')
+                      });
+                        //alert("You have successfully registered. Please login");
+                        //window.location.href = "login.html";
                     }
                })
                 .fail(function (data, textStatus, xhr) {
@@ -52,19 +58,19 @@ $(document).ready(function(){
             }
             else
             {
-                alert("Passwords much match");
-                 $('#password').val("");
-                 $('#confirmpassword').val("");
+                //alert("Passwords much match");
+                 //$('#password').val("");
+                 //$('#confirmpassword').val("");
                 return;
             }
         }
         else
         {
-            alert("Please enter email and password.");
+            //alert("Please enter email and password.");
             return;
         }
-        
 
-        
+
+
     });
 })

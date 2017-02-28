@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
         $('#addlocation').click(function(e){
-        var addlocation = { 
+        var addlocation = {
           "displayName":"",
           "coordinates": "",
           "alertRadius":"100",
@@ -9,26 +9,26 @@ $(document).ready(function(){
           "enableSMS":true,
           "enableEmail":true
        }
-        
+
         var cityzip = $('#cityzip').val();
         if(cityzip.length > 0)
         {
             // Get lat and lng from google maps api
             console.log("Latitude" + getLatLng(cityzip).lat);
-            console.log("Longitude" + getLatLng(cityzip).lng);        
-            
+            console.log("Longitude" + getLatLng(cityzip).lng);
+
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
             addlocation.displayName = "location" + Math.random();
-        
+
             console.log("Request JSON" + JSON.stringify(addlocation));
-            
-   
+
+
             // add ajax code to add a location
                             if (typeof(Storage) !== "undefined") {
                         // Store
                         //console.log(localStorage.getItem("token"));
-                        //console.log(localStorage.getItem("id"));  
-                                
+                        //console.log(localStorage.getItem("id"));
+
                             $.ajax({
                             type: "PUT",
                             url: APIURL + "users/" +sessionStorage.getItem("id") + "/locations",
@@ -42,8 +42,14 @@ $(document).ready(function(){
                             console.log(result);
                             if(result.token !== undefined)
                             {
-                                alert("location added successfully");
-                                window.location.href = "/user/index.html";
+                                //alert("location added successfully");
+                                //window.location.href = "/user/index.html";
+                                $('#popupAlert').on('show.bs.modal', function (event) {
+                                  var modal = $(this)
+                                  modal.find('#alertTitle').text('Successfully Added Location');
+                                  modal.find('#alertBody').text('Location added successfully.');
+                                  modal.find('#alertFooter').html('<button type="button" class="btn btn-default" data-dismiss="modal">Okay</button>');
+                                })
                             }
                             })
                             .fail(function (data, textStatus, xhr) {
@@ -51,24 +57,24 @@ $(document).ready(function(){
                              alert(data.responseJSON.Error);
                              /*console.log("error", data.status);
                              console.log("STATUS: "+xhr); */
-                            });          
-                      
-                    } 
-            
+                            });
+
+                    }
+
         }
         else
         {
             alert("Please enter city or zip.");
             return;
         }
-        
 
-        
+
+
     });
- 
-    
 
-    
+
+
+
 
 })
 
@@ -76,7 +82,7 @@ $(document).ready(function(){
 function getLatLng(cityzip)
 {
     var coordinates=  { "lat": "", "lng": ""};
-    
+
     $.ajax({
        url : "http://maps.googleapis.com/maps/api/geocode/json?address="+cityzip+"&sensor=false",
        method: "POST",
@@ -90,7 +96,7 @@ function getLatLng(cityzip)
        }
 
     });
-    
+
     return coordinates;
-    
+
 }
