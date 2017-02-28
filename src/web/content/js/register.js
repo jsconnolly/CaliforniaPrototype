@@ -119,7 +119,6 @@ $(document).ready(function(){
 
 
     $('#subscribe').click(function(e){
-
         var password = $('#password').val();
         var confirmpassword = $('#confirmpassword').val();
         var email = $('#email').val();
@@ -177,8 +176,5 @@ $(document).ready(function(){
             alert("Please enter email and password.");
             return;
         }
-
-
-
     });
 })

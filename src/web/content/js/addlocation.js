@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+
     // Get Added Locations
 
      if(sessionStorage.getItem("id") != null)
@@ -27,7 +28,6 @@ $(document).ready(function(){
                         }
                     }
                 }
-<<<<<<< af7bc29b647f6d5632826e395ee2e963bddc29b3
             }
             })
             .fail(function (data, textStatus, xhr) {
@@ -36,15 +36,6 @@ $(document).ready(function(){
              /*console.log("error", data.status);
              console.log("STATUS: "+xhr); */
             });
-=======
-                })
-                .fail(function (data, textStatus, xhr) {
-                 //console.log(data.responseJSON.Error);
-                 alert(data.responseJSON.Error);
-                 /*console.log("error", data.status);
-                 console.log("STATUS: "+xhr); */
-                });
->>>>>>> add locations
     }
 
 
@@ -57,11 +48,11 @@ $(document).ready(function(){
           "enableSMS":true,
           "enableEmail":true
        }
-
         var cityzip = $('#cityzip').val();
         if(cityzip.length > 0)
         {
             // Get lat and lng from google maps api
+<<<<<<< 9478e1023941f59787bd9ecf086909fe2c5e9cf4
             //console.log("Latitude" + getLatLng(cityzip).lat);
             //console.log("Longitude" + getLatLng(cityzip).lng);
 
@@ -104,14 +95,22 @@ $(document).ready(function(){
 
                     }
 
+            console.log("Latitude" + getLatLng(cityzip).lat);
+            console.log("Longitude" + getLatLng(cityzip).lng);
+
+            addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
+
+            console.log("Request JSON" + JSON.stringify(addlocation));
+
+
+            // add ajax code to add a location
+
         }
         else
         {
             alert("Please enter city or zip.");
             return;
         }
-
-<<<<<<< af7bc29b647f6d5632826e395ee2e963bddc29b3
     });
 
 })
@@ -125,8 +124,6 @@ function EditLocation(locationId)
 }
 
 
-=======
-
     });
 
 
@@ -134,11 +131,12 @@ function EditLocation(locationId)
 
 
 
->>>>>>> add locations
+
+
+
 function getLatLng(cityzip)
 {
     var coordinates=  { "lat": "", "lng": ""};
-
     $.ajax({
        url : "http://maps.googleapis.com/maps/api/geocode/json?address="+cityzip+"&sensor=false",
        method: "POST",
@@ -152,6 +150,7 @@ function getLatLng(cityzip)
        }
 
     });
+
 
     return coordinates;
 
