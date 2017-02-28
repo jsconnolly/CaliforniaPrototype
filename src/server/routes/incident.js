@@ -221,10 +221,10 @@ var createAlerts = function () {
 
 
 
-                        if (item.locations.length > 0)
+                if (item.locations.length > 0)
                             item.locations.forEach(function (value) {
 
-                                console.log("3" + value.coordinates.lat);
+                                //console.log("3" + value.coordinates.lat);
 
                                 incidentDB.find(
                                     {
@@ -240,7 +240,8 @@ var createAlerts = function () {
                                     }
                                 ).toArray(function (err, docs) {
 
-                                    console.log("total" + docs.length);
+                                    //console.log("err" + err);
+                                    if(docs){
                                     docs.forEach(function (docValue) {
                                         //console.log("4" + docValue-item.date);
                                         if (!item.alerts) item.alerts = [];
@@ -291,7 +292,7 @@ var createAlerts = function () {
                                     });
 
 
-
+                                }
 
                                     //console.log("Found the following records" + err);
                                     //console.log(docs);
