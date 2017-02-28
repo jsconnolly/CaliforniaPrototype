@@ -10,6 +10,39 @@
 		9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */; };
 		9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */; };
 		9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */; };
+		9CA518471E5F52A4002B2250 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518461E5F52A4002B2250 /* UIColorExtension.swift */; };
+		9CA5184B1E5F583B002B2250 /* LocationPermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */; };
+		9CA5184C1E5F583B002B2250 /* LocationPermissionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */; };
+		9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5184E1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift */; };
+		9CA518511E5F5F2B002B2250 /* CustomAlertBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518501E5F5F2B002B2250 /* CustomAlertBackground.swift */; };
+		9CA518541E5F64DA002B2250 /* NotificationsPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518521E5F64DA002B2250 /* NotificationsPermissionViewController.swift */; };
+		9CA518551E5F64DA002B2250 /* NotificationsPermissionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA518531E5F64DA002B2250 /* NotificationsPermissionViewController.xib */; };
+		9CA518581E5F7F00002B2250 /* EmailRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518561E5F7F00002B2250 /* EmailRegistrationViewController.swift */; };
+		9CA518591E5F7F00002B2250 /* EmailRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA518571E5F7F00002B2250 /* EmailRegistrationViewController.xib */; };
+		9CA518641E5FC290002B2250 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518621E5FC290002B2250 /* TabBarViewController.swift */; };
+		9CA518651E5FC290002B2250 /* TabBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA518631E5FC290002B2250 /* TabBarViewController.xib */; };
+		9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518661E5FC3F6002B2250 /* MapViewController.swift */; };
+		9CA518691E5FC3F6002B2250 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA518671E5FC3F6002B2250 /* MapViewController.xib */; };
+		9CA5186C1E5FC440002B2250 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5186A1E5FC440002B2250 /* ProfileViewController.swift */; };
+		9CA5186D1E5FC440002B2250 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA5186B1E5FC440002B2250 /* ProfileViewController.xib */; };
+		9CA518701E5FC987002B2250 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA5186E1E5FC987002B2250 /* AddLocationViewController.swift */; };
+		9CA518711E5FC987002B2250 /* AddLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA5186F1E5FC987002B2250 /* AddLocationViewController.xib */; };
+		9CA518731E5FCEFB002B2250 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518721E5FCEFB002B2250 /* UserDefaultManager.swift */; };
+		9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */; };
+		9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */; };
+		9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */; };
+		9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB47301E5E180700D351AA /* ValidationMethods.swift */; };
+		9CBB47351E5E1EB300D351AA /* PhoneLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB47331E5E1EB300D351AA /* PhoneLoginViewController.swift */; };
+		9CBB47361E5E1EB300D351AA /* PhoneLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBB47341E5E1EB300D351AA /* PhoneLoginViewController.xib */; };
+		9CBB47391E5E4D3900D351AA /* PhoneVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBB47371E5E4D3900D351AA /* PhoneVerificationViewController.swift */; };
+		9CBB473A1E5E4D3900D351AA /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBB47381E5E4D3900D351AA /* PhoneVerificationViewController.xib */; };
+		9CBC93181E60A3D000FF733F /* SearchResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC93161E60A3D000FF733F /* SearchResultsTableViewCell.swift */; };
+		9CBC93191E60A3D000FF733F /* SearchResultsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC93171E60A3D000FF733F /* SearchResultsTableViewCell.xib */; };
+		9CBC931B1E60DDF300FF733F /* CustomAlertControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC931A1E60DDF300FF733F /* CustomAlertControllers.swift */; };
+		9CBC931E1E60F58100FF733F /* AddLocationSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC931C1E60F58100FF733F /* AddLocationSuccessViewController.swift */; };
+		9CBC931F1E60F58100FF733F /* AddLocationSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */; };
+		9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC93201E61081700FF733F /* AddContactViewController.swift */; };
+		9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC93211E61081700FF733F /* AddContactViewController.xib */; };
 		9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */; };
 		9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */; };
 		9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */; };
@@ -20,6 +53,39 @@
 		9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandingViewController.xib; sourceTree = "<group>"; };
 		9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectButton.swift; sourceTree = "<group>"; };
+		9CA518461E5F52A4002B2250 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPermissionsViewController.swift; sourceTree = "<group>"; };
+		9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationPermissionsViewController.xib; sourceTree = "<group>"; };
+		9CA5184E1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPermissionsAlertView.swift; sourceTree = "<group>"; };
+		9CA518501E5F5F2B002B2250 /* CustomAlertBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertBackground.swift; sourceTree = "<group>"; };
+		9CA518521E5F64DA002B2250 /* NotificationsPermissionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsPermissionViewController.swift; sourceTree = "<group>"; };
+		9CA518531E5F64DA002B2250 /* NotificationsPermissionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsPermissionViewController.xib; sourceTree = "<group>"; };
+		9CA518561E5F7F00002B2250 /* EmailRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailRegistrationViewController.swift; sourceTree = "<group>"; };
+		9CA518571E5F7F00002B2250 /* EmailRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailRegistrationViewController.xib; sourceTree = "<group>"; };
+		9CA518621E5FC290002B2250 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		9CA518631E5FC290002B2250 /* TabBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabBarViewController.xib; sourceTree = "<group>"; };
+		9CA518661E5FC3F6002B2250 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		9CA518671E5FC3F6002B2250 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		9CA5186A1E5FC440002B2250 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9CA5186B1E5FC440002B2250 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
+		9CA5186E1E5FC987002B2250 /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
+		9CA5186F1E5FC987002B2250 /* AddLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationViewController.xib; sourceTree = "<group>"; };
+		9CA518721E5FCEFB002B2250 /* UserDefaultManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
+		9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
+		9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailLoginViewController.xib; sourceTree = "<group>"; };
+		9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlinedTextField.swift; sourceTree = "<group>"; };
+		9CBB47301E5E180700D351AA /* ValidationMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationMethods.swift; sourceTree = "<group>"; };
+		9CBB47331E5E1EB300D351AA /* PhoneLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneLoginViewController.swift; sourceTree = "<group>"; };
+		9CBB47341E5E1EB300D351AA /* PhoneLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneLoginViewController.xib; sourceTree = "<group>"; };
+		9CBB47371E5E4D3900D351AA /* PhoneVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerificationViewController.swift; sourceTree = "<group>"; };
+		9CBB47381E5E4D3900D351AA /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
+		9CBC93161E60A3D000FF733F /* SearchResultsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewCell.swift; sourceTree = "<group>"; };
+		9CBC93171E60A3D000FF733F /* SearchResultsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewCell.xib; sourceTree = "<group>"; };
+		9CBC931A1E60DDF300FF733F /* CustomAlertControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertControllers.swift; sourceTree = "<group>"; };
+		9CBC931C1E60F58100FF733F /* AddLocationSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationSuccessViewController.swift; sourceTree = "<group>"; };
+		9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationSuccessViewController.xib; sourceTree = "<group>"; };
+		9CBC93201E61081700FF733F /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
+		9CBC93211E61081700FF733F /* AddContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactViewController.xib; sourceTree = "<group>"; };
 		9CE3C2D81E5CF36B00B7C6A3 /* CaliforniaPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaliforniaPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,8 +111,84 @@
 			isa = PBXGroup;
 			children = (
 				9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */,
+				9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */,
+				9CA5184E1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift */,
+				9CA518501E5F5F2B002B2250 /* CustomAlertBackground.swift */,
 			);
 			name = "Custom Views";
+			sourceTree = "<group>";
+		};
+		9CA518431E5F4401002B2250 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9CBB47301E5E180700D351AA /* ValidationMethods.swift */,
+				9CA518721E5FCEFB002B2250 /* UserDefaultManager.swift */,
+				9CBC931A1E60DDF300FF733F /* CustomAlertControllers.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		9CA518481E5F52B1002B2250 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9CA518461E5F52A4002B2250 /* UIColorExtension.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		9CA5184D1E5F5845002B2250 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */,
+				9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */,
+				9CA518521E5F64DA002B2250 /* NotificationsPermissionViewController.swift */,
+				9CA518531E5F64DA002B2250 /* NotificationsPermissionViewController.xib */,
+				9CA518561E5F7F00002B2250 /* EmailRegistrationViewController.swift */,
+				9CA518571E5F7F00002B2250 /* EmailRegistrationViewController.xib */,
+			);
+			name = Onboarding;
+			sourceTree = "<group>";
+		};
+		9CBB47321E5E1C9200D351AA /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				9CBB472A1E5E01D300D351AA /* EmailLoginViewController.swift */,
+				9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */,
+				9CBB47331E5E1EB300D351AA /* PhoneLoginViewController.swift */,
+				9CBB47341E5E1EB300D351AA /* PhoneLoginViewController.xib */,
+				9CBB47371E5E4D3900D351AA /* PhoneVerificationViewController.swift */,
+				9CBB47381E5E4D3900D351AA /* PhoneVerificationViewController.xib */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		9CBC93141E6099B900FF733F /* Tab Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				9CA518621E5FC290002B2250 /* TabBarViewController.swift */,
+				9CA518631E5FC290002B2250 /* TabBarViewController.xib */,
+				9CBC93151E6099F600FF733F /* Map Tab */,
+				9CA5186A1E5FC440002B2250 /* ProfileViewController.swift */,
+				9CA5186B1E5FC440002B2250 /* ProfileViewController.xib */,
+			);
+			name = "Tab Navigation";
+			sourceTree = "<group>";
+		};
+		9CBC93151E6099F600FF733F /* Map Tab */ = {
+			isa = PBXGroup;
+			children = (
+				9CA518661E5FC3F6002B2250 /* MapViewController.swift */,
+				9CA518671E5FC3F6002B2250 /* MapViewController.xib */,
+				9CA5186E1E5FC987002B2250 /* AddLocationViewController.swift */,
+				9CA5186F1E5FC987002B2250 /* AddLocationViewController.xib */,
+				9CBC93161E60A3D000FF733F /* SearchResultsTableViewCell.swift */,
+				9CBC93171E60A3D000FF733F /* SearchResultsTableViewCell.xib */,
+				9CBC931C1E60F58100FF733F /* AddLocationSuccessViewController.swift */,
+				9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */,
+				9CBC93201E61081700FF733F /* AddContactViewController.swift */,
+				9CBC93211E61081700FF733F /* AddContactViewController.xib */,
+			);
+			name = "Map Tab";
 			sourceTree = "<group>";
 		};
 		9CE3C2CF1E5CF36B00B7C6A3 = {
@@ -73,7 +215,12 @@
 				9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */,
 				9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */,
 				9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */,
+				9CA5184D1E5F5845002B2250 /* Onboarding */,
+				9CBB47321E5E1C9200D351AA /* Login */,
+				9CBC93141E6099B900FF733F /* Tab Navigation */,
+				9CA518431E5F4401002B2250 /* Helpers */,
 				9C32A2E41E5D105A0099ABF6 /* Custom Views */,
+				9CA518481E5F52B1002B2250 /* Extensions */,
 				9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */,
 				9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */,
 				9CE3C2E71E5CF36B00B7C6A3 /* Info.plist */,
@@ -157,9 +304,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CA518651E5FC290002B2250 /* TabBarViewController.xib in Resources */,
+				9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */,
+				9CBB473A1E5E4D3900D351AA /* PhoneVerificationViewController.xib in Resources */,
+				9CA518711E5FC987002B2250 /* AddLocationViewController.xib in Resources */,
 				9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */,
+				9CA518591E5F7F00002B2250 /* EmailRegistrationViewController.xib in Resources */,
+				9CBB47361E5E1EB300D351AA /* PhoneLoginViewController.xib in Resources */,
+				9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */,
+				9CA5186D1E5FC440002B2250 /* ProfileViewController.xib in Resources */,
+				9CA518551E5F64DA002B2250 /* NotificationsPermissionViewController.xib in Resources */,
 				9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */,
+				9CBC931F1E60F58100FF733F /* AddLocationSuccessViewController.xib in Resources */,
+				9CBC93191E60A3D000FF733F /* SearchResultsTableViewCell.xib in Resources */,
 				9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */,
+				9CA518691E5FC3F6002B2250 /* MapViewController.xib in Resources */,
+				9CA5184C1E5F583B002B2250 /* LocationPermissionsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,8 +331,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */,
+				9CA518511E5F5F2B002B2250 /* CustomAlertBackground.swift in Sources */,
+				9CA518541E5F64DA002B2250 /* NotificationsPermissionViewController.swift in Sources */,
+				9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */,
+				9CBC931B1E60DDF300FF733F /* CustomAlertControllers.swift in Sources */,
+				9CBC93181E60A3D000FF733F /* SearchResultsTableViewCell.swift in Sources */,
 				9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */,
+				9CBB47351E5E1EB300D351AA /* PhoneLoginViewController.swift in Sources */,
+				9CA518581E5F7F00002B2250 /* EmailRegistrationViewController.swift in Sources */,
+				9CA5186C1E5FC440002B2250 /* ProfileViewController.swift in Sources */,
+				9CBB47391E5E4D3900D351AA /* PhoneVerificationViewController.swift in Sources */,
+				9CA518471E5F52A4002B2250 /* UIColorExtension.swift in Sources */,
+				9CA5184B1E5F583B002B2250 /* LocationPermissionsViewController.swift in Sources */,
+				9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */,
+				9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */,
+				9CA518701E5FC987002B2250 /* AddLocationViewController.swift in Sources */,
+				9CA518731E5FCEFB002B2250 /* UserDefaultManager.swift in Sources */,
 				9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */,
+				9CA518641E5FC290002B2250 /* TabBarViewController.swift in Sources */,
+				9CBC931E1E60F58100FF733F /* AddLocationSuccessViewController.swift in Sources */,
+				9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */,
+				9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */,
+				9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

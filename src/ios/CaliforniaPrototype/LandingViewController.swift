@@ -17,12 +17,15 @@ class LandingViewController: UIViewController {
     }
     
     @IBAction func continueButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(LocationPermissionsViewController(), animated: true)
     }
     
     @IBAction func loginWithPhoneButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(PhoneLoginViewController(), animated: true)
     }
     
     @IBAction func loginWithEmailButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(EmailLoginViewController(), animated: true)
     }
     
 }
