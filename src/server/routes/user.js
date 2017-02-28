@@ -1,19 +1,47 @@
-var mongo = require('mongodb');
 var crypto = require('crypto');
 var moment = require('moment');
 var config = require('../config.json');
 var AWS = require('aws-sdk');
 var jwt = require('jsonwebtoken');
 var ObjectID = require('mongodb').ObjectID;
-
-var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
 var userDB;
-var server = new Server(config.db, 49541, { auto_reconnect: true });//27017
+var db;
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect(config.db, function(err, db) {
+  if(!err) {
+    userDB=db.collection('user');
+    console.log("We are connected");
+  }
+});
 
 
 
+//var server = new Server(config.db, 49541, { auto_reconnect: true });//27017
+/**
+var fs = require("fs");
+var tunnel = require('tunnel-ssh');
+var dbstring=config.db;
+var dbusername=config.dbuser;
+
+var connect = require('mongodb-connection-model').connect;
+
+
+connect(config.dboptions, (err, db1) => {
+  if (err) {
+    return console.log(err);
+  }
+  userDB=db1.db('ca').collection('user');
+
+});
+
+ */
+
+
+
+/*
 db = new Db('ca', server);
 
 
@@ -29,8 +57,8 @@ db.open(function (err, db) {
         });
     }
 });
-
-var userDB = db.collection('user');
+*/
+//var userDB = db.collection('user');
 
 exports.test = function (req, res) {
     var id = req.params.id;
@@ -44,8 +72,8 @@ exports.test = function (req, res) {
 
 exports.add = function (req, res) {
     var userinfo = req.body;
-    if (!userinfo.email || !userinfo.phone) {
-        res.status(400).send({ 'Error': 'Phone and email is required' });
+    if (!userinfo.email && !userinfo.phone) {
+        res.status(400).send({ 'Error': 'Phone or email is required' });
         return;
     }
     userDB.findOne({ $or: [{ 'email': userinfo.email == undefined ? "---" : userinfo.email }, { 'phone': userinfo.phone == undefined ? "---" : userinfo.phone }] }, function (err, item) {
@@ -179,7 +207,7 @@ exports.login = function (req, res) {
 
     userDB.findOne({ 'email': userinfo.email }, function (e, result) {
         if (result == null) {
-            res.status(400).send({ 'Error': 'Login failed' });
+            res.status(404).send({ 'Error': 'User not found' });
         } else {
             validatePassword(userinfo['password'], result.password, function (err, o) {
                 if (o) {
@@ -200,8 +228,13 @@ exports.phoneLogin = function (req, res) {
 
     userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
         if (result == null) {
-            res.status(400).send({ 'Error': 'Login failed' });
+            res.status(404).send({ 'Error': 'User not found' });
         } else {
+            if(!userinfo.password){
+                res.status(400).send({ 'Error': 'Password is required' });
+                return;
+            }
+            
             validatePassword(userinfo.password, result.password, function (err, o) {
                 if (o) {
                     result.token = generateToken(result._id);
@@ -218,16 +251,57 @@ exports.phoneLogin = function (req, res) {
 }
 exports.phoneCode = function (req, res) {
     var userinfo = req.body;
-
+    var code = getRandomIntInclusive(123456, 999999);
     userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
         if (result == null) {
-            res.status(401).send({ 'Error': 'Phone number not found' });
+            
+            userinfo.password=code;
+           saltAndHash(userinfo.password, function (hash) {
+            userinfo.password = hash;
+            // append date stamp when record was created //
+            userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+            userinfo.locations = [];
+            userinfo.contacts = [];
+            
+            userDB.insert(userinfo, { safe: true }, function (err, result) {
+                if (err) {
+                    res.status(400).send({ 'Error': 'An error has occurred' });
+                } else {
+                    console.log('success: --' + JSON.stringify(result));
+                    result.ops[0].token = generateToken(result.ops[0]._id);
+                    userDB.save(result.ops[0], { safe: true }, function (e) {
+                    });
+                    var userobj = result.ops[0];
+                    userobj.id = userobj._id;
+                    delete userobj._id;
+                    delete userobj.password;
+
+                    //res.status(200).send({ 'code': code });
+                    res.status(200).send();
+                    return;
+                }
+
+            });
+
+        });
+
+
         } else {
-            var code = getRandomIntInclusive(123456, 999999);
+            
             sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
                 console.log("sms result", err);
                 if (!err) {
-                    res.status(200).send({ 'code': code });
+
+
+           saltAndHash(code, function (hash) {
+            result.password = hash;
+                    userDB.save(result, { safe: true }, function (e) {
+                    });
+
+           });
+
+
+                    res.status(200).send();
                 } else {
                     res.status(500).send({ 'Error': 'SMS failed' });
                 }
