@@ -50,7 +50,7 @@ else {
 
 var cronJob = cron.job(config.cron, function(){
     incident.importIncident();
-    console.log("test");
+    console.log("test cron");
 }); 
 cronJob.start();
 
