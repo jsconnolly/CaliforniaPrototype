@@ -7,16 +7,16 @@ title: Log In
       <div class="user-reg col-md-4 col-md-offset-4">
             <a href="index.html" class="btn btn-primary btn-block">Back to Map</a>
         <h2>User Log In</h2>
-        <form action="user/index.html" data-toggle="validator" role="form">
+        <form data-toggle="validator" role="form">
           <div class="form-group">
             <label>Username</label>
-            <input type="text" class="form-control" placeholder="username" required />
+            <input type="text" class="form-control" placeholder="username" id="username" required />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control" placeholder="password" required />
+            <input type="password" class="form-control" placeholder="password" id="password" required />
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+          <button type="button" class="btn btn-primary btn-block" id="loginbtn">Log in</button>
         </form>
         <p>
               <a href="accountrecovery.html">Click here if you have trouble logging in</a>
