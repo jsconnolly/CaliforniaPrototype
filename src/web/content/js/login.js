@@ -1,14 +1,22 @@
+
 $(document).ready(function(){
 
     var LoginData = {
     email: "",
     password: ""
 };
+<<<<<<< ae1d3d5afa52e9030ec565eb26569a3f1ec00028
 
 
    var LoginResponse = { token:"", id:""};
 
 
+=======
+
+
+
+
+>>>>>>> Add location
     $('#loginbtn').click(function(e){
 
         var password = $('#password').val();
