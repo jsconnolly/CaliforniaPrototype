@@ -58,4 +58,8 @@
     <string name="debug_popup_skipping">CURRENTLY NOT LINKED TO BACK-END, SKIPPING</string>
     <string name="register_for_one">Register for one</string>
     <string name="register_for_account">Register For Account</string>
+    <string name="api_response_incorrect_credentials">Login failed</string>
+    <string name="username_pw_incorrect">Username or password incorrect. Please check your input and try again</string>
+    <string name="enter_a_valid_phone_number">Please enter a valid phone number</string>
+    <string name="phone_number_didnt_save">An error has occurred, please enter your phone number again</string>
 </resources>

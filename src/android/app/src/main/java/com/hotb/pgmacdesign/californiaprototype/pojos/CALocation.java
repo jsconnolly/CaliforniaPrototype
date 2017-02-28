@@ -11,7 +11,7 @@ public class CALocation extends CAMasterObject{
     @SerializedName("displayName")
     private String displayName;
     @SerializedName("alertRadius")
-    private String alertRadius;
+    private String alertRadius;  // In Miles, as per meeting with Jason on: 2017-02-27 15:00
     @SerializedName("enablePushNotifications")
     private Boolean enablePushNotifications;
     @SerializedName("enableSMS")
@@ -79,6 +79,14 @@ public class CALocation extends CAMasterObject{
     }
 
     public static class Coordinates {
+
+        public Coordinates(){}
+
+        public Coordinates(double lat, double lng){
+            this.lat = lat;
+            this.lng = lng;
+        }
+
         @SerializedName("lat")
         private double lat;
         @SerializedName("lng")

@@ -28,8 +28,9 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
  * Created by pmacdowell on 2017-02-24.
+ *   //Removed on 2017-02-27 As per meeting and AHA discussion
  */
-
+@Deprecated
 public class AddContactFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
 
     public final static String TAG = "AddContactFragment";
@@ -197,7 +198,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         number = StringUtilities.keepNumbersOnly(number);
         number = number.trim();
 
-        // TODO: 2017-02-24 do whatever here with name and number once server is up and running
+
     }
 
     private boolean validateFields(){

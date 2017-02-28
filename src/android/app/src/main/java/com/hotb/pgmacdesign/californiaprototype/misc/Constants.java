@@ -11,6 +11,7 @@ public class Constants {
     /////Misc Strings//
     ///////////////////
 
+    public static final String STAGING_SERVER_URL = "ec2-54-241-144-61.us-west-1.compute.amazonaws.com";
     public static final String PHONE_URI_TO_WRITE_TO = "/storage/emulated/0/Download/";
     public static final String FILE_NAME = "debugLoggingData.txt";
     public static final String URL_GOOGLE = "https://www.google.com";
@@ -57,12 +58,11 @@ public class Constants {
     public static final String LOCATION_LATITUDE = "location_latitude";
     public static final String LOCATION_LONGITUDE = "location_longitude";
     public static final String LOCATION_LAST_TIME_SET = "location_last_time_set";
-    public static final String USER_PHONE_NUMBER = "user_phone_number";
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /////Custom Tags (There is no specific order to these numbers)//////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    /////Custom Tags (There is no specific order to these numbers)///
+    /////////////////////////////////////////////////////////////////
 
     //Request codes used for permission requests
     public static final int TAG_PERMISSIONS_ACCESS_NETWORK_STATE = 4398;
@@ -79,6 +79,15 @@ public class Constants {
     public static final int TAG_PERMISSIONS_ACCESS_COARSE_LOCATION = 4409;
     public static final int TAG_PERMISSIONS_RECEIVE_BOOT_COMPLETED = 4410;
     public static final int TAG_PERMISSIONS_SYSTEM_ALERT_WINDOW = 4411;
+    public static final int TAG_CONNECTIVITY_ISSUE = 4412;
+    public static final int TAG_API_CALL_FAILURE = 4413;
+    public static final int TAG_CA_USER = 4414;
+    public static final int TAG_CA_LOCATION = 4415;
+    public static final int TAG_EMPTY_OBJECT = 4416;
+    public static final int TAG_API_ERROR = 4417;
+
+
+
 
     //API Call Tags
     public static final int TAG_API_LOCATION_ADDED = 4412;
@@ -144,6 +153,10 @@ public class Constants {
     ////////////////////
 
     public static final String CURRENT_FRAGMENT = "current_fragment";
+    public static final String AUTH_TOKEN = "auth_token";
+    public static final String USER_ID = "user_id";
+    public static final String USER_PHONE_NUMBER = "user_phone_number";
+    public static final String USER_EMAIL = "user_email";
 
     ///////////////////
     /////Time Values //
@@ -157,6 +170,7 @@ public class Constants {
     public static final long ONE_WEEK = (1000*60*60*24*7);
     public static final long ONE_MONTH = (1000*60*60*24*30);
     public static final long ONE_YEAR = (1000*60*60*24*365);
+    public static final int PROGRESS_BAR_TIMEOUT = 5000;
 
     //Default Date Format
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

@@ -19,8 +19,12 @@ import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener
 import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
+import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
@@ -31,7 +35,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
         View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 
     public final static String TAG = "EmailLoginFragment";
-
+    private APICalls api;
 
     private enum WhichActive {
         EMAIL, PHONE
@@ -63,6 +67,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
         super.onCreate(savedInstanceState);
         //Utilize instanceState here
         this.whichActive = WhichActive.EMAIL;
+        this.api = new APICalls(getActivity(), this);
     }
 
     @Nullable
@@ -382,9 +387,24 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
         switch(v.getId()){
             //Continue Button
             case R.id.fragment_email_login_button:
-                //Login with credentials
-                // TODO: 2017-02-24 insert api calls here:
-                onTaskComplete(null, 0);
+
+                if(whichActive == WhichActive.EMAIL) {
+                    //Login with credentials
+                    String email = fragment_email_login_email_et.getText().toString();
+                    String pw = fragment_email_login_pw_et.getText().toString();
+
+                    ProgressBarUtilities.showSVGProgressDialog(getActivity(),
+                            false, Constants.PROGRESS_BAR_TIMEOUT);
+                    api.loginWithEmail(email, pw);
+                }
+                if(whichActive == WhichActive.PHONE){
+                    String phone = fragment_email_login_email_et_phone.getText().toString();
+                    phone = StringUtilities.keepNumbersOnly(phone);
+                    phone = phone.trim();
+                    ProgressBarUtilities.showSVGProgressDialog(getActivity(),
+                            false, Constants.PROGRESS_BAR_TIMEOUT);
+                    api.phoneVerification(phone);
+                }
                 break;
 
             //Continue without signin
@@ -449,8 +469,45 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
-        // TODO: 2017-02-24 insert check from server here
-        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
-        switchFragment(Constants.FRAGMENT_SMS_VERIFICATION);
+
+        ProgressBarUtilities.dismissProgressDialog();
+        switch(customTag){
+            case Constants.TAG_EMPTY_OBJECT:
+                //This means that the sms verification text was successfully sent out
+                String str2 = fragment_email_login_email_et_phone.getText().toString();
+                if(StringUtilities.isNullOrEmpty(str2)){
+                    L.Toast(getActivity(), getString(R.string.enter_a_valid_phone_number));
+                } else {
+                    MyApplication.getSharedPrefsInstance().save(Constants.USER_PHONE_NUMBER, str2);
+                    switchFragment(Constants.FRAGMENT_SMS_VERIFICATION);
+                }
+                break;
+
+            case Constants.TAG_API_ERROR:
+                //API Call error
+                String str = CaliforniaPrototypeCustomUtils.checkErrorString(result);
+                if(str.equals(getString(R.string.api_response_incorrect_credentials))){
+                    //L.toast(getActivity(), getString(R.string.username_pw_incorrect));
+                } else if(str.equals("")){
+                    // TODO: 2017-02-27 altar once we know other response strings
+                } else {
+                    L.Toast(getActivity(), str);
+                }
+
+                break;
+
+            case Constants.TAG_API_CALL_FAILURE:
+                //API Call error, unknown
+                L.Toast(getActivity(), getString(R.string.generic_error_text));
+
+                break;
+
+            case Constants.TAG_CA_USER:
+                //This means that login was successful
+                switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
+
+                break;
+
+        }
     }
 }

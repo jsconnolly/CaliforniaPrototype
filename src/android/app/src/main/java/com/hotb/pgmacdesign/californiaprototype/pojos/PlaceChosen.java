@@ -1,6 +1,8 @@
 package com.hotb.pgmacdesign.californiaprototype.pojos;
 
 import com.google.gson.annotations.SerializedName;
+import com.hotb.pgmacdesign.californiaprototype.utilities.DateUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
  * This is a smaller, more lightweight version of the Place object. It is used for persistance
@@ -23,8 +25,18 @@ public class PlaceChosen {
     private String name;
     @SerializedName("address")
     private String address;
+    @SerializedName("radius")
+    private float radius;
     @SerializedName("contact")
     private CaliforniaContact contact;
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+    }
 
     public String getPlaceId() {
         return placeId;
@@ -96,5 +108,44 @@ public class PlaceChosen {
 
     public void setContact(CaliforniaContact contact) {
         this.contact = contact;
+    }
+
+    public static CALocation convertToLocation(PlaceChosen placeChosen){
+        if(placeChosen == null){
+            return null;
+        }
+
+        String name = placeChosen.getName();
+        if(StringUtilities.isNullOrEmpty(name)){
+            name = placeChosen.getAddress();
+        }
+        if(StringUtilities.isNullOrEmpty(name)){
+            name = placeChosen.getAttributions();
+        }
+        if(StringUtilities.isNullOrEmpty(name)){
+            name = "Location: " + (DateUtilities.getCurrentDateLong() / 1000);
+        }
+
+        double lat = placeChosen.getLat();
+        double lng = placeChosen.getLng();
+
+        CALocation.Coordinates coordinates = new CALocation.Coordinates(lat, lng);
+
+        float radiusInMeters = placeChosen.getRadius();
+        float radiusInMiles = 0;
+        if(radiusInMeters < 1610){
+            radiusInMiles = 1;
+        } else {
+            radiusInMiles = (float)(radiusInMeters / 1609.344);
+        }
+
+        CALocation caLocation = new CALocation();
+        caLocation.setAlertRadius("" + radiusInMiles);
+        caLocation.setCoordinates(coordinates);
+        caLocation.setDisplayName(name);
+        caLocation.setEnableEmail(true);
+        caLocation.setEnablePushNotifications(true);
+        caLocation.setEnableSMS(true);
+        return caLocation;
     }
 }
