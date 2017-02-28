@@ -10,10 +10,10 @@ title: Register
         <p>
           Para subscribir en Espa&ntilde;ol,<a href="#">marque aqui</a>.
         </p>
-        <form action="confirm.html" data-toggle="validator" role="form">
+        <form data-toggle="validator" role="form">
           <div class="form-group">
               <label>Enter Your Email Address</label>
-              <input type="email" class="form-control email" placeholder="username" data-error="Please enter a valid email address." required>
+              <input type="email" class="form-control email" id="email" placeholder="username" data-error="Please enter a valid email address." required>
               <div class="help-block with-errors"></div>
           </div>
           <div class="form-group">
@@ -22,10 +22,10 @@ title: Register
           </div>
           <div class="form-group">
             <label>Re-Type Password</label>
-            <input type="password" class="form-control" placeholder="password" data-match="#password" data-match-error="Passwords must match." required />
+            <input type="password" class="form-control" placeholder="password" id="confirmpassword" data-match="#password" data-match-error="Passwords must match." required />
             <div class="help-block with-errors"></div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Subscribe</button>
+          <button type="button" class="btn btn-primary btn-block" id="subscribe">Subscribe</button>
           <a href="index.html" class="btn btn-default btn-block">Cancel</a>
         </form>
         <p>
