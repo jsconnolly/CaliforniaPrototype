@@ -5,7 +5,9 @@ var AWS = require('aws-sdk');
 var jwt = require('jsonwebtoken');
 var ObjectID = require('mongodb').ObjectID;
 var http = require('https');
-
+var ses = require('node-ses')
+    , client = ses.createClient({ key: config.accessKeyId, secret: config.secretAccessKey, amazon: config.emailEndpoint });
+var AWS = require('aws-sdk');
 var userDB;
 var db;
 var MongoClient = require('mongodb').MongoClient;
@@ -22,10 +24,46 @@ MongoClient.connect(config.db, function (err, db) {
 exports.importIncident = function () {
 
     //getWildFire();
-    //getRiverGauges();
-    getEarthquakes();
+    getRiverGauges();
+    //getEarthquakes();
 
 
+    createAlerts();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Give SES the details and let it construct the message for you.
+    /*
+    client.sendEmail({
+       to: 'cctech@gmail.com'
+     , from: 'noreply@hotbsoftware.com'
+     , subject: 'greetings'
+     , message: 'your <b>message</b> goes here'
+     , altText: 'plain text'
+    }, function (err, data, res) {
+       console.log(err);
+    });
+    */
 };
 
 
@@ -69,8 +107,8 @@ var getWildFire = function () {
 }
 
 var getRiverGauges = function () {
-    var url = 'https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations/ahps_riv_gauges/MapServer/0/query?f=json&where=state%20%3D%20%27CA%27&returnIdsOnly=false&returnCountOnly=false&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&state=CA';
-
+    //var url = 'https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations/ahps_riv_gauges/MapServer/0/query?f=json&where=state%20%3D%20%27CA%27&returnIdsOnly=false&returnCountOnly=false&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&state=CA';
+    var url = "https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations/ahps_riv_gauges/MapServer/1/query?f=json&returnIdsOnly=false&where=(state%20%3D%20%27CA%27)%20AND%20(1%3D1)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*";
     http.get(url, function (res) {
         var body = '';
 
@@ -80,25 +118,27 @@ var getRiverGauges = function () {
 
         res.on('end', function () {
             var caResponse = JSON.parse(body);
+            if (caResponse.features) {
 
-            caResponse.features.forEach(function (item, index) {
+                caResponse.features.forEach(function (item, index) {
 
-                var incidentObj = item.attributes;
-                incidentObj.type = "rivergauge";
-                incidentDB.findOne({ 'gaugelid': incidentObj.gaugelid, "type": "rivergauge" }, function (e, result) {
-                    console.log("result: ", result);
+                    var incidentObj = item.attributes;
+                    incidentObj.type = "rivergauge";
+                    incidentObj.name = incidentObj.gaugelid;
+                    incidentObj.date = new Date(incidentObj.fcstissunc);
+                    incidentObj.loc = [incidentObj.longitude, incidentObj.latitude];
+                    incidentDB.findOne({ 'gaugelid': incidentObj.gaugelid, "type": "rivergauge" }, function (e, result) {
+                        //console.log("result: ", result);
 
-                    if (!result) {
-                        incidentDB.insert(incidentObj, { safe: true }, function (err, result) {
+                        if (!result) {
+                            incidentDB.update(incidentObj, incidentObj, { upsert: true, })
+                        }
+                    });
 
-                        });
-                    }
+
                 });
 
-
-            });
-
-
+            }
         });
 
     }).on('error', function (e) {
@@ -125,6 +165,9 @@ var getEarthquakes = function () {
 
                     var incidentObj = item.attributes;
                     incidentObj.type = "earthquake";
+                    //var t = new Date(incidentObj.datetime);
+                    //var formatted = t.format("dd.mm.yyyy hh:MM:ss"); 
+                    incidentObj.date = new Date(incidentObj.datetime);
                     incidentObj.name = incidentObj.eqid;
                     incidentObj.loc = [incidentObj.latitude, incidentObj.longitude];
                     incidentDB.findOne({ 'eqid': incidentObj.eqid, "type": "earthquake" }, function (e, result) {
@@ -156,5 +199,172 @@ var getEarthquakes = function () {
 
     }).on('error', function (e) {
         console.log("Got an error: ", e);
+    });
+}
+
+var createAlerts = function () {
+
+
+    // Create the index
+    incidentDB.ensureIndex(
+        { 'loc': "2dsphere" }, function (err, result) {
+
+            var cursor = userDB.find();
+
+            // Execute the each command, triggers for each document
+            cursor.each(function (err, item) {
+                if (item)
+                    if (item.locations) {
+
+
+
+
+
+
+                        if (item.locations.length > 0)
+                            item.locations.forEach(function (value) {
+
+                                console.log("3" + value.coordinates.lat);
+
+                                incidentDB.find(
+                                    {
+                                        'loc':
+                                        {
+                                            $near:
+                                            {
+                                                $geometry:
+                                                { type: "Point", coordinates: [value.coordinates.lat, value.coordinates.lng] },
+                                                $maxDistance: value.alertRadius ? (value.alertRadius * 1609) : 1609 * 2
+                                            }
+                                        }
+                                    }
+                                ).toArray(function (err, docs) {
+
+                                    console.log("total" + docs.length);
+                                    docs.forEach(function (docValue) {
+                                        //console.log("4" + docValue-item.date);
+                                        if (!item.alerts) item.alerts = [];
+                                        var output = item.alerts.filter(function (value) { return value.name == docValue.name; })
+                                        if (output.length == 0) {
+                                            var alert = {};
+                                            alert.name = docValue.name;
+                                            alert.type = docValue.type;
+                                            alert.date = docValue.date;
+                                            alert.loc = docValue.loc;
+                                            alert.location = docValue.location;
+                                            item.alerts.push(alert);
+                                            var emessage = alert.type + ' ' + alert.name + ' at ' + alert.location + ' on ' + alert.date;
+                                            console.log("sending");
+
+                                            if (value.enableSMS && item.phone) {
+                                                sendSMS(item.phone, emessage, function (err, o) {
+
+                                                    if (err) {
+
+
+                                                    }
+
+                                                });
+                                            }
+                                            if (value.enableEmail && item.email) {
+                                                if (item.email != "cctech@gmail.com")
+                                                    client.sendEmail({
+                                                        to: item.email
+                                                        , from: 'noreply@hotbsoftware.com'
+                                                        , subject: 'CA emergency alert'
+                                                        , message: emessage
+
+                                                    }, function (err, data, response) {
+                                                        if (err) {
+
+                                                        }
+                                                    });
+                                            }
+
+
+
+                                        }
+                                    });
+
+                                    userDB.save(item, { safe: true }, function (ex) {
+
+                                    });
+
+
+
+
+                                    //console.log("Found the following records" + err);
+                                    //console.log(docs);
+
+                                });
+
+                            });
+
+
+
+
+
+
+                    };
+            });
+        });
+
+}
+
+
+var sendSMS = function (to_number, message, func_callback) {
+
+
+    AWS.config.update({
+        accessKeyId: config.accessKeyId,
+        secretAccessKey: config.secretAccessKey,
+        region: config.region
+    });
+
+    var sns = new AWS.SNS();
+
+    var SNS_TOPIC_ARN = config.topic;
+
+    sns.subscribe({
+        Protocol: 'sms',
+        //You don't just subscribe to "news", but the whole Amazon Resource Name (ARN)
+        TopicArn: SNS_TOPIC_ARN,
+        Endpoint: to_number
+    }, function (error, data) {
+        if (error) {
+            console.log("error when subscribe", error);
+            return func_callback(false);
+        }
+
+
+        console.log("subscribe data", data);
+        var SubscriptionArn = data.SubscriptionArn;
+
+        var params = {
+            TargetArn: SNS_TOPIC_ARN,
+            Message: message,
+            //hardcode now
+            Subject: 'Admin'
+        };
+
+        sns.publish(params, function (err_publish, data) {
+            if (err_publish) {
+                console.log('Error sending a message', err_publish);
+
+            } else {
+                console.log('Sent message:', data.MessageId);
+            }
+
+            var params = {
+                SubscriptionArn: SubscriptionArn
+            };
+
+            sns.unsubscribe(params, function (err, data) {
+                if (err) {
+                    console.log("err when unsubscribe", err);
+                }
+                return func_callback(err_publish != null);
+            });
+        });
     });
 }

@@ -6,6 +6,9 @@ var jwt = require('jsonwebtoken');
 var ObjectID = require('mongodb').ObjectID;
 var userDB;
 var db;
+var ses = require('node-ses')
+  , client = ses.createClient({ key: config.accessKeyId, secret: config.secretAccessKey, amazon: config.emailEndpoint });
+
 // Retrieve
 var MongoClient = require('mongodb').MongoClient;
 
@@ -85,7 +88,7 @@ exports.add = function (req, res) {
         saltAndHash(userinfo.password, function (hash) {
             userinfo.password = hash;
             // append date stamp when record was created //
-            userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+            userinfo.date = new Date();//moment().format('MMMM Do YYYY, h:mm:ss a');
             userinfo.locations = [];
             userinfo.contacts = [];
             //userobj.token=generateToken(userobj.id);
@@ -163,9 +166,41 @@ exports.getUserByEmail = function (req, res) {
 
 
     });
+}
+
+exports.forgotPassword = function (req, res) {
+    var userinfo = req.body;
+
+    userDB.findOne({ 'email': userinfo.email }, function (e, result) {
+        if (result) {
+
+var token = generateResetToken(result._id);
+client.sendEmail({
+   to: userinfo.email
+ , from: 'noreply@hotbsoftware.com'
+ , subject: 'Reset your password'
+ , message: 'Click <a href="'+config.resetURL+'?token='+token+'&email='+userinfo.email+'">here</a> to reset your password.'
+ 
+}, function (err, data, response) {
+   if(err){
+        res.status(500).send({ 'Error': 'Email failed' });
+   }else{
+        res.status(200).send();
+   }
+});
+
+
+            
+        } else {
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+
+
+    });
 
 
 }
+
 
 
 exports.getUserById = function (req, res) {
@@ -214,7 +249,12 @@ exports.login = function (req, res) {
                     result.token = generateToken(result._id);
                     userDB.save(result, { safe: true }, function (e) {
                     });
-                    res.status(200).send({ token: result.token });
+                    var returnObj=result;
+                    returnObj.id=result._id;
+                    delete returnObj._id;
+                    delete returnObj.password;
+                    //res.status(200).send({ token: result.token });
+                    res.status(200).send(returnObj);
                 } else {
                     res.status(400).send({ 'Error': 'Login failed' });
                 }
@@ -240,7 +280,12 @@ exports.phoneLogin = function (req, res) {
                     result.token = generateToken(result._id);
                     userDB.save(result, { safe: true }, function (e) {
                     });
-                    res.status(200).send({ token: result.token });
+                    var returnObj=result;
+                    returnObj.id=result._id;
+                    delete returnObj._id;
+                    delete returnObj.password;
+                    res.status(200).send(returnObj);
+                    //res.status(200).send({ token: result.token });
                 } else {
                     res.status(400).send({ 'Error': 'Login failed' });
                 }

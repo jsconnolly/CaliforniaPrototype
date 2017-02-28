@@ -25,7 +25,7 @@ else {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
         next();
     });
     app.put('/users/:id/contacts/:cid', user.updateContact);
@@ -34,6 +34,7 @@ else {
     app.put('/users/:id/locations', user.addLocation);
     app.post('/users/phoneCode', user.phoneCode);
     app.post('/users/changePassword', user.updatePassword);
+    app.post('/users/forgotPassword', user.forgotPassword);
     app.post('/users/resetPassword', user.resetPassword);
     app.put('/users/:id', user.update);
     app.post('/users/signin', user.login);
@@ -75,7 +76,7 @@ cronJob.start();
     });
 
     app.listen(config.port, function () {
-        console.log('4 Listening on port:' + config.port);
+        console.log('5 Listening on port:' + config.port);
     });
 
 
