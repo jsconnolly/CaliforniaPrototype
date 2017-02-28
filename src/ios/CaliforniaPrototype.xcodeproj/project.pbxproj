@@ -10,6 +10,9 @@
 		9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */; };
 		9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */; };
 		9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */; };
+		9C48D4B81E65E8130011E462 /* NetworkOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4B71E65E8130011E462 /* NetworkOperations.swift */; };
+		9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4B91E65E8660011E462 /* APIManager.swift */; };
+		9C48D4BC1E65E93D0011E462 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4BB1E65E93D0011E462 /* User.swift */; };
 		9CA518471E5F52A4002B2250 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518461E5F52A4002B2250 /* UIColorExtension.swift */; };
 		9CA5184B1E5F583B002B2250 /* LocationPermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */; };
 		9CA5184C1E5F583B002B2250 /* LocationPermissionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */; };
@@ -53,6 +56,9 @@
 		9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandingViewController.xib; sourceTree = "<group>"; };
 		9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectButton.swift; sourceTree = "<group>"; };
+		9C48D4B71E65E8130011E462 /* NetworkOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkOperations.swift; sourceTree = "<group>"; };
+		9C48D4B91E65E8660011E462 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		9C48D4BB1E65E93D0011E462 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9CA518461E5F52A4002B2250 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPermissionsViewController.swift; sourceTree = "<group>"; };
 		9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationPermissionsViewController.xib; sourceTree = "<group>"; };
@@ -213,6 +219,9 @@
 			children = (
 				9CE3C2F01E5CF61800B7C6A3 /* CaliforniaPrototype.entitlements */,
 				9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */,
+				9C48D4B71E65E8130011E462 /* NetworkOperations.swift */,
+				9C48D4B91E65E8660011E462 /* APIManager.swift */,
+				9C48D4BB1E65E93D0011E462 /* User.swift */,
 				9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */,
 				9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */,
 				9CA5184D1E5F5845002B2250 /* Onboarding */,
@@ -330,6 +339,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C48D4BC1E65E93D0011E462 /* User.swift in Sources */,
 				9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */,
 				9CA518511E5F5F2B002B2250 /* CustomAlertBackground.swift in Sources */,
 				9CA518541E5F64DA002B2250 /* NotificationsPermissionViewController.swift in Sources */,
@@ -346,11 +356,13 @@
 				9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */,
 				9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */,
 				9CA518701E5FC987002B2250 /* AddLocationViewController.swift in Sources */,
+				9C48D4B81E65E8130011E462 /* NetworkOperations.swift in Sources */,
 				9CA518731E5FCEFB002B2250 /* UserDefaultManager.swift in Sources */,
 				9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */,
 				9CA518641E5FC290002B2250 /* TabBarViewController.swift in Sources */,
 				9CBC931E1E60F58100FF733F /* AddLocationSuccessViewController.swift in Sources */,
 				9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */,
+				9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */,
 				9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */,
 				9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */,
 			);
