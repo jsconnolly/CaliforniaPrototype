@@ -1,15 +1,12 @@
 $(document).ready(function(){
-    
-    
 
-    
-    $('#addlocation').click(function(e){
-                    var addlocation = { 
-          "displayName":"Location10",
+        $('#addlocation').click(function(e){
+        var addlocation = { 
+          "displayName":"",
           "coordinates": "",
           "alertRadius":"100",
           "enablePushNotifications":true,
-          "enableSMS":false,
+          "enableSMS":true,
           "enableEmail":true
        }
         
@@ -21,12 +18,43 @@ $(document).ready(function(){
             console.log("Longitude" + getLatLng(cityzip).lng);        
             
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
+            addlocation.displayName = "location" + Math.random();
         
             console.log("Request JSON" + JSON.stringify(addlocation));
             
-            
+   
             // add ajax code to add a location
-        
+                            if (typeof(Storage) !== "undefined") {
+                        // Store
+                        //console.log(localStorage.getItem("token"));
+                        //console.log(localStorage.getItem("id"));  
+                                
+                            $.ajax({
+                            type: "PUT",
+                            url: APIURL + "users/" +sessionStorage.getItem("id") + "/locations",
+                            headers: {
+                            'token': sessionStorage.getItem("token"),
+                            'Content-Type':'application/json'
+                         },
+                            dataType: "json",
+                            data: JSON.stringify(addlocation),
+                            }).done(function (result) {
+                            console.log(result);
+                            if(result.token !== undefined)
+                            {
+                                alert("location added successfully");
+                                window.location.href = "/user/index.html";
+                            }
+                            })
+                            .fail(function (data, textStatus, xhr) {
+                             //console.log(data.responseJSON.Error);
+                             alert(data.responseJSON.Error);
+                             /*console.log("error", data.status);
+                             console.log("STATUS: "+xhr); */
+                            });          
+                      
+                    } 
+            
         }
         else
         {
@@ -37,6 +65,11 @@ $(document).ready(function(){
 
         
     });
+ 
+    
+
+    
+
 })
 
 
