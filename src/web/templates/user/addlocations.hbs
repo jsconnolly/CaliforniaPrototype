@@ -2,6 +2,15 @@
 title: Add Locations
 loggedin: true
 ---
+<script type="text/javascript">
+ console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
 <div class="row">
     <div class="col-md-4">
         <p>

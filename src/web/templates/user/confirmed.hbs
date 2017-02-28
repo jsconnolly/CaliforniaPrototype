@@ -2,6 +2,15 @@
 title: Confirmed
 loggedin: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
     <div class="row">
       <div class="user-reg col-md-4 col-md-offset-4">
             <a href="index.html" class="btn btn-primary btn-block">Back to Map</a>

@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             },
             admin: {
                 files: {
-                    '<%= site.dest %>/admin': ['<%= site.templates %>/admin/*.hbs']
+                    '<%= site.dest %>/admin/': ['<%= site.templates %>/admin/*.hbs']
                 },
                 options: {
                     layout: 'admin.hbs',
