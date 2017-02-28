@@ -3,3 +3,12 @@ title: Add Phone
 loggedin: true
 ---
 {{> add-phone}}
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>

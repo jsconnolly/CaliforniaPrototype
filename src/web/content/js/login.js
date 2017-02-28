@@ -1,3 +1,4 @@
+ 
 $(document).ready(function(){
     
     var LoginData = {
@@ -5,7 +6,7 @@ $(document).ready(function(){
     password: ""
 };
     
-   var LoginResponse = { token:"", id:""};
+  
     
     
     $('#loginbtn').click(function(e){
@@ -27,8 +28,15 @@ $(document).ready(function(){
             console.log(result);
             if(result.token !== undefined)
             {
-                LoginResponse.token = result.token;
-                //LoginResponse.id = getUserId($('#username').val(),LoginResponse.token)
+                
+                if (typeof(Storage) !== "undefined") {
+                        // Store
+                        sessionStorage.setItem("token", result.token);
+                        sessionStorage.setItem("id", result.id);
+                    } 
+
+                //LoginResponse.token = result.token;
+                //LoginResponse.id = result.id;
                 //LoginResponse.email = result.token;
                 //LoginToken.id=result.id;
                 //console.log("Token returned " + LoginToken.token);
