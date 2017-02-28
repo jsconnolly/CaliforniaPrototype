@@ -11,13 +11,13 @@ title: Confirmation
         <p>
           Click on the confirmation link in the email or enter the confirmation number provided.
         </p>
-        <form action="user/confirmed.html" class="form-inline">
+        <form action="user/confirmed.html" class="form-inline" data-toggle="validator" role="form">
           <div class="form-group confirmation-number">
               <label>Confirmation Number</label><br />
-            <input type="text" class="form-control input-lg" maxlength="1" placeholder="" />
-            <input type="text" class="form-control input-lg" maxlength="1" placeholder="" />
-            <input type="text" class="form-control input-lg" maxlength="1" placeholder="" />
-            <input type="text" class="form-control input-lg" maxlength="1" placeholder="" />
+            <input type="text" class="form-control input-lg" maxlength="1" onkeypress="return isNumberKey(event)" required />
+            <input type="text" class="form-control input-lg" maxlength="1" onkeypress="return isNumberKey(event)" required />
+            <input type="text" class="form-control input-lg" maxlength="1" onkeypress="return isNumberKey(event)" required />
+            <input type="text" class="form-control input-lg" maxlength="1" onkeypress="return isNumberKey(event)" required />
           </div>
           <button type="submit" class="btn btn-primary btn-block">Confirm</button>
         </form>
