@@ -15,12 +15,12 @@ loggedin: true
         <p>
             Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor.
         </p>
-        <form>
+        <form data-toggle="validator" role="form">
             <div class="form-group">
                 <label>City or Zip</label>
-                <input type="text" class="form-control" placeholder="12345" />
+                <input type="text" class="form-control" placeholder="12345" id="cityzip" required />
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Add To Watched Locations</button>
+            <button type="button" class="btn btn-primary btn-block" id="addlocation">Add To Watched Locations</button>
         </form>
     </div>
     <div class="col-md-8">
