@@ -128,6 +128,10 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         }
 
         user.setEmail(email);
+        if(!StringUtilities.isNullOrEmpty(phone)){
+            phone = StringUtilities.keepNumbersOnly(phone);
+            phone = phone.trim();
+        }
         user.setPhone(phone);
         user.setName(name);
 
@@ -159,6 +163,8 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         if(StringUtilities.isNullOrEmpty(phone)){
             fragment_profile_phone.setText("");
         } else {
+            phone = StringUtilities.formatStringLikePhoneNumber(phone);
+            phone = phone.trim();
             fragment_profile_phone.setText(phone);
         }
         if(StringUtilities.isNullOrEmpty(email)){
@@ -168,7 +174,7 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         }
         fragment_profile_name.setText(name);
         ((CustomFragmentListener)getActivity()).setToolbarDetails(
-                name, null, true, false
+                name, null, true, false, null
         );
     }
 
@@ -251,7 +257,7 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_PROFILE) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.your_profile_fragment), null, true, true);
+                    getString(R.string.your_profile_fragment), null, true, true, null);
             reloadUser();
         }
         super.onResume();

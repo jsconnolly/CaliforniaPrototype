@@ -416,6 +416,9 @@ public class DialogUtilities {
                     R.id.edit_text_dialog_cancel_button);
             edit_text_dialog_confirm_button = (Button) this.findViewById(
                     R.id.edit_text_dialog_confirm_button);
+
+            edit_text_dialog_cancel_button.setTransformationMethod(null);
+            edit_text_dialog_confirm_button.setTransformationMethod(null);
         }
 
         private void setUIFields(){

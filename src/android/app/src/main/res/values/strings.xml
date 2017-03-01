@@ -33,7 +33,7 @@
     <string name="error_message">Error Message</string>
     <string name="access_location_perm_title">Access Location</string>
     <string name="access_location_perm_message">This permission is used to access your current location when the app opens. It does not track when the app is closed and will only run when on the map page.</string>
-    <string name="current_state_emergency">Current State: EMERGENCY</string>
+    <string name="current_state_emergency">EMERGENCY: </string>
     <string name="fake_address_hint">123 Fake St, Irvine, CA 92618</string>
     <string name="add_location">Add Location</string>
     <string name="cancel">Cancel</string>
@@ -88,4 +88,19 @@
     <string name="forgot_pw_instructions">Please enter a valid email in the email box and then click forgot password to have it reset</string>
     <string name="forgot_pw_instructions2">An email has been sent to the one you entered with instructions on resetting your credentials</string>
     <string name="record_already_exists">Records already exist</string>
+    <string name="remove_location">Remove Location</string>
+    <string name="edit_location">Edit Location</string>
+    <string name="tbd_later">To be implemented in a future release</string>
+    <string name="location_name">Location Name</string>
+    <string name="email_notifications_enabled">Email notifications enabled</string>
+    <string name="sms_notifications_enabled">SMS notifications enabled</string>
+    <string name="radius_of_alert_in_miles">Radius of Alert (In Miles)</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="no_loc_to_edit">No location to edit</string>
+    <string name="fill_out_all_fields">Please fill out or edit required fields</string>
+    <string name="change_location">Change Location</string>
+    <string name="update_location_error">An error occurred while tyring to update your location. Please check the data and try again.</string>
+    <string name="location_successfully_updated">Your location has been successfully updated</string>
+    <string name="no_name">No name</string>
 </resources>

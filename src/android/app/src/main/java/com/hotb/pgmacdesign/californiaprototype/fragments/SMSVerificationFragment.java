@@ -430,7 +430,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_SMS_VERIFICATION) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.sms_verification), null, false, null);
+                    getString(R.string.sms_verification), null, false, null, null);
         }
         super.onResume();
     }

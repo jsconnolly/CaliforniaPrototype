@@ -541,7 +541,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_ADD_LOCATION) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.add_location_fragment_name), null, true, false);
+                    getString(R.string.add_location_fragment_name), null, true, false, null);
         }
         super.onResume();
     }

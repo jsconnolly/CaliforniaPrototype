@@ -155,7 +155,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 fragment_email_login_input_layout_phone.setVisibility(View.VISIBLE);
                 fragment_email_login_input_layout.setVisibility(View.GONE);
                 ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                        getString(R.string.login_with_my_phone_number), null, null, null);
+                        getString(R.string.login_with_my_phone_number), null, null, null, null);
 
                 AnimationUtilities.animateMyView(
                         fragment_email_login_tv_1_phone, 400, Constants.IN_FADE_DOWN);
@@ -171,7 +171,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 fragment_email_login_input_layout_phone.setVisibility(View.GONE);
                 fragment_email_login_input_layout.setVisibility(View.VISIBLE);
                 ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                        getString(R.string.login_with_email), null, null, null);
+                        getString(R.string.login_with_email), null, null, null, null);
 
                 AnimationUtilities.animateMyView(
                         fragment_email_login_tv_1, 400, Constants.IN_FADE_DOWN);
@@ -424,7 +424,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             //Continue without signin
             case R.id.fragment_email_login_skip_login: //Re-purposed to register
                 ((CustomFragmentListener)getActivity()).setToolbarDetails(
-                        getString(R.string.register_for_account), null, true, null);
+                        getString(R.string.register_for_account), null, true, null, null);
                 break;
 
             //Login with phone
@@ -487,7 +487,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_EMAIL_LOGIN) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.login_with_email), null, true, null);
+                    getString(R.string.login_with_email), null, true, null, null);
         }
         super.onResume();
     }
@@ -526,7 +526,8 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 } else if(str.equals("")){
                     // TODO: 2017-02-27 altar once we know other response strings
                     // TODO: 2017-02-28 This is where code for popup would go on no user account
-                    Dialog dialog = DialogUtilities.buildOptionDialog(getActivity(),
+                    Dialog dialog = DialogUtilities.buildOptionDialog(
+                            MyApplication.getContext(),
                             new DialogUtilities.DialogFinishedListener() {
                                 @Override
                                 public void dialogFinished(Object object, int tag) {

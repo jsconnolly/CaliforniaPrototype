@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initVariables();
-        this.setupToolbar();
         this.setupUI();
+        this.setupToolbar();
         FragmentUtilities.switchFragments(Constants.FRAGMENT_MAP, this);
     }
 
@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.activity_main_map_icon = (ImageView) this.findViewById(
                 R.id.activity_main_map_icon);
 
-        this.setEmergencyState(EmergencyStates.CALM, null);
-
         this.activity_main_emergency_sos_button.setOnClickListener(this);
         this.activity_main_map_icon.setOnClickListener(this);
         this.activity_main_user_icon.setOnClickListener(this);
@@ -148,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         //Set the textView
-        setToolbarDetails("", null, true, true);
+        setToolbarDetails("", null, true, true, null);
 
         GUIUtilities.setBackButtonContentDescription(this);
 
@@ -156,29 +154,37 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     }
 
-    // TODO: 2017-02-23  add this into onboarding as well
+    /**
+     * Set the emergency state, which will change behavior of other parts of the app
+     * @param state
+     * @param emergencyStateText
+     */
     public void setEmergencyState(EmergencyStates state, String emergencyStateText){
-        switch (state){
-            case CALM:
-                this.activity_main_emergency_tv.setBackgroundColor(
-                        ContextCompat.getColor(this, R.color.white));
-                this.activity_main_emergency_tv.setVisibility(View.GONE);
-                this.activity_main_emergency_tv.setText("");
-                this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
-                this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
-                        ContextCompat.getColor(this, R.color.colorPrimary), null, null);
-                break;
+        try {
+            switch (state) {
+                case CALM:
+                    this.activity_main_emergency_tv.setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.white));
+                    this.activity_main_emergency_tv.setVisibility(View.GONE);
+                    this.activity_main_emergency_tv.setText("");
+                    this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
+                    this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
+                            ContextCompat.getColor(this, R.color.colorPrimary), null, null, null);
+                    break;
 
-            case EMERGENCY:
-                this.activity_main_emergency_tv.setBackgroundColor(
-                        ContextCompat.getColor(this, R.color.red));
-                this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
-                this.activity_main_emergency_tv.setText(R.string.current_state_emergency
-                        + "\n" + emergencyStateText);
-                this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
-                this.setToolbarDetails("EMERGENCY",
-                        ContextCompat.getColor(this, R.color.red), null, null);
-                break;
+                case EMERGENCY:
+                    this.activity_main_emergency_tv.setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.red));
+                    this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
+                    this.activity_main_emergency_tv.setText(R.string.current_state_emergency
+                            + "\n" + emergencyStateText);
+                    this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
+                    this.setToolbarDetails(getString(R.string.current_state_emergency),
+                            ContextCompat.getColor(this, R.color.red), null, null, null);
+                    break;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -357,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     public void setToolbarDetails(String title, Integer color,
-                                  Boolean enableBackButton, Boolean enableTopRightPicture) {
+                                  Boolean enableBackButton, Boolean enableTopRightPicture,
+                                  Boolean isEmergency) {
         if(this.toolbar == null){
             return;
         }
@@ -380,6 +387,17 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 //Set the back arrow to the respective color
                 //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
                         //getToolbarBackArrow(this, R.color.white));
+            }
+
+            if(isEmergency != null){
+                if(isEmergency){
+                    this.setEmergencyState(EmergencyStates.EMERGENCY,
+                            getString(R.string.current_state_emergency));
+                } else {
+                    this.setEmergencyState(EmergencyStates.CALM, null);
+                }
+            } else {
+                this.setEmergencyState(EmergencyStates.CALM, null);
             }
         }
 

@@ -443,7 +443,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(circle == null){
             return;
         }
-
         String id = circle.getId();
         if(StringUtilities.isNullOrEmpty(id)){
             return;
@@ -452,7 +451,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             if(location == null){
                 continue;
             }
-            String str = location.getId();
+            String str = location.getCircleId();
             if(StringUtilities.isNullOrEmpty(str)){
                 continue;
             }
@@ -469,16 +468,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
+    /**
+     * Show an alert beacon popup by inflating a new fragment
+     * @param beacon
+     */
     private void showPopupForBeacon(AlertBeacon beacon){
         if(beacon == null){
             return;
         }
-
+        clearPersistedObjects();
         if(MyApplication.getDatabaseInstance().persistObject(AlertBeacon.class, beacon)){
             switchFragment(Constants.FRAGMENT_ALERT_BEACON_POPUP);
         }
     }
 
+    /**
+     * Clear any persisted objects I want cleared
+     */
+    private void clearPersistedObjects(){
+        MyApplication.getDatabaseInstance().deletePersistedObject(AlertBeacon.class);
+    }
+
+    /**
+     * Enable a sclae bar as an overlay for visual help on location distances
+     */
     private void enableScaleBar(){
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(800, 800);
 
@@ -551,10 +564,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         L.m("onResume in mapfragment");
+        clearPersistedObjects();
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_MAP) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.map_fragment_name), null, false, true);
+                    getString(R.string.map_fragment_name), null, false, true, null);
         }
         initWebCalls();
         super.onResume();
@@ -576,6 +590,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         for(Circle circle : this.userSavedLocationCircles){
             circle.remove();
         }
+
         //Checking to be sure
         if(userSavedLocations == null){
             return;
@@ -727,10 +742,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         ProgressBarUtilities.dismissProgressDialog();
         switch(customTag){
             case Constants.TAG_CA_USER:
-                // TODO: 2017-02-28 check on other retrieval data. Ask Jason
                 user = (CAUser) result;
                 APICalls.persistData(user);
                 CALocation[] locations = user.getLocations();
+                // TODO: 2017-02-28 check on other retrieval data. Ask Jason
+                // IE: CAAlert[] alerts = user.getAlerts();
                 if(locations != null){
                     if(locations.length > 0){
                         this.userSavedLocations = locations;

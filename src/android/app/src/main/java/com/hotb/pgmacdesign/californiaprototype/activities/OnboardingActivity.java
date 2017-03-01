@@ -110,7 +110,7 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
         this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         //Set the textView
-        setToolbarDetails("", null, true, null);
+        setToolbarDetails("", null, true, null, null);
 
         GUIUtilities.setBackButtonContentDescription(this);
 
@@ -236,7 +236,8 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
 
     @Override
     public void setToolbarDetails(String title, Integer color,
-                                  Boolean enableBackButton, Boolean enableTopRightPicture) {
+                                  Boolean enableBackButton, Boolean enableTopRightPicture,
+                                  Boolean alertStatus) {
         if(this.toolbar == null){
             return;
         }

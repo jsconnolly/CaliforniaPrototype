@@ -296,7 +296,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_ADD_CONTACT) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.add_a_contact), null, true, false);
+                    getString(R.string.add_a_contact), null, true, false, null);
         }
         super.onResume();
     }
