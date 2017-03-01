@@ -14,27 +14,31 @@ loggedin: true
 </script>
 <div class="row">
     <div class="col-md-4">
-        <p>
-            <a href="index.html" class="btn btn-primary btn-block">Back to Map</a>
-        </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
         <h2>Add A Location</h2>
         <p>
-            Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor.
+            Enter a city or zip code below to receive emergancy and non-emergancy notifications for that area.
         </p>
         <form data-toggle="validator" role="form">
+           <div class="form-group">
+               <label>Name of Location</label>
+               <input type="text" class="form-control" placeholder="home" id="locationname" required />
+               <span class="text-muted">Examples: home, work, relative's home, etc.</span>
+           </div>
             <div class="form-group">
                 <label>City or Zip</label>
                 <input type="text" class="form-control" placeholder="12345" id="cityzip" required />
             </div>
-            <button type="button" class="btn btn-primary btn-block" id="addlocation">Add To Watched Locations</button>
+            <button type="button" class="btn btn-primary btn-block submit" id="addlocation">Add To Watched Locations</button>
         </form>
     </div>
     <div class="col-md-8">
         <h2>Your Watched Locations</h2>
+<<<<<<< dea710f8010b6df2f1955e39937438f2b36a60af
+=======
+        <p>
+            Below are your saved locations. You will receive emergancy and non-emergency notifications for events that occur within 20 miles of each location. You can add, edit, or delete locations at any time.
+        </p>
+>>>>>>> body content changes, removed phone registration, added settings
         <div class="row">
             <div id="locationsrow"></div>
         </div>
