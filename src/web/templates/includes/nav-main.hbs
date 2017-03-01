@@ -10,7 +10,7 @@
             <a href="index.html" class="navbar-brand">{{default site.title 'CA Prototype'}}</a>
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-            <ul class="nav navbar-nav">
+            <!--<ul class="nav navbar-nav">
                 {{#if loggedin}}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Navigation <span class="caret"></span></a>
@@ -18,25 +18,27 @@
                             <li><a href="index.html">Back to Map</a></li>
                             <li><a href="addphone.html">Get Notifications by Phone</a></li>
                             <li><a href="addlocations.html">Add Locations</a></li>
-                            <li><a href="addcontacts.html">Add Contacts</a></li>
-                            <li><a href="#">Edit My Account</a></li>
+                            {{!--<li><a href="addcontacts.html">Add Contacts</a></li>--}}
+                            {{!--<li><a href="#">Edit My Account</a></li>
                             <li><a href="#">Change Password</a></li>
                             <li><a href="#">Unsubscribe</a></li>
-                            <li><a href="#">Recent Events</a></li>
-                            <li><a href="../index.html">Log Out</a></li>
+                            <li><a href="#">Recent Events</a></li>--}}
                         </ul>
                     </li>
                 {{else}}
-                    <li><a href="#">Navigation</a></li>
+                    {{!--<li><a href="#">Navigation</a></li>--}}
                 {{/if}}
-            </ul>
+            </ul>-->
             <ul class="nav navbar-nav navbar-right">
                 {{#if loggedin}}
                     <li>
-                        <p class="navbar-btn"><a href="#" class="btn btn-primary btn-block">Settings</a></p>
+                        <p class="navbar-btn"> <a href="index.html" class="btn btn-primary btn-block">Map</a></p>
                     </li>
                     <li>
-                        <p class="navbar-btn"> <a href="index.html" class="btn btn-primary btn-block">Map</a></p>
+                        <p class="navbar-btn"><a href="settings.html" class="btn btn-primary btn-block">Settings</a></p>
+                    </li>
+                    <li>
+                        <p class="navbar-btn"> <a href="../index.html" class="btn btn-primary btn-block">Log Out</a></p>
                     </li>
                 {{else}}
                     <li>
