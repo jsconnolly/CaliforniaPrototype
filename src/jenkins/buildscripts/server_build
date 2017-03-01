@@ -35,7 +35,7 @@ node {
             ECS_CLUSTER=ca-prototype-staging-cluster
             ECS_SERVICE=ca-prototype-emergency-alerts-service
             ECS_FAMILY=ca-prototype-task-definition
-            ECS_TASK_DEFINITION=ca-prototype-task-container-name  
+            ECS_TASK_DEFINITION=ca-prototype-task-container-name
 
 
 
@@ -70,7 +70,7 @@ node {
                     echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Update Service With New Task Revsion and Set Desired Count To 1 "
                     updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
 
-                else 
+                else
                     echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - No Existing Service, Creating New Service"
                     createECSService;
                 fi
@@ -119,7 +119,7 @@ node {
                 aws ecs register-task-definition --family ${ECS_FAMILY} \
                                                     --cli-input-json file://${ECS_TASK_DEFINITION}-v_${BUILD_NUMBER}.json \
                                                     --region ${ECS_REGION}
-            }        
+            }
 
             function waitForNumberOfRunningTasks() {
                 for attempt in {1..120}; do
@@ -148,5 +148,10 @@ node {
 
     stage ('Deploy to Production') {
         // Create/Update service to Production
+    }
+
+    stage ('Clean Up') {
+        // Clean Up Workspace
+        deleteDir()
     }
 }
