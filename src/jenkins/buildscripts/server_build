@@ -145,6 +145,7 @@ node {
         sh "exec bash"
 
         sh'''#!/bin/bash
+          sleep 10
 
           numSuccess=0
           numFailure=0
