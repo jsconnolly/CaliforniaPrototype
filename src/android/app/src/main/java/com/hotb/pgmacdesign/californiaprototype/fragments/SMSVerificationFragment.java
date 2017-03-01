@@ -159,6 +159,13 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
             return;
         } else {
             //Phone number persisted correctly
+            phoneNumber = StringUtilities.keepNumbersOnly(phoneNumber);
+            phoneNumber = phoneNumber.trim();
+            try{
+                if(!phoneNumber.startsWith("1")){
+                    phoneNumber = "1" + phoneNumber;
+                }
+            } catch (Exception e){}
             phoneNumber = StringUtilities.formatStringLikePhoneNumber(phoneNumber);
             fragment_smsverification_user_number_tv.setText(phoneNumber);
         }
@@ -181,6 +188,13 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         String verifCode = code1 + code2 + code3 + code4 + code5 + code6;
         ProgressBarUtilities.showSVGProgressDialog(getActivity(), false,
                 Constants.PROGRESS_BAR_TIMEOUT);
+        phoneNumber = StringUtilities.keepNumbersOnly(phoneNumber);
+        phoneNumber = phoneNumber.trim();
+        try{
+            if(!phoneNumber.startsWith("1")){
+                phoneNumber = "1" + phoneNumber;
+            }
+        } catch (Exception e){}
         api.loginWithPhone(phoneNumber, verifCode);
     }
 

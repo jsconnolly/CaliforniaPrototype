@@ -2,6 +2,7 @@ package com.hotb.pgmacdesign.californiaprototype.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +31,8 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
+
+import static com.hotb.pgmacdesign.californiaprototype.R.string.phone;
 
 /**
  * Created by pmacdowell on 2017-02-15.
@@ -409,6 +412,11 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                     String phone = fragment_email_login_email_et_phone.getText().toString();
                     phone = StringUtilities.keepNumbersOnly(phone);
                     phone = phone.trim();
+                    try{
+                        if(!phone.startsWith("1")){
+                            phone = "1" + phone;
+                        }
+                    } catch (Exception e){}
                     ProgressBarUtilities.showSVGProgressDialog(getActivity(),
                             false, Constants.PROGRESS_BAR_TIMEOUT);
                     api.phoneVerification(phone);
@@ -502,6 +510,11 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 if(StringUtilities.isNullOrEmpty(str2)){
                     L.Toast(getActivity(), getString(R.string.enter_a_valid_phone_number));
                 } else {
+                    try{
+                        if(!str2.startsWith("1")){
+                            str2 = "1" + str2;
+                        }
+                    } catch (Exception e){}
                     MyApplication.getSharedPrefsInstance().save(Constants.USER_PHONE_NUMBER, str2);
                     switchFragment(Constants.FRAGMENT_SMS_VERIFICATION);
                 }
@@ -533,8 +546,25 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                                                     return;
                                                 }
                                                 phone = phone.trim();
+                                                phone = "1" + phone;
+                                                final String fPhone = phone;
                                                 ProgressBarUtilities.showSVGProgressDialog(getActivity());
-                                                api.phoneVerification(phone);
+                                                api.phoneVerification(fPhone);
+
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        APICalls temp = new APICalls(getActivity(),
+                                                                new OnTaskCompleteListener() {
+                                                                    @Override
+                                                                    public void onTaskComplete(Object result, int customTag) {
+                                                                        //Do nothing, cannot interact with UI here
+                                                                    }
+                                                                });
+                                                        temp.phoneVerification(fPhone);
+                                                    }
+                                                }, (int)(Constants.ONE_SECOND * 0.6));
 
                                             } else if (whichActive == WhichActive.EMAIL){
                                                 //Email registration
@@ -581,6 +611,11 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                     MyApplication.getSharedPrefsInstance().save(Constants.USER_PW, pw);
                 } else {
                     String phone = fragment_email_login_email_et_phone.getText().toString();
+                    try{
+                        if(!phone.startsWith("1")){
+                            phone = "1" + phone;
+                        }
+                    } catch (Exception e){}
                     MyApplication.getSharedPrefsInstance().save(Constants.USER_PHONE_NUMBER, phone);
                 }
 

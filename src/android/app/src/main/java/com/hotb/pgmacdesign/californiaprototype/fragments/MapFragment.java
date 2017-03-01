@@ -48,7 +48,6 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCus
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
@@ -455,73 +454,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     /**
-     * Adds alert beacons to the map that are clickable
-     * @param alertBeacons {@link AlertBeacon}
+     * Triggered when a user clicks on the circle
+     * @param circle
      */
-    private void addAlertBeacons(List<AlertBeacon> alertBeacons){
-        this.alertBeacons = alertBeacons;
-        if(MiscUtilities.isListNullOrEmpty(alertBeacons)){
-            return;
-        }
-
-        for(int i = 0; i < alertBeacons.size(); i++){
-            AlertBeacon beacon = alertBeacons.get(i);
-            double radius = beacon.getCircleRadius();
-            double lat = beacon.getLat();
-            double lng = beacon.getLng();
-
-            if(lat == 0 && lng == 0){
-                continue;
-            }
-
-            Projection projection = googleMap.getProjection();
-            float xMetersPerInch = getMetersPerInch(projection);
-
-            // Create the circle.
-            CircleOptions options = new CircleOptions();
-            options.center(CaliforniaPrototypeCustomUtils.convertToLatLng(lat, lng));
-            if(radius < 50) {
-                //Too small, use the xMeters per inch metric instead
-                options.radius(xMetersPerInch);
-            } else {
-                options.radius(radius);
-            }
-            options.strokeColor(R.color.white);
-            options.fillColor(R.color.SemiTransparentRed);
-            options.clickable(true);
-            Circle aCircle = googleMap.addCircle(options);
-            beacon.setCircleId(aCircle.getId());
-            alertBeacons.set(i, beacon);
-            this.googleMap.setOnCircleClickListener(this);
-        }
-    }
-
     @Override
     public void onCircleClick(Circle circle) {
         if(circle == null){
             return;
         }
-        if(MiscUtilities.isListNullOrEmpty(this.alertBeacons)){
-            return;
-        }
+
         String id = circle.getId();
         if(StringUtilities.isNullOrEmpty(id)){
             return;
         }
-
-        AlertBeacon beacon = null;
-        for(AlertBeacon beacon1 : this.alertBeacons){
-            String newId = beacon1.getCircleId();
-            if(!StringUtilities.isNullOrEmpty(newId)){
-                if(newId.equals(id)){
-                    beacon = beacon1;
-                }
+        for(CALocation location : userSavedLocationsList){
+            if(location == null){
+                continue;
+            }
+            String str = location.getId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(location);
+                beacon.setUser(user);
+                beacon.setAlert(null); // TODO: 2017-02-28 insert this once done on server
+                showPopupForBeacon(beacon);
+                return;
             }
         }
 
-        if(beacon != null){
-            showPopupForBeacon(beacon);
-        }
     }
 
     private void showPopupForBeacon(AlertBeacon beacon){
@@ -689,14 +653,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             options.center(new LatLng(localLat, localLng));
             options.radius(localRadius);
             options.strokeColor(R.color.white);
-            options.fillColor(R.color.SemiTransparentOrchid);
+            options.fillColor(R.color.SemiTransparentGreen);
             options.clickable(true);
             Circle circleAdded = googleMap.addCircle(options);
             location.setCircleId(circleAdded.getId());
             this.userSavedLocationCircles.add(circleAdded);
             this.userSavedLocationsList.add(location);
 
-            L.m("made it to end of iteration #" + i);
         }
     }
 

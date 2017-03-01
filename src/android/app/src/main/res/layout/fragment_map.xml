@@ -48,7 +48,6 @@
     <!-- Error Message -->
     <LinearLayout
         android:id="@+id/fragment_map_search_error_view"
-        android:layout_below="@+id/fragment_map_searchview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"

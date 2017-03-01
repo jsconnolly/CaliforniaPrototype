@@ -343,6 +343,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 MainActivity.this.startActivity(intent);
+                try {
+                    this.finish();
+                } catch (Exception e){}
                 break;
         }
     }

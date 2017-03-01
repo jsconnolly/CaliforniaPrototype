@@ -84,10 +84,9 @@ public class AlertBeaconPopupFragment extends Fragment {
             return;
         }
 
-        // TODO: 2017-02-23 are we getting separate titles here?
-        String title = "Emergency at this location: "
-                + beaconClicked.getLat() + ", " + beaconClicked.getLng();
-        String body = beaconClicked.getAlertInformation();
+        //Get all data here for info to set
+        String title = "";
+        String body = "";
 
         alert_beacon_popup_title.setText(title);
         alert_beacon_popup_body.setText(body);

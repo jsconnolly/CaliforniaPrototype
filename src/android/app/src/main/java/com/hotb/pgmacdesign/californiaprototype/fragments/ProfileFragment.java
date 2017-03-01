@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hotb.pgmacdesign.californiaprototype.R;
@@ -44,7 +43,7 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
     private Boolean enableSMSNotifications, enableEmailNotifications, userHasLocations;
 
     //UI
-    private Switch fragment_profile_sms_switch, fragment_profile_email_switch;
+    private android.support.v7.widget.SwitchCompat fragment_profile_sms_switch, fragment_profile_email_switch;
     private TextView fragment_profile_email, fragment_profile_name, fragment_profile_phone;
     private Button fragment_profile_logout;
 
@@ -83,9 +82,9 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
     private void initUi(View view) {
 
         //UI
-        this.fragment_profile_sms_switch = (Switch) view.findViewById(
+        this.fragment_profile_sms_switch = (android.support.v7.widget.SwitchCompat) view.findViewById(
                 R.id.fragment_profile_sms_switch);
-        this.fragment_profile_email_switch = (Switch) view.findViewById(
+        this.fragment_profile_email_switch = (android.support.v7.widget.SwitchCompat) view.findViewById(
                 R.id.fragment_profile_email_switch);
         this.fragment_profile_email = (TextView) view.findViewById(
                 R.id.fragment_profile_email);

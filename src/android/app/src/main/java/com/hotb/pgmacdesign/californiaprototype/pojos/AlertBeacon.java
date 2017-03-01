@@ -8,54 +8,34 @@ import com.google.gson.annotations.SerializedName;
  */
 public class AlertBeacon {
 
-    @SerializedName("lat")
-    private double lat;
-    @SerializedName("lng")
-    private double lng;
-    @SerializedName("alertInformation")
-    private String alertInformation;
-    @SerializedName("circleRadius")
-    private double circleRadius;
-    @SerializedName("circleId")
-    private String circleId;
+    @SerializedName("location")
+    private CALocation location;
+    @SerializedName("user")
+    private CAUser user;
+    @SerializedName("alert")
+    private CAAlert alert;
 
-    public String getCircleId() {
-        return circleId;
+    public CALocation getLocation() {
+        return location;
     }
 
-    public void setCircleId(String circleId) {
-        this.circleId = circleId;
+    public void setLocation(CALocation location) {
+        this.location = location;
     }
 
-    public double getLat() {
-        return lat;
+    public CAUser getUser() {
+        return user;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setUser(CAUser user) {
+        this.user = user;
     }
 
-    public double getLng() {
-        return lng;
+    public CAAlert getAlert() {
+        return alert;
     }
 
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public String getAlertInformation() {
-        return alertInformation;
-    }
-
-    public void setAlertInformation(String alertInformation) {
-        this.alertInformation = alertInformation;
-    }
-
-    public double getCircleRadius() {
-        return circleRadius;
-    }
-
-    public void setCircleRadius(double circleRadius) {
-        this.circleRadius = circleRadius;
+    public void setAlert(CAAlert alert) {
+        this.alert = alert;
     }
 }
