@@ -4,6 +4,7 @@ loggedin: true
 ---
 <script type="text/javascript">
  console.log("ID " + sessionStorage.getItem("id"));
+ console.log("Token " + sessionStorage.getItem("token"));
    if(sessionStorage.getItem("id") === null)
     {
         location.href = "/login.html"
@@ -34,11 +35,8 @@ loggedin: true
     </div>
     <div class="col-md-8">
         <h2>Your Watched Locations</h2>
-        <p>
-            Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor. Ut cursus, neque in pretium facilisis, dolor justo ultrices tortor, at consectetur mi erat eget odio.
-        </p>
         <div class="row">
-            {{> added-location}}
+            <div id="locationsrow"></div>
         </div>
     </div>
 </div>
