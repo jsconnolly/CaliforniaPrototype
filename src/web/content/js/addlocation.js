@@ -12,14 +12,15 @@ $(document).ready(function(){
             'Content-Type':'application/json'
          },
             }).done(function (result) {
-            console.log(result);
+            //console.log(result);
             if(result.locations !== undefined)
             {
                 //alert("location added successfully");
                 //window.location.href = "/user/index.html";
                 for(i=0;i<result.locations.length;i++)
                 {
-                    var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' >Edit</a></div>";
+                    var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' onclick='EditLocation("+result.locations[i].id+")'>Edit</a></div>";
+                    //console.log(appendedval);
                     if(document.getElementById("locationsrow") != null)
                     {
                         document.getElementById("locationsrow").innerHTML += appendedval;
@@ -50,11 +51,11 @@ $(document).ready(function(){
         if(cityzip.length > 0)
         {
             // Get lat and lng from google maps api
-            console.log("Latitude" + getLatLng(cityzip).lat);
-            console.log("Longitude" + getLatLng(cityzip).lng);        
+            //console.log("Latitude" + getLatLng(cityzip).lat);
+            //console.log("Longitude" + getLatLng(cityzip).lng);        
             
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
-            addlocation.displayName = "location" + Math.random();
+            addlocation.displayName = "location" + Math.floor((Math.random() * 100) + 1);
         
             console.log("Request JSON" + JSON.stringify(addlocation));
             
@@ -97,16 +98,18 @@ $(document).ready(function(){
             alert("Please enter city or zip.");
             return;
         }
-        
-
-        
+              
     });
  
-    
-
-    
-
 })
+
+
+function EditLocation(locationId)
+{
+                        
+    
+
+}
 
 
 function getLatLng(cityzip)
