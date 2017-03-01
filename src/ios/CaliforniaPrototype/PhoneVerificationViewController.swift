@@ -22,13 +22,17 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var invalidPhoneNumberLabel: UILabel!
     
     var phoneNumber = String()
+    private var spinner = UIActivityIndicatorView()
     private var validCode = String()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.isNavigationBarHidden = true
         self.textFieldArray = [firstCodeTextField, secondCodeTextField, thirdCodeTextField, fourthCodeTextField, fifthCodeTextField, sixthCodeTextField]
+        
+        self.phoneNumberLabel.text = phoneNumber
     }
 
     
@@ -54,7 +58,8 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             }
         }
         if valid == true {
-            APIManager.sharedInstance.signInWithPhone(number: self.phoneNumber, password: self.validCode, success: { (response: [String : Any?]) in
+            let fullPhoneString = "1" + self.phoneNumber
+            APIManager.sharedInstance.signInWithPhone(number: fullPhoneString, password: self.validCode, success: { (response: [String : Any?]) in
                 DispatchQueue.main.async {
                     self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
                 }

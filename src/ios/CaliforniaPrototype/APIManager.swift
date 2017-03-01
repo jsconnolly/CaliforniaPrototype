@@ -136,8 +136,8 @@ class APIManager {
             if error != nil {
                 failure(error)
             } else {
-                guard let json = response as? [String: Any] else { return }
-                success(json)
+                //guard let json = response as? [String: Any] else { return }
+                success([:])
             }
         }
     }

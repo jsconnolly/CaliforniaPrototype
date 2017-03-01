@@ -13,6 +13,8 @@ class PhoneRegistrationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var phoneTextField: OutlinedTextField!
     
+    private var spinner = UIActivityIndicatorView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.stackView.arrangedSubviews[1].isHidden = true
@@ -32,18 +34,23 @@ class PhoneRegistrationViewController: UIViewController, UITextFieldDelegate {
                 self.animateStackSubview(1, to: true)
             }
             
+            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            self.spinner.center = self.view.center
+            self.spinner.hidesWhenStopped = true
+            self.spinner.startAnimating()
+            self.view.addSubview(self.spinner)
             let phoneString = "1" + phoneTextFieldString
             APIManager.sharedInstance.registerUserWithPhone(number: phoneString, success: { (response : [String : Any?]) in
+                self.spinner.stopAnimating()
                 if response["registered"] as! String == "success" {
                     DispatchQueue.main.async {
                         let verificationVC = PhoneVerificationViewController()
                         verificationVC.phoneNumber = phoneString
-                        verificationVC.phoneNumberLabel.text = phoneString
                         self.navigationController?.pushViewController(verificationVC, animated: true)
                     }
                 }
             }, failure: { (error) in
-                
+                self.spinner.stopAnimating()
             })
             
         }

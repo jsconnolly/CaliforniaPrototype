@@ -13,6 +13,7 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var phoneTextField: OutlinedTextField!
     
+    private var spinner = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,14 +36,21 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
             }
             //If phone number has not been registered, it will create a temporary user then allow a password to be created with the verification code provided
             let fullPhoneString = "1" + phoneString
+            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            self.spinner.center = self.view.center
+            self.spinner.hidesWhenStopped = true
+            self.spinner.startAnimating()
+            self.view.addSubview(self.spinner)
+            
             APIManager.sharedInstance.phoneVerification(fullPhoneString, success: { (response: [String : Any?]) in
+                self.spinner.stopAnimating()
                 DispatchQueue.main.async {
                     let phoneVerificationVC = PhoneVerificationViewController()
                     phoneVerificationVC.phoneNumber = phoneString
-                    phoneVerificationVC.phoneNumberLabel.text = phoneString
                     self.navigationController?.pushViewController(phoneVerificationVC, animated: true)
                 }
             }, failure: { (error) in
+                self.spinner.stopAnimating()
                 if error?.code == 404 {
                     DispatchQueue.main.async {
                         let phoneVerificationVC = PhoneVerificationViewController()

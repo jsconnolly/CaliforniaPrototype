@@ -14,7 +14,7 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: OutlinedTextField!
     @IBOutlet weak var stackView: UIStackView!
     
-    private var spinner : UIActivityIndicatorView?
+    private var spinner = UIActivityIndicatorView()
 
 //MARK: - UIViewController Delegate methods
     override func viewDidLoad() {
@@ -41,25 +41,26 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-        if !ValidationMethods().isValidPassword(passwordString) {
-            self.setTextFieldBorderRed(self.passwordTextField)
-            if self.stackView.arrangedSubviews[3].isHidden == true {
-                self.animateStackSubview(3, to: false)
-            }
-        } else {
-            self.setTextFieldBorderBlack(self.passwordTextField)
-            if self.stackView.arrangedSubviews[3].isHidden == false {
-                self.animateStackSubview(3, to: true)
-            }
-        }
+//        if !ValidationMethods().isValidPassword(passwordString) {
+//            self.setTextFieldBorderRed(self.passwordTextField)
+//            if self.stackView.arrangedSubviews[3].isHidden == true {
+//                self.animateStackSubview(3, to: false)
+//            }
+//        } else {
+//            self.setTextFieldBorderBlack(self.passwordTextField)
+//            if self.stackView.arrangedSubviews[3].isHidden == false {
+//                self.animateStackSubview(3, to: true)
+//            }
+//        }
         
-        if ValidationMethods().isValidPassword(passwordString) && ValidationMethods().isValidEmail(emailString) {
+        if ValidationMethods().isValidEmail(emailString) {
             self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            self.spinner?.center = self.view.center
-            self.spinner?.hidesWhenStopped = true
-            self.spinner?.startAnimating()
+            self.spinner.center = self.view.center
+            self.spinner.hidesWhenStopped = true
+            self.spinner.startAnimating()
+            self.view.addSubview(self.spinner)
             APIManager.sharedInstance.signInWithEmail(email: emailString, password: passwordString, success: { (response) in
-                self.spinner?.stopAnimating()
+                self.spinner.stopAnimating()
                 guard let token = response["token"] else { return }
                 if Keychain.set(key: "token", value: token as! String) {
                     DispatchQueue.main.async {
@@ -74,15 +75,13 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }, failure: { (error) in
-                self.spinner?.stopAnimating()
-                if error?.code == 404 {
                     DispatchQueue.main.async {
-                        let alert = CustomAlertControllers.controllerWith(title: "Error", message: "You are not a registered user, please register before signing in.")
+                        self.spinner.stopAnimating()
+                        let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error signing in. Please make sure your email and password are correct.")
                         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                         alert.addAction(okAction)
                         self.present(alert, animated: true, completion: nil)
                     }
-                }
             })
         }
     }

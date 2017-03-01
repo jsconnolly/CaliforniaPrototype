@@ -15,7 +15,7 @@ class EmailRegistrationViewController: UIViewController {
     @IBOutlet weak var passwordTextField: OutlinedTextField!
     @IBOutlet weak var nameTextField: OutlinedTextField!
     
-    private var spinner : UIActivityIndicatorView?
+    private var spinner = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,12 +62,12 @@ class EmailRegistrationViewController: UIViewController {
         
         if ValidationMethods().isValidEmail(emailString) && ValidationMethods().isValidPassword(passwordString) {
             self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            self.spinner?.center = self.view.center
-            self.spinner?.hidesWhenStopped = true
-            self.spinner?.startAnimating()
-            
+            self.spinner.center = self.view.center
+            self.spinner.hidesWhenStopped = true
+            self.spinner.startAnimating()
+            self.view.addSubview(self.spinner)
             APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: nil, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
-                self.spinner?.stopAnimating()
+                self.spinner.stopAnimating()
                 guard let id = response.id else { return }
                 guard let token = response.token else { return }
                 _ = Keychain.set(key: "userId", value: id)
@@ -81,6 +81,7 @@ class EmailRegistrationViewController: UIViewController {
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alert.addAction(okAction)
                 DispatchQueue.main.async {
+                    self.spinner.stopAnimating()
                     self.present(alert, animated: true, completion: nil)
                 }
             })

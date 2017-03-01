@@ -67,10 +67,12 @@ class NetworkOperations {
                         let jsonResponse = try JSONSerialization.jsonObject(with: d, options: [])
                         completion(jsonResponse, nil)
                     } else {
-                        completion(nil, NSError(domain: url, code: 1001, userInfo: ["Error": "NETWORK ERROR: Failed to serialize httpResponse data - 1003"]))
+                        completion("", nil)
+//                        completion(nil, NSError(domain: url, code: 1001, userInfo: ["Error": "NETWORK ERROR: Failed to serialize httpResponse data - 1003"]))
                     }
                 } catch {
-                    completion(nil, NSError(domain: url, code: 1001, userInfo: ["Error": "NETWORK ERROR: Failed to serialize httpResponse data - 1004"]))
+                    completion("", nil)
+//                    completion(nil, NSError(domain: url, code: 1001, userInfo: ["Error": "NETWORK ERROR: Failed to serialize httpResponse data - 1004"]))
                 }
             } else {
                 completion(nil, NSError(domain: url, code: httpResponse.statusCode, userInfo: ["Error": "NETWORK ERROR: httpResponse did not return with a 200 or 201 status code"]))
