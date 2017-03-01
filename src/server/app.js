@@ -55,7 +55,7 @@ else {
 
 var cronJob = cron.job(config.cron, function(){
     incident.importIncident();
-    console.log("test cron");
+    console.log("cron is running");
 }); 
 cronJob.start();
 
