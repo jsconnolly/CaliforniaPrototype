@@ -33,7 +33,32 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
             if self.stackView.arrangedSubviews[1].isHidden == false {
                 self.animateStackSubview(1, to: true)
             }
-            self.navigationController?.pushViewController(PhoneVerificationViewController(), animated: true)
+            //If phone number has not been registered, it will create a temporary user then allow a password to be created with the verification code provided
+            let fullPhoneString = "1" + phoneString
+            APIManager.sharedInstance.phoneVerification(fullPhoneString, success: { (response: [String : Any?]) in
+                DispatchQueue.main.async {
+                    let phoneVerificationVC = PhoneVerificationViewController()
+                    phoneVerificationVC.phoneNumber = phoneString
+                    phoneVerificationVC.phoneNumberLabel.text = phoneString
+                    self.navigationController?.pushViewController(phoneVerificationVC, animated: true)
+                }
+            }, failure: { (error) in
+                if error?.code == 404 {
+                    DispatchQueue.main.async {
+                        let phoneVerificationVC = PhoneVerificationViewController()
+                        phoneVerificationVC.phoneNumber = phoneString
+                        phoneVerificationVC.phoneNumberLabel.text = phoneString
+                        self.navigationController?.pushViewController(phoneVerificationVC, animated: true)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let alert = CustomAlertControllers.controllerWith(title: "Error", message: "An error occurred with your request. Please try again.")
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alert.addAction(okAction)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            })
         }
     }
     

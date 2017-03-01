@@ -13,8 +13,9 @@ class EmailRegistrationViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var emailTextField: OutlinedTextField!
     @IBOutlet weak var passwordTextField: OutlinedTextField!
-    
     @IBOutlet weak var nameTextField: OutlinedTextField!
+    
+    private var spinner : UIActivityIndicatorView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +59,37 @@ class EmailRegistrationViewController: UIViewController {
                 self.animateStackSubview(5, to: false)
             }
         }
+        
+        if ValidationMethods().isValidEmail(emailString) && ValidationMethods().isValidPassword(passwordString) {
+            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            self.spinner?.center = self.view.center
+            self.spinner?.hidesWhenStopped = true
+            self.spinner?.startAnimating()
+            
+            APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: nil, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
+                self.spinner?.stopAnimating()
+                guard let id = response.id else { return }
+                guard let token = response.token else { return }
+                _ = Keychain.set(key: "userId", value: id)
+                _ = Keychain.set(key: "token", value: token)
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(LocationPermissionsViewController(), animated: true)
+                }
+                
+            }, failure: { (error) in
+                let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error registering, please try again.")
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                }
+            })
+            
+        }
     }
 
     @IBAction func canelButtonTapped(_ sender: Any) {
-        self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }
 

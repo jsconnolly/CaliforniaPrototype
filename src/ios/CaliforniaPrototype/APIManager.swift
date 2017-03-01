@@ -8,9 +8,9 @@
 
 import Foundation
 
-public typealias AnySuccessBlock = (_ response: Any?) -> Void
+public typealias AnySuccessBlock = (_ response: [String: Any?]) -> Void
 public typealias FailureBlock = (_ error: Error?) -> Void
-public typealias UserSuccessBlock = (_ response: User?) -> Void
+public typealias UserSuccessBlock = (_ response: User) -> Void
 
 class APIManager {
     
@@ -79,6 +79,18 @@ class APIManager {
             } else {
                 guard let json = response as? [String: Any] else { return }
                 success(User.userFromJson(json))
+            }
+        }
+    }
+    
+    func registerUserWithPhone(number numberString: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
+        let url = usersBaseURL + "/phoneCode"
+        let body = ["phone": numberString]
+        NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
+            if error != nil {
+                failure(error)
+            } else {
+                success(["registered":"success"])
             }
         }
     }

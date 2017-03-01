@@ -13,6 +13,12 @@
 		9C48D4B81E65E8130011E462 /* NetworkOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4B71E65E8130011E462 /* NetworkOperations.swift */; };
 		9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4B91E65E8660011E462 /* APIManager.swift */; };
 		9C48D4BC1E65E93D0011E462 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4BB1E65E93D0011E462 /* User.swift */; };
+		9C48D4BE1E65F5260011E462 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4BD1E65F5260011E462 /* Keychain.swift */; };
+		9C48D4C01E6608680011E462 /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4BF1E6608680011E462 /* ErrorExtensions.swift */; };
+		9C48D4C31E6622150011E462 /* PhoneRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4C11E6622150011E462 /* PhoneRegistrationViewController.swift */; };
+		9C48D4C41E6622150011E462 /* PhoneRegistrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C48D4C21E6622150011E462 /* PhoneRegistrationViewController.xib */; };
+		9C48D4C71E6623EA0011E462 /* RegisterChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C48D4C51E6623EA0011E462 /* RegisterChoiceViewController.swift */; };
+		9C48D4C81E6623EA0011E462 /* RegisterChoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C48D4C61E6623EA0011E462 /* RegisterChoiceViewController.xib */; };
 		9CA518471E5F52A4002B2250 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518461E5F52A4002B2250 /* UIColorExtension.swift */; };
 		9CA5184B1E5F583B002B2250 /* LocationPermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */; };
 		9CA5184C1E5F583B002B2250 /* LocationPermissionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */; };
@@ -59,6 +65,12 @@
 		9C48D4B71E65E8130011E462 /* NetworkOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkOperations.swift; sourceTree = "<group>"; };
 		9C48D4B91E65E8660011E462 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		9C48D4BB1E65E93D0011E462 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9C48D4BD1E65F5260011E462 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		9C48D4BF1E6608680011E462 /* ErrorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorExtensions.swift; sourceTree = "<group>"; };
+		9C48D4C11E6622150011E462 /* PhoneRegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneRegistrationViewController.swift; sourceTree = "<group>"; };
+		9C48D4C21E6622150011E462 /* PhoneRegistrationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneRegistrationViewController.xib; sourceTree = "<group>"; };
+		9C48D4C51E6623EA0011E462 /* RegisterChoiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterChoiceViewController.swift; sourceTree = "<group>"; };
+		9C48D4C61E6623EA0011E462 /* RegisterChoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterChoiceViewController.xib; sourceTree = "<group>"; };
 		9CA518461E5F52A4002B2250 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPermissionsViewController.swift; sourceTree = "<group>"; };
 		9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationPermissionsViewController.xib; sourceTree = "<group>"; };
@@ -130,6 +142,7 @@
 				9CBB47301E5E180700D351AA /* ValidationMethods.swift */,
 				9CA518721E5FCEFB002B2250 /* UserDefaultManager.swift */,
 				9CBC931A1E60DDF300FF733F /* CustomAlertControllers.swift */,
+				9C48D4BD1E65F5260011E462 /* Keychain.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -138,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				9CA518461E5F52A4002B2250 /* UIColorExtension.swift */,
+				9C48D4BF1E6608680011E462 /* ErrorExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -145,12 +159,16 @@
 		9CA5184D1E5F5845002B2250 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				9C48D4C51E6623EA0011E462 /* RegisterChoiceViewController.swift */,
+				9C48D4C61E6623EA0011E462 /* RegisterChoiceViewController.xib */,
+				9CA518561E5F7F00002B2250 /* EmailRegistrationViewController.swift */,
+				9CA518571E5F7F00002B2250 /* EmailRegistrationViewController.xib */,
+				9C48D4C11E6622150011E462 /* PhoneRegistrationViewController.swift */,
+				9C48D4C21E6622150011E462 /* PhoneRegistrationViewController.xib */,
 				9CA518491E5F583B002B2250 /* LocationPermissionsViewController.swift */,
 				9CA5184A1E5F583B002B2250 /* LocationPermissionsViewController.xib */,
 				9CA518521E5F64DA002B2250 /* NotificationsPermissionViewController.swift */,
 				9CA518531E5F64DA002B2250 /* NotificationsPermissionViewController.xib */,
-				9CA518561E5F7F00002B2250 /* EmailRegistrationViewController.swift */,
-				9CA518571E5F7F00002B2250 /* EmailRegistrationViewController.xib */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -319,6 +337,7 @@
 				9CA518711E5FC987002B2250 /* AddLocationViewController.xib in Resources */,
 				9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */,
 				9CA518591E5F7F00002B2250 /* EmailRegistrationViewController.xib in Resources */,
+				9C48D4C81E6623EA0011E462 /* RegisterChoiceViewController.xib in Resources */,
 				9CBB47361E5E1EB300D351AA /* PhoneLoginViewController.xib in Resources */,
 				9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */,
 				9CA5186D1E5FC440002B2250 /* ProfileViewController.xib in Resources */,
@@ -326,6 +345,7 @@
 				9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */,
 				9CBC931F1E60F58100FF733F /* AddLocationSuccessViewController.xib in Resources */,
 				9CBC93191E60A3D000FF733F /* SearchResultsTableViewCell.xib in Resources */,
+				9C48D4C41E6622150011E462 /* PhoneRegistrationViewController.xib in Resources */,
 				9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */,
 				9CA518691E5FC3F6002B2250 /* MapViewController.xib in Resources */,
 				9CA5184C1E5F583B002B2250 /* LocationPermissionsViewController.xib in Resources */,
@@ -350,9 +370,11 @@
 				9CBB47351E5E1EB300D351AA /* PhoneLoginViewController.swift in Sources */,
 				9CA518581E5F7F00002B2250 /* EmailRegistrationViewController.swift in Sources */,
 				9CA5186C1E5FC440002B2250 /* ProfileViewController.swift in Sources */,
+				9C48D4C31E6622150011E462 /* PhoneRegistrationViewController.swift in Sources */,
 				9CBB47391E5E4D3900D351AA /* PhoneVerificationViewController.swift in Sources */,
 				9CA518471E5F52A4002B2250 /* UIColorExtension.swift in Sources */,
 				9CA5184B1E5F583B002B2250 /* LocationPermissionsViewController.swift in Sources */,
+				9C48D4BE1E65F5260011E462 /* Keychain.swift in Sources */,
 				9CBB47311E5E180700D351AA /* ValidationMethods.swift in Sources */,
 				9CBB472F1E5E145500D351AA /* OutlinedTextField.swift in Sources */,
 				9CA518701E5FC987002B2250 /* AddLocationViewController.swift in Sources */,
@@ -360,8 +382,10 @@
 				9CA518731E5FCEFB002B2250 /* UserDefaultManager.swift in Sources */,
 				9C32A2E31E5D10380099ABF6 /* RoundedRectButton.swift in Sources */,
 				9CA518641E5FC290002B2250 /* TabBarViewController.swift in Sources */,
+				9C48D4C01E6608680011E462 /* ErrorExtensions.swift in Sources */,
 				9CBC931E1E60F58100FF733F /* AddLocationSuccessViewController.swift in Sources */,
 				9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */,
+				9C48D4C71E6623EA0011E462 /* RegisterChoiceViewController.swift in Sources */,
 				9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */,
 				9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */,
 				9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */,

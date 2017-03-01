@@ -19,9 +19,10 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var fifthCodeTextField: OutlinedTextField!
     @IBOutlet weak var sixthCodeTextField: OutlinedTextField!
     private var textFieldArray = [OutlinedTextField]()
-    
     @IBOutlet weak var invalidPhoneNumberLabel: UILabel!
     
+    var phoneNumber = String()
+    private var validCode = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,17 +39,35 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     @IBAction func verifyButtonTapped(_ sender: Any) {
         let containsNumbers = "^[0-9]"
         let codeTest = NSPredicate(format: "SELF MATCHES %@", containsNumbers)
+        var valid = false
         for textField in textFieldArray {
             let result = codeTest.evaluate(with: textField.text)
             if result {
-                
+                valid = true
+                self.validCode.append(textField.text!)
             } else {
+                self.validCode.removeAll()
                 UIView.animate(withDuration: 0.2, animations: {
                     self.invalidPhoneNumberLabel.text = "Only numbers 0-9 are allowed as input."
                     self.invalidPhoneNumberLabel.alpha = 1.0
                 })
             }
         }
+        if valid == true {
+            APIManager.sharedInstance.signInWithPhone(number: self.phoneNumber, password: self.validCode, success: { (response: [String : Any?]) in
+                DispatchQueue.main.async {
+                    self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    let alert = CustomAlertControllers.controllerWith(title: "Error", message: "An error occurred with your request. Please try again.")
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            })
+        }
+        
         
     }
     
