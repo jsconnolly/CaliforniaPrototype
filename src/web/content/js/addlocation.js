@@ -20,12 +20,17 @@ $(document).ready(function(){
                     //window.location.href = "/user/index.html";
                     for(i=0;i<result.locations.length;i++)
                     {
-                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' onclick='EditLocation("+result.locations[i].id+")'>Edit</a></div>";
+                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick='EditLocation(" + result.locations[i].id + ")'>Edit</a> <a href='#' class='btn btn-danger btn-block-half' id='deletelocation(" + result.locations[i].id + ")'>Delete</a> </div>";
+
+
+
                         //console.log(appendedval);
                         if(document.getElementById("locationsrow") != null)
                         {
                             document.getElementById("locationsrow").innerHTML += appendedval;
                         }
+
+
                     }
                 }
             }
@@ -140,7 +145,15 @@ $(document).ready(function(){
             alert("Please enter city or zip.");
             return;
         }
+<<<<<<< 5f7b188ac2662fa6c0cf8a65a366caf071185db7
     });
+=======
+
+
+    });
+
+
+>>>>>>> delete button to added locations
 })
 
 
