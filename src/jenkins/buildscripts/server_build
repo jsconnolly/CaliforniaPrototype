@@ -46,7 +46,7 @@ node {
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Get Current ECS Status"
                 getECSStatus;
 
-                if [[ $CURRENT_DESIRED_COUNT>0 ]]; then
+                if (( $CURRENT_DESIRED_COUNT>0 )); then
                     echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Update Service - Decrement Current Desired Count By 1"
                     updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $(expr $CURRENT_DESIRED_COUNT - 1)
                 else
@@ -201,7 +201,7 @@ node {
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Get Current ECS Status"
                 getECSStatus;
 
-                if [[ $CURRENT_DESIRED_COUNT>0 ]]; then
+                if (( $CURRENT_DESIRED_COUNT>0 )); then
                     echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Update Service - Decrement Current Desired Count By 1"
                     updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $(expr $CURRENT_DESIRED_COUNT - 1)
                 else
