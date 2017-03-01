@@ -1,17 +1,15 @@
 var crypto = require('crypto');
 var moment = require('moment');
 var config = require('../config.json');
-var AWS = require('aws-sdk');
 var jwt = require('jsonwebtoken');
 var ObjectID = require('mongodb').ObjectID;
 var http = require('https');
 var ses = require('node-ses')
     , client = ses.createClient({ key: config.accessKeyId, secret: config.secretAccessKey, amazon: config.emailEndpoint });
-var AWS = require('aws-sdk');
 var userDB;
 var db;
 var MongoClient = require('mongodb').MongoClient;
-
+var util = require('./util');
 // Connect to the db
 MongoClient.connect(config.db, function (err, db) {
     if (!err) {
@@ -65,6 +63,9 @@ exports.importIncident = function () {
     });
     */
 };
+
+
+
 
 
 var getWildFire = function () {
@@ -258,7 +259,7 @@ var createAlerts = function () {
                                             console.log("sending");
 
                                             if (value.enableSMS && item.phone) {
-                                                sendSMS(item.phone, emessage, function (err, o) {
+                                                util.sendSMS(item.phone, emessage, function (err, o) {
 
                                                     if (err) {
 
@@ -268,7 +269,7 @@ var createAlerts = function () {
                                                 });
                                             }
                                             if (value.enableEmail && item.email) {
-                                                if (item.email != "cctech@gmail.com")
+                                                //if (item.email != "cctech@gmail.com")
                                                     client.sendEmail({
                                                         to: item.email
                                                         , from: 'noreply@hotbsoftware.com'
@@ -312,60 +313,3 @@ var createAlerts = function () {
 
 }
 
-
-var sendSMS = function (to_number, message, func_callback) {
-
-
-    AWS.config.update({
-        accessKeyId: config.accessKeyId,
-        secretAccessKey: config.secretAccessKey,
-        region: config.region
-    });
-
-    var sns = new AWS.SNS();
-
-    var SNS_TOPIC_ARN = config.topic;
-
-    sns.subscribe({
-        Protocol: 'sms',
-        //You don't just subscribe to "news", but the whole Amazon Resource Name (ARN)
-        TopicArn: SNS_TOPIC_ARN,
-        Endpoint: to_number
-    }, function (error, data) {
-        if (error) {
-            console.log("error when subscribe", error);
-            return func_callback(false);
-        }
-
-
-        console.log("subscribe data", data);
-        var SubscriptionArn = data.SubscriptionArn;
-
-        var params = {
-            TargetArn: SNS_TOPIC_ARN,
-            Message: message,
-            //hardcode now
-            Subject: 'Admin'
-        };
-
-        sns.publish(params, function (err_publish, data) {
-            if (err_publish) {
-                console.log('Error sending a message', err_publish);
-
-            } else {
-                console.log('Sent message:', data.MessageId);
-            }
-
-            var params = {
-                SubscriptionArn: SubscriptionArn
-            };
-
-            sns.unsubscribe(params, function (err, data) {
-                if (err) {
-                    console.log("err when unsubscribe", err);
-                }
-                return func_callback(err_publish != null);
-            });
-        });
-    });
-}
