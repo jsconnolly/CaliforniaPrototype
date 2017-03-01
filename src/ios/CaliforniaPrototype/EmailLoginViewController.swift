@@ -63,8 +63,10 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                 self.spinner.stopAnimating()
                 guard let token = response["token"] else { return }
                 if Keychain.set(key: "token", value: token as! String) {
+                    UserDefaultManager.setLoggedInStatus(true)
                     DispatchQueue.main.async {
-                        self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
+                        //self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
+                        self.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     DispatchQueue.main.async {

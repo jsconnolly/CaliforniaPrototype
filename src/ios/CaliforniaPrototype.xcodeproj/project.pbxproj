@@ -52,6 +52,8 @@
 		9CBC931F1E60F58100FF733F /* AddLocationSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */; };
 		9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC93201E61081700FF733F /* AddContactViewController.swift */; };
 		9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC93211E61081700FF733F /* AddContactViewController.xib */; };
+		9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */; };
+		9CD9FBCA1E67485400F1238E /* PhonePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */; };
 		9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */; };
 		9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */; };
 		9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */; };
@@ -104,6 +106,8 @@
 		9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddLocationSuccessViewController.xib; sourceTree = "<group>"; };
 		9CBC93201E61081700FF733F /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		9CBC93211E61081700FF733F /* AddContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactViewController.xib; sourceTree = "<group>"; };
+		9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonePasswordViewController.swift; sourceTree = "<group>"; };
+		9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhonePasswordViewController.xib; sourceTree = "<group>"; };
 		9CE3C2D81E5CF36B00B7C6A3 /* CaliforniaPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaliforniaPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 				9CBB472B1E5E01D300D351AA /* EmailLoginViewController.xib */,
 				9CBB47331E5E1EB300D351AA /* PhoneLoginViewController.swift */,
 				9CBB47341E5E1EB300D351AA /* PhoneLoginViewController.xib */,
+				9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */,
+				9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */,
 				9CBB47371E5E4D3900D351AA /* PhoneVerificationViewController.swift */,
 				9CBB47381E5E4D3900D351AA /* PhoneVerificationViewController.xib */,
 			);
@@ -332,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CA518651E5FC290002B2250 /* TabBarViewController.xib in Resources */,
+				9CD9FBCA1E67485400F1238E /* PhonePasswordViewController.xib in Resources */,
 				9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */,
 				9CBB473A1E5E4D3900D351AA /* PhoneVerificationViewController.xib in Resources */,
 				9CA518711E5FC987002B2250 /* AddLocationViewController.xib in Resources */,
@@ -389,6 +396,7 @@
 				9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */,
 				9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */,
 				9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */,
+				9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

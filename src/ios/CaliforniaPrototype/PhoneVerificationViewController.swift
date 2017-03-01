@@ -60,6 +60,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
         if valid == true {
             let fullPhoneString = "1" + self.phoneNumber
             APIManager.sharedInstance.signInWithPhone(number: fullPhoneString, password: self.validCode, success: { (response: [String : Any?]) in
+                UserDefaultManager.setLoggedInStatus(true)
                 DispatchQueue.main.async {
                     self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
                 }
