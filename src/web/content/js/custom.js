@@ -20,22 +20,25 @@ $(document).ready(function(){
 
   });
 
-  $('#deletelocation').click(function() {
-      $('#modal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        modal.find('.modal-title').text('Confirm Delete Location');
-        modal.find('.modal-body').text('Are you sure you want to delete this location?');
-        modal.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> <button type="button" class="btn btn-danger" id="confirmdeleteloc">Delete</button>');
-    });
+
+
+/*    $("#deletelocation(" + result.locations[i].id + ")").click(function() {
+        $("#modal").on('show.bs.modal', function (event) {
+          var modal = $(this);
+          modal.find(".modal-title").text("Confirm Delete Location");
+          modal.find(".modal-body").text("Are you sure you want to delete this location?");
+          modal.find(".modal-footer").html("<button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button> <button type='button' class='btn btn-danger' id='confirmdelete(" + result.locations[i].id + ")'>Delete</button>");
+      });
+  });*/
 
 });
-    
+
   $('#btnlogout').click(function() {
-      console.log("in logout button");
-      sessionStorage.clear(); 
+      //console.log("in logout button");
+      sessionStorage.clear();
 
 });
-    
+
 });
 
 function isNumberKey(evt){
