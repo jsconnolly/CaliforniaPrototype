@@ -331,6 +331,35 @@ exports.phoneCode = function (req, res) {
 }
 
 
+exports.webPhoneCode = function (req, res) {
+    var userinfo = req.body;
+    var userheader = req.headers;
+    if (!verifyToken(userheader.token)) {
+        res.status(401).send({ 'Error': 'Invalid token' });
+        return;
+    };
+    userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
+        if (result == null) {
+             var code = getRandomIntInclusive(123456, 999999);
+            util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
+                console.log("sms result", err);
+                if (!err) {
+                    res.status(200).send({ 'code': code });
+                } else {
+                    res.status(500).send({ 'Error': 'SMS failed' });
+                }
+            });           
+        } else {
+            res.status(401).send({ 'Error': 'Phone number already exist' });
+
+
+        }
+    });
+
+}
+
+
+
 exports.update = function (req, res) {
     var userinfo = req.body;
     var userid = null;

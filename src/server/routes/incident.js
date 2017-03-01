@@ -225,7 +225,7 @@ var createAlerts = function () {
                 if (item.locations.length > 0)
                             item.locations.forEach(function (value) {
 
-                                //console.log("3" + value.coordinates.lat);
+                                console.log("3" + value.coordinates.lat);
 
                                 incidentDB.find(
                                     {
@@ -234,7 +234,7 @@ var createAlerts = function () {
                                             $near:
                                             {
                                                 $geometry:
-                                                { type: "Point", coordinates: [value.coordinates.lat, value.coordinates.lng] },
+                                                { type: "Point", coordinates: [value.coordinates.lng, value.coordinates.lat] },
                                                 $maxDistance: value.alertRadius ? (value.alertRadius * 1609) : 1609 * 2
                                             }
                                         }

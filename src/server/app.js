@@ -26,8 +26,10 @@ else {
     app.use(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
         next();
     });
+    app.post('/users/verifyPhone', user.webPhoneCode);    
     app.post('/admin/alerts/', user.addAlert);
     app.post('/admin/alerts/search', user.getAlerts);
     app.put('/users/:id/contacts/:cid', user.updateContact);
