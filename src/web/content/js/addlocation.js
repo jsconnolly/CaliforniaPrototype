@@ -1,7 +1,11 @@
 $(document).ready(function(){
 
     // Get Added Locations
-    
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> ea905c2bbab1bb8feeaad672a0877b019ebfd4b7
      if(sessionStorage.getItem("id") != null)
     {
             $.ajax({
@@ -19,7 +23,7 @@ $(document).ready(function(){
                     //window.location.href = "/user/index.html";
                     for(i=0;i<result.locations.length;i++)
                     {
-                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' onclick='EditLocation("+result.locations[i].id+")'>Edit</a></div>";
+                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick='EditLocation(" + result.locations[i].id + ")'>Edit</a> <a href='#' class='btn btn-danger btn-block-half' id='deletelocation(" + result.locations[i].id + ")'>Delete</a> </div>";
                         //console.log(appendedval);
                         if(document.getElementById("locationsrow") != null)
                         {
@@ -33,9 +37,8 @@ $(document).ready(function(){
                  alert(data.responseJSON.Error);
                  /*console.log("error", data.status);
                  console.log("STATUS: "+xhr); */
-                });  
+                });
     }
-    
 
         $('#addlocation').click(function(e){
         var addlocation = {
@@ -51,8 +54,8 @@ $(document).ready(function(){
         if(cityzip.length > 0)
         {
             // Get lat and lng from google maps api
-            console.log("Latitude" + getLatLng(cityzip).lat);
-            console.log("Longitude" + getLatLng(cityzip).lng);
+            //console.log("Latitude" + getLatLng(cityzip).lat);
+            //console.log("Longitude" + getLatLng(cityzip).lng);
 
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
             addlocation.displayName = $("#locationname").val();
@@ -99,13 +102,18 @@ $(document).ready(function(){
             return;
         }
 
-              
     });
- 
-
-});
 
 
+})
+
+
+function EditLocation(locationId)
+{
+
+
+
+}
 
 function getLatLng(cityzip)
 {

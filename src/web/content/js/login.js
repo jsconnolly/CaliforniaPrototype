@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
     var LoginData = {
@@ -8,9 +7,7 @@ $(document).ready(function(){
 
 
 
-
     $('#loginbtn').click(function(e){
-
         var password = $('#password').val();
         var username = $('#username').val();
         if(password.length > 0 && username.length > 0)
@@ -33,6 +30,7 @@ $(document).ready(function(){
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
+
                     }
                 
                 setCookie("id",result.id,1);
@@ -56,11 +54,10 @@ setCookie("token",result.token,1);
         }
         else
         {
+
             //alert("Please enter email and password.");
             return;
         }
-
-
 
     });
 })

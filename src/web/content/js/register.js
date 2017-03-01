@@ -7,7 +7,6 @@ $(document).ready(function(){
     phone:""
 };
 
-
     $('#subscribe').click(function(e){
 
         var password = $('#password').val();
@@ -37,12 +36,7 @@ $(document).ready(function(){
                         $('#email').val("");
                         $('#password').val("");
                         $('#confirmpassword').val("");
-                        /*$('#popupAlert').on('show.bs.modal', function (event) {
-                          var modal = $(this);
-                          modal.find('#alertTitle').text('Successfully Registered');
-                          modal.find('#alertBody').text('You have successfully registered. Please log in.');
-                          modal.find('#alertFooter').html('<a href="/login.html" class="btn btn-default">Log In</a>')
-                      });*/
+
                         alert("You have successfully registered. Please log in.");
                         window.location.href = "login.html";
                     }
@@ -56,6 +50,7 @@ $(document).ready(function(){
             }
             else
             {
+
                 //alert("Passwords much match");
                  //$('#password').val("");
                  //$('#confirmpassword').val("");
@@ -64,7 +59,7 @@ $(document).ready(function(){
         }
         else
         {
-            //alert("Please enter email and password.");
+
             return;
         }
 

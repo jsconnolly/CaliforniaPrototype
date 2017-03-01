@@ -23,11 +23,41 @@ node {
     }
 
     stage ('Test') {
+        sh'''#!/bin/bash
+          numSuccess=0
+          numFailure=0
 
+          folder=src/tests/web/*.py
+          for file in $folder
+          do
+
+            if [ "$file" == "$folder" ]; then
+              echo "There are currently no tests to run..."
+              exit 0
+            fi
+
+            python3 $file
+            output=$?
+
+            if [ $output = 0 ]; then
+                ((numSuccess++))
+            else
+                ((numFailure++))
+            fi
+          done
+
+          # Reduce total successes by 1 because APIWrapper.py is included
+          ((numSuccess--))
+
+          echo "Successful Tests: $numSuccess"
+          echo "Failed Tests: $numFailure"
+        '''
     }
 
     stage ('Deploy to Production') {
-
+        sh '''#!/bin/bash
+            aws s3 sync ./src/web/dist/ s3://ca-prototype-hotb --acl "public-read"
+        '''
     }
 
     stage ('Clean Up') {
