@@ -24,7 +24,10 @@
     "jsonwebtoken":"~7.3.0",
     "mongodb-connection-model":"6.4.0",
     "tunnel-ssh":"4.1.2",
-    "sendmail":"1.1.1"
+    "sendmail":"1.1.1",
+     "cron":"1.2.1",
+     "node-ses":"2.0.3"
+  
     
   }
 

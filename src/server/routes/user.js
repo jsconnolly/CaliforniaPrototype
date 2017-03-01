@@ -1,36 +1,26 @@
-var mongo = require('mongodb');
 var crypto = require('crypto');
 var moment = require('moment');
 var config = require('../config.json');
-var AWS = require('aws-sdk');
 var jwt = require('jsonwebtoken');
 var ObjectID = require('mongodb').ObjectID;
-
-var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
 var userDB;
-var server = new Server(config.db, 49541, { auto_reconnect: true });//27017
+var db;
+var ses = require('node-ses')
+    , client = ses.createClient({ key: config.accessKeyId, secret: config.secretAccessKey, amazon: config.emailEndpoint });
+var util = require('./util');
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
 
-
-
-db = new Db('ca', server);
-
-
-console.log("test" + db);
-db.open(function (err, db) {
+// Connect to the db
+MongoClient.connect(config.db, function (err, db) {
     if (!err) {
-        console.log("Connected to 'ca' database");
-        db.collection('user', { strict: true }, function (err, collection) {
-            if (err) {
-                console.log("The 'ca' collection doesn't exist. Creating it with sample data...");
-                db.createCollection('user');
-            }
-        });
+        userDB = db.collection('user');
+        incidentDB = db.collection('incident');
+        console.log("We are connected");
     }
 });
 
-var userDB = db.collection('user');
+
 
 exports.test = function (req, res) {
     var id = req.params.id;
@@ -44,8 +34,8 @@ exports.test = function (req, res) {
 
 exports.add = function (req, res) {
     var userinfo = req.body;
-    if (!userinfo.email || !userinfo.phone) {
-        res.status(400).send({ 'Error': 'Phone and email is required' });
+    if (!userinfo.email && !userinfo.phone) {
+        res.status(400).send({ 'Error': 'Phone or email is required' });
         return;
     }
     userDB.findOne({ $or: [{ 'email': userinfo.email == undefined ? "---" : userinfo.email }, { 'phone': userinfo.phone == undefined ? "---" : userinfo.phone }] }, function (err, item) {
@@ -57,7 +47,7 @@ exports.add = function (req, res) {
         saltAndHash(userinfo.password, function (hash) {
             userinfo.password = hash;
             // append date stamp when record was created //
-            userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+            userinfo.date = new Date();//moment().format('MMMM Do YYYY, h:mm:ss a');
             userinfo.locations = [];
             userinfo.contacts = [];
             //userobj.token=generateToken(userobj.id);
@@ -65,7 +55,7 @@ exports.add = function (req, res) {
                 if (err) {
                     res.status(400).send({ 'Error': 'An error has occurred' });
                 } else {
-                    console.log('success: --' + JSON.stringify(result));
+
                     result.ops[0].token = generateToken(result.ops[0]._id);
                     userDB.save(result.ops[0], { safe: true }, function (e) {
                     });
@@ -73,8 +63,22 @@ exports.add = function (req, res) {
                     userobj.id = userobj._id;
                     delete userobj._id;
                     delete userobj.password;
+                    if (userinfo.email)
+                        client.sendEmail({
+                            to: userinfo.email
+                            , from: 'noreply@hotbsoftware.com'
+                            , subject: 'Registration'
+                            , message: 'Welcome to California Emergency Alert'
 
-                    res.status(200).send(userobj);
+                        }, function (err, data, response) {
+                            if (err) {
+                                res.status(500).send({ 'Error': 'Email failed' });
+                            } else {
+                                
+                            }
+                        });
+                        res.status(200).send(userobj);
+
                 }
 
             });
@@ -135,9 +139,41 @@ exports.getUserByEmail = function (req, res) {
 
 
     });
+}
+
+exports.forgotPassword = function (req, res) {
+    var userinfo = req.body;
+
+    userDB.findOne({ 'email': userinfo.email }, function (e, result) {
+        if (result) {
+
+            var token = generateResetToken(result._id);
+            client.sendEmail({
+                to: userinfo.email
+                , from: 'noreply@hotbsoftware.com'
+                , subject: 'Reset your password'
+                , message: 'Click <a href="' + config.resetURL + '?token=' + token + '&email=' + userinfo.email + '">here</a> to reset your password.'
+
+            }, function (err, data, response) {
+                if (err) {
+                    res.status(500).send({ 'Error': 'Email failed' });
+                } else {
+                    res.status(200).send();
+                }
+            });
+
+
+
+        } else {
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+
+
+    });
 
 
 }
+
 
 
 exports.getUserById = function (req, res) {
@@ -179,14 +215,19 @@ exports.login = function (req, res) {
 
     userDB.findOne({ 'email': userinfo.email }, function (e, result) {
         if (result == null) {
-            res.status(400).send({ 'Error': 'Login failed' });
+            res.status(404).send({ 'Error': 'User not found' });
         } else {
             validatePassword(userinfo['password'], result.password, function (err, o) {
                 if (o) {
                     result.token = generateToken(result._id);
                     userDB.save(result, { safe: true }, function (e) {
                     });
-                    res.status(200).send({ token: result.token });
+                    var returnObj = result;
+                    returnObj.id = result._id;
+                    delete returnObj._id;
+                    delete returnObj.password;
+                    //res.status(200).send({ token: result.token });
+                    res.status(200).send(returnObj);
                 } else {
                     res.status(400).send({ 'Error': 'Login failed' });
                 }
@@ -200,14 +241,24 @@ exports.phoneLogin = function (req, res) {
 
     userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
         if (result == null) {
-            res.status(400).send({ 'Error': 'Login failed' });
+            res.status(404).send({ 'Error': 'User not found' });
         } else {
+            if (!userinfo.password) {
+                res.status(400).send({ 'Error': 'Password is required' });
+                return;
+            }
+
             validatePassword(userinfo.password, result.password, function (err, o) {
                 if (o) {
                     result.token = generateToken(result._id);
                     userDB.save(result, { safe: true }, function (e) {
                     });
-                    res.status(200).send({ token: result.token });
+                    var returnObj = result;
+                    returnObj.id = result._id;
+                    delete returnObj._id;
+                    delete returnObj.password;
+                    res.status(200).send(returnObj);
+                    //res.status(200).send({ token: result.token });
                 } else {
                     res.status(400).send({ 'Error': 'Login failed' });
                 }
@@ -218,16 +269,57 @@ exports.phoneLogin = function (req, res) {
 }
 exports.phoneCode = function (req, res) {
     var userinfo = req.body;
-
+    var code = getRandomIntInclusive(123456, 999999);
     userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
         if (result == null) {
-            res.status(401).send({ 'Error': 'Phone number not found' });
+
+            userinfo.password = code;
+            saltAndHash(userinfo.password, function (hash) {
+                userinfo.password = hash;
+                // append date stamp when record was created //
+                userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                userinfo.locations = [];
+                userinfo.contacts = [];
+
+                userDB.insert(userinfo, { safe: true }, function (err, result) {
+                    if (err) {
+                        res.status(400).send({ 'Error': 'An error has occurred' });
+                    } else {
+                        console.log('success: --' + JSON.stringify(result));
+                        result.ops[0].token = generateToken(result.ops[0]._id);
+                        userDB.save(result.ops[0], { safe: true }, function (e) {
+                        });
+                        var userobj = result.ops[0];
+                        userobj.id = userobj._id;
+                        delete userobj._id;
+                        delete userobj.password;
+
+                        //res.status(200).send({ 'code': code });
+                        res.status(200).send();
+                        return;
+                    }
+
+                });
+
+            });
+
+
         } else {
-            var code = getRandomIntInclusive(123456, 999999);
-            sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
+
+            util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
                 console.log("sms result", err);
                 if (!err) {
-                    res.status(200).send({ 'code': code });
+
+
+                    saltAndHash(code, function (hash) {
+                        result.password = hash;
+                        userDB.save(result, { safe: true }, function (e) {
+                        });
+
+                    });
+
+
+                    res.status(200).send();
                 } else {
                     res.status(500).send({ 'Error': 'SMS failed' });
                 }
@@ -517,15 +609,15 @@ exports.updateContact = function (req, res) {
             )
 
 
-/**
-let connection = new SMTPConnection({port:465,secure:false});
-connection.connect(function(){ 
-
-connection.send({from:"jhuang@hotbsoftware.com",to:"cctech@gmail.com"}, "aslkdfaklsdfj");
-
-});
-
- */
+            /**
+            let connection = new SMTPConnection({port:465,secure:false});
+            connection.connect(function(){ 
+            
+            connection.send({from:"jhuang@hotbsoftware.com",to:"cctech@gmail.com"}, "aslkdfaklsdfj");
+            
+            });
+            
+             */
             res.status(200).send({});
 
 
@@ -539,6 +631,75 @@ connection.send({from:"jhuang@hotbsoftware.com",to:"cctech@gmail.com"}, "aslkdfa
 
 }
 
+
+exports.getAlerts = function (req, res) {
+
+    var alerts = [];
+    incidentDB.find().toArray(function (err, docs) {
+        if (err) {
+            res.status(500).send({ 'Error': "Failed" });
+        }
+        if (docs) {
+            docs.forEach(function (item) {
+                var alert = {};
+                alert.name = item.name;
+                alert.type = item.type;
+                alert.date = item.date;
+                alert.loc = item.loc;
+                alert.location = item.location;
+                alerts.push(alert);
+
+            });
+
+        }
+
+        res.status(200).send(alerts);
+
+    });
+
+
+
+
+
+}
+
+exports.addAlert = function (req, res) {
+
+    var alert = req.body;
+    if (!alert.name || !alert.type) {
+        res.status(400).send({ 'Error': 'Alert Name and Type are required' });
+        return;
+    }
+    incidentDB.findOne({ $or: [{ 'name': alert.name }] }, function (err, item) {
+        if (item) {
+            res.status(400).send({ 'Error': 'Records already exist' });
+            return;
+        }
+        alert.date = new Date();
+        alert.createdby="admin";
+        incidentDB.insert(alert, { safe: true }, function (err, result) {
+            if (err) {
+                res.status(400).send({ 'Error': 'An error has occurred' });
+            } else {
+                var alertobj = result.ops[0];
+                alertobj.id = alertobj._id;
+                delete alertobj._id;
+
+                res.status(200).send(alertobj);
+            }
+
+        });
+
+
+
+
+    });
+
+
+
+
+
+}
 
 var generateToken = function (user) {
     var token = jwt.sign({ user: user }, config.secretKey);
@@ -597,63 +758,6 @@ var validatePassword = function (plainPass, hashedPass, callback) {
 
 var getObjectId = function (id) {
     return new require('mongodb').ObjectID(id);
-}
-
-var sendSMS = function (to_number, message, func_callback) {
-
-
-    AWS.config.update({
-        accessKeyId: config.accessKeyId,
-        secretAccessKey: config.secretAccessKey,
-        region: config.region
-    });
-
-    var sns = new AWS.SNS();
-
-    var SNS_TOPIC_ARN = config.topic;
-
-    sns.subscribe({
-        Protocol: 'sms',
-        //You don't just subscribe to "news", but the whole Amazon Resource Name (ARN)
-        TopicArn: SNS_TOPIC_ARN,
-        Endpoint: to_number
-    }, function (error, data) {
-        if (error) {
-            console.log("error when subscribe", error);
-            return func_callback(false);
-        }
-
-
-        console.log("subscribe data", data);
-        var SubscriptionArn = data.SubscriptionArn;
-
-        var params = {
-            TargetArn: SNS_TOPIC_ARN,
-            Message: message,
-            //hardcode now
-            Subject: 'Admin'
-        };
-
-        sns.publish(params, function (err_publish, data) {
-            if (err_publish) {
-                console.log('Error sending a message', err_publish);
-
-            } else {
-                console.log('Sent message:', data.MessageId);
-            }
-
-            var params = {
-                SubscriptionArn: SubscriptionArn
-            };
-
-            sns.unsubscribe(params, function (err, data) {
-                if (err) {
-                    console.log("err when unsubscribe", err);
-                }
-                return func_callback(err_publish != null);
-            });
-        });
-    });
 }
 
 function getRandomIntInclusive(min, max) {
