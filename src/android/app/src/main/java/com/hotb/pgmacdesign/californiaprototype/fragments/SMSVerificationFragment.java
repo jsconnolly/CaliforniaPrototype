@@ -50,7 +50,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
 
     //API Interface
     private APICalls api;
-    private String phoneNumber;
+    private String phoneNumber, code;
 
     public SMSVerificationFragment() {}
 
@@ -195,7 +195,8 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
                 phoneNumber = "1" + phoneNumber;
             }
         } catch (Exception e){}
-        api.loginWithPhone(phoneNumber, verifCode);
+        this.code = verifCode;
+        this.api.registerWithPhone(phoneNumber, verifCode);
     }
 
     /**
@@ -442,9 +443,14 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
                 //API Call error
                 String str = CaliforniaPrototypeCustomUtils.checkErrorString(result);
                 if(str.equals(getString(R.string.api_response_incorrect_credentials))){
-                    //L.toast(getActivity(), getString(R.string.username_pw_incorrect));
-                } else if(str.equals("")){
-                    // TODO: 2017-02-27 altar once we know other response strings
+                    this.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                } else if(str.equalsIgnoreCase(getString(R.string.record_already_exists))){
+                    if(StringUtilities.isNullOrEmpty(phoneNumber) || StringUtilities.isNullOrEmpty(code)){
+                        this.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                    } else {
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                        api.loginWithPhone(phoneNumber, code);
+                    }
                 } else {
                     L.Toast(getActivity(), str);
                 }

@@ -106,8 +106,8 @@ public interface ApiInterface {
      * @param body {@link CAUser} Required params: phone
      * @return {@link CAUser} Returns an empty object if successful, contains Error string if not
      */
-    @PUT(VERSION + USERS + PHONE_VERIFICATION)
-    Call<CAUser> phoneVerification(@Body CAUser body);
+    @POST(VERSION + USERS + PHONE_VERIFICATION)
+    Call<Void> phoneVerification(@Body CAUser body);
 
     /**
      * Get a user via their email

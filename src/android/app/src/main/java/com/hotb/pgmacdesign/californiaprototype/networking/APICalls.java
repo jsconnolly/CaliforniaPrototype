@@ -154,11 +154,11 @@ public class APICalls {
         CAUser user = new CAUser();
         user.setPhone(phoneNumber);
         //Initialize the call
-        Call<CAUser> call = apiInterface.phoneVerification(user);
+        Call<Void> call = apiInterface.phoneVerification(user);
         //Enqueue the call asynchronously
-        call.enqueue(new Callback<CAUser>() {
+        call.enqueue(new Callback<Void>() {
                          @Override
-                         public void onResponse(Call<CAUser> call, Response<CAUser> response) {
+                         public void onResponse(Call<Void> call, Response<Void> response) {
                              //Check for response or not
                              if (!response.isSuccessful()) {
                                  if (checkForError(response) != null) {
@@ -169,8 +169,7 @@ public class APICalls {
                              } else {
                                  //Response was successful. Send back via listener
                                  try {
-                                     CAUser responseObject = (CAUser) response.body();
-                                     listener.onTaskComplete(responseObject, Constants.TAG_EMPTY_OBJECT);
+                                     listener.onTaskComplete(null, Constants.TAG_EMPTY_OBJECT);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
                                  }
@@ -178,7 +177,7 @@ public class APICalls {
                          }
 
                          @Override
-                         public void onFailure(Call<CAUser> call, Throwable t) {
+                         public void onFailure(Call<Void> call, Throwable t) {
                              t.printStackTrace();
                              listener.onTaskComplete(t.getMessage(), Constants.TAG_API_CALL_FAILURE);
                          }
@@ -390,7 +389,7 @@ public class APICalls {
         user.setPhone(phoneNumber);
         user.setPassword(pw);
         //Initialize the call
-        Call<CAUser> call = apiInterface.registerUser(user);
+        Call<CAUser> call = apiInterface.loginWithPhone(user);
         //Enqueue the call asynchronously
         call.enqueue(new Callback<CAUser>() {
                          @Override
@@ -401,6 +400,58 @@ public class APICalls {
                                      listener.onTaskComplete(checkForError(response), Constants.TAG_API_ERROR);
                                  } else {
                                      listener.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             } else {
+                                 //Response was successful. Send back via listener
+                                 try {
+                                     CAUser responseObject = (CAUser) response.body();
+                                     persistData(responseObject);
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
+                                     responseObject.setPassword(pw);
+                                     persistData(responseObject);
+                                 } catch (Exception e) {
+                                     listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             }
+                         }
+
+                         @Override
+                         public void onFailure(Call<CAUser> call, Throwable t) {
+                             t.printStackTrace();
+                             listener.onTaskComplete(t.getMessage(), Constants.TAG_API_CALL_FAILURE);
+                         }
+                     }
+        );
+    }
+
+    /**
+     * Register with phone number and 6 digit password
+     *
+     * @param phoneNumber phone Number
+     * @param pw          password (6 digit code)
+     *                    NOTE: This persists the authToken
+     */
+    public void registerWithPhone(String phoneNumber, final String pw) {
+        if (!checkForInternetConnectivity()) {
+            return;
+        }
+        CAUser user = new CAUser();
+        user.setPhone(phoneNumber);
+        user.setPassword(pw);
+        //Initialize the call
+        Call<CAUser> call = apiInterface.registerUser(user);
+        //Enqueue the call asynchronously
+        call.enqueue(new Callback<CAUser>() {
+                         @Override
+                         public void onResponse(Call<CAUser> call, Response<CAUser> response) {
+                             //Check for response or not
+                             if (!response.isSuccessful()) {
+                                 if (checkForError(response) != null) {
+                                     listener.onTaskComplete(checkForError(response), Constants.TAG_API_ERROR);
+                                 } else {
+                                     CAUser err = new CAUser();
+                                     err.setError("Records already exist");
+                                     listener.onTaskComplete(err, Constants.TAG_API_ERROR);
                                  }
                              } else {
                                  //Response was successful. Send back via listener

@@ -32,8 +32,6 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
-import static com.hotb.pgmacdesign.californiaprototype.R.string.phone;
-
 /**
  * Created by pmacdowell on 2017-02-15.
  */

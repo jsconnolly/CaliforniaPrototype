@@ -41,6 +41,7 @@ import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
 import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAAlert;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
@@ -97,8 +98,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private String email, phone, id, pw;
     private CAUser user;
     private CALocation[] userSavedLocations;
+    private CAAlert[] emergenciesArray;
+    private List<CAAlert> emergencies;
     private List<CALocation> userSavedLocationsList;
     private List<Circle> userSavedLocationCircles;
+    private List<Circle> emergencyCircles;
     private String[] colorArray;
 
     //Misc
@@ -261,6 +265,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.googleMap = aGoogleMap;
         this.mapHasLoaded = true;
         this.enableScaleBar();
+        this.googleMap.setOnCircleClickListener(this);
         this.googleMap.setOnCameraMoveListener(this);
         this.googleMap.setOnMapLongClickListener(this);
         this.googleMap.setIndoorEnabled(false);
@@ -290,10 +295,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
-
-
-
-
 
     /**
      * Manage permission results
@@ -331,11 +332,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         } else {
             return true;
         }
-        /*
-        return PermissionUtilities.PermissionsRequestShortcutReturn(getActivity(),
-                new PermissionUtilities.permissionsEnum[]{
-                        PermissionUtilities.permissionsEnum.ACCESS_FINE_LOCATION});
-        */
     }
 
     @Override
@@ -436,21 +432,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             //Removed on 2017-02-28 For refactoring purposes
             return;
         }
-        if(this.lastManuallyDrawnCircle != null){
-            this.lastManuallyDrawnCircle.remove();
-        }
-        Projection projection = googleMap.getProjection();
-        float xMetersPerInch = getMetersPerInch(projection);
-
-        // Create the circle.
-        CircleOptions options = new CircleOptions();
-        options.center(point);
-        options.radius(xMetersPerInch);
-        options.strokeColor(R.color.white);
-        options.fillColor(R.color.SemiTransparentBlue);
-        options.clickable(true);
-        this.lastManuallyDrawnCircle = googleMap.addCircle(options);
-
     }
 
     /**
@@ -606,8 +587,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.userSavedLocationCircles = new ArrayList<>();
         this.userSavedLocationsList = new ArrayList<>();
 
-        L.m("NUM LOCATIONS SAVED = " + userSavedLocations.length);
-
         for(int i = 0; i < this.userSavedLocations.length; i++){
             CALocation location = this.userSavedLocations[i];
             if(location == null){
@@ -652,14 +631,89 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             CircleOptions options = new CircleOptions();
             options.center(new LatLng(localLat, localLng));
             options.radius(localRadius);
-            options.strokeColor(R.color.white);
-            options.fillColor(R.color.SemiTransparentGreen);
+            options.strokeColor(ContextCompat.getColor(getActivity(), R.color.aqua));
+            options.fillColor(ContextCompat.getColor(getActivity(), R.color.SemiTransparentOrchid));
             options.clickable(true);
             Circle circleAdded = googleMap.addCircle(options);
             location.setCircleId(circleAdded.getId());
             this.userSavedLocationCircles.add(circleAdded);
             this.userSavedLocationsList.add(location);
+            this.googleMap.setOnCircleClickListener(this);
+        }
+    }
 
+    private void loadEmergencyAlerts(){
+        // TODO: 2017-02-28 parse through emergenciesArray here
+        if(emergencies == null){
+            emergencies = new ArrayList<>();
+        }
+        if(emergencyCircles == null){
+            emergencyCircles = new ArrayList<>();
+        }
+
+        //Iterate to remove any previous ones they had saved
+        for(Circle circle : this.emergencyCircles){
+            circle.remove();
+        }
+
+        //Checking to be sure
+        if(emergenciesArray == null){
+            return;
+        }
+        if(emergenciesArray.length <= 0){
+            return;
+        }
+
+        this.emergencies = new ArrayList<>();
+        this.emergencyCircles = new ArrayList<>();
+
+        for(int i = 0; i < this.emergenciesArray.length; i++){
+            CAAlert alert = this.emergenciesArray[i];
+            if(alert == null){
+                continue;
+            }
+
+            /*
+            // TODO: 2017-02-28 insert code here for emergencies once back-end finishes
+            String radiusS = location.getAlertRadius();
+            CALocation.Coordinates coordinates = location.getCoordinates();
+            String name = location.getDisplayName();
+
+            if(coordinates == null){
+                continue;
+            }
+
+            float localRadius;
+            try {
+                localRadius = Float.parseFloat(radiusS);
+            } catch (Exception e){
+                localRadius = -1;
+            }
+
+            if(localRadius < 0){
+                localRadius = getMetersPerInch(this.googleMap.getProjection());
+            } else {
+                localRadius = (float)(NumberUtilities.convertMilesToKilometers(localRadius) * 1000);
+            }
+            double localLat = coordinates.getLat();
+            double localLng = coordinates.getLng();
+
+            if(StringUtilities.isNullOrEmpty(name)){
+                name = "";
+            }
+            CircleOptions options = new CircleOptions();
+            options.center(new LatLng(localLat, localLng));
+            options.radius(localRadius);
+            options.strokeColor(ContextCompat.getColor(getActivity(), R.color.Red));
+            options.fillColor(ContextCompat.getColor(getActivity(), R.color.SemiTransparentRed));
+            options.clickable(true);
+            Circle circleAdded = googleMap.addCircle(options);
+            alert.setCircleId(circleAdded.getId());
+            this.emergencyCircles.add(circleAdded);
+            this.emergencies.add(alert);
+            this.googleMap.setOnCircleClickListener(this);
+
+            */
         }
     }
 
@@ -683,6 +737,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                         loadUserSavedLocs();
                     }
                 }
+                // TODO: 2017-02-28 code here to fill - emergenciesArray
                 break;
 
             //todo Count for other cases here once back-end finishes

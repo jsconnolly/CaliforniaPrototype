@@ -87,4 +87,5 @@
     <string name="enter_valid_email">Please enter a valid email address</string>
     <string name="forgot_pw_instructions">Please enter a valid email in the email box and then click forgot password to have it reset</string>
     <string name="forgot_pw_instructions2">An email has been sent to the one you entered with instructions on resetting your credentials</string>
+    <string name="record_already_exists">Records already exist</string>
 </resources>
