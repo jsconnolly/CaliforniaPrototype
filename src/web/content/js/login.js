@@ -5,18 +5,9 @@ $(document).ready(function(){
     email: "",
     password: ""
 };
-<<<<<<< ae1d3d5afa52e9030ec565eb26569a3f1ec00028
 
 
    var LoginResponse = { token:"", id:""};
-
-
-=======
-
-
-
-
->>>>>>> Add location
     $('#loginbtn').click(function(e){
 
         var password = $('#password').val();
@@ -42,6 +33,11 @@ $(document).ready(function(){
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
                     }
+
+                setCookie("id",result.id,1);
+setCookie("token",result.token,1);
+                //LoginResponse.token = result.token;
+                //LoginResponse.id = result.id;
                 //LoginResponse.email = result.token;
                 //LoginToken.id=result.id;
                 //console.log("Token returned " + LoginToken.token);
@@ -70,25 +66,9 @@ $(document).ready(function(){
 
 
 
-/*function getUserId(email,logintoken)
-{
-
-    var userId;
-    $.ajax({
-       url : "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users/email/" + email,
-       headers: {
-            'token':logintoken,
-            'Content-Type':'application/json'
-         },
-       method: "GET",
-       async:false,
-       success:function(data){
-           console.log("Response from getUserId " + data);
-           userId = data.id;
-       }
-
-    });
-
-    return userId;
-
-}*/
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}

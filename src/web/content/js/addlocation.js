@@ -145,15 +145,7 @@ $(document).ready(function(){
             alert("Please enter city or zip.");
             return;
         }
-<<<<<<< 5f7b188ac2662fa6c0cf8a65a366caf071185db7
     });
-=======
-
-
-    });
-
-
->>>>>>> delete button to added locations
 })
 
 

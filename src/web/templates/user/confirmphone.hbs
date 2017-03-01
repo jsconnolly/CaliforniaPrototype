@@ -2,17 +2,25 @@
 title: Phone Confirmation
 loggedin: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
 
+
+</script>
 <div class="container-table">
     <div class="row vertical-center-row">
       <div class="user-reg col-md-6 col-md-offset-3">
             <a href="index.html" class="btn btn-primary btn-block">Back to Map</a>
         <h3>Subscribe to Emergency Notification Service</h3>
-        <h5>Confirmation code sent to 888-888-8888</h5>
+
         <p>
           Enter the confirmation number provided in the text message sent.
         </p>
-        <form action="user/index.html" class="form-inline" data-toggle="validator" role="form">
+        <form class="form-inline" data-toggle="validator" role="form">
           <div class="form-group confirmation-number-phone">
               <label>Confirmation Number</label><br />
             <input type="text" class="form-control input-lg" onkeypress="return isNumberKey(event)" id="txtphonecode1"  maxlength="1" required />
