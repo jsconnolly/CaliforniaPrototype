@@ -4,35 +4,36 @@ $(document).ready(function(){
     
      if(sessionStorage.getItem("id") != null)
     {
-        $.ajax({
-            type: "GET",
-            url: APIURL + "users/" +sessionStorage.getItem("id"),
-            headers: {
-            'token': sessionStorage.getItem("token"),
-            'Content-Type':'application/json'
-         },
-            }).done(function (result) {
-            console.log(result);
-            if(result.locations !== undefined)
-            {
-                //alert("location added successfully");
-                //window.location.href = "/user/index.html";
-                for(i=0;i<result.locations.length;i++)
+            $.ajax({
+                type: "GET",
+                url: APIURL + "users/" +sessionStorage.getItem("id"),
+                headers: {
+                'token': sessionStorage.getItem("token"),
+                'Content-Type':'application/json'
+             },
+                }).done(function (result) {
+                //console.log(result);
+                if(result.locations !== undefined)
                 {
-                    var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' >Edit</a></div>";
-                    if(document.getElementById("locationsrow") != null)
+                    //alert("location added successfully");
+                    //window.location.href = "/user/index.html";
+                    for(i=0;i<result.locations.length;i++)
                     {
-                        document.getElementById("locationsrow").innerHTML += appendedval;
+                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' onclick='EditLocation("+result.locations[i].id+")'>Edit</a></div>";
+                        //console.log(appendedval);
+                        if(document.getElementById("locationsrow") != null)
+                        {
+                            document.getElementById("locationsrow").innerHTML += appendedval;
+                        }
                     }
                 }
-            }
-            })
-            .fail(function (data, textStatus, xhr) {
-             //console.log(data.responseJSON.Error);
-             alert(data.responseJSON.Error);
-             /*console.log("error", data.status);
-             console.log("STATUS: "+xhr); */
-            });  
+                })
+                .fail(function (data, textStatus, xhr) {
+                 //console.log(data.responseJSON.Error);
+                 alert(data.responseJSON.Error);
+                 /*console.log("error", data.status);
+                 console.log("STATUS: "+xhr); */
+                });  
     }
     
 
@@ -54,8 +55,7 @@ $(document).ready(function(){
             console.log("Longitude" + getLatLng(cityzip).lng);
 
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
-            addlocation.displayName = "location" + Math.random();
-
+            addlocation.displayName = $("#locationname").val();
             console.log("Request JSON" + JSON.stringify(addlocation));
 
 
@@ -99,15 +99,12 @@ $(document).ready(function(){
             return;
         }
 
-
-
+              
     });
+ 
 
+});
 
-
-
-
-})
 
 
 function getLatLng(cityzip)

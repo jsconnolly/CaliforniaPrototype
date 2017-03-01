@@ -29,6 +29,13 @@ $(document).ready(function(){
     });
 
 });
+    
+  $('#btnlogout').click(function() {
+      console.log("in logout button");
+      sessionStorage.clear(); 
+
+});
+    
 });
 
 function isNumberKey(evt){

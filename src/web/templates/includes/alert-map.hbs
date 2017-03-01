@@ -102,7 +102,7 @@
         var marker;
         
         // Get locations and alerts from user object and show on google maps
-             if(sessionStorage.getItem("id") != null)
+     if(sessionStorage.getItem("id") != null)
     {
         $.ajax({
             type: "GET",
@@ -121,23 +121,22 @@
                      new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
                       map: map,
-                      icon: alertMarker,
+                      icon:locationMarker,
                       draggable: true
                     });
                 }
                 
             }
-            
+            console.log(result.alerts);
             if(result.alerts !== undefined)
             {
                 /* alerts array*/
                 for(i=0;i<result.alerts.length;i++)
                 {                
-                     
                     new google.maps.Marker({
-                      position: new google.maps.LatLng(result.alerts[i].loc[0], result.alerts[i].loc[1]),
-                      map: map,
-                      icon: alertMarker,
+                      position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
+                      map:map,
+                      icon:alertMarker,
                       draggable: true
                     });
                 }
