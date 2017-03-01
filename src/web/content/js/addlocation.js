@@ -1,11 +1,6 @@
 $(document).ready(function(){
 
     // Get Added Locations
-<<<<<<< HEAD
-
-=======
-
->>>>>>> ea905c2bbab1bb8feeaad672a0877b019ebfd4b7
      if(sessionStorage.getItem("id") != null)
     {
             $.ajax({

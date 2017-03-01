@@ -100,7 +100,7 @@
             draggable: true,
             map: map
         });*/
-        var marker;
+        //var marker;
         
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
@@ -119,12 +119,17 @@
                 /* locations array*/
                 for(i=0;i<result.locations.length;i++)
                 {                
-                     new google.maps.Marker({
+                    var lmarker =  new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
                       map: map,
                       icon:locationMarker,
-                      draggable: true
+                      title:result.locations[i].displayName
                     });
+                    
+                    
+                   
+                    
+                    
                 }
                 
             }
@@ -138,7 +143,7 @@
                       position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
                       map:map,
                       icon:alertMarker,
-                      draggable: true
+                      title:result.alerts[i].location
                     });
                 }
             }

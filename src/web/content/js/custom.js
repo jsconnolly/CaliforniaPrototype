@@ -32,7 +32,7 @@ $(document).ready(function(){
       });
   });*/
 
-});
+
     
     
     $('#btnlogout').click(function() {
