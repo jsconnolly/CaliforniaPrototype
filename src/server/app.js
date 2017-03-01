@@ -29,6 +29,7 @@ else {
         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
         next();
     });
+    app.delete('/users/:id/locations/:lid', user.deleteLocation);
     app.post('/users/verifyPhone', user.webPhoneCode);    
     app.post('/admin/alerts/', user.addAlert);
     app.post('/admin/alerts/search', user.getAlerts);
@@ -55,7 +56,7 @@ else {
 
 var cronJob = cron.job(config.cron, function(){
     incident.importIncident();
-    console.log("cron is running");
+    console.log("test cron");
 }); 
 cronJob.start();
 
@@ -80,7 +81,7 @@ cronJob.start();
     });
 
     app.listen(config.port, function () {
-        console.log('5 Listening on port:' + config.port);
+        console.log('6 Listening on port:' + config.port);
     });
 
 

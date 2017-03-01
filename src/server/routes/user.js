@@ -549,6 +549,62 @@ exports.updateLocation = function (req, res) {
 }
 
 
+
+exports.deleteLocation = function (req, res) {
+    var locinfo = req.body;
+    var userid = null;
+    var userheader = req.headers;
+    if (!verifyToken(userheader.token)) {
+        res.status(401).send({ 'Error': 'Invalid token' });
+        return;
+    };
+
+    try {
+        userid = getObjectId(req.params.id);
+    } catch (ex) {
+        res.status(404).send({ 'Error': 'Record not found' });
+        return;
+    }
+    userDB.findOne({ '_id': userid }, function (e, result) {
+        if (result) {
+            
+
+            userDB.update(
+                { '_id': userid},
+                { $pull: { "locations" : { id: req.params.lid } } },
+                
+                false,
+                function (e, result) {
+                    if (e) {
+                        console.log(e);
+                        res.status(500).send({ 'Error': 'Delete failed' });
+                        return;
+                    }else{
+                        res.status(200).send({});
+                        
+                    }
+                }
+            )
+
+
+
+            
+
+        } else {
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+
+
+    });
+
+
+}
+
+
+
+
+
+
 exports.addContact = function (req, res) {
     var locinfo = req.body;
     var userid = null;
