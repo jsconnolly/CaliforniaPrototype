@@ -1,5 +1,41 @@
 $(document).ready(function(){
 
+    // Get Added Locations
+    
+     if(sessionStorage.getItem("id") != null)
+    {
+        $.ajax({
+            type: "GET",
+            url: APIURL + "users/" +sessionStorage.getItem("id"),
+            headers: {
+            'token': sessionStorage.getItem("token"),
+            'Content-Type':'application/json'
+         },
+            }).done(function (result) {
+            console.log(result);
+            if(result.locations !== undefined)
+            {
+                //alert("location added successfully");
+                //window.location.href = "/user/index.html";
+                for(i=0;i<result.locations.length;i++)
+                {
+                    var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary btn-block' >Edit</a></div>";
+                    if(document.getElementById("locationsrow") != null)
+                    {
+                        document.getElementById("locationsrow").innerHTML += appendedval;
+                    }
+                }
+            }
+            })
+            .fail(function (data, textStatus, xhr) {
+             //console.log(data.responseJSON.Error);
+             alert(data.responseJSON.Error);
+             /*console.log("error", data.status);
+             console.log("STATUS: "+xhr); */
+            });  
+    }
+    
+
         $('#addlocation').click(function(e){
         var addlocation = {
           "displayName":"",

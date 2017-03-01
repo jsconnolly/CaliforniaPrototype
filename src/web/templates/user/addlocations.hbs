@@ -4,6 +4,7 @@ loggedin: true
 ---
 <script type="text/javascript">
  console.log("ID " + sessionStorage.getItem("id"));
+ console.log("Token " + sessionStorage.getItem("token"));
    if(sessionStorage.getItem("id") === null)
     {
         location.href = "/login.html"
@@ -36,7 +37,7 @@ loggedin: true
             Below are your saved locations. You will receive emergancy and non-emergency notifications for events that occur within 20 miles of each location. You can add, edit, or delete locations at any time.
         </p>
         <div class="row">
-            {{> added-location}}
+            <div id="locationsrow"></div>
         </div>
     </div>
 </div>
