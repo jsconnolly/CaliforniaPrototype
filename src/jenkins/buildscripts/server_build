@@ -27,8 +27,9 @@ node {
 
     stage ('Deploy to Staging') {
         // Create New Task Definition and Create/Update ECS Service
+        sh "exec bash"
+
         sh '''#!/bin/bash
-            exec bash
 
             ### Constants
             ECS_REGION=us-west-1
@@ -144,8 +145,9 @@ node {
     }
 
     stage ('Test') {
+        sh "exec bash"
+
         sh'''#!/bin/bash
-          exec bash
 
           numSuccess=0
           numFailure=0
@@ -180,8 +182,9 @@ node {
     stage ('Deploy to Production') {
         // Create/Update service to Production
         // Create New Task Definition and Create/Update ECS Service
+        sh "exec bash"
+
         sh '''#!/bin/bash
-            exec bash
 
             ### Constants
             ECS_REGION=us-west-1
