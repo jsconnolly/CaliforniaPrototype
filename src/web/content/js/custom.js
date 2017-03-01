@@ -35,7 +35,6 @@ $(document).ready(function(){
       sessionStorage.clear();
 
 });
-
 });
 
 function isNumberKey(evt){

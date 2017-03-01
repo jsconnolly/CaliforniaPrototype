@@ -6,15 +6,23 @@ $(document).ready(function(){
     name:"",
     phone:""
 };
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 
 
 
+=======
+
+
+
+
+>>>>>>> body content changes, removed phone registration, added settings
      $('#btnaddphone').click(function(e){
 
         var phoneno = $('#txtcellno').val();
 
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 =======
 
 
@@ -25,17 +33,23 @@ $(document).ready(function(){
         var phoneno = $('#txtcellno').val();
 
 >>>>>>> GMaps location markers
+=======
+>>>>>>> body content changes, removed phone registration, added settings
         if(phoneno.length > 0)
         {
             console.log("1" + phoneno.replace("-", "").replace("-", ""));
                       var phoneres = {
                      phone: ""
                    };
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
 =======
                     phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
 >>>>>>> GMaps location markers
+=======
+                    phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
+>>>>>>> body content changes, removed phone registration, added settings
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -48,11 +62,15 @@ $(document).ready(function(){
                     if (typeof(Storage) !== "undefined") {
                         // Store
                         sessionStorage.setItem("phone", phoneres.phone);
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     }
 =======
                     }
 >>>>>>> GMaps location markers
+=======
+                    }
+>>>>>>> body content changes, removed phone registration, added settings
 
                      window.location.href = "confirmphone.html";
                     /*if(result.id !== undefined)
@@ -70,17 +88,22 @@ $(document).ready(function(){
                      /*console.log("error", data.status);
                      console.log("STATUS: "+xhr); */
                 });
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 =======
 
 >>>>>>> GMaps location markers
+=======
+
+>>>>>>> body content changes, removed phone registration, added settings
         }
         else
         {
             alert("Please enter phone no.");
             return;
         }
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 
@@ -98,12 +121,22 @@ $(document).ready(function(){
 
     });
 
+=======
+
+
+
+    });
+
+>>>>>>> body content changes, removed phone registration, added settings
     $('#btnconfirmphone').click(function(e){
 
         var phonecode = $('#txtphonecode').val();
 
 
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 >>>>>>> GMaps location markers
+=======
+>>>>>>> body content changes, removed phone registration, added settings
         if(phonecode.length > 0)
         {
 
@@ -111,11 +144,15 @@ $(document).ready(function(){
                      phone: sessionStorage.getItem("phone"),
                      password:phonecode
                    };
+<<<<<<< a1437eaeec00e2b2e7d87d7c2b9466aa9b297467
 <<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 =======
 
 >>>>>>> GMaps location markers
+=======
+
+>>>>>>> body content changes, removed phone registration, added settings
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -135,11 +172,7 @@ $(document).ready(function(){
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
-<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     }
-=======
-                    }
->>>>>>> GMaps location markers
                         window.location.href = "user/index.html";
                     }
                })
@@ -155,7 +188,6 @@ $(document).ready(function(){
             alert("Please enter phone no.");
             return;
         }
-
     });
     $('#subscribe').click(function(e){
         var password = $('#password').val();
@@ -184,12 +216,6 @@ $(document).ready(function(){
                         $('#email').val("");
                         $('#password').val("");
                         $('#confirmpassword').val("");
-                        /*$('#popupAlert').on('show.bs.modal', function (event) {
-                          var modal = $(this);
-                          modal.find('#alertTitle').text('Successfully Registered');
-                          modal.find('#alertBody').text('You have successfully registered. Please log in.');
-                          modal.find('#alertFooter').html('<a href="/login.html" class="btn btn-default">Log In</a>')
-                      });*/
                         alert("You have successfully registered. Please log in.");
                         window.location.href = "login.html";
                     }

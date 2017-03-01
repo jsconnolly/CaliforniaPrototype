@@ -120,8 +120,9 @@ $(document).ready(function(){
                             console.log(result);
                             if(result.token !== undefined)
                             {
-                                alert("location added successfully");
+                                alert("Location added successfully.");
                                 window.location.href = "/user/index.html";
+
                             }
                             })
                             .fail(function (data, textStatus, xhr) {
@@ -173,7 +174,6 @@ function getLatLng(cityzip)
        }
 
     });
-
 
     return coordinates;
 
