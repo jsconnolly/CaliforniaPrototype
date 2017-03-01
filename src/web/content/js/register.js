@@ -1,26 +1,26 @@
 $(document).ready(function(){
-    
+
     var RegisterData = {
     email: "",
     password: "",
     name:"",
     phone:""
 };
-    
 
-       
-    
+
+
+
      $('#btnaddphone').click(function(e){
-        
+
         var phoneno = $('#txtcellno').val();
-         
+
         if(phoneno.length > 0)
         {
             console.log("1" + phoneno.replace("-", "").replace("-", ""));
                       var phoneres = {
                      phone: ""
                    };
-                    phoneres.phone = "1" + phoneno.replace("-", "").replace("-", ""); 
+                    phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -33,7 +33,7 @@ $(document).ready(function(){
                     if (typeof(Storage) !== "undefined") {
                         // Store
                         sessionStorage.setItem("phone", phoneres.phone);
-                    } 
+                    }
 
                      window.location.href = "confirmphone.html";
                     /*if(result.id !== undefined)
@@ -51,23 +51,23 @@ $(document).ready(function(){
                      /*console.log("error", data.status);
                      console.log("STATUS: "+xhr); */
                 });
-            
+
         }
         else
         {
             alert("Please enter phone no.");
             return;
         }
-        
 
-        
-    });   
-    
+
+
+    });
+
     $('#btnconfirmphone').click(function(e){
-        
+
         var phonecode = $('#txtphonecode').val();
-         
-       
+
+
         if(phonecode.length > 0)
         {
 
@@ -75,7 +75,7 @@ $(document).ready(function(){
                      phone: sessionStorage.getItem("phone"),
                      password:phonecode
                    };
-                    
+
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -95,7 +95,7 @@ $(document).ready(function(){
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
-                    } 
+                    }
                         window.location.href = "user/index.html";
                     }
                })
@@ -105,21 +105,21 @@ $(document).ready(function(){
                      /*console.log("error", data.status);
                      console.log("STATUS: "+xhr); */
                 });
-            
+
         }
         else
         {
             alert("Please enter phone no.");
             return;
         }
-        
 
-        
-    }); 
-    
-    
+
+
+    });
+
+
     $('#subscribe').click(function(e){
-        
+
         var password = $('#password').val();
         var confirmpassword = $('#confirmpassword').val();
         var email = $('#email').val();
@@ -130,7 +130,7 @@ $(document).ready(function(){
                     RegisterData.email = $('#email').val();
                     RegisterData.password = $('#password').val();
                     RegisterData.name = $("#email").val();
-                   
+
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -147,7 +147,8 @@ $(document).ready(function(){
                         $('#email').val("");
                         $('#password').val("");
                         $('#confirmpassword').val("");
-                        alert("You have successfully registered. Please login");
+
+                        alert("You have successfully registered. Please log in.");
                         window.location.href = "login.html";
                     }
                })
@@ -171,8 +172,8 @@ $(document).ready(function(){
             alert("Please enter email and password.");
             return;
         }
-        
 
-        
+
+
     });
 })
