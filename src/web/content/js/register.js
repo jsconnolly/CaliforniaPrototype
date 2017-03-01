@@ -7,7 +7,115 @@ $(document).ready(function(){
     phone:""
 };
     
+
+       
     
+     $('#btnaddphone').click(function(e){
+        
+        var phoneno = $('#txtcellno').val();
+         
+        if(phoneno.length > 0)
+        {
+            console.log("1" + phoneno.replace("-", "").replace("-", ""));
+                      var phoneres = {
+                     phone: ""
+                   };
+                    phoneres.phone = "1" + phoneno.replace("-", "").replace("-", ""); 
+                    //console.log("Request JSON" + JSON.stringify(RegisterData));
+                    $.ajax({
+                    type: "POST",
+                    url: APIURL + "users/phoneCode",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(phoneres),
+                }).done(function (result) {
+                    //console.log(result);
+                    if (typeof(Storage) !== "undefined") {
+                        // Store
+                        sessionStorage.setItem("phone", phoneres.phone);
+                    } 
+
+                     window.location.href = "confirmphone.html";
+                    /*if(result.id !== undefined)
+                    {
+                        //LoginToken.token = result.token;
+                        //console.log("Token returned " + LoginToken.token);
+                        $('#txtcellno').val("");
+                        //alert("You have successfully registered. Please login");
+                        window.location.href = "confirmphone.html";
+                    }*/
+               })
+                .fail(function (data, textStatus, xhr) {
+                     //console.log(data.responseJSON.Error);
+                     alert(data.responseJSON.Error);
+                     /*console.log("error", data.status);
+                     console.log("STATUS: "+xhr); */
+                });
+            
+        }
+        else
+        {
+            alert("Please enter phone no.");
+            return;
+        }
+        
+
+        
+    });   
+    
+    $('#btnconfirmphone').click(function(e){
+        
+        var phonecode = $('#txtphonecode').val();
+         
+       
+        if(phonecode.length > 0)
+        {
+
+         var phonesignin = {
+                     phone: sessionStorage.getItem("phone"),
+                     password:phonecode
+                   };
+                    
+                    //console.log("Request JSON" + JSON.stringify(RegisterData));
+                    $.ajax({
+                    type: "POST",
+                    url: APIURL + "users/phoneSignin",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(phonesignin),
+                }).done(function (result) {
+                    console.log(result);
+                    if(result.id !== undefined)
+                    {
+                        //LoginToken.token = result.token;
+                        //console.log("Token returned " + LoginToken.token);
+                        //$('#txtcellno').val("");
+                        //alert("You have successfully registered. Please login");
+                        if (typeof(Storage) !== "undefined") {
+                        // Store
+                        sessionStorage.setItem("token", result.token);
+                        sessionStorage.setItem("id", result.id);
+                    } 
+                        window.location.href = "user/index.html";
+                    }
+               })
+                .fail(function (data, textStatus, xhr) {
+                     //console.log(data.responseJSON.Error);
+                     alert(data.responseJSON.Error);
+                     /*console.log("error", data.status);
+                     console.log("STATUS: "+xhr); */
+                });
+            
+        }
+        else
+        {
+            alert("Please enter phone no.");
+            return;
+        }
+        
+
+        
+    }); 
     
     
     $('#subscribe').click(function(e){
@@ -22,7 +130,7 @@ $(document).ready(function(){
                     RegisterData.email = $('#email').val();
                     RegisterData.password = $('#password').val();
                     RegisterData.name = $("#email").val();
-                    RegisterData.phone = Math.floor(100000000 + Math.random() * 900000000); // generates a random phone no -- REMOVE AFTER Register endpoint is fixed
+                   
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
