@@ -29,7 +29,7 @@ $(document).ready(function(){
                     }
                 }
             }
-            })
+            )
             .fail(function (data, textStatus, xhr) {
              //console.log(data.responseJSON.Error);
              alert(data.responseJSON.Error);
@@ -98,7 +98,6 @@ $(document).ready(function(){
 
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
             addlocation.displayName = "location" + Math.random();
-
             console.log("Request JSON" + JSON.stringify(addlocation));
 
 
@@ -156,10 +155,6 @@ function EditLocation(locationId)
 
 
 });
-
-
-
-
 
 
 function getLatLng(cityzip)
