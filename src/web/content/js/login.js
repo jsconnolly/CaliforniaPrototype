@@ -1,16 +1,13 @@
- 
 $(document).ready(function(){
-    
+
     var LoginData = {
     email: "",
     password: ""
 };
-    
-  
-    
-    
+
+
+
     $('#loginbtn').click(function(e){
-        
         var password = $('#password').val();
         var username = $('#username').val();
         if(password.length > 0 && username.length > 0)
@@ -28,12 +25,13 @@ $(document).ready(function(){
             console.log(result);
             if(result.token !== undefined)
             {
-                
+
                 if (typeof(Storage) !== "undefined") {
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
-                    } 
+
+                    }
 
                 //LoginResponse.token = result.token;
                 //LoginResponse.id = result.id;
@@ -54,12 +52,11 @@ $(document).ready(function(){
         }
         else
         {
-            alert("Please enter email and password.");
+
+            //alert("Please enter email and password.");
             return;
         }
-        
 
-        
     });
 })
 
@@ -67,7 +64,7 @@ $(document).ready(function(){
 
 /*function getUserId(email,logintoken)
 {
-   
+
     var userId;
     $.ajax({
        url : "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users/email/" + email,
@@ -83,7 +80,7 @@ $(document).ready(function(){
        }
 
     });
-    
+
     return userId;
-    
+
 }*/

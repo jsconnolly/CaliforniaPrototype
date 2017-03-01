@@ -22,6 +22,7 @@ $(document).ready(function(){
 
 
 
+
 /*    $("#deletelocation(" + result.locations[i].id + ")").click(function() {
         $("#modal").on('show.bs.modal', function (event) {
           var modal = $(this);
@@ -38,7 +39,6 @@ $(document).ready(function(){
       sessionStorage.clear();
 
 });
-
 });
 
 function isNumberKey(evt){
