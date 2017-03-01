@@ -42,14 +42,9 @@ $(document).ready(function(){
                             console.log(result);
                             if(result.token !== undefined)
                             {
-                                //alert("location added successfully");
-                                //window.location.href = "/user/index.html";
-                                $('#popupAlert').on('show.bs.modal', function (event) {
-                                  var modal = $(this)
-                                  modal.find('#alertTitle').text('Successfully Added Location');
-                                  modal.find('#alertBody').text('Location added successfully.');
-                                  modal.find('#alertFooter').html('<button type="button" class="btn btn-default" data-dismiss="modal">Okay</button>');
-                                })
+                                alert("Location added successfully.");
+                                window.location.href = "/user/index.html";
+
                             }
                             })
                             .fail(function (data, textStatus, xhr) {

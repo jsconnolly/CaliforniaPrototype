@@ -5,16 +5,11 @@ title: Register
 <div class="container-table">
     <div class="row vertical-center-row">
       <div class="user-reg col-md-4 col-md-offset-4">
-            <a href="index.html" class="btn btn-primary btn-block">Back to Map</a>
-            <a href="registerphone.html" class="btn btn-primary btn-block">Register by Phone</a>
-        <h2>Subscribe to Emergency Notification Service</h2>
-        <p>
-          Para subscribir en Espa&ntilde;ol,<a href="#">marque aqui</a>.
-        </p>
+        <h2>Subscribe to The California Emergency Notification Service</h2>
         <form data-toggle="validator" role="form">
           <div class="form-group">
               <label>Enter Your Email Address</label>
-              <input type="email" class="form-control email" id="email" placeholder="username" data-error="Please enter a valid email address." required>
+              <input type="email" class="form-control email" id="email" placeholder="email" data-error="Please enter a valid email address." required>
               <div class="help-block with-errors"></div>
           </div>
           <div class="form-group">
@@ -26,11 +21,11 @@ title: Register
             <input type="password" class="form-control" placeholder="password" id="confirmpassword" data-match="#password" data-match-error="Passwords must match." required />
             <div class="help-block with-errors"></div>
           </div>
-          <button type="button" class="btn btn-primary btn-block" id="subscribe">Subscribe</button>
+          <button type="button" class="btn btn-primary btn-block submit" id="subscribe" data-toggle="modal" data-target="#popupAlert">Subscribe</button>
           <a href="index.html" class="btn btn-default btn-block">Cancel</a>
         </form>
         <p>
-          Quisque elementum malesuada sem <a href="#">disclaimer</a>
+          <a href="#">disclaimer</a>
         </p>
       </div>
     </div>
