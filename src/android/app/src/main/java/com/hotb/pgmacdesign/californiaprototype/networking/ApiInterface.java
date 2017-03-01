@@ -27,6 +27,7 @@ public interface ApiInterface {
     static final String SIGNIN_PHONE = "/phoneSignin";
     static final String RESET_PASSWORD = "/resetPassword";
     static final String CHANGE_PASSWORD = "/changePassword";
+    static final String FORGOT_PASSWORD = "/forgotPassword";
     static final String PHONE_VERIFICATION = "/phoneCode";
     static final String EMAIL = "/email";
     static final String PHONE = "/phone";
@@ -92,6 +93,15 @@ public interface ApiInterface {
                                 @Body CAUser body);
 
     /**
+     * Change a password
+     *
+     * @param body {@link CAUser} Required params: id  &&  password
+     * @return {@link CAUser} Returns an empty object if successful, contains Error string if not
+     */
+    @POST(VERSION + USERS + FORGOT_PASSWORD)
+    Call<Void> forgotPassword(@Body CAUser body);
+
+    /**
      * Send an SMS for verification
      * @param body {@link CAUser} Required params: phone
      * @return {@link CAUser} Returns an empty object if successful, contains Error string if not
@@ -150,9 +160,10 @@ public interface ApiInterface {
      *                  enablePushNotifications, enableSMS, enableEmail
      * @return {@link CAUser} Returns an empty object if it suceeds, error if it did not
      */
-    @PUT(VERSION + USERS + "/{userId}" + LOCATIONS)
+    @PUT(VERSION + USERS + "/{userId}" + LOCATIONS + "/{locationId}")
     Call<CAUser> updateLocation(@Header("token") String authToken,
                                 @Path("userId") String userId,
+                                @Path("locationId") String locationId,
                                 @Body CALocation body);
 
 

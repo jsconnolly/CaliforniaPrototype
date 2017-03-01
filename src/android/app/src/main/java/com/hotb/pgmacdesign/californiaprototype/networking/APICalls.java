@@ -152,7 +152,7 @@ public class APICalls {
             return;
         }
         CAUser user = new CAUser();
-        user.setPhoneNumber(phoneNumber);
+        user.setPhone(phoneNumber);
         //Initialize the call
         Call<CAUser> call = apiInterface.phoneVerification(user);
         //Enqueue the call asynchronously
@@ -233,7 +233,7 @@ public class APICalls {
     }
 
     /**
-     * Reset a password
+     * change a password
      *
      * @param id UserId
      * @param pw password
@@ -281,6 +281,52 @@ public class APICalls {
     }
 
     /**
+     * forgot a password, send an email for reset
+     *
+     * @param email email
+     */
+    public void forgotPassword(String email) {
+        if (!checkForInternetConnectivity()) {
+            return;
+        }
+        CAUser user = new CAUser();
+        user.setEmail(email);
+        //Initialize the call
+        Call<Void> call = apiInterface.forgotPassword(user);
+        //Enqueue the call asynchronously
+        call.enqueue(new Callback<Void>() {
+                         @Override
+                         public void onResponse(Call<Void> call, Response<Void> response) {
+                             //Check for response or not
+                             if (!response.isSuccessful()) {
+                                 if (checkForError(response) != null) {
+                                     listener.onTaskComplete(checkForError(response),
+                                             Constants.TAG_FORGOT_PASSWORD);
+                                 } else {
+                                     listener.onTaskComplete(null,
+                                             Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             } else {
+                                 //Response was successful. Send back via listener
+                                 try {
+                                     listener.onTaskComplete(null, Constants.TAG_EMPTY_OBJECT);
+                                 } catch (Exception e) {
+                                     listener.onTaskComplete(e.getMessage(),
+                                             Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             }
+                         }
+
+                         @Override
+                         public void onFailure(Call<Void> call, Throwable t) {
+                             t.printStackTrace();
+                             listener.onTaskComplete(t.getMessage(), Constants.TAG_API_CALL_FAILURE);
+                         }
+                     }
+        );
+    }
+
+    /**
      * Login with email and password
      *
      * @param email String email
@@ -311,10 +357,9 @@ public class APICalls {
                                  //Response was successful. Send back via listener
                                  try {
                                      CAUser responseObject = (CAUser) response.body();
-                                     persistData(responseObject);
-                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                      responseObject.setPassword(pw);
                                      persistData(responseObject);
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
                                  }
@@ -562,7 +607,14 @@ public class APICalls {
             return;
         }
         //Initialize the call
-        Call<CAUser> call = apiInterface.updateLocation(getAuthToken(), getUserId(), locationObject);
+        String id = null;
+        try {
+            id = locationObject.getId();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Call<CAUser> call = apiInterface.updateLocation(getAuthToken(),
+                getUserId(), id, locationObject);
         //Enqueue the call asynchronously
         call.enqueue(new Callback<CAUser>() {
                          @Override
@@ -641,7 +693,7 @@ public class APICalls {
      *
      * @param responseObject Response from server. If null, will not proceed
      */
-    private void persistData(CAUser responseObject) {
+    public static void persistData(CAUser responseObject) {
         if (responseObject == null) {
             return;
         }
@@ -693,7 +745,8 @@ public class APICalls {
      * @return String auth token
      */
     private String getAuthToken() {
-        return MyApplication.getSharedPrefsInstance().getString(Constants.AUTH_TOKEN, null);
+        String str = MyApplication.getSharedPrefsInstance().getString(Constants.AUTH_TOKEN, null);
+        return str;
     }
 
     /**
@@ -702,7 +755,8 @@ public class APICalls {
      * @return String user id
      */
     private String getUserId() {
-        return MyApplication.getSharedPrefsInstance().getString(Constants.USER_ID, null);
+        String str = MyApplication.getSharedPrefsInstance().getString(Constants.USER_ID, null);
+        return str;
     }
 
 }

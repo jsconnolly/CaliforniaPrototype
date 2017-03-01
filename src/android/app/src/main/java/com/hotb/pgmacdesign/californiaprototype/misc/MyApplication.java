@@ -1,11 +1,15 @@
 package com.hotb.pgmacdesign.californiaprototype.misc;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.content.ContextCompat;
 
+import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DatabaseUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DateUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
@@ -36,6 +40,8 @@ public class MyApplication extends MultiDexApplication {
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
 
+    public static Drawable transparentDrawable;
+
     /**
      * Constructor
      */
@@ -51,6 +57,9 @@ public class MyApplication extends MultiDexApplication {
         dbUtilities = getDatabaseInstance();
         sp = getSharedPrefsInstance();
         setupLocationServices();
+        transparentDrawable = new ColorDrawable(
+                ContextCompat.getColor(context, R.color.Transparent));
+
     }
 
     /**

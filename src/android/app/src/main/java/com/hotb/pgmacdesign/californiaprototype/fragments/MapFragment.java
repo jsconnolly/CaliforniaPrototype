@@ -45,11 +45,11 @@ import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
-import com.hotb.pgmacdesign.californiaprototype.utilities.ColorUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
@@ -132,15 +132,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.api = new APICalls(getActivity(), this);
         this.phone = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_PHONE_NUMBER, null);
+        L.m("phone = " + phone);
         this.email = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_EMAIL, null);
+        L.m("email = " + email);
         this.id = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_ID, null);
+        L.m("id = " + id);
         this.pw = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_PW, null);
         //Utilize instanceState here
     }
 
+    /**
+     * OnCreate
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
@@ -149,12 +159,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         return view;
     }
 
+    /**
+     * Setup variables
+     */
     private void initVariables(){
         this.locationListener = new MyLocationListener(MyApplication.getInstance(), this);
         this.alertBeacons = new ArrayList<>();
         this.markersOnMap = new ArrayList<>();
     }
 
+    /**
+     * Setup the ui
+     * @param view
+     */
     private void initUi(View view) {
         setupMap();
 
@@ -172,6 +189,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 R.id.fragment_map_search_error_view);
     }
 
+    /**
+     * Setup the map and initialize it
+     */
     private void setupMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fragment_map_map);
@@ -199,12 +219,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      */
     private void initWebCalls(){
         ProgressBarUtilities.showSVGProgressDialog(getActivity(), true);
-        if(!StringUtilities.isNullOrEmpty(email) && !StringUtilities.isNullOrEmpty(pw)){
+        if(!StringUtilities.isNullOrEmpty(email)){
             ProgressBarUtilities.showSVGProgressDialog(getActivity());
-            api.loginWithEmail(email, pw);
-        } else if (!StringUtilities.isNullOrEmpty(phone) && !StringUtilities.isNullOrEmpty(pw)){
+            api.getUserByEmail(email);
+        } else if (!StringUtilities.isNullOrEmpty(phone)) {
             ProgressBarUtilities.showSVGProgressDialog(getActivity());
-            api.loginWithPhone(phone, pw);
+            api.getUserByPhone(phone);
+        } else if (!StringUtilities.isNullOrEmpty(id)){
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.getUserById(id);
         } else {
             L.m("User is null, make them log in again");
             L.toast(getActivity(), getString(R.string.account_null_error));
@@ -410,6 +433,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapLongClick(LatLng point) {
+        if(true){
+            //Removed on 2017-02-28 For refactoring purposes
+            return;
+        }
         if(this.lastManuallyDrawnCircle != null){
             this.lastManuallyDrawnCircle.remove();
         }
@@ -424,13 +451,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         options.fillColor(R.color.SemiTransparentBlue);
         options.clickable(true);
         this.lastManuallyDrawnCircle = googleMap.addCircle(options);
-        this.googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
-            @Override
-            public void onCircleClick(Circle circle) {
-                //Do whatever here with manually created circle
-                //This Needs to be different than the listener for the alert beacon circles
-            }
-        });
+
     }
 
     /**
@@ -590,6 +611,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
                     getString(R.string.map_fragment_name), null, false, true);
         }
+        initWebCalls();
         super.onResume();
     }
 
@@ -620,6 +642,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.userSavedLocationCircles = new ArrayList<>();
         this.userSavedLocationsList = new ArrayList<>();
 
+        L.m("NUM LOCATIONS SAVED = " + userSavedLocations.length);
+
         for(int i = 0; i < this.userSavedLocations.length; i++){
             CALocation location = this.userSavedLocations[i];
             if(location == null){
@@ -642,6 +666,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
             if(localRadius < 0){
                 localRadius = getMetersPerInch(this.googleMap.getProjection());
+            } else {
+                localRadius = (float)(NumberUtilities.convertMilesToKilometers(localRadius) * 1000);
             }
             double localLat = coordinates.getLat();
             double localLng = coordinates.getLng();
@@ -649,6 +675,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             if(StringUtilities.isNullOrEmpty(name)){
                 name = "";
             }
+            /*
             String whichColor = null;
             if(i > 9){
                 int random = (int )(Math.random() * 9);
@@ -657,16 +684,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 whichColor = this.colorArray[i];
             }
             int circleColor = ColorUtilities.parseMyColor(whichColor);
+            */
             CircleOptions options = new CircleOptions();
             options.center(new LatLng(localLat, localLng));
             options.radius(localRadius);
             options.strokeColor(R.color.white);
-            options.fillColor(circleColor);
+            options.fillColor(R.color.SemiTransparentOrchid);
             options.clickable(true);
             Circle circleAdded = googleMap.addCircle(options);
             location.setCircleId(circleAdded.getId());
             this.userSavedLocationCircles.add(circleAdded);
             this.userSavedLocationsList.add(location);
+
+            L.m("made it to end of iteration #" + i);
         }
     }
 
@@ -677,9 +707,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      */
     @Override
     public void onTaskComplete(Object result, int customTag) {
+        ProgressBarUtilities.dismissProgressDialog();
         switch(customTag){
             case Constants.TAG_CA_USER:
+                // TODO: 2017-02-28 check on other retrieval data. Ask Jason
                 user = (CAUser) result;
+                APICalls.persistData(user);
                 CALocation[] locations = user.getLocations();
                 if(locations != null){
                     if(locations.length > 0){

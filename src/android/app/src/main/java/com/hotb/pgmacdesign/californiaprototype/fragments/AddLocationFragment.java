@@ -526,10 +526,10 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 this.fragment_add_location_body.setVisibility(View.GONE);
                 this.fragment_add_location_title.setVisibility(View.VISIBLE);
                 this.fragment_add_location_info_layout.setVisibility(View.VISIBLE);
-                this.fragment_add_location_body.setText(R.string.location_successfully_added);
+                this.fragment_add_location_title.setText(R.string.location_successfully_added);
                 //fragment_add_location_title.setText(R.string.add_person_button_explanation_1);
                 // Removed on 2017-02-27 As per changes in the meeting and AHA Discussions.
-                this.fragment_add_location_title.setText("");
+                this.fragment_add_location_body.setText("");
                 this.fragment_add_location_add_person_button.setVisibility(View.GONE);
                 break;
 

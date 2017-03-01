@@ -31,6 +31,7 @@
 
     <color name="CaliforniaGold">#FFD700</color>
     <color name="CaliforniaBlue">#000080</color>
+    <color name="CaliforniaBlueDark">#000080</color>
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>

@@ -1,5 +1,6 @@
 package com.hotb.pgmacdesign.californiaprototype.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,9 +22,12 @@ import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
+import com.hotb.pgmacdesign.californiaprototype.utilities.DialogUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
@@ -201,7 +205,11 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             if(StringUtilities.isNullOrEmpty(pwString)){
                 passwordOk = false;
             } else {
-                passwordOk = StringUtilities.checkForComplicatedPassword(pwString);
+                if(pwString.length() > 4){
+                    passwordOk = true;
+                } else {
+                    passwordOk = false;
+                }
             }
 
             if(passwordOk && emailOk){
@@ -284,7 +292,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             //Add in 'error handling' for red backgrounds
             if(view == fragment_email_login_email_et && hasFocus){
                 if(!StringUtilities.isNullOrEmpty(fragment_email_login_pw_et.getText().toString())){
-                    if(!StringUtilities.checkForComplicatedPassword(fragment_email_login_pw_et.getText().toString())){
+                    if(fragment_email_login_pw_et.getText().toString().length() <= 4){
                         //Adjust accordingly. email focused, pw is incorrect
                         fragment_email_login_pw_et.setState(StateSelectedEditText.EditTextState.ERROR);
                         setPWError(true);
@@ -424,7 +432,19 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
 
             //Forgot password
             case R.id.fragment_email_login_forgot_pw:
-                //Forgot password flow
+
+                String email = fragment_email_login_email_et.getText().toString();
+                if(StringUtilities.isNullOrEmpty(email)){
+                    L.Toast(getActivity(), getString(R.string.forgot_pw_instructions));
+                    return;
+                }
+                if(!StringUtilities.isValidEmail(email)){
+                    L.Toast(getActivity(), getString(R.string.forgot_pw_instructions));
+                    return;
+                }
+
+                ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                api.forgotPassword(email);
                 break;
 
         }
@@ -472,6 +492,10 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
 
         ProgressBarUtilities.dismissProgressDialog();
         switch(customTag){
+            case Constants.TAG_FORGOT_PASSWORD:
+                L.Toast(getActivity(), getString(R.string.forgot_pw_instructions2));
+                break;
+
             case Constants.TAG_EMPTY_OBJECT:
                 //This means that the sms verification text was successfully sent out
                 String str2 = fragment_email_login_email_et_phone.getText().toString();
@@ -490,6 +514,52 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                     //L.toast(getActivity(), getString(R.string.username_pw_incorrect));
                 } else if(str.equals("")){
                     // TODO: 2017-02-27 altar once we know other response strings
+                    // TODO: 2017-02-28 This is where code for popup would go on no user account
+                    Dialog dialog = DialogUtilities.buildOptionDialog(getActivity(),
+                            new DialogUtilities.DialogFinishedListener() {
+                                @Override
+                                public void dialogFinished(Object object, int tag) {
+                                    if(tag == DialogUtilities.SUCCESS_RESPONSE){
+                                        boolean bool = (boolean) object;
+                                        if(bool){
+                                            if(whichActive == WhichActive.PHONE){
+                                                //Phone registration
+                                                String phone = fragment_email_login_email_et_phone
+                                                        .getText().toString();
+                                                phone = StringUtilities.keepNumbersOnly(phone);
+                                                if(StringUtilities.isNullOrEmpty(phone)){
+                                                    //Bail  here, no or bad phone #
+                                                    L.toast(getActivity(), R.string.invalid_phone_number);
+                                                    return;
+                                                }
+                                                phone = phone.trim();
+                                                ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                                                api.phoneVerification(phone);
+
+                                            } else if (whichActive == WhichActive.EMAIL){
+                                                //Email registration
+                                                CAUser user = new CAUser();
+                                                String email = fragment_email_login_email_et
+                                                        .getText().toString();
+                                                String pw = fragment_email_login_pw_et
+                                                        .getText().toString();
+                                                user.setEmail(email);
+                                                user.setPassword(pw);
+                                                ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                                                api.registerUser(user);
+                                            }
+                                        } else {
+                                            //They declined, no need to act
+                                        }
+                                    } else {
+                                        //They just dismissed it, no need to act
+                                    }
+                                }
+                            }, getString(R.string.yes), getString(R.string.no),
+                            getString(R.string.no_record_found),
+                            getString(R.string.no_account_register_text)
+                    );
+                    dialog.show();
                 } else {
                     L.Toast(getActivity(), str);
                 }
@@ -503,8 +573,24 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 break;
 
             case Constants.TAG_CA_USER:
-                //This means that login was successful
-                switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
+                //This means that login was successful Persist data and move on.
+                if(whichActive == WhichActive.EMAIL){
+                    String email = fragment_email_login_email_et.getText().toString();
+                    String pw = fragment_email_login_pw_et.getText().toString();
+                    MyApplication.getSharedPrefsInstance().save(Constants.USER_EMAIL, email);
+                    MyApplication.getSharedPrefsInstance().save(Constants.USER_PW, pw);
+                } else {
+                    String phone = fragment_email_login_email_et_phone.getText().toString();
+                    MyApplication.getSharedPrefsInstance().save(Constants.USER_PHONE_NUMBER, phone);
+                }
+
+                if(PermissionUtilities.PermissionsRequestShortcutReturn(getActivity(),
+                        new PermissionUtilities.permissionsEnum[]{
+                                PermissionUtilities.permissionsEnum.ACCESS_FINE_LOCATION})){
+                    switchFragment(Constants.ACTIVITY_MAIN);
+                } else {
+                    switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
+                }
 
                 break;
 

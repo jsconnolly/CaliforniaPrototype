@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class CALocation extends CAMasterObject{
 
+    @SerializedName("id")
+    private String id;
     @SerializedName("displayName")
     private String displayName;
     @SerializedName("alertRadius")
@@ -22,6 +24,14 @@ public class CALocation extends CAMasterObject{
     private Coordinates coordinates;
     //Intentionally not serialized
     private String circleId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCircleId() {
         return circleId;

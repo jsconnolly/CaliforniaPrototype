@@ -11,6 +11,26 @@ public class NumberUtilities {
 
 
     /**
+     * Convert Miles to Kilometers
+     * @param m
+     * @return
+     */
+    public static double convertMilesToKilometers(double m){
+        double dbl = (m * 1.609344);
+        return dbl;
+    }
+
+    /**
+     * Convert Kilometers to miles
+     * @param k
+     * @return
+     */
+    public static double convertKilometersToMiles(double k){
+        double dbl = (k * 0.621371);
+        return dbl;
+    }
+
+    /**
      * Checks if a string passed in is a number (IE, "12345" would return true)
      * @param str String to check
      * @return true if number, false if not

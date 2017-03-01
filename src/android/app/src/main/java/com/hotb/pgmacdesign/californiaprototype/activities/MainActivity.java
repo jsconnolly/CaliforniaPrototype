@@ -36,7 +36,6 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.GUIUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.SharedPrefs;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.SystemDrawableUtilities;
 
 /**
  * Created by pmacdowell on 2017-02-13.
@@ -144,8 +143,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Set the back arrow to the respective color
-        this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
-                getToolbarBackArrow(this, R.color.white));
+        //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                //getToolbarBackArrow(this, R.color.white));
+        this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         //Set the textView
         setToolbarDetails("", null, true, true);
@@ -266,10 +266,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     public void setNewFragment(int x) {
 
         if(x == -1){
-            x = Constants.FRAGMENT_HOME;
+            x = Constants.FRAGMENT_MAP;
         }
         switch(x){
-            case Constants.FRAGMENT_HOME:
             case Constants.FRAGMENT_MAP:
                 if(mapFragment == null) {
                     mapFragment = MapFragment.newInstance();
@@ -339,8 +338,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 break;
 
             case Constants.ACTIVITY_ONBOARDING: //For logout
-                MyApplication.getSharedPrefsInstance().clearAllPrefs();
-                MyApplication.getDatabaseInstance().deleteAllPersistedObjects(true, false);
+                sharedPrefs.clearAllPrefs();
+                dbUtilities.deleteAllPersistedObjects(true, false);
                 Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 MainActivity.this.startActivity(intent);
@@ -412,6 +411,13 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         }
     }
 
+    /**
+     * Get the user data from shared prefs to use if needed
+     */
+    private void getUserData(){
+        //
+    }
+
     //////////////////////////////
     //Activity Lifecycle Methods//
     //////////////////////////////
@@ -420,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     @Override
     protected void onResume() {
         L.m("onResume hit in main activity");
+        getUserData();
         super.onResume();
 
     }

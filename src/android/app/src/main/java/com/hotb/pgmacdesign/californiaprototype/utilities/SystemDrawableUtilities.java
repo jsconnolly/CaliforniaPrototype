@@ -60,6 +60,7 @@ public class SystemDrawableUtilities {
         try {
             upArrow = ContextCompat.getDrawable(context, R.drawable.back_arrow);
         } catch (Exception e3){
+            e3.printStackTrace();
             try {
                 upArrow = ContextCompat.getDrawable(context, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             } catch (Exception e){

@@ -1,5 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
+    >
 
-</RelativeLayout>
+    <!-- Main Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <!-- Name layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="100"
+            android:paddingTop="@dimen/top_bottom_margins"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="@string/name"
+                android:gravity="start|left|center_horizontal"
+                android:layout_gravity="start|left|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                />
+
+            <!-- Name clickable TV -->
+            <TextView
+                android:id="@+id/fragment_profile_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text=""
+                android:hint="@string/your_name"
+                android:gravity="end|right|center_horizontal"
+                android:layout_gravity="end|right|center_horizontal"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:paddingEnd="@dimen/left_right_side_margins_small"
+                />
+
+        </LinearLayout>
+
+        <!-- Separator layout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey"
+            android:paddingTop="@dimen/left_right_side_margins_small"
+            android:paddingBottom="@dimen/left_right_side_margins_small"
+            />
+
+        <!-- Email layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="100"
+            android:paddingTop="@dimen/top_bottom_margins"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="@string/email"
+                android:gravity="start|left|center_horizontal"
+                android:layout_gravity="start|left|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                />
+
+            <!-- Email clickable TV -->
+            <TextView
+                android:id="@+id/fragment_profile_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text=""
+                android:hint="@string/youremail_email_com"
+                android:gravity="end|right|center_horizontal"
+                android:layout_gravity="end|right|center_horizontal"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:paddingEnd="@dimen/left_right_side_margins_small"
+                />
+
+        </LinearLayout>
+
+        <!-- Separator layout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey"
+            android:paddingTop="@dimen/left_right_side_margins_small"
+            android:paddingBottom="@dimen/left_right_side_margins_small"
+            />
+
+        <!-- Phone Number layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="100"
+            android:paddingTop="@dimen/top_bottom_margins"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:text="@string/phone"
+                android:gravity="start|left|center_horizontal"
+                android:layout_gravity="start|left|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                />
+
+            <!-- Phone clickable TV -->
+            <TextView
+                android:id="@+id/fragment_profile_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text=""
+                android:gravity="end|right|center_horizontal"
+                android:layout_gravity="end|right|center_horizontal"
+                android:layout_marginStart="@dimen/left_right_side_margins_small"
+                android:paddingEnd="@dimen/left_right_side_margins_small"
+                />
+
+        </LinearLayout>
+
+        <!-- Separator layout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey"
+            android:paddingTop="@dimen/left_right_side_margins_small"
+            android:paddingBottom="@dimen/left_right_side_margins_small"
+            />
+
+        <!-- SMS Notifications Switch layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="100"
+            android:paddingTop="@dimen/top_bottom_margins"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text="@string/allow_sms_notifications"
+                android:gravity="start|left|center_horizontal"
+                android:layout_gravity="start|left|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                />
+
+            <!-- SMS Notifications Switch -->
+            <Switch
+                android:id="@+id/fragment_profile_sms_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Switch"
+                />
+
+        </LinearLayout>
+
+        <!-- Separator layout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey"
+            android:paddingTop="@dimen/left_right_side_margins_small"
+            android:paddingBottom="@dimen/left_right_side_margins_small"
+            />
+
+        <!-- Email Notifications Switch layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="100"
+            android:paddingTop="@dimen/top_bottom_margins"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="70"
+                android:text="@string/allow_email_notifications"
+                android:gravity="start|left|center_horizontal"
+                android:layout_gravity="start|left|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                android:paddingStart="@dimen/left_right_side_margins_small"
+                />
+
+            <!-- Email Notifications Switch -->
+            <Switch
+                android:id="@+id/fragment_profile_email_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="30"
+                android:layout_marginEnd="@dimen/left_right_side_margins_small"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Switch"
+                />
+
+        </LinearLayout>
+
+        <!-- Separator layout -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/LightGrey"
+            android:paddingTop="@dimen/left_right_side_margins_small"
+            android:paddingBottom="@dimen/left_right_side_margins_small"
+            />
+
+        <!-- Logout button -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_profile_logout"
+            android:layout_marginTop="@dimen/left_right_side_margins_large"
+            android:paddingBottom="@dimen/top_bottom_margins"
+            android:layout_marginStart="@dimen/left_right_side_margins"
+            android:layout_marginEnd="@dimen/left_right_side_margins"
+            android:text="@string/logout"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:background="@drawable/multipurpose_button"
+            />
+    </LinearLayout>
+
+</ScrollView>

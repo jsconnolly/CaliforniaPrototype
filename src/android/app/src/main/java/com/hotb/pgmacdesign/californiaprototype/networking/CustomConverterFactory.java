@@ -1,5 +1,6 @@
 package com.hotb.pgmacdesign.californiaprototype.networking;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -87,9 +88,16 @@ public class CustomConverterFactory extends Converter.Factory  {
             }
 
         } else {
-            Converter<ResponseBody, ?> gsonConverter = GsonConverterFactory
-                    .create().responseBodyConverter(type, annotations, retrofit);
-            return gsonConverter;
+            try {
+                Gson gson = new Gson();
+                GsonConverterFactory fac = GsonConverterFactory.create(gson);
+                Converter<ResponseBody, ?> gsonConverter = fac.responseBodyConverter(
+                        type, annotations, retrofit
+                );
+                return gsonConverter;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         //Else

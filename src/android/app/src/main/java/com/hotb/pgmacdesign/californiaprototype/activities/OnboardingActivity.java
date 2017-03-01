@@ -105,8 +105,9 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Set the back arrow to the respective color
-        this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
-                getToolbarBackArrow(this, R.color.black));
+        //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                //getToolbarBackArrow(this, R.color.black));
+        this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         //Set the textView
         setToolbarDetails("", null, true, null);
@@ -217,6 +218,11 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
                 Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 OnboardingActivity.this.startActivity(intent);
+                try {
+                    this.finish();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
         }
 
@@ -323,6 +329,13 @@ public class OnboardingActivity extends AppCompatActivity implements CustomFragm
                 MyApplication.getDatabaseInstance().deleteAllPersistedObjects(true, false);
                 FragmentUtilities.switchFragments(
                         Constants.FRAGMENT_EMAIL_LOGIN, OnboardingActivity.this);
+                //Re-adjust the toolbar for visibility
+                try {
+                    this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                            getToolbarBackArrow(this, R.color.black));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else {
             FragmentUtilities.switchFragments(

@@ -11,7 +11,7 @@ public class Constants {
     /////Misc Strings//
     ///////////////////
 
-    public static final String STAGING_SERVER_URL = "ec2-54-241-144-61.us-west-1.compute.amazonaws.com";
+    public static final String STAGING_SERVER_URL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/";
     public static final String PHONE_URI_TO_WRITE_TO = "/storage/emulated/0/Download/";
     public static final String FILE_NAME = "debugLoggingData.txt";
     public static final String URL_GOOGLE = "https://www.google.com";
@@ -24,7 +24,7 @@ public class Constants {
     public static final int ACTIVITY_MAIN = -10;
     public static final int ACTIVITY_ONBOARDING = -11;
 
-    public static final int FRAGMENT_HOME = 0;
+    public static final int FRAGMENT_HOME = 1;
     public static final int FRAGMENT_MAP = 1;
     public static final int FRAGMENT_EMAIL_LOGIN = 2;
     public static final int FRAGMENT_SMS_VERIFICATION = 3;
@@ -85,6 +85,8 @@ public class Constants {
     public static final int TAG_CA_LOCATION = 4415;
     public static final int TAG_EMPTY_OBJECT = 4416;
     public static final int TAG_API_ERROR = 4417;
+    public static final int TAG_FORGOT_PASSWORD = 4418;
+
 
 
 

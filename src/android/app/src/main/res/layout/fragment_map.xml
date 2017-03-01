@@ -43,18 +43,7 @@
         map:cameraTargetLat="34.0522"
         map:cameraTargetLng="-118.2437"
     -->
-    <!-- Search View -->
-    <SearchView
-        android:theme="@style/CustomSearchViewTheme"
-        android:id="@+id/fragment_map_searchview"
-        android:background="@drawable/custom_background_white_back_black_edges"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/top_bottom_margins"
-        android:layout_marginStart="@dimen/searchview_narrow_margins"
-        android:layout_marginEnd="@dimen/searchview_narrow_margins"
-        />
+
 
     <!-- Error Message -->
     <LinearLayout
