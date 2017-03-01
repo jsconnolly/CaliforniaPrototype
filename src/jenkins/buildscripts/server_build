@@ -57,9 +57,6 @@ node {
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Update Task Definition Revision Number"
                 updateTaskDefinition;
 
-                echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Get ECS Status"
-                getECSStatus;
-
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Wait For Existing Task To Stop"
                 waitForNumberOfRunningTasks 0
 
@@ -209,13 +206,11 @@ node {
                     CURRENT_DESIRED_COUNT=1
                 fi
 
-                echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Get ECS Status"
-                getECSStatus;
-
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Wait For Existing Task To Stop"
                 waitForNumberOfRunningTasks 0
 
-                if [ "$SERVICE_FAILURES" == "" ]; then
+                echo $SERVICE_FAILURES
+                if [[ "$SERVICE_FAILURES" == "" ]]; then
 
                     if [[ $CURRENT_DESIRED_COUNT=0 ]]; then
                         CURRENT_DESIRED_COUNT=1
