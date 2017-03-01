@@ -210,16 +210,18 @@ node {
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Wait For Existing Task To Stop"
                 waitForNumberOfRunningTasks 0
 
-                if [[ "$SERVICES" == "" ]]; then
-                    echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - No Existing Service, Creating New Service"
-                    createECSService;
-                else
+                if [ "$SERVICE_FAILURES" == "" ]; then
+
                     if [[ $CURRENT_DESIRED_COUNT=0 ]]; then
                         CURRENT_DESIRED_COUNT=1
                     fi
 
                     echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Update Service With New Task Revision and Set Desired Count To 1 "
                     updateECSService ${ECS_FAMILY}:${REVISION_NUMBER} $CURRENT_DESIRED_COUNT
+
+                else
+                    echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - No Existing Service, Creating New Service"
+                    createECSService;
                 fi
 
                 echo "DEBUG:$(date "+%Y-%m-%d %H:%M:%S") - Waiting for New Task To Start"
@@ -236,7 +238,7 @@ node {
                 CURRENT_DESIRED_COUNT=$(echo $DECRIBED_SERVICE | jq .services[0].desiredCount)
                 CURRENT_TASK_REVISION=$(echo $DECRIBED_SERVICE | jq .services[0].taskDefinition)
                 CURRENT_RUNNING_COUNT=$(echo $DECRIBED_SERVICE | jq .services[0].runningCount)
-                SERVICES=$(echo $DESCRIBED_SERVICE | jq .services[])
+                SERVICE_FAILURES=$(echo $DESCRIBED_SERVICE | jq .failures[])
                 REVISION_NUMBER=`aws ecs describe-task-definition --task-definition ${ECS_FAMILY} --region ${ECS_REGION} | jq .taskDefinition.revision`
             }
 
