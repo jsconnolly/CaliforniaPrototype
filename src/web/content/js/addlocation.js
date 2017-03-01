@@ -1,8 +1,6 @@
 $(document).ready(function(){
 
-
     // Get Added Locations
-
      if(sessionStorage.getItem("id") != null)
     {
             $.ajax({
