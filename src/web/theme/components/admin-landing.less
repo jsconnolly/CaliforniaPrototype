@@ -1,15 +1,17 @@
-.date-range {
-    margin-left: 30px;
-}
-
-.admin-api {
-    h3 {
-        margin-top: 0;
-    }
-}
-
 .admin-current {
     .admin-current-titles {
         padding: 0 19px 5px;
+    }
+}
+
+.admin-api-alert, .admin-current-alert {
+    color: @text-color;
+    &:hover {
+        text-decoration: none;
+        .well {
+            background: lighten(@brand-primary, 20%);
+            border-color: lighten(@brand-primary, 15%);
+            color: #fff;
+        }
     }
 }
