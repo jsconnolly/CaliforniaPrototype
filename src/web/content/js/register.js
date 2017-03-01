@@ -6,6 +6,7 @@ $(document).ready(function(){
     name:"",
     phone:""
 };
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 
 
@@ -14,13 +15,27 @@ $(document).ready(function(){
 
         var phoneno = $('#txtcellno').val();
 
+=======
+
+
+
+
+     $('#btnaddphone').click(function(e){
+
+        var phoneno = $('#txtcellno').val();
+
+>>>>>>> GMaps location markers
         if(phoneno.length > 0)
         {
             console.log("1" + phoneno.replace("-", "").replace("-", ""));
                       var phoneres = {
                      phone: ""
                    };
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
+=======
+                    phoneres.phone = "1" + phoneno.replace("-", "").replace("-", "");
+>>>>>>> GMaps location markers
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -33,7 +48,11 @@ $(document).ready(function(){
                     if (typeof(Storage) !== "undefined") {
                         // Store
                         sessionStorage.setItem("phone", phoneres.phone);
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     }
+=======
+                    }
+>>>>>>> GMaps location markers
 
                      window.location.href = "confirmphone.html";
                     /*if(result.id !== undefined)
@@ -51,13 +70,18 @@ $(document).ready(function(){
                      /*console.log("error", data.status);
                      console.log("STATUS: "+xhr); */
                 });
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
+=======
+
+>>>>>>> GMaps location markers
         }
         else
         {
             alert("Please enter phone no.");
             return;
         }
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
 
 
@@ -68,6 +92,18 @@ $(document).ready(function(){
         var phonecode = $('#txtphonecode').val();
 
 
+=======
+
+
+
+    });
+
+    $('#btnconfirmphone').click(function(e){
+
+        var phonecode = $('#txtphonecode').val();
+
+
+>>>>>>> GMaps location markers
         if(phonecode.length > 0)
         {
 
@@ -75,7 +111,11 @@ $(document).ready(function(){
                      phone: sessionStorage.getItem("phone"),
                      password:phonecode
                    };
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
 
+=======
+
+>>>>>>> GMaps location markers
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",
@@ -95,7 +135,11 @@ $(document).ready(function(){
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
+<<<<<<< 2061c287f104acf26a255617776b1d1bcbfa9f06
                     }
+=======
+                    }
+>>>>>>> GMaps location markers
                         window.location.href = "user/index.html";
                     }
                })
@@ -105,7 +149,6 @@ $(document).ready(function(){
                      /*console.log("error", data.status);
                      console.log("STATUS: "+xhr); */
                 });
-
         }
         else
         {
@@ -113,11 +156,7 @@ $(document).ready(function(){
             return;
         }
 
-
-
     });
-
-
     $('#subscribe').click(function(e){
         var password = $('#password').val();
         var confirmpassword = $('#confirmpassword').val();
@@ -129,7 +168,6 @@ $(document).ready(function(){
                     RegisterData.email = $('#email').val();
                     RegisterData.password = $('#password').val();
                     RegisterData.name = $("#email").val();
-
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
                     type: "POST",

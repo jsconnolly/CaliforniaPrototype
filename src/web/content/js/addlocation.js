@@ -38,7 +38,6 @@ $(document).ready(function(){
             });
     }
 
-
         $('#addlocation').click(function(e){
         var addlocation = {
           "displayName":"",
@@ -52,7 +51,6 @@ $(document).ready(function(){
         if(cityzip.length > 0)
         {
             // Get lat and lng from google maps api
-<<<<<<< 9478e1023941f59787bd9ecf086909fe2c5e9cf4
             //console.log("Latitude" + getLatLng(cityzip).lat);
             //console.log("Longitude" + getLatLng(cityzip).lng);
 

@@ -31,8 +31,6 @@
 
     function initMap() {
 
-
-
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
             center: new google.maps.LatLng(33.632478, -117.734862),
@@ -54,7 +52,6 @@
         };
 
         var infoWindow = new google.maps.InfoWindow({map: map});
-
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -72,8 +69,6 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
-
-
        /* var eventType = 'Event Type',
             eventLocation = 'Affected Location',
             eventDetails = 'Event Details';
@@ -90,8 +85,6 @@
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });*/
-
-
 
        /* var marker = new google.maps.Marker({
             position: map.getCenter(),
@@ -137,7 +130,6 @@
                       position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
                       map:map,
                       icon:alertMarker,
-                      draggable: true
                     });
                 }
             }
@@ -146,11 +138,6 @@
              alert(data.responseJSON.Error);
             });
     }
-
-
-
-
-
        /* marker.addListener('click', function() {
             infowindow.open(map, marker);
         });*/
