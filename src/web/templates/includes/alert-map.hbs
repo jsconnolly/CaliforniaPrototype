@@ -93,13 +93,8 @@
             draggable: true,
             map: map
         });*/
-<<<<<<< 80746406008e9332c1bc2d033cf24e6080892d0a
         var marker;
 
-=======
-        //var marker;
-
->>>>>>> Phone verification,google maps hover
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
     {
@@ -137,12 +132,14 @@
             {
                 /* alerts array*/
                 for(i=0;i<result.alerts.length;i++)
+
                 {
+                    var d = new Date(result.alerts[i].date);
                     new google.maps.Marker({
                       position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
                       map:map,
                       icon:alertMarker,
-                      title:result.alerts[i].location
+                      title: "Location: " + result.alerts[i].location + "\nType: " + result.alerts[i].type + "\nName: " + result.alerts[i].name + "\nDate: " + d.toDateString()
                     });
                 }
             }

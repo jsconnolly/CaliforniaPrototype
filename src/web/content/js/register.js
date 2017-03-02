@@ -1,11 +1,9 @@
 $(document).ready(function(){
 
     var RegisterData = {
-    email: "",
-    password: "",
-    name:"",
-    phone:""
-};
+        email: "",
+        password: ""
+    };
 
      $('#btnaddphone').click(function(e){
 
@@ -163,4 +161,4 @@ $(document).ready(function(){
             return;
         }
     });
-})
+});

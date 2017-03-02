@@ -2,9 +2,9 @@
 $(document).ready(function(){
 
     var LoginData = {
-    email: "",
-    password: ""
-};
+        email: "",
+        password: ""
+    };
 
 
    var LoginResponse = { token:"", id:""};
@@ -35,7 +35,7 @@ $(document).ready(function(){
                     }
 
                 setCookie("id",result.id,1);
-setCookie("token",result.token,1);
+                setCookie("token",result.token,1);
                 //LoginResponse.token = result.token;
                 //LoginResponse.id = result.id;
                 //LoginResponse.email = result.token;
