@@ -1,7 +1,7 @@
-<div class="map-banner">
+<div class="map-banner" id="map-banner" style="display:none">
     <div class="container">
         {{#if loggedin}}
-            <form data-toggle="validator" role="form" id="phonenotificationform" style="display:none">
+            <form data-toggle="validator" role="form" id="phonenotificationform">
                 <div class="row vertical-center" id="phoneNotifications">
                     <div class="col-md-6">
                         <h3>Get Notifications By Phone</h3>
@@ -49,8 +49,8 @@
 
 if(getCookie("phone").length === 0)
 {
-    document.getElementById("phonenotificationform").removeAttribute("style");
-    document.getElementById("phonenotificationform").style.visibility = "visible";
+    document.getElementById("map-banner").removeAttribute("style");
+    document.getElementById("map-banner").style.visibility = "visible";
 }
 
 
