@@ -196,7 +196,7 @@
                     android:textSize="@dimen/text_size"
                     android:layout_marginBottom="@dimen/left_right_side_margins_small"
                     android:text="@string/forgot_my_password"
-                    android:textColor="@color/CornflowerBlue"
+                    android:textColor="@color/colorPrimary"
                     />
 
                 <TextView
@@ -219,7 +219,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="@dimen/left_right_side_margins_small"
                     android:text="@string/login_with_my_phone_number"
-                    android:textColor="@color/CornflowerBlue"
+                    android:textColor="@color/colorPrimary"
                     />
 
                 <TextView
@@ -242,7 +242,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="@dimen/left_right_side_margins_small"
                     android:text="@string/register_for_one"
-                    android:textColor="@color/CornflowerBlue"
+                    android:textColor="@color/colorPrimary"
                     />
 
             </LinearLayout>
