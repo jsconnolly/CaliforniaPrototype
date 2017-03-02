@@ -1,6 +1,6 @@
 var cluster = require('cluster');
 var cron = require('cron');
-
+var util = require('./routes/util');
 if (cluster.isMaster) {
 
     cluster.fork();
@@ -56,7 +56,6 @@ else {
 
 var cronJob = cron.job(config.cron, function(){
     incident.importIncident();
-    console.log("test cron");
 }); 
 cronJob.start();
 
@@ -75,13 +74,13 @@ cronJob.start();
         });
     });
     process.on('uncaughtException', function (err) {
-        console.log('Caught exception: ' + err);
+        util.log('Caught exception: ' + err);
         process.exit(1);
         cluster.worker.disconnect();
     });
 
     app.listen(config.port, function () {
-        console.log('6 Listening on port:' + config.port);
+        util.log('Listening on port:' + config.port);
     });
 
 

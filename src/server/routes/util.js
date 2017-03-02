@@ -1,8 +1,33 @@
 var config = require('../config.json');
 var AWS = require('aws-sdk');
+  var winston = require('winston');
+  require('winston-daily-rotate-file');
+var fs = require('fs');
+var dir = './log';
 
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+  var transport = new winston.transports.DailyRotateFile({
+    filename: './log/log',
+    datePattern: 'yyyy-MM-dd.',
+    prepend: true,
+    level: process.env.ENV === 'development' ? 'debug' : 'info'
+  });
+
+  var logger = new (winston.Logger)({
+    transports: [
+      transport
+    ]
+  });
+
+  //logger.info('Hello World!');
 
 module.exports = {
+log: function (message) {
+   logger.info(message);
+},
+
 sendSMS1 : function (to_number, message, func_callback) {
 
 
@@ -70,7 +95,7 @@ sendSMS: function(number,message,func_callback){
 
     var sns = new AWS.SNS();
 var params = {
-  Message: message, /* required */
+  Message: message, 
 
   PhoneNumber: number
   

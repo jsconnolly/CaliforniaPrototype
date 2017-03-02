@@ -15,7 +15,7 @@ MongoClient.connect(config.db, function (err, db) {
     if (!err) {
         userDB = db.collection('user');
         incidentDB = db.collection('incident');
-        console.log("We are connected");
+        util.log("We are connected");
     }
 });
 
@@ -103,7 +103,7 @@ var getWildFire = function () {
         });
 
     }).on('error', function (e) {
-        console.log("Got an error: ", e);
+        util.log("Got an error: "+e);
     });
 }
 
@@ -143,7 +143,7 @@ var getRiverGauges = function () {
         });
 
     }).on('error', function (e) {
-        console.log("Got an error: ", e);
+        util.log("Got an error: "+e);
     });
 }
 
