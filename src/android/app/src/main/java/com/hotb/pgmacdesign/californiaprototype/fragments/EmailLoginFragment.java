@@ -216,7 +216,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             if(passwordOk && emailOk){
                 fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setTextColor(
-                        ContextCompat.getColor(getActivity(), R.color.white));
+                        ContextCompat.getColor(getActivity(), R.color.black));
             } else {
                 fragment_email_login_button.setEnabled(false);
                 fragment_email_login_button.setTextColor(
@@ -253,7 +253,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             if(phoneOk){
                 fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setTextColor(
-                        ContextCompat.getColor(getActivity(), R.color.white));
+                        ContextCompat.getColor(getActivity(), R.color.black));
             } else {
                 fragment_email_login_button.setEnabled(false);
                 fragment_email_login_button.setTextColor(

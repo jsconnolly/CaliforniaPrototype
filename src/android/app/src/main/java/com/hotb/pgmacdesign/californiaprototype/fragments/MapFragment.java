@@ -68,7 +68,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener, GoogleMap.OnMarkerClickListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -101,9 +101,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private CAAlert[] emergenciesArray;
     private List<CAAlert> emergencies;
     private List<CALocation> userSavedLocationsList;
-    private List<Circle> userSavedLocationCircles;
+    private List<Marker> userSavedLocationMarkers;
     private List<Circle> emergencyCircles;
-    private String[] colorArray;
 
     //Misc
     private Timer scaleBarTimer;
@@ -214,7 +213,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_MAP);
-        this.colorArray = getActivity().getResources().getStringArray(R.array.circle_color_options);
     }
 
     /**
@@ -597,15 +595,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      */
     private void loadUserSavedLocs(){
 
-        if(this.userSavedLocationCircles == null){
-            this.userSavedLocationCircles = new ArrayList<>();
+        if(this.userSavedLocationMarkers == null){
+            this.userSavedLocationMarkers = new ArrayList<>();
         }
         if(this.userSavedLocationsList == null){
             this.userSavedLocationsList = new ArrayList<>();
         }
         //Iterate to remove any previous ones they had saved
-        for(Circle circle : this.userSavedLocationCircles){
-            circle.remove();
+        for(Marker marker : this.userSavedLocationMarkers){
+            marker.remove();
         }
 
         //Checking to be sure
@@ -616,7 +614,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             return;
         }
 
-        this.userSavedLocationCircles = new ArrayList<>();
+        this.userSavedLocationMarkers = new ArrayList<>();
         this.userSavedLocationsList = new ArrayList<>();
 
         for(int i = 0; i < this.userSavedLocations.length; i++){
@@ -624,7 +622,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             if(location == null){
                 continue;
             }
-            String radiusS = location.getAlertRadius();
             CALocation.Coordinates coordinates = location.getCoordinates();
             String name = location.getDisplayName();
 
@@ -632,18 +629,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 continue;
             }
 
-            float localRadius;
-            try {
-                localRadius = Float.parseFloat(radiusS);
-            } catch (Exception e){
-                localRadius = -1;
-            }
 
-            if(localRadius < 0){
-                localRadius = getMetersPerInch(this.googleMap.getProjection());
-            } else {
-                localRadius = (float)(NumberUtilities.convertMilesToKilometers(localRadius) * 1000);
-            }
             double localLat = coordinates.getLat();
             double localLng = coordinates.getLng();
 
@@ -651,17 +637,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 name = "";
             }
 
-            CircleOptions options = new CircleOptions();
-            options.center(new LatLng(localLat, localLng));
-            options.radius(localRadius);
-            options.strokeColor(ContextCompat.getColor(getActivity(), R.color.aqua));
-            options.fillColor(ContextCompat.getColor(getActivity(), R.color.SemiTransparentOrchid));
-            options.clickable(true);
-            Circle circleAdded = googleMap.addCircle(options);
-            location.setCircleId(circleAdded.getId());
-            this.userSavedLocationCircles.add(circleAdded);
+            MarkerOptions markerOptios = new MarkerOptions();
+            markerOptios.draggable(false);
+            markerOptios.title(name);
+            markerOptios.position(new LatLng(localLat, localLng));
+            markerOptios.flat(false);
+
+            Marker marker = googleMap.addMarker(markerOptios);
+            location.setCircleId(marker.getId());
+            this.userSavedLocationMarkers.add(marker);
             this.userSavedLocationsList.add(location);
-            this.googleMap.setOnCircleClickListener(this);
+            this.googleMap.setOnMarkerClickListener(this);
         }
     }
 
@@ -744,14 +730,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             case Constants.TAG_CA_USER:
                 user = (CAUser) result;
                 APICalls.persistData(user);
+
                 CALocation[] locations = user.getLocations();
-                CAAlert[] alerts = user.getAlerts();
                 if(locations != null){
                     if(locations.length > 0){
                         this.userSavedLocations = locations;
                         loadUserSavedLocs();
                     }
                 }
+
+                CAAlert[] alerts = user.getAlerts();
                 if(alerts != null){
                     if(alerts.length > 0){
                         this.emergenciesArray = alerts;
@@ -760,5 +748,53 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 }
                 break;
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(marker == null){
+            return false;
+        }
+        String id = marker.getId();
+        if(StringUtilities.isNullOrEmpty(id)){
+            return false;
+        }
+        for(CALocation location : userSavedLocationsList){
+            if(location == null){
+                continue;
+            }
+            String str = location.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(location);
+                beacon.setUser(user);
+                beacon.setAlert(null);
+                showPopupForBeacon(beacon);
+                return false;
+            }
+        }
+        for(CAAlert alert : emergencies){
+            if(location == null){
+                continue;
+            }
+            String str = alert.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(null);
+                beacon.setUser(user);
+                beacon.setAlert(alert);
+                showPopupForBeacon(beacon);
+                return false;
+            }
+        }
+        return false;
     }
 }

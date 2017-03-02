@@ -22,7 +22,7 @@ public class CALocation extends CAMasterObject{
     private Boolean enableEmail;
     @SerializedName("coordinates")
     private Coordinates coordinates;
-    //Intentionally not serialized
+    //Intentionally not serialized. Can either be marker or circleId here
     private String circleId;
 
     public String getId() {

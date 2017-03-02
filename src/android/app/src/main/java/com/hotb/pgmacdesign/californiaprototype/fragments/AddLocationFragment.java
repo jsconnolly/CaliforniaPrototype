@@ -143,13 +143,13 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     private void enableButtons(boolean bool){
         this.fragment_add_location_confirm_button.setEnabled(bool);
         this.fragment_add_location_confirm_button.setTextColor(
-                ContextCompat.getColor(getActivity(), R.color.white));
+                ContextCompat.getColor(getActivity(), R.color.black));
         this.fragment_add_location_cancel_button.setEnabled(bool);
         this.fragment_add_location_cancel_button.setTextColor(
-                ContextCompat.getColor(getActivity(), R.color.white));
+                ContextCompat.getColor(getActivity(), R.color.black));
         this.fragment_add_location_add_person_button.setEnabled(bool);
         this.fragment_add_location_add_person_button.setTextColor(
-                ContextCompat.getColor(getActivity(), R.color.white));
+                ContextCompat.getColor(getActivity(), R.color.black));
     }
 
     private void setupMap(){

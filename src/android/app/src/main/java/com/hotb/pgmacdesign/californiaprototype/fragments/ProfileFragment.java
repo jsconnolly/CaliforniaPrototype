@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         this.fragment_profile_phone.setText("");
         this.fragment_profile_logout.setEnabled(true);
         this.fragment_profile_logout.setTextColor(
-                ContextCompat.getColor(getActivity(), R.color.white));
+                ContextCompat.getColor(getActivity(), R.color.black));
         this.fragment_profile_logout.setTransformationMethod(null);
 
         //Listeners

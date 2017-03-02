@@ -250,7 +250,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         if(code1Ok && code2Ok && code3Ok && code4Ok && code5Ok && code6Ok){
             fragment_smsverification_verify_button.setEnabled(true);
             fragment_smsverification_verify_button.setTextColor(
-                    ContextCompat.getColor(getActivity(), R.color.white));
+                    ContextCompat.getColor(getActivity(), R.color.black));
             return true;
         } else {
             fragment_smsverification_verify_button.setEnabled(false);

@@ -488,7 +488,7 @@ public class DialogUtilities {
             } else {
                 edit_text_dialog_confirm_button.setEnabled(true);
                 edit_text_dialog_confirm_button.setTextColor(
-                        ContextCompat.getColor(context, R.color.white));
+                        ContextCompat.getColor(context, R.color.black));
             }
         }
     }
