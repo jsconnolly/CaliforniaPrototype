@@ -32,13 +32,12 @@ $(document).ready(function(){
       });
   });*/
 
-});
 
-  $('#btnlogout').click(function() {
-      //console.log("in logout button");
-      sessionStorage.clear();
-
-});
+    
+    
+    $('#btnlogout').click(function() {
+     sessionStorage.clear();
+    });
 });
 
 function isNumberKey(evt){

@@ -15,6 +15,7 @@
 {{else}}
     <div id="map" class="alert-map"></div>
 {{/if}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     /*function initMap() {
                     var test = {lat: 33.632478, lng: -117.734862};
@@ -99,8 +100,7 @@
             draggable: true,
             map: map
         });*/
-        var marker;
-
+        //var marker;
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
     {
@@ -118,12 +118,17 @@
                 /* locations array*/
                 for(i=0;i<result.locations.length;i++)
                 {
-                     new google.maps.Marker({
+                    var lmarker =  new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
                       map: map,
                       icon:locationMarker,
-                      draggable: true
+                      title:result.locations[i].displayName
                     });
+
+
+
+
+
                 }
 
             }
@@ -133,11 +138,12 @@
                 /* alerts array*/
                 for(i=0;i<result.alerts.length;i++)
                 {
+                    var d = new Date(result.alerts[i].date);
                     new google.maps.Marker({
                       position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
                       map:map,
                       icon:alertMarker,
-                      draggable: true
+                      title: "Location: " + result.alerts[i].location + "\nType: " + result.alerts[i].type + "\nName: " + result.alerts[i].name + "\nDate: " + d.toDateString()
                     });
                 }
             }

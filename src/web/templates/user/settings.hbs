@@ -2,6 +2,16 @@
 title: Settings
 loggedin: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+ //console.log("Token " + sessionStorage.getItem("token"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
 <div class="row">
     <div class="col-md-12">
         <div class="page-header">
@@ -13,9 +23,6 @@ loggedin: true
     <div class="row">
         <div class="col-md-4">
             <h3>Change Email Address</h3>
-            <p>
-                <strong>Current Email Address</strong><br /> loremipsum@email.com
-            </p>
             <div class="form-group">
                 <label>New Email Address</label>
                 <input type="email" class="form-control email" id="email" placeholder="email" data-error="Please enter a valid email address.">
@@ -30,9 +37,6 @@ loggedin: true
           </label>
       </div>--}}
             <h3>Change Phone Number</h3>
-            <p>
-                <strong>Current Phone Number</strong><br /> 888-888-8888
-            </p>
             <div class="form-group">
                 <label>New Phone Number</label>
                 <input type="text" class="form-control phone" id="phone" placeholder="888-888-8888" data-minlength="12" data-error="Please enter a valid phone number.">
@@ -58,8 +62,8 @@ loggedin: true
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-danger pull-left block-if-mobile" id="unsubscribe" data-toggle="modal" data-target="#modal">Unsubscribe from Service</button>
-            <button type="button" class="btn btn-primary pull-right">Save Changes</button>
+            <button type="button" class="btn btn-danger pull-left" id="unsubscribe" data-toggle="modal" data-target="#modal">Unsubscribe from Service</button>
+            <button type="button" id="btnSaveSettings" class="btn btn-primary pull-right">Save Changes</button>
         </div>
     </div>
 </form>

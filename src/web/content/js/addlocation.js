@@ -1,11 +1,58 @@
+
+
+
+function DeleteLocation(locationId)
+{
+    $.ajax({
+       url : APIURL + "users/" + sessionStorage.getItem("id") + "/locations/" + locationId,
+       headers: {
+                'token': sessionStorage.getItem("token"),
+                'Content-Type':'application/json'
+             },
+       method: "DELETE",
+       async:false,
+       success:function(data){
+             alert("location deleted successfully");
+             location.reload();
+       }
+    });
+
+}
+
+
+function EditLocation(locationId)
+{
+
+    console.log("in edit");
+
+}
+
+function getLatLng(cityzip)
+{
+    var coordinates=  { "lat": "", "lng": ""};
+
+    $.ajax({
+       url : "http://maps.googleapis.com/maps/api/geocode/json?address="+cityzip+"&sensor=false",
+       method: "POST",
+       async:false,
+       success:function(data){
+           latitude = data.results[0].geometry.location.lat;
+           longitude= data.results[0].geometry.location.lng;
+           //alert("Lat = "+latitude+"- Long = "+longitude);
+           coordinates.lat = latitude;
+           coordinates.lng = longitude;
+       }
+
+    });
+
+    return coordinates;
+
+}
+
+
 $(document).ready(function(){
 
     // Get Added Locations
-<<<<<<< HEAD
-
-=======
-
->>>>>>> ea905c2bbab1bb8feeaad672a0877b019ebfd4b7
      if(sessionStorage.getItem("id") != null)
     {
             $.ajax({
@@ -26,10 +73,10 @@ $(document).ready(function(){
                         var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick='EditLocation(" + result.locations[i].id + ")' data-toggle='modal' data-target='#editlocation'>Edit</a> <a href='#' class='btn btn-danger btn-block-half' id='deletelocation(" + result.locations[i].id + ")'>Delete</a> </div>";
                         //console.log(appendedval);
                         if(document.getElementById("locationsrow") != null)
-                        {
-                            document.getElementById("locationsrow").innerHTML += appendedval;
+                            {
+                                document.getElementById("locationsrow").innerHTML += appendedval;
+                            }
                         }
-                    }
                 }
                 })
                 .fail(function (data, textStatus, xhr) {
@@ -105,34 +152,4 @@ $(document).ready(function(){
     });
 
 
-})
-
-
-function EditLocation(locationId)
-{
-
-
-
-}
-
-function getLatLng(cityzip)
-{
-    var coordinates=  { "lat": "", "lng": ""};
-
-    $.ajax({
-       url : "http://maps.googleapis.com/maps/api/geocode/json?address="+cityzip+"&sensor=false",
-       method: "POST",
-       async:false,
-       success:function(data){
-           latitude = data.results[0].geometry.location.lat;
-           longitude= data.results[0].geometry.location.lng;
-           //alert("Lat = "+latitude+"- Long = "+longitude);
-           coordinates.lat = latitude;
-           coordinates.lng = longitude;
-       }
-
-    });
-
-    return coordinates;
-
-}
+});
