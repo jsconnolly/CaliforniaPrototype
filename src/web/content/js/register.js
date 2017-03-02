@@ -14,7 +14,8 @@ $(document).ready(function(){
         {
             if(password === confirmpassword)
             {
-                    RegisterData.email = $('#email').val();
+                    var email = email.toLowerCase();
+                    RegisterData.email = email;
                     RegisterData.password = $('#password').val();
 
                     //console.log("Request JSON" + JSON.stringify(RegisterData));

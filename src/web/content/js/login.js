@@ -4,6 +4,11 @@ $(document).ready(function(){
         email: "",
         password: ""
     };
+    
+    var LoginAdminData = {
+        email: "",
+        password: ""
+    };
 
 
 
@@ -12,8 +17,9 @@ $(document).ready(function(){
         var username = $('#username').val();
         if(password.length > 0 && username.length > 0)
         {
-            LoginData.email = $('#username').val();
-            LoginData.password = $('#password').val();
+            var email = username.toLowerCase();
+            LoginData.email = email;
+            LoginData.password = password;
             //console.log("Request JSON" + JSON.stringify(LoginData));
             $.ajax({
             type: "POST",
@@ -60,6 +66,67 @@ $(document).ready(function(){
         }
 
     });
+    
+    
+    
+    $('#btnAdminLogin').click(function(e){
+        var password = $('#adminpassword').val();
+        var username = $('#adminusername').val();
+        //admin@admin.com / password1
+        if(password.length > 0 && username.length > 0)
+        {
+            var email = username.toLowerCase();
+            LoginAdminData.email = email;
+            LoginAdminData.password = password;
+            //console.log("Request JSON" + JSON.stringify(LoginData));
+            $.ajax({
+            type: "POST",
+            url: APIURL + "users/signin",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(LoginAdminData),
+            }).done(function (result) {
+            console.log(result);
+            if(result.token !== undefined)
+            {
+
+                if (typeof(Storage) !== "undefined") {
+                        // Store
+                        sessionStorage.setItem("admintoken", result.token);
+                        sessionStorage.setItem("adminid", result.id);
+
+                    }
+                
+                setCookie("adminid",result.id,1);
+                setCookie("admintoken",result.token,1);
+                //LoginResponse.token = result.token;
+                //LoginResponse.id = result.id;
+                //LoginResponse.email = result.token;
+                //LoginToken.id=result.id;
+                //console.log("Token returned " + LoginToken.token);
+                $('#password').val("");
+                $('#username').val("");
+                window.location.href = "landing.html";
+            }
+            })
+            .fail(function (data, textStatus, xhr) {
+             //console.log(data.responseJSON.Error);
+             alert(data.responseJSON.Error);
+             /*console.log("error", data.status);
+             console.log("STATUS: "+xhr); */
+            });
+        }
+        else
+        {
+
+            //alert("Please enter email and password.");
+            return;
+        }
+
+    });
+    
+    
+    
 })
 
 
