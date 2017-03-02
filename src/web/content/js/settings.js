@@ -21,6 +21,7 @@ $(document).ready(function(){
                    };
                     $.ajax({
                     type: "POST",
+                    cache:false,
                     url: APIURL + "users/changePassword",
                     headers: {
                             'token': sessionStorage.getItem("token"),

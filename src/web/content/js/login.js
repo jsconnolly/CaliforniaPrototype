@@ -25,6 +25,7 @@ $(document).ready(function(){
             type: "POST",
             url: APIURL + "users/signin",
             dataType: "json",
+            cache:false,
             contentType: "application/json",
             data: JSON.stringify(LoginData),
             }).done(function (result) {
@@ -40,7 +41,11 @@ $(document).ready(function(){
                     }
                 setCookie("id",result.id,1);
                 setCookie("token",result.token,1);
-                setCookie("phone",result.phone,1);
+                if(result.phone !== undefined)
+                {
+                  setCookie("phone",result.phone,1);
+                }
+                else {setCookie("phone","",1);}
                 setCookie("email",result.email,1);
                 //localStorage.setItem("locations", JSON.stringify(result.locations));
                 //setCookie("locations",JSON.stringify(result.locations),1);
@@ -79,6 +84,7 @@ $(document).ready(function(){
             type: "POST",
             url: APIURL + "users/signin",
             dataType: "json",
+            cache:false,
             contentType: "application/json",
             data: JSON.stringify(LoginAdminData),
             }).done(function (result) {
