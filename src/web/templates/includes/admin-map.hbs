@@ -1,20 +1,5 @@
-{{#if map}}
-    <div class="map-overlay">
-        {{#if loggedin}}
-            <a href="addlocations.html" class="btn btn-primary btn-location">Add Location</a>
-            {{!--<div class="sos-banner">
-                <h3> Alert Your Emergency Contacts and Emergency Services</h3>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non arcu eget mi egestas semper.
-                </p>
-                <a href="#" class="btn btn-danger btn-inverted">SOS</a>
-            </div>--}}
-        {{/if}}
-        <div id="map" class="user-map"></div>
-    </div>
-{{else}}
-    <div id="map" class="alert-map"></div>
-{{/if}}
+
+<div id="map" class="alert-map"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     /*function initMap() {
@@ -65,7 +50,7 @@
 
             //infoWindow.setPosition(pos);
             //infoWindow.setContent('Location found.');
-            map.setCenter(pos);
+            //map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
