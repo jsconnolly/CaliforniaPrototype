@@ -26,9 +26,8 @@ To run create or edit Selenium tests, you must first install the software needed
 
 4) Open up command line and type in exactly the following
 
-  a) Pip
-  
-  b) Pip install selenium
+    Pip
+    Pip install selenium
   
 5) Download web drivers from http://selenium-python.readthedocs.io/installation.html
 
