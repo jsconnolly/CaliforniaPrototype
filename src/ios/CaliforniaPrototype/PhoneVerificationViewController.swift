@@ -41,7 +41,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func verifyButtonTapped(_ sender: Any) {
-        let containsNumbers = "^[0-9]"
+        let containsNumbers = "^[0-9]+$"
         let codeTest = NSPredicate(format: "SELF MATCHES %@", containsNumbers)
         var valid = false
         for textField in textFieldArray {

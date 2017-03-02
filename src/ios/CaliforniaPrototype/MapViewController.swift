@@ -51,11 +51,9 @@ class MapViewController: UIViewController {
     
     func getUser() {
         APIManager.sharedInstance.getUserWithId(id: Keychain.get(key: "id") as! String, success: { (response) in
-            print(response)
             self.user = response
             self.populateLocations()
         }) { (error) in
-            print(error)
         }
     }
     
