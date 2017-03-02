@@ -9,8 +9,8 @@ loggedin: true
         </div>
     </div>
 </div>
-<div class="row">
-    <form data-toggle="validator" role="form">
+<form class="settings" data-toggle="validator" role="form">
+    <div class="row">
         <div class="col-md-4">
             <h3>Change Email Address</h3>
             <p>
@@ -54,12 +54,12 @@ loggedin: true
                 <input type="password" class="form-control" placeholder="password" id="confirmpassword" data-match="#newpassword" data-match-error="Passwords must match." />
                 <div class="help-block with-errors"></div>
             </div>
-</div></div><div class="row">
-    <div class="col-md-12">
-        <button type="button" class="btn btn-danger pull-left" id="unsubscribe" data-toggle="modal" data-target="#modal">Unsubscribe from Service</button>
-        <button type="button" class="btn btn-primary pull-right">Save Changes</button>
-    </div>
-</div>
         </div>
-    </form>
-</div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-danger pull-left block-if-mobile" id="unsubscribe" data-toggle="modal" data-target="#modal">Unsubscribe from Service</button>
+            <button type="button" class="btn btn-primary pull-right">Save Changes</button>
+        </div>
+    </div>
+</form>
