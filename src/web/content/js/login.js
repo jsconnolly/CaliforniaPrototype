@@ -31,7 +31,8 @@ $(document).ready(function(){
             console.log(result);
             if(result.token !== undefined)
             {
-
+            
+                
                 if (typeof(Storage) !== "undefined") {
                         // Store
                         sessionStorage.setItem("token", result.token);
@@ -39,11 +40,10 @@ $(document).ready(function(){
                     }
                 setCookie("id",result.id,1);
                 setCookie("token",result.token,1);
-                //LoginResponse.token = result.token;
-                //LoginResponse.id = result.id;
-                //LoginResponse.email = result.token;
-                //LoginToken.id=result.id;
-                //console.log("Token returned " + LoginToken.token);
+                setCookie("phone",result.phone,1);
+                setCookie("email",result.email,1);
+                //localStorage.setItem("locations", JSON.stringify(result.locations));
+                //setCookie("locations",JSON.stringify(result.locations),1);
                 $('#password').val("");
                 $('#username').val("");
                 window.location.href = "user/index.html";
