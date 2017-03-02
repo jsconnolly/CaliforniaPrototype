@@ -1,11 +1,10 @@
-
 $(document).ready(function(){
 
     var LoginData = {
         email: "",
         password: ""
     };
-    
+
     var LoginAdminData = {
         email: "",
         password: ""
@@ -14,7 +13,6 @@ $(document).ready(function(){
 
    var LoginResponse = { token:"", id:""};
     $('#loginbtn').click(function(e){
-
         var password = $('#password').val();
         var username = $('#username').val();
         if(password.length > 0 && username.length > 0)
@@ -39,7 +37,6 @@ $(document).ready(function(){
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
                     }
-
                 setCookie("id",result.id,1);
                 setCookie("token",result.token,1);
                 //LoginResponse.token = result.token;
@@ -61,16 +58,13 @@ $(document).ready(function(){
         }
         else
         {
-            alert("Please enter email and password.");
+            //alert("Please enter email and password.");
             return;
         }
-
-
-
     });
-    
-    
-    
+
+
+
     $('#btnAdminLogin').click(function(e){
         var password = $('#adminpassword').val();
         var username = $('#adminusername').val();
@@ -98,7 +92,7 @@ $(document).ready(function(){
                         sessionStorage.setItem("adminid", result.id);
 
                     }
-                
+
                 setCookie("adminid",result.id,1);
                 setCookie("admintoken",result.token,1);
                 //LoginResponse.token = result.token;
@@ -126,9 +120,9 @@ $(document).ready(function(){
         }
 
     });
-    
-    
-    
+
+
+
 })
 
 

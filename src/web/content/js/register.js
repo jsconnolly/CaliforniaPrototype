@@ -150,16 +150,20 @@ $(document).ready(function(){
             }
             else
             {
-                alert("Passwords much match");
+                //alert("Passwords much match");
                  $('#password').val("");
                  $('#confirmpassword').val("");
+
+                //alert("Passwords much match");
+                 //$('#password').val("");
+                 //$('#confirmpassword').val("");
                 return;
             }
         }
         else
         {
-            alert("Please enter email and password.");
             return;
         }
+
     });
 });

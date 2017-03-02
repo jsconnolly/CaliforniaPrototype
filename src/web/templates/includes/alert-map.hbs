@@ -31,12 +31,6 @@
     var map;
 
     function initMap() {
-<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
-=======
-
-
->>>>>>> fixed responsiveness issues, added edit location
-
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 6,
             center: new google.maps.LatLng(36.7468, -119.7726),
@@ -58,10 +52,7 @@
         };
 
         var infoWindow = new google.maps.InfoWindow({map: map});
-<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
-=======
 
->>>>>>> fixed responsiveness issues, added edit location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -102,8 +93,7 @@
             draggable: true,
             map: map
         });*/
-        var marker;
-
+        //var marker;
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
     {
@@ -120,7 +110,6 @@
             {
                 /* locations array*/
                 for(i=0;i<result.locations.length;i++)
-
                 {
                     var lmarker =  new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
@@ -128,10 +117,6 @@
                       icon:locationMarker,
                       title:result.locations[i].displayName
                     });
-
-
-
-
 
                 }
 
@@ -141,7 +126,6 @@
             {
                 /* alerts array*/
                 for(i=0;i<result.alerts.length;i++)
-
                 {
                     var d = new Date(result.alerts[i].date);
                     new google.maps.Marker({

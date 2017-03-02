@@ -70,31 +70,19 @@ $(document).ready(function(){
                     //window.location.href = "/user/index.html";
                     for(i=0;i<result.locations.length;i++)
                     {
-<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
-                        var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick='EditLocation(" + result.locations[i].id + ")'>Edit</a> <a href='#' class='btn btn-danger btn-block-half' id='deletelocation(" + result.locations[i].id + ")'>Delete</a> </div>";
 
 
-
-=======
                         var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick='EditLocation(" + result.locations[i].id + ")' data-toggle='modal' data-target='#editlocation'>Edit</a> <a href='#' class='btn btn-danger btn-block-half' id='deletelocation(" + result.locations[i].id + ")'>Delete</a> </div>";
->>>>>>> fixed responsiveness issues, added edit location
                         //console.log(appendedval);
                         if(document.getElementById("locationsrow") != null)
-                        for(i=0;i<result.locations.length;i++)
-                        {
-                            var appendedval = "<div class='user-block col-sm-3 col-xs-6'><span class='glyphicon glyphicon-map-marker'></span><span class='added-location'>" + result.locations[i].displayName + "</span> <a href='#' class='btn btn-primary  btn-block-half' onclick=\"EditLocation('" + result.locations[i].id + "')\">Edit</a> <a href='#' class='btn btn-danger btn-block-half' onclick=\"DeleteLocation('" + result.locations[i].id.trim() + "')\">Delete</a> </div>";
-                            //console.log(appendedval);
-                            if(document.getElementById("locationsrow") != null)
                             {
                                 document.getElementById("locationsrow").innerHTML += appendedval;
                             }
                         }
-
-
                     }
                 }
-            }
             )
+
             .fail(function (data, textStatus, xhr) {
              //console.log(data.responseJSON.Error);
              alert(data.responseJSON.Error);
@@ -120,7 +108,6 @@ $(document).ready(function(){
             //console.log("Longitude" + getLatLng(cityzip).lng);
 
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
-
             addlocation.displayName = $("#locationname").val();
             console.log("Request JSON" + JSON.stringify(addlocation));
 
