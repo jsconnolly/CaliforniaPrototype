@@ -28,10 +28,13 @@ class AddLocationViewController: UIViewController {
     
     fileprivate var searchResultsArray = [MKMapItem]()
     fileprivate var searchTimer: Timer?
+    fileprivate var selectedLocation: MKMapItem?
     
     fileprivate var locationManager = CLLocationManager()
     fileprivate var currentLocation : CLLocation?
     fileprivate var postponedLocationAcceptance = false
+    
+    fileprivate var spinner = UIActivityIndicatorView()
  
     //MARK: - UIViewController delegate methods
     override func viewDidLoad() {
@@ -87,12 +90,37 @@ class AddLocationViewController: UIViewController {
     
     //MARK: - Add Location Functions
     @IBAction func addLocationButtonTapped(_ sender: Any) {
+        
+        guard let coords = self.selectedLocation?.placemark.coordinate else { return }
+        let coordinates = ["lat": Double(coords.latitude), "lng": Double(coords.longitude)]
+        var placeName = String()
+        if let name = self.selectedLocation?.name {
+            placeName = name
+        } else {
+            placeName = ""
+        }
+        self.spinner.activityIndicatorViewStyle = .gray
+        self.spinner.center = self.view.center
+        self.spinner.hidesWhenStopped = true
+        self.spinner.startAnimating()
+        self.view.addSubview(self.spinner)
+        APIManager.sharedInstance.addLocation(displayName: placeName, coordinates: coordinates, alertRadius: "10.0", enablePushNotifications: false, enableSMS: false, enableEmail: false, success: { (response) in
+            self.spinner.stopAnimating()
+            self.spinner.removeFromSuperview()
+            DispatchQueue.main.async {
+                self.updateButtonsAfterAddLocation()
+            }
+        }) { (error) in
+            self.spinner.stopAnimating()
+            self.spinner.removeFromSuperview()
+        }
+    }
+    
+    func updateButtonsAfterAddLocation() {
         self.addLocationButton.alpha = 0.0
         self.cancelAddLocationButton.alpha = 0.0
         
-//        self.addPersonToLocationButton.alpha = 1.0
         self.addAnotherLocationButton.alpha = 1.0
-//        self.addPersonToLocationButton.isHidden = false
         self.addAnotherLocationButton.isHidden = false
         
         self.successfulLocationAddView.frame.origin = CGPoint(x: 0, y: 0)
@@ -101,17 +129,17 @@ class AddLocationViewController: UIViewController {
         self.view.addSubview(self.successfulLocationAddView)
         self.successfulLocationAddView.alpha = 1.0
         
-        UIView.animate(withDuration: 0.35, animations: { 
+        UIView.animate(withDuration: 0.35, animations: {
             self.view.layoutIfNeeded()
         }) { (completed) in
-                self.addLocationButton.isHidden = true
-                self.cancelAddLocationButton.isHidden = true
+            self.addLocationButton.isHidden = true
+            self.cancelAddLocationButton.isHidden = true
             
         }
-        
     }
     
     @IBAction func cancelAddLocationButtonTapped(_ sender: Any) {
+        self.selectedLocation = nil
         self.addLocationButton.alpha = 0.0
         self.cancelAddLocationButton.alpha = 0.0
         self.locationDetailView.alpha = 0.0
@@ -146,6 +174,28 @@ class AddLocationViewController: UIViewController {
     @IBAction func addPersonToLocationButtonTapped(_ sender: Any) {
     
     }
+    
+//    func saveLocation() {
+//        print(self.selectedLocation?.placemark)
+//        self.spinner.activityIndicatorViewStyle = .gray
+//        self.spinner.center = self.view.center
+//        self.spinner.hidesWhenStopped = true
+//        self.spinner.startAnimating()
+//        self.view.addSubview(self.spinner)
+//        guard let coords = self.selectedLocation?.placemark.coordinate else { return }
+//        let coordinates = ["lat": Double(coords.latitude), "lng": Double(coords.longitude)]
+//        var placeName = String()
+//        if let name = self.selectedLocation?.name {
+//            placeName = name
+//        } else {
+//            placeName = ""
+//        }
+//        APIManager.sharedInstance.addLocation(displayName: placeName, coordinates: coordinates, alertRadius: "10.0", enablePushNotifications: false, enableSMS: false, enableEmail: false, success: { (response) in
+//            print(response)
+//        }) { (error) in
+//            print(error)
+//        }
+//    }
     
 }
 
@@ -326,6 +376,7 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func showDetailsAndOptionsAndCenterMapAt(_ place: MKMapItem) {
+        self.selectedLocation = place
         let point = MKPointAnnotation()
         point.coordinate = place.placemark.coordinate
         point.title = place.name

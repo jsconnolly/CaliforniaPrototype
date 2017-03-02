@@ -68,8 +68,8 @@ class EmailRegistrationViewController: UIViewController {
             self.view.addSubview(self.spinner)
             APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: nil, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
                 self.spinner.stopAnimating()
-                guard let id = response.id else { return }
-                guard let token = response.token else { return }
+                guard let id = response?.id else { return }
+                guard let token = response?.token else { return }
                 _ = Keychain.set(key: "userId", value: id)
                 _ = Keychain.set(key: "token", value: token)
                 DispatchQueue.main.async {

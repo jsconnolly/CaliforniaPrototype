@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        //UserDefaultManager.setLoggedInStatus(false)
+//        UserDefaultManager.setLoggedInStatus(false)
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
         self.window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()

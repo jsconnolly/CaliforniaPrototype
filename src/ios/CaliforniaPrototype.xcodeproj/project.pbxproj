@@ -54,6 +54,7 @@
 		9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC93211E61081700FF733F /* AddContactViewController.xib */; };
 		9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */; };
 		9CD9FBCA1E67485400F1238E /* PhonePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */; };
+		9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBCB1E67762000F1238E /* UserLocation.swift */; };
 		9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */; };
 		9CE3C2E31E5CF36B00B7C6A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */; };
 		9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CE3C2E41E5CF36B00B7C6A3 /* LaunchScreen.storyboard */; };
@@ -108,6 +109,7 @@
 		9CBC93211E61081700FF733F /* AddContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactViewController.xib; sourceTree = "<group>"; };
 		9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonePasswordViewController.swift; sourceTree = "<group>"; };
 		9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhonePasswordViewController.xib; sourceTree = "<group>"; };
+		9CD9FBCB1E67762000F1238E /* UserLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocation.swift; sourceTree = "<group>"; };
 		9CE3C2D81E5CF36B00B7C6A3 /* CaliforniaPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaliforniaPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CE3C2E21E5CF36B00B7C6A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				9C48D4B71E65E8130011E462 /* NetworkOperations.swift */,
 				9C48D4B91E65E8660011E462 /* APIManager.swift */,
 				9C48D4BB1E65E93D0011E462 /* User.swift */,
+				9CD9FBCB1E67762000F1238E /* UserLocation.swift */,
 				9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */,
 				9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */,
 				9CA5184D1E5F5845002B2250 /* Onboarding */,
@@ -371,6 +374,7 @@
 				9CA518511E5F5F2B002B2250 /* CustomAlertBackground.swift in Sources */,
 				9CA518541E5F64DA002B2250 /* NotificationsPermissionViewController.swift in Sources */,
 				9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */,
+				9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */,
 				9CBC931B1E60DDF300FF733F /* CustomAlertControllers.swift in Sources */,
 				9CBC93181E60A3D000FF733F /* SearchResultsTableViewCell.swift in Sources */,
 				9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */,

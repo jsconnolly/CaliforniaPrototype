@@ -18,6 +18,7 @@ class MapViewController: UIViewController {
     fileprivate var locationManager = CLLocationManager()
     fileprivate var currentLocation : CLLocation?
     fileprivate var postponedLocationAcceptance = false
+    fileprivate var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class MapViewController: UIViewController {
                 self.tabBarController?.present(onboardingNavVC, animated: true, completion: nil)
             }
         } else {
+            //self.getUser()
             self.setupLocationManager()
             if let userLocation = self.mapView.userLocation.location {
                 self.centerMapOnLocation(userLocation)
@@ -42,8 +44,29 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setupView()
+        if UserDefaultManager.getLoggedInStatus() {
+            self.getUser()
+        }
     }
+    
+    func getUser() {
+        APIManager.sharedInstance.getUserWithId(id: Keychain.get(key: "id") as! String, success: { (response) in
+            print(response)
+            self.user = response
+            self.populateLocations()
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func populateLocations(){
+        guard let locations = self.user?.locations else { return }
+        for location in locations {
+            mapView.addAnnotation(location)
+        }
         
+    }
+    
     func setupView() {
         let addLocationBtn = UIButton(type: .custom)
         addLocationBtn.setImage(UIImage.init(named: "addLocationIcon"), for: .normal)
@@ -154,7 +177,56 @@ extension MapViewController: CLLocationManagerDelegate {
         let alertController = CustomAlertControllers.controllerWith(message: messageString)
         self.present(alertController, animated: true, completion: nil)
     }
+}
+
+extension MapViewController: MKMapViewDelegate {
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if (annotation is MKUserLocation) {
+            return nil
+        }
+        if let annotation = annotation as? UserLocation {
+            let identifier = "userLoctionPin"
+            var view: MKPinAnnotationView
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+                dequeuedView.annotation = annotation
+                view = dequeuedView
+            } else {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.canShowCallout = true
+                view.leftCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
+            }
+        }
+        
+//        let reuseId = "reuseIdentifier"
+//        if let annotation = annotation as? UserLocation {
+//            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) {
+//                view.annotation = annotation
+//                return view
+//            } else {
+//                let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+//                view.canShowCallout = true
+//                view.isEnabled = true
+//                let button = UIButton(type: .detailDisclosure)
+//                view.rightCalloutAccessoryView = button
+//                return view
+//            }
+//        }
+        
+        return nil
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let asdf = view.annotation as! UserLocation
+        print(asdf)
+    }
     
     
 }
+
+
+
+
+
+

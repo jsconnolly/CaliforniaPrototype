@@ -10,7 +10,7 @@ import Foundation
 
 public typealias AnySuccessBlock = (_ response: [String: Any?]) -> Void
 public typealias FailureBlock = (_ error: Error?) -> Void
-public typealias UserSuccessBlock = (_ response: User) -> Void
+public typealias UserSuccessBlock = (_ response: User?) -> Void
 
 class APIManager {
     
@@ -187,7 +187,8 @@ class APIManager {
     
     //MARK: - Location related methods
     func addLocation(displayName name: String, coordinates: [String: Double], alertRadius: String, enablePushNotifications: Bool, enableSMS: Bool, enableEmail: Bool, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
-        let url = usersBaseURL + "/58b4db4ddf1d2c0015734b42" + "/locations"
+        let userId = Keychain.get(key: "id") as! String
+        let url = usersBaseURL + "/\(userId)" + "/locations"
         let lat = coordinates["lat"]! as Double
         let lng = coordinates["lng"]! as Double
         let coords : [String: Double] = ["lat": lat, "lng": lng]
