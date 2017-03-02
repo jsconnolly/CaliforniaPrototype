@@ -16,7 +16,20 @@ title: Event
 
         <h3>Create An Alert for This Event</h3>
         <form action="event.html" data-toggle="validator" role="form">
-            {{> alert-create}}
+           <div class="alert-create">
+                   <div class="form-group">
+                       <label>Alert Title</label><br />
+                       <input type="text" class="form-control" required  id="alerttitleevent"/>
+                   </div>
+                   <div class="form-group">
+                       <label>Non-Public Interagency Information</label><br />
+                       <textarea class="form-control" required id="interagencyinfoevent"></textarea>
+                   </div>
+                   <div class="form-group">
+                       <label>Public Announcement</label>
+                       <textarea class="form-control" required id="publicannouncementevent"></textarea>
+                   </div>
+           </div>
             <button type="button" class="btn btn-primary pull-right submit">Save &amp; Send Alert</button>
         </form>
     </div>
