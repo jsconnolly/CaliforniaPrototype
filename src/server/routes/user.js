@@ -15,7 +15,7 @@ var MongoClient = require('mongodb').MongoClient;
 MongoClient.connect(config.db, function (err, db) {
     if (!err) {
         userDB = db.collection('user');
-        incidentDB = db.collection('incident');
+        alertDB = db.collection('alert');
         console.log("We are connected");
     }
 });
@@ -40,8 +40,11 @@ exports.add = function (req, res) {
     }
     userDB.findOne({ $or: [{ 'email': userinfo.email == undefined ? "---" : userinfo.email }, { 'phone': userinfo.phone == undefined ? "---" : userinfo.phone }] }, function (err, item) {
         if (item) {
+            if(item.active){
             res.status(400).send({ 'Error': 'Records already exist' });
             return;
+
+            }
         }
 
         saltAndHash(userinfo.password, function (hash) {
@@ -50,6 +53,7 @@ exports.add = function (req, res) {
             userinfo.date = new Date();//moment().format('MMMM Do YYYY, h:mm:ss a');
             userinfo.locations = [];
             userinfo.contacts = [];
+            userinfo.active=true;
             //userobj.token=generateToken(userobj.id);
             userDB.insert(userinfo, { safe: true }, function (err, result) {
                 if (err) {
@@ -104,7 +108,7 @@ exports.getUserByPhone = function (req, res) {
         res.status(401).send({ 'Error': 'Invalid token' });
         return;
     };
-    userDB.findOne({ 'phone': req.params.phone }, function (e, result) {
+    userDB.findOne({ 'phone': req.params.phone,'active':true }, function (e, result) {
         if (result) {
             result.id = result._id;
             delete result._id;
@@ -127,7 +131,7 @@ exports.getUserByEmail = function (req, res) {
         res.status(401).send({ 'Error': 'Invalid token' });
         return;
     };
-    userDB.findOne({ 'email': req.params.email }, function (e, result) {
+    userDB.findOne({ 'email': req.params.email,'active':true }, function (e, result) {
         if (result) {
             result.id = result._id;
             delete result._id;
@@ -144,7 +148,7 @@ exports.getUserByEmail = function (req, res) {
 exports.forgotPassword = function (req, res) {
     var userinfo = req.body;
 
-    userDB.findOne({ 'email': userinfo.email }, function (e, result) {
+    userDB.findOne({ 'email': userinfo.email,'active':true }, function (e, result) {
         if (result) {
 
             var token = generateResetToken(result._id);
@@ -194,7 +198,7 @@ exports.getUserById = function (req, res) {
 
 
 
-    userDB.findOne({ '_id': inputid }, function (e, result) {
+    userDB.findOne({ '_id': inputid,'active':true }, function (e, result) {
         if (result) {
             result.id = result._id;
             delete result._id;
@@ -213,7 +217,7 @@ exports.getUserById = function (req, res) {
 exports.login = function (req, res) {
     var userinfo = req.body;
 
-    userDB.findOne({ 'email': userinfo.email }, function (e, result) {
+    userDB.findOne({ 'email': userinfo.email,'active':true }, function (e, result) {
         if (result == null) {
             res.status(404).send({ 'Error': 'User not found' });
         } else {
@@ -239,7 +243,7 @@ exports.login = function (req, res) {
 exports.phoneLogin = function (req, res) {
     var userinfo = req.body;
 
-    userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
+    userDB.findOne({ 'phone': userinfo.phone,'active':true }, function (e, result) {
         if (result == null) {
             res.status(404).send({ 'Error': 'User not found' });
         } else {
@@ -270,22 +274,22 @@ exports.phoneLogin = function (req, res) {
 exports.phoneCode = function (req, res) {
     var userinfo = req.body;
     var code = getRandomIntInclusive(123456, 999999);
-    userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
+    userDB.findOne({ 'phone': userinfo.phone,'active':true }, function (e, result) {
         if (result == null) {
 
             userinfo.password = code;
             saltAndHash(userinfo.password, function (hash) {
                 userinfo.password = hash;
                 // append date stamp when record was created //
-                userinfo.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+                userinfo.date = new Date();
                 userinfo.locations = [];
                 userinfo.contacts = [];
+                userinfo.active=true;
 
                 userDB.insert(userinfo, { safe: true }, function (err, result) {
                     if (err) {
                         res.status(400).send({ 'Error': 'An error has occurred' });
                     } else {
-                        console.log('success: --' + JSON.stringify(result));
                         result.ops[0].token = generateToken(result.ops[0]._id);
                         userDB.save(result.ops[0], { safe: true }, function (e) {
                         });
@@ -293,7 +297,8 @@ exports.phoneCode = function (req, res) {
                         userobj.id = userobj._id;
                         delete userobj._id;
                         delete userobj.password;
-
+                        util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
+                        });
                         //res.status(200).send({ 'code': code });
                         res.status(200).send();
                         return;
@@ -338,10 +343,10 @@ exports.webPhoneCode = function (req, res) {
         res.status(401).send({ 'Error': 'Invalid token' });
         return;
     };
-    userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
+    userDB.findOne({ 'phone': userinfo.phone,'active':true }, function (e, result) {
         if (result == null) {
              var code = getRandomIntInclusive(123456, 999999);
-            util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
+            util.sendSMS(userinfo.phone, 'CA-EMRG-AL:Your phone verification code is: ' + code, function (err, o) {
                 console.log("sms result", err);
                 if (!err) {
                     res.status(200).send({ 'code': code });
@@ -376,16 +381,20 @@ exports.update = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, o) {
-        if (userinfo['name']) o.name = userinfo['name'];
-        if (userinfo['email']) o.email = userinfo['email'];
-        if (userinfo['phone']) o.phone = userinfo.phone;
-        if (userinfo['zip']) o.zip = userinfo['zip'];
+    userDB.findOne({ '_id': userid,'active':true }, function (e, o) {
+
+        if(o){
+        if (userinfo.name) o.name = userinfo.name;
+        if (userinfo.email) o.email = userinfo.email;
+        if (userinfo.phone) o.phone = userinfo.phone;
+        if (userinfo.zip) o.zip = userinfo.zip;
         userDB.save(o, { safe: true }, function (e) {
             if (e) res.status(500).send({ 'Error': 'Error found' });
             else res.status(200).send({});
         });
-
+    }else{
+        res.status(404).send({ 'Error': 'Record not found' });
+    }
     });
 }
 
@@ -404,9 +413,9 @@ exports.updatePassword = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, o) {
-        if (e) {
-            res.status(404).send({ 'Error': 'Error found' });
+    userDB.findOne({ '_id': userid,'active':true }, function (e, o) {
+        if (!o) {
+            res.status(404).send({ 'Error': 'Record not found' });
         } else {
             saltAndHash(userinfo['password'], function (hash) {
                 o.password = hash;
@@ -433,9 +442,9 @@ exports.resetPassword = function (req, res) {
         return;
     }
 
-    userDB.findOne({ '_id': userid }, function (e, o) {
-        if (e) {
-            res.status(404).send({ 'Error': 'Error found' });
+    userDB.findOne({ '_id': userid,'active':true }, function (e, o) {
+        if (!o) {
+            res.status(404).send({ 'Error': 'Record not found' });
         } else {
             saltAndHash(userinfo.password, function (hash) {
                 o.password = hash;
@@ -463,7 +472,7 @@ exports.addLocation = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, result) {
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
         if (result) {
             if (!result.locations) {
                 result.locations = [];
@@ -510,7 +519,7 @@ exports.updateLocation = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, result) {
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
         if (result) {
 
             userDB.update(
@@ -549,6 +558,62 @@ exports.updateLocation = function (req, res) {
 }
 
 
+
+exports.deleteLocation = function (req, res) {
+    var locinfo = req.body;
+    var userid = null;
+    var userheader = req.headers;
+    if (!verifyToken(userheader.token)) {
+        res.status(401).send({ 'Error': 'Invalid token' });
+        return;
+    };
+
+    try {
+        userid = getObjectId(req.params.id);
+    } catch (ex) {
+        res.status(404).send({ 'Error': 'Record not found' });
+        return;
+    }
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
+        if (result) {
+            
+
+            userDB.update(
+                { '_id': userid},
+                { $pull: { "locations" : { id: req.params.lid } } },
+                
+                false,
+                function (e, result) {
+                    if (e) {
+                        console.log(e);
+                        res.status(500).send({ 'Error': 'Delete failed' });
+                        return;
+                    }else{
+                        res.status(200).send({});
+                        
+                    }
+                }
+            )
+
+
+
+            
+
+        } else {
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+
+
+    });
+
+
+}
+
+
+
+
+
+
 exports.addContact = function (req, res) {
     var locinfo = req.body;
     var userid = null;
@@ -564,7 +629,7 @@ exports.addContact = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, result) {
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
         if (result) {
             if (!result.contacts) {
                 result.contacts = [];
@@ -613,7 +678,7 @@ exports.updateContact = function (req, res) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
-    userDB.findOne({ '_id': userid }, function (e, result) {
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
         if (result) {
 
             userDB.update(
@@ -660,11 +725,57 @@ exports.updateContact = function (req, res) {
 
 }
 
+exports.unsubscribe = function (req, res) {
+    var locinfo = req.body;
+    var userid = null;
+    var userheader = req.headers;
+    if (!verifyToken(userheader.token)) {
+        res.status(401).send({ 'Error': 'Invalid token' });
+        return;
+    };
+
+    try {
+        userid = getObjectId(req.params.id);
+    } catch (ex) {
+        res.status(404).send({ 'Error': 'Record not found' });
+        return;
+    }
+    userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
+        if (result) {
+
+            userDB.update(
+                { _id: userid },
+                {
+                    $set: {
+                        "active": false
+                    }
+                },
+                function (e, result) {
+                    if (e) {
+                        res.status(500).send({ 'Error': 'Update failed' });
+                        return;
+                    }
+                    res.status(200).send({});
+                }
+            )
+
+        } else {
+            res.status(404).send({ 'Error': 'Record not found' });
+        }
+
+
+    });
+
+
+}
+
+
+
 
 exports.getAlerts = function (req, res) {
 
     var alerts = [];
-    incidentDB.find().toArray(function (err, docs) {
+    alertDB.find().toArray(function (err, docs) {
         if (err) {
             res.status(500).send({ 'Error': "Failed" });
         }
@@ -676,12 +787,16 @@ exports.getAlerts = function (req, res) {
                 alert.date = item.date;
                 alert.loc = item.loc;
                 alert.location = item.location;
+                alert.description=item.description;
                 alerts.push(alert);
 
             });
 
         }
-
+        alerts.sort(function(a, b){
+       var dateA=new Date(a.date), dateB=new Date(b.date);
+    return dateB-dateA; 
+})
         res.status(200).send(alerts);
 
     });
@@ -699,14 +814,14 @@ exports.addAlert = function (req, res) {
         res.status(400).send({ 'Error': 'Alert Name and Type are required' });
         return;
     }
-    incidentDB.findOne({ $or: [{ 'name': alert.name }] }, function (err, item) {
+    alertDB.findOne({ $or: [{ 'name': alert.name }] }, function (err, item) {
         if (item) {
             res.status(400).send({ 'Error': 'Records already exist' });
             return;
         }
         alert.date = new Date();
         alert.createdby="admin";
-        incidentDB.insert(alert, { safe: true }, function (err, result) {
+        alertDB.insert(alert, { safe: true }, function (err, result) {
             if (err) {
                 res.status(400).send({ 'Error': 'An error has occurred' });
             } else {
