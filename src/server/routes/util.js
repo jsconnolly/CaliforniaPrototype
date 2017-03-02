@@ -3,7 +3,7 @@ var AWS = require('aws-sdk');
 
 
 module.exports = {
-sendSMS : function (to_number, message, func_callback) {
+sendSMS1 : function (to_number, message, func_callback) {
 
 
     AWS.config.update({
@@ -58,10 +58,32 @@ sendSMS : function (to_number, message, func_callback) {
             });
         });
     });
+},
+
+
+sendSMS: function(number,message,func_callback){
+    AWS.config.update({
+        accessKeyId: config.accessKeyId,
+        secretAccessKey: config.secretAccessKey,
+        region: config.region
+    });
+
+    var sns = new AWS.SNS();
+var params = {
+  Message: message, /* required */
+
+  PhoneNumber: number
+  
+
+};
+sns.publish(params, function(err, data) {
+  if (err) console.log(err, err.stack); // an error occurred
+  else     console.log(data); 
+  return func_callback(err != null);           // successful response
+});
+
+
 }
-
-
-
 
 
 

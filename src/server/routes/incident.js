@@ -255,7 +255,8 @@ var createAlerts = function () {
                                             alert.loc = docValue.loc;
                                             alert.location = docValue.location;
                                             item.alerts.push(alert);
-                                            var emessage = alert.type + ' ' + alert.name + ' at ' + alert.location + ' on ' + alert.date;
+                                            //var emessage = alert.type + ' ' + alert.name + ' at ' + alert.location + ' on ' + alert.date;
+                                            var emessage='CA-EMRG-AL: An alert for '+alert.type+' has been posted for your location: '+value.name+'. Please visit our site for further info'
                                             console.log("sending");
 
                                             if (value.enableSMS && item.phone) {

@@ -341,7 +341,7 @@ exports.webPhoneCode = function (req, res) {
     userDB.findOne({ 'phone': userinfo.phone }, function (e, result) {
         if (result == null) {
              var code = getRandomIntInclusive(123456, 999999);
-            util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
+            util.sendSMS(userinfo.phone, 'CA-EMRG-AL:Your phone verification code is: ' + code, function (err, o) {
                 console.log("sms result", err);
                 if (!err) {
                     res.status(200).send({ 'code': code });
