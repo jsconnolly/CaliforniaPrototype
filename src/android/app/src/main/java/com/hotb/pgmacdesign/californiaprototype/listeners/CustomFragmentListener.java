@@ -11,6 +11,6 @@ public interface CustomFragmentListener {
     public void setCurrentFragment(int idFragment);
     public void setNewFragment(int idFragment);
     public int getCurrentFragment();
-    public void setToolbarDetails(String title, Integer color,
-                                  Boolean enableBackButton, Boolean enableTopRightPicture);
+    public void setToolbarDetails(String title, Integer color, Boolean enableBackButton,
+                                  Boolean enableTopRightPicture, Boolean isEmergency);
 }

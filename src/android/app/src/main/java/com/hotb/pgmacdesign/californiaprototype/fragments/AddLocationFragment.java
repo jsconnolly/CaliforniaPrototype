@@ -37,6 +37,8 @@ import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
 import com.hotb.pgmacdesign.californiaprototype.pojos.PlaceChosen;
 import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
@@ -44,6 +46,7 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.GUIUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.MapUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
@@ -81,6 +84,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             .permissionsEnum.ACCESS_FINE_LOCATION;
     private Place currentPlaceSelected;
 
+    private APICalls api;
+
     public AddLocationFragment() {}
 
     public static AddLocationFragment newInstance() {
@@ -94,7 +99,9 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         this.locationIsEnabled = true;
         this.currentZoomLevel = DEFAULT_ZOOM_LEVEL;
         this.myLocationButtonHit = false;
+        this.api = new APICalls(getActivity(), this);
         //Utilize instanceState here
+
     }
 
     @Nullable
@@ -125,14 +132,24 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         this.fragment_add_location_cancel_button.setTransformationMethod(null);
         this.fragment_add_location_add_person_button.setTransformationMethod(null);
 
-        this.fragment_add_location_confirm_button.setEnabled(true);
-        this.fragment_add_location_cancel_button.setEnabled(true);
-        this.fragment_add_location_add_person_button.setEnabled(true);
+        enableButtons(true);
 
         this.fragment_add_location_confirm_button.setOnClickListener(this);
         this.fragment_add_location_cancel_button.setOnClickListener(this);
         this.fragment_add_location_add_person_button.setOnClickListener(this);
 
+    }
+
+    private void enableButtons(boolean bool){
+        this.fragment_add_location_confirm_button.setEnabled(bool);
+        this.fragment_add_location_confirm_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.black));
+        this.fragment_add_location_cancel_button.setEnabled(bool);
+        this.fragment_add_location_cancel_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.black));
+        this.fragment_add_location_add_person_button.setEnabled(bool);
+        this.fragment_add_location_add_person_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.black));
     }
 
     private void setupMap(){
@@ -219,12 +236,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         options.title(title);
         this.lastMarkerAdded = googleMap.addMarker(options);
 
-        float xMetersPerInch = 100;
-        if(false){
-            // TODO: 2017-02-24 check from server if we are manually adding radius here
-        } else {
-            xMetersPerInch = getMetersPerInch();
-        }
+        float xMetersPerInch = getMetersPerInch();
 
         // Create the circle.
         CircleOptions options2 = new CircleOptions();
@@ -469,14 +481,22 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 this.lastMarkerAdded;
                 this.currentPlaceSelected;
                 */
+                float currentRadius = getMetersPerInch();
 
+                /*
+                 Double conversion put into place for time constraints. Generally, I would not
+                 code multiple conversions into one file as this is sloppy, but for time
+                 constraints, I need to leave code as is and simply add @Deprecated annotations
+                 */
                 PlaceChosen place = CaliforniaPrototypeCustomUtils
                         .convertPlaceToPlaceChosen(currentPlaceSelected);
+                place.setRadius(currentRadius);
+                CALocation loc = PlaceChosen.convertToLocation(place);
+
                 MyApplication.getDatabaseInstance().persistObject(PlaceChosen.class, place);
-                // TODO: 2017-02-24 add place, upon success, set options for adding contact
-                L.Toast(getActivity(), "IN DEBUG MODE, LOCATION ADDED");
-                onTaskComplete(place, Constants.TAG_API_LOCATION_ADDED);
-                // TODO: 2017-02-24 Moving this code into the onTaskComplete listener for now
+
+                ProgressBarUtilities.showSVGProgressDialog(getActivity(), true);
+                api.addLocation(loc);
 
                 break;
 
@@ -486,8 +506,8 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 break;
 
             case R.id.fragment_add_location_add_person_button:
-                // TODO: 2017-02-24 switch to the add contact fragment
-                switchFragment(Constants.FRAGMENT_ADD_CONTACT);
+                // Removed on 2017-02-27 As per changes in AHA and meeting notes
+                //switchFragment(Constants.FRAGMENT_ADD_CONTACT);
                 break;
         }
     }
@@ -504,16 +524,18 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onTaskComplete(Object result, int customTag) {
         clearUI();
+        ProgressBarUtilities.dismissProgressDialog();
         //Used for parsing server responses
         switch(customTag){
-            case Constants.TAG_API_LOCATION_ADDED:
-                fragment_add_location_body.setVisibility(View.VISIBLE);
-                fragment_add_location_title.setVisibility(View.VISIBLE);
-                fragment_add_location_info_layout.setVisibility(View.VISIBLE);
-                fragment_add_location_body.setText(R.string.location_successfully_added);
-                fragment_add_location_title.setText(R.string.add_person_button_explanation_1);
-                this.fragment_add_location_add_person_button.setVisibility(View.VISIBLE);
-                // TODO: 2017-02-24 ask about any other UI elements visible here
+            case Constants.TAG_CA_USER:
+                this.fragment_add_location_body.setVisibility(View.GONE);
+                this.fragment_add_location_title.setVisibility(View.VISIBLE);
+                this.fragment_add_location_info_layout.setVisibility(View.VISIBLE);
+                this.fragment_add_location_title.setText(R.string.location_successfully_added);
+                //fragment_add_location_title.setText(R.string.add_person_button_explanation_1);
+                // Removed on 2017-02-27 As per changes in the meeting and AHA Discussions.
+                this.fragment_add_location_body.setText("");
+                this.fragment_add_location_add_person_button.setVisibility(View.GONE);
                 break;
 
         }
@@ -524,7 +546,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_ADD_LOCATION) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.add_location_fragment_name), null, true, false);
+                    getString(R.string.add_location_fragment_name), null, true, false, null);
         }
         super.onResume();
     }

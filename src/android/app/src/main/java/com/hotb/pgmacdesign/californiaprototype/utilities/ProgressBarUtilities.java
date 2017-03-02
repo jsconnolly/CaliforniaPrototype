@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
+import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.animations.CustomProgressBar;
-import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -71,14 +72,17 @@ public class ProgressBarUtilities {
                         L.toast(context, "Canceled");
                     }
                 });
+                attemptTransparent();
                 myDialog.show();
             }else {
+                attemptTransparent();
                 myDialog.show();
             }
         } catch (Exception ex) {
             setupTimeoutTimer();
             try {
                 myDialog = CustomProgressBar.buildSVGDialog(mContext);
+                attemptTransparent();
                 myDialog.show();
             } catch (Exception e2){
                 e2.printStackTrace();
@@ -91,6 +95,13 @@ public class ProgressBarUtilities {
         }
     }
 
+    private static void attemptTransparent(){
+        try {
+            myDialog.getWindow().setBackgroundDrawableResource(R.color.Transparent);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////Dismiss and Timers/////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////

@@ -3,13 +3,6 @@ package com.hotb.pgmacdesign.californiaprototype.utilities;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * Class Uses Permission android.permission.ACCESS_NETWORK_STATE.
@@ -45,67 +38,4 @@ public class NetworkUtilities {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-    /**
-     * This checks the system-side for network connectivity, then pings the google
-     * server to make sure they have internet connection. It is slightly slower and is only
-     * included here in case the previous haveNetworkConnection code gets completely deprecated.
-     * @param context Context to be passed
-     * @return Returns a boolean, true if they have internet, false if they do not.
-     */
-    public static boolean haveNetworkConnection2(Context context) {
-        boolean bool = false;
-        if(haveNetworkConnection(context)){
-            try {
-                HttpURLConnection urlc = (HttpURLConnection)
-                        (new URL(NetworkUtilities.URL_GOOGLE).openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                bool = (urlc.getResponseCode() == 200);
-                return bool;
-            } catch (IOException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * This checks the system-side for network connectivity, then pings the google
-     * server to make sure they have internet connection. One other method avail here for use
-     * in checking via ConnectivityManager.
-     * @param context Context to be passed
-     * @return Returns a boolean, true if they have internet, false if they do not.
-     */
-    public static boolean haveNetworkConnection3(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null
-                && activeNetwork.isConnectedOrConnecting();
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void clearCookies(Context context)
-    {
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            try {
-                CookieManager.getInstance().removeAllCookies(null);
-                CookieManager.getInstance().flush();
-            } catch (Exception e){}
-        } else {
-            try {
-                CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
-                cookieSyncMngr.startSync();
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.removeAllCookie();
-                cookieManager.removeSessionCookie();
-                cookieSyncMngr.stopSync();
-                cookieSyncMngr.sync();
-            } catch (Exception e){}
-        }
-    }
 }

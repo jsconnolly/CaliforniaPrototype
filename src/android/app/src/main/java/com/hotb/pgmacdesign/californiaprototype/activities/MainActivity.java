@@ -36,7 +36,6 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.GUIUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.SharedPrefs;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.SystemDrawableUtilities;
 
 /**
  * Created by pmacdowell on 2017-02-13.
@@ -73,12 +72,10 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     private int fragmentContainerId, currentFragment;
     private Fragment fragmentActive;
 
+    //Emergency status to show
     private EmergencyStates currentEmergencyState;
-
-
-
     enum EmergencyStates {
-        CALM, EMERGENCY
+        CALM, EMERGENCY;
     }
 
     @Override
@@ -86,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initVariables();
-        this.setupToolbar();
         this.setupUI();
+        this.setupToolbar();
         FragmentUtilities.switchFragments(Constants.FRAGMENT_MAP, this);
     }
 
@@ -119,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.activity_main_map_icon = (ImageView) this.findViewById(
                 R.id.activity_main_map_icon);
 
-        this.setEmergencyState(EmergencyStates.CALM, null);
-
         this.activity_main_emergency_sos_button.setOnClickListener(this);
         this.activity_main_map_icon.setOnClickListener(this);
         this.activity_main_user_icon.setOnClickListener(this);
@@ -146,11 +141,12 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Set the back arrow to the respective color
-        this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
-                getToolbarBackArrow(this, R.color.white));
+        //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
+                //getToolbarBackArrow(this, R.color.white));
+        this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         //Set the textView
-        setToolbarDetails("", null, true, true);
+        setToolbarDetails("", null, true, true, null);
 
         GUIUtilities.setBackButtonContentDescription(this);
 
@@ -158,29 +154,37 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     }
 
-    // TODO: 2017-02-23  add this into onboarding as well
+    /**
+     * Set the emergency state, which will change behavior of other parts of the app
+     * @param state
+     * @param emergencyStateText
+     */
     public void setEmergencyState(EmergencyStates state, String emergencyStateText){
-        switch (state){
-            case CALM:
-                this.activity_main_emergency_tv.setBackgroundColor(
-                        ContextCompat.getColor(this, R.color.white));
-                this.activity_main_emergency_tv.setVisibility(View.GONE);
-                this.activity_main_emergency_tv.setText("");
-                this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
-                this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
-                        ContextCompat.getColor(this, R.color.colorPrimary), null, null);
-                break;
+        try {
+            switch (state) {
+                case CALM:
+                    this.activity_main_emergency_tv.setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.white));
+                    this.activity_main_emergency_tv.setVisibility(View.GONE);
+                    this.activity_main_emergency_tv.setText("");
+                    this.activity_main_emergency_sos_layout.setVisibility(View.GONE);
+                    this.setToolbarDetails(FragmentUtilities.getFragmentName(currentFragment),
+                            ContextCompat.getColor(this, R.color.colorPrimary), null, null, null);
+                    break;
 
-            case EMERGENCY:
-                this.activity_main_emergency_tv.setBackgroundColor(
-                        ContextCompat.getColor(this, R.color.red));
-                this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
-                this.activity_main_emergency_tv.setText(R.string.current_state_emergency
-                        + "\n" + emergencyStateText);
-                this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
-                this.setToolbarDetails("EMERGENCY",
-                        ContextCompat.getColor(this, R.color.red), null, null);
-                break;
+                case EMERGENCY:
+                    this.activity_main_emergency_tv.setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.red));
+                    this.activity_main_emergency_tv.setVisibility(View.VISIBLE);
+                    this.activity_main_emergency_tv.setText(R.string.current_state_emergency
+                            + "\n" + emergencyStateText);
+                    this.activity_main_emergency_sos_layout.setVisibility(View.VISIBLE);
+                    this.setToolbarDetails(getString(R.string.current_state_emergency),
+                            ContextCompat.getColor(this, R.color.red), null, null, null);
+                    break;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -212,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         //Checks where the first time they press the button,
         // it sets the time. If they press it once more within 3 seconds, exits
         if (this.lastBackPressTime < System.currentTimeMillis() - 3000) {
-            L.Toast(this, "Press back once more to exit");
+            L.Toast(this, getString(R.string.back_popup));
             this.lastBackPressTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
@@ -268,10 +272,9 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     public void setNewFragment(int x) {
 
         if(x == -1){
-            x = Constants.FRAGMENT_HOME;
+            x = Constants.FRAGMENT_MAP;
         }
         switch(x){
-            case Constants.FRAGMENT_HOME:
             case Constants.FRAGMENT_MAP:
                 if(mapFragment == null) {
                     mapFragment = MapFragment.newInstance();
@@ -279,18 +282,10 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 MainActivity.this.setFragment(mapFragment, MapFragment.TAG);
 
                 activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
-                        this, R.color.CaliforniaGold));
+                        this, R.color.colorAccent));
                 activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
                         this, R.color.White));
                 break;
-
-            /* todo Using map as home until further notice
-                if(homeFragment == null) {
-                    homeFragment = HomeFragment.newInstance();
-                }
-                MainActivity.this.setFragment(homeFragment, HomeFragment.TAG);
-                break;
-            */
 
             case Constants.FRAGMENT_ALERT_BEACON_POPUP:
                 if(alertBeaconPopupFragment == null) {
@@ -337,13 +332,18 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
                         this, R.color.White));
                 activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
-                        this, R.color.CaliforniaGold));
+                        this, R.color.colorAccent));
                 break;
 
             case Constants.ACTIVITY_ONBOARDING: //For logout
+                sharedPrefs.clearAllPrefs();
+                dbUtilities.deleteAllPersistedObjects(true, false);
                 Intent intent = new Intent(MainActivity.this, OnboardingActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 MainActivity.this.startActivity(intent);
+                try {
+                    this.finish();
+                } catch (Exception e){}
                 break;
         }
     }
@@ -355,7 +355,8 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
 
     @Override
     public void setToolbarDetails(String title, Integer color,
-                                  Boolean enableBackButton, Boolean enableTopRightPicture) {
+                                  Boolean enableBackButton, Boolean enableTopRightPicture,
+                                  Boolean isEmergency) {
         if(this.toolbar == null){
             return;
         }
@@ -378,6 +379,17 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 //Set the back arrow to the respective color
                 //this.getSupportActionBar().setHomeAsUpIndicator(SystemDrawableUtilities.
                         //getToolbarBackArrow(this, R.color.white));
+            }
+
+            if(isEmergency != null){
+                if(isEmergency){
+                    this.setEmergencyState(EmergencyStates.EMERGENCY,
+                            getString(R.string.current_state_emergency));
+                } else {
+                    this.setEmergencyState(EmergencyStates.CALM, null);
+                }
+            } else {
+                this.setEmergencyState(EmergencyStates.CALM, null);
             }
         }
 
@@ -412,6 +424,13 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         }
     }
 
+    /**
+     * Get the user data from shared prefs to use if needed
+     */
+    private void getUserData(){
+        //
+    }
+
     //////////////////////////////
     //Activity Lifecycle Methods//
     //////////////////////////////
@@ -420,6 +439,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
     @Override
     protected void onResume() {
         L.m("onResume hit in main activity");
+        getUserData();
         super.onResume();
 
     }
