@@ -1,7 +1,7 @@
 {{#if map}}
     <div class="map-overlay">
         {{#if loggedin}}
-            <a href="addlocations.html" class="btn btn-primary btn-location hidden-xs">Add Location</a>
+            <a href="addlocations.html" class="btn btn-primary btn-location">Add Location</a>
             {{!--<div class="sos-banner">
                 <h3> Alert Your Emergency Contacts and Emergency Services</h3>
                 <p>
@@ -31,6 +31,11 @@
     var map;
 
     function initMap() {
+<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
+=======
+
+
+>>>>>>> fixed responsiveness issues, added edit location
 
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
@@ -53,6 +58,10 @@
         };
 
         var infoWindow = new google.maps.InfoWindow({map: map});
+<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
+=======
+
+>>>>>>> fixed responsiveness issues, added edit location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
