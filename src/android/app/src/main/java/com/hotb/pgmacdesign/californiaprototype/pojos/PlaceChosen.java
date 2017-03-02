@@ -27,8 +27,6 @@ public class PlaceChosen {
     private String address;
     @SerializedName("radius")
     private float radius;
-    @SerializedName("contact")
-    private CaliforniaContact contact;
 
     public float getRadius() {
         return radius;
@@ -102,13 +100,7 @@ public class PlaceChosen {
         this.address = address;
     }
 
-    public CaliforniaContact getContact() {
-        return contact;
-    }
 
-    public void setContact(CaliforniaContact contact) {
-        this.contact = contact;
-    }
 
     public static CALocation convertToLocation(PlaceChosen placeChosen){
         if(placeChosen == null){

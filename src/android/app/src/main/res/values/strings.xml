@@ -14,6 +14,7 @@
     <string name="forgot_my_password">Forgot My Password</string>
     <string name="login_with_my_phone_number">Login With My Phone Number</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="invalid_email_address">Invalid email address. Example: Mark@email.com</string>
     <string name="password_error_help">Your password must be at least 6 characters long and contain at least one number and letter</string>
     <string name="edit_number">Edit Number</string>
@@ -57,6 +58,7 @@
     <string name="sms_verification">SMS Verification</string>
     <string name="debug_popup_skipping">CURRENTLY NOT LINKED TO BACK-END, SKIPPING</string>
     <string name="register_for_one">Register for one</string>
+    <string name="login_to_one">Login to it</string>
     <string name="register_for_account">Register For Account</string>
     <string name="api_response_incorrect_credentials">Login failed</string>
     <string name="username_pw_incorrect">Username or password incorrect. Please check your input and try again</string>

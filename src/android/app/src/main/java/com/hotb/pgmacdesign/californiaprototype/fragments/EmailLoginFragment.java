@@ -42,10 +42,15 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
     public final static String TAG = "EmailLoginFragment";
     private APICalls api;
 
+    private WhichActive whichActive;
     private enum WhichActive {
         EMAIL, PHONE
     }
-    private WhichActive whichActive;
+    private WhichType whichType;
+    private enum WhichType {
+        LOGIN, REGISTER
+    }
+
 
     //UI
     private com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
@@ -55,7 +60,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             fragment_email_login_forgot_pw, fragment_email_login_with_phone,
             fragment_email_login_skip_login, fragment_email_login_email_error_phone,
             fragment_email_login_tv_1_phone, fragment_email_login_tv_1,
-            fragment_email_login_tv_2;
+            fragment_email_login_tv_2, fragment_email_login_dynamic_bottom_tv;
     private Button fragment_email_login_button;
     private RelativeLayout fragment_email_login_input_layout_phone,
             fragment_email_login_input_layout;
@@ -72,6 +77,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
         super.onCreate(savedInstanceState);
         //Utilize instanceState here
         this.whichActive = WhichActive.EMAIL;
+        this.whichType = WhichType.LOGIN;
         this.api = new APICalls(getActivity(), this);
     }
 
@@ -113,6 +119,8 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 R.id.fragment_email_login_tv_1);
         fragment_email_login_tv_2 = (TextView) view.findViewById(
                 R.id.fragment_email_login_tv_2);
+        fragment_email_login_dynamic_bottom_tv = (TextView) view.findViewById(
+                R.id.fragment_email_login_dynamic_bottom_tv);
         fragment_email_login_button = (Button) view.findViewById(
                 R.id.fragment_email_login_button);
         fragment_email_login_input_layout = (RelativeLayout) view.findViewById(
@@ -214,6 +222,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             }
 
             if(passwordOk && emailOk){
+                fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setTextColor(
                         ContextCompat.getColor(getActivity(), R.color.black));
@@ -397,34 +406,86 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             //Continue Button
             case R.id.fragment_email_login_button:
 
-                if(whichActive == WhichActive.EMAIL) {
-                    //Login with credentials
-                    String email = fragment_email_login_email_et.getText().toString();
-                    String pw = fragment_email_login_pw_et.getText().toString();
-
-                    ProgressBarUtilities.showSVGProgressDialog(getActivity(),
-                            false, Constants.PROGRESS_BAR_TIMEOUT);
-                    api.loginWithEmail(email, pw);
-                }
-                if(whichActive == WhichActive.PHONE){
-                    String phone = fragment_email_login_email_et_phone.getText().toString();
-                    phone = StringUtilities.keepNumbersOnly(phone);
-                    phone = phone.trim();
-                    try{
-                        if(!phone.startsWith("1")){
-                            phone = "1" + phone;
+                if(this.whichType == WhichType.REGISTER){
+                    //Register
+                    if(whichActive == WhichActive.PHONE){
+                        //Phone registration
+                        String phone = fragment_email_login_email_et_phone
+                                .getText().toString();
+                        phone = StringUtilities.keepNumbersOnly(phone);
+                        if(StringUtilities.isNullOrEmpty(phone)){
+                            //Bail  here, no or bad phone #
+                            L.toast(getActivity(), R.string.invalid_phone_number);
+                            return;
                         }
-                    } catch (Exception e){}
-                    ProgressBarUtilities.showSVGProgressDialog(getActivity(),
-                            false, Constants.PROGRESS_BAR_TIMEOUT);
-                    api.phoneVerification(phone);
+                        phone = phone.trim();
+                        phone = "1" + phone;
+                        final String fPhone = phone;
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                        api.phoneVerification(fPhone);
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                APICalls temp = new APICalls(getActivity(),
+                                        new OnTaskCompleteListener() {
+                                            @Override
+                                            public void onTaskComplete(Object result, int customTag) {
+                                                //Do nothing, cannot interact with UI here
+                                            }
+                                        });
+                                temp.phoneVerification(fPhone);
+                            }
+                        }, (int)(Constants.ONE_SECOND * 0.6));
+
+                    } else if (whichActive == WhichActive.EMAIL){
+                        //Email registration
+                        CAUser user = new CAUser();
+                        String email = fragment_email_login_email_et
+                                .getText().toString();
+                        String pw = fragment_email_login_pw_et
+                                .getText().toString();
+                        user.setEmail(email);
+                        user.setPassword(pw);
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                        api.registerUser(user);
+                    }
+                } else {
+                    //Login
+                    if(whichActive == WhichActive.EMAIL) {
+                        //Login with credentials
+                        String email = fragment_email_login_email_et.getText().toString();
+                        String pw = fragment_email_login_pw_et.getText().toString();
+
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity(),
+                                false, Constants.PROGRESS_BAR_TIMEOUT);
+                        api.loginWithEmail(email, pw);
+                    }
+                    if(whichActive == WhichActive.PHONE){
+                        String phone = fragment_email_login_email_et_phone.getText().toString();
+                        phone = StringUtilities.keepNumbersOnly(phone);
+                        phone = phone.trim();
+                        try{
+                            if(!phone.startsWith("1")){
+                                phone = "1" + phone;
+                            }
+                        } catch (Exception e){}
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity(),
+                                false, Constants.PROGRESS_BAR_TIMEOUT);
+                        api.phoneVerification(phone);
+                    }
                 }
+
                 break;
 
             //Continue without signin
             case R.id.fragment_email_login_skip_login: //Re-purposed to register
-                ((CustomFragmentListener)getActivity()).setToolbarDetails(
-                        getString(R.string.register_for_account), null, true, null, null);
+                if(this.whichType == WhichType.REGISTER){
+                    setWhichType(WhichType.LOGIN);
+                } else {
+                    setWhichType(WhichType.REGISTER);
+                }
                 break;
 
             //Login with phone
@@ -454,6 +515,29 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                 break;
 
         }
+    }
+
+    /**
+     * Adjust which one they are using, login or register
+     * @param whichType
+     */
+    private void setWhichType(WhichType whichType) {
+        if(whichType == WhichType.LOGIN){
+            ((CustomFragmentListener)getActivity()).setToolbarDetails(
+                    getString(R.string.login_with_email), null, true, null, null);
+            fragment_email_login_dynamic_bottom_tv.setText(
+                    getString(R.string.don_t_have_an_account));
+            fragment_email_login_skip_login.setText(
+                    getString(R.string.register_for_one));
+        } else if(whichType == WhichType.REGISTER){
+            ((CustomFragmentListener)getActivity()).setToolbarDetails(
+                    getString(R.string.register_for_account), null, true, null, null);
+            fragment_email_login_dynamic_bottom_tv.setText(
+                    getString(R.string.already_have_an_account));
+            fragment_email_login_skip_login.setText(
+                    getString(R.string.login_to_one));
+        }
+        this.whichType = whichType;
     }
 
     @Override

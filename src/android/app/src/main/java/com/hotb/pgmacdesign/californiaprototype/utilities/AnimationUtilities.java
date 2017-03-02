@@ -14,19 +14,6 @@ import com.hotb.pgmacdesign.californiaprototype.misc.L;
  */
 public class AnimationUtilities {
 
-
-    /*
-    private static final int[] ENTER_ANIMATIONS = {
-            Constants.ANIM_ANDROID_ACTIVITY_OPEN_ENTER,
-            Constants.ANIM_ANDROID_FRAGMENT_OPEN_ENTER,
-            Constants.ANIM_ANDROID_MODAL_OPEN_ENTER
-    };
-    private static final int[] EXIT_ANIMATIONS = {
-            Constants.ANIM_ANDROID_MODAL_CLOSE_EXIT,
-            Constants.ANIM_ANDROID_ACTIVITY_CLOSE_EXIT,
-            Constants.ANIM_ANDROID_FRAGMENT_CLOSE_EXIT
-    };
-    */
     private static final Techniques[] ENTER_ANIMATIONS = {
             Constants.IN_ZOOM_UP, Constants.IN_ROLL,
             Constants.IN_PULSE, Constants.IN_RUBBERBAND,

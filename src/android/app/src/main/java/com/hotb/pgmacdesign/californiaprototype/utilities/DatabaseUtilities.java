@@ -8,9 +8,6 @@ import com.hotb.pgmacdesign.californiaprototype.pojos.MasterDatabaseObject;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -1003,59 +1000,7 @@ public class DatabaseUtilities {
         }
     }
 
-    /**
-     * Make a copy of the database and move it to the Download Folder
-     *
-     * @param dbName The name of the database. NOTE! MUST INCLUDE THE EXTENSION! (IE 'myDB.db')
-     * @return boolean, true if it succeeded, false if it did not
-     */
-    public static boolean copyDBToDownloadDirectory(String dbName) {
-        File file = null;
-        String packageName = MiscUtilities.getPackageName();
-        try {
-            file = new File("/data/data/" + packageName + "/files/" + dbName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-        boolean success = false;
-        try {
-            if (file == null) {
-                return false;
-            }
-            fis = new FileInputStream(file);
-            long currTime = DateUtilities.getCurrentDateLong();
-            fos = new FileOutputStream(FileUtilities.getFileWriteDirectory() +
-                    "/Download/" + dbName + "_copy_" + currTime + ".db");
-            while (true) {
-                int i = fis.read();
-                if (i != -1) {
-                    fos.write(i);
-                } else {
-                    break;
-                }
-            }
-            fos.flush();
-            success = true;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            success = false;
-
-        } finally {
-            try {
-                fos.close();
-                fis.close();
-            } catch (IOException ioe) {
-
-            } catch (NullPointerException e1) {
-                //Null
-                success = false;
-            }
-        }
-        return success;
-    }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

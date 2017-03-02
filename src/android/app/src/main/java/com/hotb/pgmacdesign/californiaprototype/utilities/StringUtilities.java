@@ -11,19 +11,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by pmacdowell on 2017-02-13.
@@ -141,177 +129,6 @@ public class StringUtilities {
         }
         return str;
     }
-
-    /**
-     * Takes in a String and converts it to a number matching a phone number type. Example would be
-     * you send int "ABC", it will return "222" as on a phone dial screen, ABC are all on the 2 key.
-     * @param str String to parse
-     * @return String of numbers to match converted number
-     */
-    public static String convertNameToPhoneNumber(String str){
-        if(StringUtilities.isNullOrEmpty(str)){
-            return null;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        int strLen = str.length();
-        for (int currCharacter = 0; currCharacter < strLen; currCharacter++){
-            String currentLetter = null;
-            char ch = str.charAt(currCharacter);
-            switch(ch)
-            {
-                case 'A' : case 'B' : case 'C' : currentLetter = "2"; break;
-                case 'D' : case 'E' : case 'F' : currentLetter = "3"; break;
-                case 'G' : case 'H' : case 'I' : currentLetter = "4"; break;
-                case 'J' : case 'K' : case 'L' : currentLetter = "5"; break;
-                case 'M' : case 'N' : case 'O' : currentLetter = "6"; break;
-                case 'P' : case 'Q' : case 'R' : case 'S' : currentLetter = "7"; break;
-                case 'T' : case 'U' : case 'V' : currentLetter = "8"; break;
-                case 'W' : case 'X' : case 'Y' : case 'Z' : currentLetter = "9"; break;
-            }
-            if(currentLetter != null){
-                sb.append(currentLetter);
-            }
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * Takes in a String and converts it to a string list matching a query using a phone keypad. An
-     * example would be, send in 728 and it would return a list containing: {"PQRS", "ABC", "TUV"}
-     * @param str String to parse into an integer. If it fails int parsing, returns null
-     * @param includeBothCases Boolean, if true, it will add both upper and lower cases to string
-     *                         list. IE, 728 would return: {"PpQqRrSs","AaBbCc","TtUuVv"}
-     * @return List of Strings to match converted number
-     */
-    public static List<String> convertNumberToStringList(String str, boolean includeBothCases){
-        if(StringUtilities.isNullOrEmpty(str)){
-            return null;
-        }
-
-        List<String> toReturn = new ArrayList<>();
-        int strLen = str.length();
-        Integer intx = null;
-        try {
-            intx = Integer.parseInt(str);
-        } catch (Exception e){}
-        if(intx == null){
-            return null;
-        }
-        for (int currCharacter = 0; currCharacter < strLen; currCharacter++){
-            char ch = str.charAt(currCharacter);
-            int currentNum = Character.getNumericValue(ch);
-            switch(currentNum)
-            {
-                case 2:
-                    if(includeBothCases) {
-                        toReturn.add("AaBbCc");
-                    } else {
-                        toReturn.add("ABC");
-                    }
-                    break;
-
-                case 3:
-                    if(includeBothCases) {
-                        toReturn.add("DdEeFf");
-                    } else {
-                        toReturn.add("DEF");
-                    }
-                    break;
-
-                case 4:
-                    if(includeBothCases) {
-                        toReturn.add("GgHhIi");
-                    } else {
-                        toReturn.add("GHI");
-                    }
-                    break;
-
-                case 5:
-                    if(includeBothCases) {
-                        toReturn.add("JjKkLl");
-                    } else {
-                        toReturn.add("JKL");
-                    }
-                    break;
-
-                case 6:
-                    if(includeBothCases) {
-                        toReturn.add("MmNnOo");
-                    } else {
-                        toReturn.add("MNO");
-                    }
-                    break;
-
-                case 7:
-                    if(includeBothCases) {
-                        toReturn.add("PpQqRrSs");
-                    } else {
-                        toReturn.add("PQRS");
-                    }
-                    break;
-
-                case 8:
-                    if(includeBothCases) {
-                        toReturn.add("TtUuVv");
-                    } else {
-                        toReturn.add("TUV");
-                    }
-                    break;
-
-                case 9:
-                    if(includeBothCases) {
-                        toReturn.add("WwXxYyZz");
-                    } else {
-                        toReturn.add("WXYZ");
-                    }
-                    break;
-
-                case 0:
-                case 1:
-                default:
-                    break;
-            }
-        }
-
-        return toReturn;
-    }
-
-    /**
-     * Checks a String to see if it can be easilly converted to a boolean. If it can be, it will
-     * be returned as true or false, else, it will return null.
-     * @param str String to check
-     * @return Boolean, true or false, null if it cannot be parsed
-     */
-    public static Boolean convertStringToBoolean(String str){
-        if(str == null){
-            return null;
-        }
-        if(str.length() == 0){
-            return null;
-        }
-        str = str.trim();
-        //Checking for simple response, like T or F or 1, 0 in binary
-        if(str.length() == 1){
-            if(str.equalsIgnoreCase("t") || str.equalsIgnoreCase("1")){
-                return true;
-            } else if(str.equalsIgnoreCase("f") || str.equalsIgnoreCase("0")){
-                return false;
-            } else {
-                return null;
-            }
-        } else {
-            //Check for full words now
-            if (str.equalsIgnoreCase("true")) {
-                return true;
-            } else if (str.equalsIgnoreCase("false")) {
-                return false;
-            } else {
-                return null;
-            }
-        }
-    }
     /**
      * Checks if a string passed in is numeric (IE pass in "2" and it will return true)
      * @param str String to check against
@@ -345,22 +162,6 @@ public class StringUtilities {
         StringBuilder sb = new StringBuilder();
         for(char c: str.toCharArray()){
             sb.append(++c);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Decrement a String (IE, converts b to a)
-     * @param str String to convert
-     * @return Returns a converted String
-     */
-    public static String decrementString(String str){
-        if(StringUtilities.isNullOrEmpty(str)){
-            return str;
-        }
-        StringBuilder sb = new StringBuilder();
-        for(char c: str.toCharArray()){
-            sb.append(--c);
         }
         return sb.toString();
     }
@@ -413,16 +214,6 @@ public class StringUtilities {
         return uri.toString();
     }
 
-
-    /**
-     * Convert an Android Uri to a Java URI
-     * @param uri Android Uri
-     * @return Java URI
-     */
-    public static java.net.URI convertAndroidUriToJavaURI(android.net.Uri uri){
-        String ss = StringUtilities.convertAndroidUriToString(uri);
-        return StringUtilities.convertStringToJavaUri(ss);
-    }
 
     /**
      * Convert a Java URI to an Android Uri
@@ -515,34 +306,6 @@ public class StringUtilities {
     }
 
 
-    /**
-     * Shortens a String to X characters or less
-     * @param str String to shorten
-     * @param cutAt
-     * @return If string is <= 100 in length, returns that, else, shortens to 100 and returns
-     */
-    public static String shortenToXChar(String str, int cutAt){
-        //Check Params first
-        if(str == null){
-            return null;
-        }
-        int x = -1;
-        x = cutAt;
-        if(x == -1){
-            return str;
-        }
-
-        String return_str = str;
-        if(return_str.length() <= cutAt){
-            return_str = return_str.trim(); //Cut out whitespace at end or beginning
-            return return_str;
-        } else {
-            str = str.trim(); //Cut out whitespace
-            return_str = str.substring(0, cutAt) + "..."; //Shorten to 100 characters and add ellipsis
-            return return_str;
-        }
-    }
-
     public static String removeSpaces(String str){
         if(str == null){
             return null;
@@ -550,37 +313,6 @@ public class StringUtilities {
         str.replace(" ", "");
         str = str.trim();
         return  str;
-    }
-
-    /**
-     * This checks if the password they entered contains an uppercase, lowercase, and a number
-     * @param password The password being checked
-     * @return Boolean, true if it is complicated enough, false if it is not
-     */
-    public static boolean checkForComplicatedPassword(String password){
-        //Valid passed variable
-        if(password == null || password.equalsIgnoreCase("")){
-            return false;
-        }
-        password = password.trim(); //Trim it first
-
-        if(password.length() < 6){
-            return false; //Needs to be longer than or = to 6 characters
-        } else {
-            //Check for letters, then numbers, then special characters
-            Matcher matcher;
-            Pattern pattern;
-            pattern = Pattern.compile(StringUtilities.REGEX_PASSWORD_PATTERN);
-            matcher = pattern.matcher(password);
-            boolean hasLetterAndNumber = matcher.matches();
-
-            if(hasLetterAndNumber){
-                //It is ok, has letters and numbers
-                return true;
-            } else {
-                return false;
-            }
-        }
     }
 
     /**
@@ -597,50 +329,6 @@ public class StringUtilities {
         } catch (Exception e){
             return null;
         }
-    }
-
-    /**
-     * Encode a Uri using a regex
-     * @param uriToEncode The android.net.uri to encode
-     * @return Returns an encoded URI String
-     */
-    public static String encodeURIStringWithRegex(android.net.Uri uriToEncode){
-        //Convert to String and pass to overloaded method
-        try {
-            return encodeURIStringWithRegex(convertAndroidUriToString(uriToEncode));
-        } catch (Exception e){
-            return null;
-        }
-    }
-
-    /**
-     * Encode a URI using a regex
-     * @param uriToEncode The java.net.URI to encode
-     * @return Returns an encoded URI String
-     */
-    public static String encodeURIStringWithRegex(java.net.URI uriToEncode){
-        //Convert to String and pass to overloaded method
-        try {
-            return encodeURIStringWithRegex(convertJavaUriToString(uriToEncode));
-        } catch (Exception e){
-            return null;
-        }
-    }
-    /**
-     * Simple method to remove all spaces, parentheses, and hyphens
-     * @param input String to adjust
-     * @return formatted String
-     */
-    public static String formatPhoneRemoveFormatting(String input){
-        if(input == null){
-            return null;
-        }
-        input = input.replace("(", "");
-        input = input.replace(")", "");
-        input = input.replace("-", "");
-        input = input.replace(" ", "");
-        input = input.trim();
-        return input;
     }
 
     /**
@@ -663,28 +351,6 @@ public class StringUtilities {
             }
         }
         if(tmp.length() == 20){
-            tmp = tmp.substring(0, tmp.length()-1); //Get rid of last digit
-        }
-        return tmp;
-    }
-
-    /**
-     * Formats by adding forward slash every 2 numbers (IE like a credit card expiration date)
-     * @param s Charsequence being altered.
-     * @return Return an altered String with hyphens in it
-     */
-    public static String formatNumbersAsCreditCardExpiration(CharSequence s) {
-        int groupDigits = 0;
-        String tmp = "";
-        for (int i = 0; i < s.length(); ++i) {
-            tmp += s.charAt(i);
-            ++groupDigits;
-            if (groupDigits == 2) {
-                tmp += "/";
-                groupDigits = 0;
-            }
-        }
-        if(tmp.length() > 5){
             tmp = tmp.substring(0, tmp.length()-1); //Get rid of last digit
         }
         return tmp;
@@ -728,216 +394,6 @@ public class StringUtilities {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Use this method to fix URIs that are not usable or are in a format not readable. An example
-     * would be one that starts with content://.......... This tries to make a file and when it
-     * succeeds, it means that the URI was correct. The main purpose of this method is to handle
-     * how some phone makers handle this differently (IE Motorola vs HTC vs Samsung)
-     * @param context Context
-     * @param selectedImageUri The Uri to work with
-     * @return
-     */
-    public static Uri fixFileUri(Context context, android.net.Uri selectedImageUri){
-        File fileToPassAround = null;
-        //Attempt 1
-        try {
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 2
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 3
-        try {
-            String selectedImageUriString = StringUtilities.getPath(context, selectedImageUri);
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 4
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = StringUtilities.getPath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 5
-        try {
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 6
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 7
-        try {
-            String toAppend = "file:/";
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //Attempt 8
-        try {
-            String toAppend = "file:/";
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return StringUtilities.convertStringToAndroidUri(selectedImageUriString);
-        } catch (Exception e){}
-
-        //If none have worked by this point, file will likely not work. Maybe permission issues
-        return null;
-    }
-
-    /**
-     * Use this method to fix URIs that are not usable or are in a format not readable. An example
-     * would be one that starts with content://.......... This tries to make a file and when it
-     * succeeds, it means that the URI was correct. The main purpose of this method is to handle
-     * how some phone makers handle this differently (IE Motorola vs HTC vs Samsung)
-     * @param context Context
-     * @param selectedImageUri The Uri to work with
-     * @return
-     */
-    public static File fixAndBuildFileUri(Context context, android.net.Uri selectedImageUri){
-        File fileToPassAround = null;
-        //Attempt 1
-        try {
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 2
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 3
-        try {
-            String selectedImageUriString = StringUtilities.getPath(context, selectedImageUri);
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 4
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = StringUtilities.getPath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 5
-        try {
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 6
-        try {
-            String toAppend = "file://";
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 7
-        try {
-            String toAppend = "file:/";
-            String selectedImageUriString = StringUtilities.getAbsolutePath(context, selectedImageUri);
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //Attempt 8
-        try {
-            String toAppend = "file:/";
-            String selectedImageUriString = selectedImageUri.toString();
-            selectedImageUriString = toAppend + selectedImageUriString;
-            selectedImageUriString = StringUtilities.removeSpaces(selectedImageUriString);
-            java.net.URI myUri = new java.net.URI(selectedImageUriString);
-            File file = new File(myUri);
-            fileToPassAround = file;
-            return fileToPassAround;
-        } catch (Exception e){}
-
-        //If none have worked by this point, file will likely not work. Maybe permission issues
-        return null;
     }
 
     /**
@@ -990,57 +446,6 @@ public class StringUtilities {
         } catch (Exception e){}
 
         return sb.toString();
-    }
-
-    /**
-     * Convert an input stream to a STring
-     * @param is InputStream to convert
-     * @return
-     */
-    public static String convertInputStreamToString(InputStream is){
-        if(is == null){
-            return null;
-        }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder out = new StringBuilder();
-        String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
-                out.append("\r\n");
-            }
-            return out.toString();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Checks if any of the Strings passed via an array are null
-     * @param args String array to check
-     * @return boolean, true if any are null
-     */
-    public static boolean anyNullsInStrings(String[] args){
-        for(String str : args){
-            if(str == null){
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     * Checks if any of the Strings passed via an array are null or are empty ("");
-     * @param args String array to check
-     * @return boolean, true of any are null or are empty
-     */
-    public static boolean anyNullsOrEmptyInStrings(String[] args){
-        for(String str : args){
-            if(StringUtilities.isNullOrEmpty(str)){
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -1171,103 +576,6 @@ public class StringUtilities {
                 cursor.close();
         }
         return null;
-    }
-
-    /**
-     * For converting 2 times into SMS-like format where it shows "how long ago" someone did
-     * something. IE, when someone sends you a message 'just now' vs 'an hour ago'
-     * @param timeEventHappened Time the event happened
-     * @param currentTime current time (if null, it will just get current time)
-     * @return String of the converted date. If something fails, it will return the time the
-     *         event happened to string (date.toString())
-     */
-    public static String convertDatesToSMSTimeMeasurements(Date timeEventHappened, Date currentTime){
-        if(timeEventHappened == null){
-            return null;
-        }
-        if(currentTime == null){
-            currentTime = new Date();
-        }
-
-        long eventTimeMil = timeEventHappened.getTime();
-        long currentTimeMil = currentTime.getTime();
-        long time = currentTimeMil - eventTimeMil;
-        if(time < 0){
-            return "In the future";
-        } else {
-            if(time <= (Constants.ONE_MINUTE)){
-                return "A moment ago";
-            } else if (time <= (Constants.ONE_MINUTE * 2)){
-                return "1 minute ago";
-            } else if (time <= (Constants.ONE_MINUTE * 3)){
-                return "2 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 4)){
-                return "3 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 5)){
-                return "4 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 6)){
-                return "5 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 7)){
-                return "6 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 8)){
-                return "7 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 9)){
-                return "8 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 10)){
-                return "9 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 11)){
-                return "10 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 12)){
-                return "11 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 13)){
-                return "12 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 14)){
-                return "13 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 15)){
-                return "14 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 16)){
-                return "15 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 29)){
-                return "20 minutes ago";
-            } else if (time <= (Constants.ONE_MINUTE * 59)){
-                return "30 minutes ago";
-            } else if (time <= (Constants.ONE_HOUR * 2)){
-                return "An hour ago";
-            } else if (time <= (Constants.ONE_HOUR * 3)){
-                return "2 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 4)){
-                return "3 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 5)){
-                return "4 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 6)){
-                return "5 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 7)){
-                return "6 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 8)){
-                return "7 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 9)){
-                return "8 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 10)){
-                return "9 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 11)){
-                return "10 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 12)){
-                return "11 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 13)){
-                return "12 hours ago";
-            } else if (time <= (Constants.ONE_HOUR * 24)){
-                return "12 hours ago";
-            } else if (time <= (Constants.ONE_DAY * 2)){
-                return "Yesterday";
-            } else {
-                try {
-                    return DateUtilities.convertDateToString(timeEventHappened,
-                            Constants.DATE_MM_DD_YY, "/", Locale.US);
-                } catch (Exception e){
-                    return timeEventHappened.toString();
-                }
-            }
-        }
     }
 }
 
