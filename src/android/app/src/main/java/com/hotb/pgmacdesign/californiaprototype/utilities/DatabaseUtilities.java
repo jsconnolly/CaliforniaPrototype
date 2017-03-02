@@ -754,9 +754,6 @@ public class DatabaseUtilities {
         if (customSuffix != null) {
             className = className + customSuffix;
         }
-        //Realm realm = DatabaseUtilities.buildRealm(realmConfiguration);
-        //RealmQuery query = RealmQuery.createQuery(realm, myClass);
-        // TODO: 8/19/2016 eventually refactor this into a more specified query to make it quicker
         List<MasterDatabaseObject> fullList = this.queryDatabaseMasterAll();
 
         if (fullList == null) {
@@ -909,7 +906,6 @@ public class DatabaseUtilities {
     public static Realm buildRealm(RealmConfiguration realmConfiguration) {
         Realm realm = null;
         if (realmConfiguration != null) {
-            // TODO: 8/25/2016 may need check into whether or not realm is open()! and then re-init
             realm = Realm.getInstance(realmConfiguration);
         }
         return realm;

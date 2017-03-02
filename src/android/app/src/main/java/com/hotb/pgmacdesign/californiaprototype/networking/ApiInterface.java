@@ -5,6 +5,7 @@ import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -158,7 +159,7 @@ public interface ApiInterface {
      * @param userId    String userId
      * @param body      {@link CALocation} Required Fields: displayName, coordinates, alertRadius,
      *                  enablePushNotifications, enableSMS, enableEmail
-     * @return {@link CAUser} Returns an empty object if it suceeds, error if it did not
+     * @return {@link CAUser} Returns an empty object if it succeeds, error if it did not
      */
     @PUT(VERSION + USERS + "/{userId}" + LOCATIONS + "/{locationId}")
     Call<CAUser> updateLocation(@Header("token") String authToken,
@@ -167,11 +168,16 @@ public interface ApiInterface {
                                 @Body CALocation body);
 
 
-    /*
-    todo
-    TBD at a later date
-    PUT - addContact
-    PUT - updateContact
+    /**
+     * Update a location attached to a user
+     *
+     * @param authToken Auth token
+     * @param userId    String userId
+     * @return {@link CAUser} Returns an empty object if it succeeds, error if it did not
      */
+    @DELETE(VERSION + USERS + "/{userId}" + LOCATIONS + "/{locationId}")
+    Call<CAUser> deleteLocation(@Header("token") String authToken,
+                                @Path("userId") String userId,
+                                @Path("locationId") String locationId);
 }
 

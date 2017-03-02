@@ -460,7 +460,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 AlertBeacon beacon = new AlertBeacon();
                 beacon.setLocation(location);
                 beacon.setUser(user);
-                beacon.setAlert(null); // TODO: 2017-02-28 insert this once done on server
+                beacon.setAlert(null);
+                showPopupForBeacon(beacon);
+                return;
+            }
+        }
+        for(CAAlert alert : emergencies){
+            if(location == null){
+                continue;
+            }
+            String str = alert.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(null);
+                beacon.setUser(user);
+                beacon.setAlert(alert);
                 showPopupForBeacon(beacon);
                 return;
             }
@@ -576,7 +594,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     /**
      * Load the user saved locations. this should only ping if the array is not null and >0
-     * todo look into whether or not we are persisting secondary list to show here (Emergencies)
      */
     private void loadUserSavedLocs(){
 
@@ -633,16 +650,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             if(StringUtilities.isNullOrEmpty(name)){
                 name = "";
             }
-            /*
-            String whichColor = null;
-            if(i > 9){
-                int random = (int )(Math.random() * 9);
-                whichColor = this.colorArray[random];
-            } else {
-                whichColor = this.colorArray[i];
-            }
-            int circleColor = ColorUtilities.parseMyColor(whichColor);
-            */
+
             CircleOptions options = new CircleOptions();
             options.center(new LatLng(localLat, localLng));
             options.radius(localRadius);
@@ -658,7 +666,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void loadEmergencyAlerts(){
-        // TODO: 2017-02-28 parse through emergenciesArray here
         if(emergencies == null){
             emergencies = new ArrayList<>();
         }
@@ -688,37 +695,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 continue;
             }
 
-            /*
-            // TODO: 2017-02-28 insert code here for emergencies once back-end finishes
-            String radiusS = location.getAlertRadius();
-            CALocation.Coordinates coordinates = location.getCoordinates();
-            String name = location.getDisplayName();
+            double lat = 0, lng = 0;
+            double[] aCoords = alert.getLoc();
 
-            if(coordinates == null){
+            if(aCoords != null){
+                if(aCoords.length > 1){
+                    try {
+                        lat = aCoords[1];
+                        lng = aCoords[0];
+                    } catch (Exception e){
+                        lat = lng = 0;
+                    }
+                }
+            }
+
+            //Due to possibility if TONS of alerts popping up, setting small radii here of 2 miles
+            float radius = (float) (NumberUtilities.convertFeetToMeters(
+                    NumberUtilities.convertMilesToFeet(2)));
+
+
+            if(lat == 0 && lng == 0){
                 continue;
             }
 
-            float localRadius;
-            try {
-                localRadius = Float.parseFloat(radiusS);
-            } catch (Exception e){
-                localRadius = -1;
-            }
-
-            if(localRadius < 0){
-                localRadius = getMetersPerInch(this.googleMap.getProjection());
-            } else {
-                localRadius = (float)(NumberUtilities.convertMilesToKilometers(localRadius) * 1000);
-            }
-            double localLat = coordinates.getLat();
-            double localLng = coordinates.getLng();
-
-            if(StringUtilities.isNullOrEmpty(name)){
-                name = "";
-            }
             CircleOptions options = new CircleOptions();
-            options.center(new LatLng(localLat, localLng));
-            options.radius(localRadius);
+            options.center(new LatLng(lat, lng));
+            options.radius(radius);
             options.strokeColor(ContextCompat.getColor(getActivity(), R.color.Red));
             options.fillColor(ContextCompat.getColor(getActivity(), R.color.SemiTransparentRed));
             options.clickable(true);
@@ -727,8 +729,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             this.emergencyCircles.add(circleAdded);
             this.emergencies.add(alert);
             this.googleMap.setOnCircleClickListener(this);
-
-            */
         }
     }
 
@@ -745,18 +745,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 user = (CAUser) result;
                 APICalls.persistData(user);
                 CALocation[] locations = user.getLocations();
-                // TODO: 2017-02-28 check on other retrieval data. Ask Jason
-                // IE: CAAlert[] alerts = user.getAlerts();
+                CAAlert[] alerts = user.getAlerts();
                 if(locations != null){
                     if(locations.length > 0){
                         this.userSavedLocations = locations;
                         loadUserSavedLocs();
                     }
                 }
-                // TODO: 2017-02-28 code here to fill - emergenciesArray
+                if(alerts != null){
+                    if(alerts.length > 0){
+                        this.emergenciesArray = alerts;
+                        loadEmergencyAlerts();
+                    }
+                }
                 break;
-
-            //todo Count for other cases here once back-end finishes
         }
     }
 }

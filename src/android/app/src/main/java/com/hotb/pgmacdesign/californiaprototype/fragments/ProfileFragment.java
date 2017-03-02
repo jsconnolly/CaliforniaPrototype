@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,8 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         this.fragment_profile_name.setText("");
         this.fragment_profile_phone.setText("");
         this.fragment_profile_logout.setEnabled(true);
+        this.fragment_profile_logout.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.white));
         this.fragment_profile_logout.setTransformationMethod(null);
 
         //Listeners
@@ -269,7 +272,26 @@ public class ProfileFragment extends Fragment implements OnTaskCompleteListener,
         switch(customTag){
             case Constants.TAG_CA_USER:
                 this.user = (CAUser) result;
-                reloadUI();
+                APICalls tempApi = new APICalls(getActivity(), new OnTaskCompleteListener() {
+                    @Override
+                    public void onTaskComplete(Object result, int customTag) {
+                        if(customTag == Constants.TAG_CA_USER){
+                            try {
+                                ProfileFragment.this.user = (CAUser) result;
+                            } catch (Exception e){}
+                            reloadUI();
+                        }
+                    }
+                });
+                if(!StringUtilities.isNullOrEmpty(id)){
+                    tempApi.getUserById(id);
+                } else if(!StringUtilities.isNullOrEmpty(phone)){
+                    tempApi.getUserByPhone(phone);
+                } else if(!StringUtilities.isNullOrEmpty(email)){
+                    tempApi.getUserByEmail(email);
+                } else {
+                    //Error
+                }
                 break;
 
         }

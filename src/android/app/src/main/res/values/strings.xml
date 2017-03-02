@@ -103,4 +103,7 @@
     <string name="update_location_error">An error occurred while tyring to update your location. Please check the data and try again.</string>
     <string name="location_successfully_updated">Your location has been successfully updated</string>
     <string name="no_name">No name</string>
+    <string name="unknown">Unknown</string>
+    <string name="back_popup">Press back once more to exit</string>
+    <string name="location_successfully_deleted">Your location has been successfully deleted</string>
 </resources>

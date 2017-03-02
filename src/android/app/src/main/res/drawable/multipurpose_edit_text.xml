@@ -27,7 +27,7 @@
     <item
         android:state_focused="true"
         app:state_error="false"
-        android:drawable="@drawable/custom_background_white_back_black_edges"
+        android:drawable="@drawable/custom_background_blue_back_dblue_edges"
         />
 
 </selector>

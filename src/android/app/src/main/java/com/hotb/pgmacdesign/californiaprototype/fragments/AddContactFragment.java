@@ -115,9 +115,8 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_ADD_CONTACT);
         if(placeChosen == null){
-            // TODO: 2017-02-24 decide what to do here, do we need this?
+            switchFragment(Constants.FRAGMENT_MAP);
         }
-        L.m("ADD CONTACT FRAGMENT - ON VIEW CREATED");
     }
 
     @Override

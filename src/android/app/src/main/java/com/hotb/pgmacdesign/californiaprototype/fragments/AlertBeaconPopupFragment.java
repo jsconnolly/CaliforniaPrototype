@@ -23,9 +23,13 @@ import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CAAlert;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
+import com.hotb.pgmacdesign.californiaprototype.utilities.DateUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by pmacdowell on 2017-02-23.
@@ -216,12 +220,13 @@ public class AlertBeaconPopupFragment extends Fragment implements View.OnClickLi
         if(locationDetails == null){
             locationDetails = "";
         }
-        locationDetails = "\n"
-                + "SMS Notifications enabled for location: " + isSmsEnabled
-                +"\n\n"
-                + "Email Notifications enabled for location: " + isEmailEnabled;
 
-        // TODO: 2017-03-01 append in locationDescription to locationDetails once back-end finishes
+        if(!isEmergencyAlert) {
+            locationDetails = "\n"
+                    + "SMS Notifications enabled for location: " + isSmsEnabled
+                    + "\n\n"
+                    + "Email Notifications enabled for location: " + isEmailEnabled;
+        }
 
         //Get all data here for info to set
         String title = locationName;
@@ -238,8 +243,51 @@ public class AlertBeaconPopupFragment extends Fragment implements View.OnClickLi
      * @param alert
      */
     private void getEmergencyData(CAAlert alert){
+        String alocation = alert.getLocation();
+        String aDate = alert.getDate();
+        String aName = alert.getName();
+        String aType = alert.getType();
+        double[] aCoords = alert.getLoc();
 
-        // TODO: 2017-03-01 data pull here for string data
+        Date eventDate = null;
+        if(!StringUtilities.isNullOrEmpty(aDate)){
+            try {
+                eventDate = DateUtilities.convertStringToDate(
+                        aDate, Constants.DATE_YYYY_MM_DD_T_HH_MM_SS_SSS_Z, " ", Locale.US);
+                aDate = DateUtilities.convertDateToString(eventDate,
+                        Constants.DATE_YYYY_MM_DD, "/", Locale.US);
+            } catch (Exception e){
+                eventDate = null;
+                aDate = getString(R.string.unknown);
+            }
+        } else {
+            aDate = getString(R.string.unknown);
+        }
+        if(aCoords != null){
+            if(aCoords.length > 1){
+                try {
+                    lat = aCoords[1];
+                    lng = aCoords[0];
+                } catch (Exception e){
+                    lat = lng = 0;
+                }
+            }
+        }
+        locationName = aType;
+        locationShortName = aName;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: " + aName);
+        sb.append("\n");
+        sb.append("Type: " + aType);
+        sb.append("\n");
+        sb.append("Date: " + aDate);
+        sb.append("\n");
+        sb.append("Location: " + alocation);
+        sb.append("\n");
+
+        locationDetails = sb.toString();
+
     }
 
     /**
@@ -402,7 +450,43 @@ public class AlertBeaconPopupFragment extends Fragment implements View.OnClickLi
                 break;
 
             case R.id.fragment_alert_delete_button:
-                L.toast(getActivity(), getString(R.string.tbd_later));
+                if(location == null){
+                    //Failure
+                    L.toast(getActivity(), getString(
+                            R.string.generic_error_text));
+                    switchFragment(Constants.FRAGMENT_MAP);
+                    return;
+                }
+                try {
+                    APICalls api = new APICalls(getActivity(), new OnTaskCompleteListener() {
+                        @Override
+                        public void onTaskComplete(Object result, int customTag) {
+                            ProgressBarUtilities.dismissProgressDialog();
+                            switch (customTag){
+                                case Constants.TAG_CA_USER:
+                                    //Successful delete
+                                    L.toast(getActivity(), getString(
+                                            R.string.location_successfully_deleted));
+                                    switchFragment(Constants.FRAGMENT_MAP);
+                                    break;
+
+                                case Constants.TAG_API_ERROR:
+                                case Constants.TAG_API_CALL_FAILURE:
+                                    //Failure
+                                    L.toast(getActivity(), getString(
+                                            R.string.generic_error_text));
+                                    break;
+                            }
+                        }
+                    });
+                    ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                    api.deleteLocation(location.getId());
+                } catch (Exception e){
+                    e.printStackTrace();
+                    //Failure
+                    L.toast(getActivity(), getString(
+                            R.string.generic_error_text));
+                }
                 break;
 
             case R.id.fragment_alert_button_submit:

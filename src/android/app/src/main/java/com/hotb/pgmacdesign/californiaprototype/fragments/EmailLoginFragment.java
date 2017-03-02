@@ -216,7 +216,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             if(passwordOk && emailOk){
                 fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setTextColor(
-                        ContextCompat.getColor(getActivity(), R.color.Black));
+                        ContextCompat.getColor(getActivity(), R.color.white));
             } else {
                 fragment_email_login_button.setEnabled(false);
                 fragment_email_login_button.setTextColor(
@@ -253,7 +253,7 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             if(phoneOk){
                 fragment_email_login_button.setEnabled(true);
                 fragment_email_login_button.setTextColor(
-                        ContextCompat.getColor(getActivity(), R.color.Black));
+                        ContextCompat.getColor(getActivity(), R.color.white));
             } else {
                 fragment_email_login_button.setEnabled(false);
                 fragment_email_login_button.setTextColor(
@@ -521,11 +521,9 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
             case Constants.TAG_API_ERROR:
                 //API Call error
                 String str = CaliforniaPrototypeCustomUtils.checkErrorString(result);
-                if(str.equals(getString(R.string.api_response_incorrect_credentials))){
-                    //L.toast(getActivity(), getString(R.string.username_pw_incorrect));
-                } else if(str.equals("")){
-                    // TODO: 2017-02-27 altar once we know other response strings
-                    // TODO: 2017-02-28 This is where code for popup would go on no user account
+                if(str.equalsIgnoreCase(getString(R.string.api_response_incorrect_credentials))){
+                    L.toast(getActivity(), getString(R.string.username_pw_incorrect));
+                } else {
                     Dialog dialog = DialogUtilities.buildOptionDialog(
                             MyApplication.getContext(),
                             new DialogUtilities.DialogFinishedListener() {
@@ -589,8 +587,6 @@ public class EmailLoginFragment extends Fragment implements OnTaskCompleteListen
                             getString(R.string.no_account_register_text)
                     );
                     dialog.show();
-                } else {
-                    L.Toast(getActivity(), str);
                 }
 
                 break;

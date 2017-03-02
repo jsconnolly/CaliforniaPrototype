@@ -456,11 +456,6 @@ public class ContactUtilities {
                         phone = new Contact.Phone(phoneNumber, phoneNumberType);
                     }
 
-                    //if(numberOnBlockList(phoneNumber)){
-                        // TODO: 10/20/2016 add in boolean param to throw this or not
-                        //continue;
-                    //}
-
                     List<Contact.Phone> phones = new ArrayList<>();
                     phones.add(phone);
                     contact.setPhone(phones);

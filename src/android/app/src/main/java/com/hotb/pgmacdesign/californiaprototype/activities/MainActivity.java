@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
         //Checks where the first time they press the button,
         // it sets the time. If they press it once more within 3 seconds, exits
         if (this.lastBackPressTime < System.currentTimeMillis() - 3000) {
-            L.Toast(this, "Press back once more to exit");
+            L.Toast(this, getString(R.string.back_popup));
             this.lastBackPressTime = System.currentTimeMillis();
         } else {
             super.onBackPressed();
@@ -282,18 +282,10 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 MainActivity.this.setFragment(mapFragment, MapFragment.TAG);
 
                 activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
-                        this, R.color.CaliforniaGold));
+                        this, R.color.colorAccent));
                 activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
                         this, R.color.White));
                 break;
-
-            /* todo Using map as home until further notice
-                if(homeFragment == null) {
-                    homeFragment = HomeFragment.newInstance();
-                }
-                MainActivity.this.setFragment(homeFragment, HomeFragment.TAG);
-                break;
-            */
 
             case Constants.FRAGMENT_ALERT_BEACON_POPUP:
                 if(alertBeaconPopupFragment == null) {
@@ -340,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements CustomFragmentLis
                 activity_main_map_icon.setBackgroundColor(ContextCompat.getColor(
                         this, R.color.White));
                 activity_main_user_icon.setBackgroundColor(ContextCompat.getColor(
-                        this, R.color.CaliforniaGold));
+                        this, R.color.colorAccent));
                 break;
 
             case Constants.ACTIVITY_ONBOARDING: //For logout

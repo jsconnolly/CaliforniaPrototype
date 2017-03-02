@@ -842,13 +842,11 @@ public class CameraMediaUtilities {
             else if (requestcode == TAG_MY_PERMISSIONS_REQUEST_CAMERA
                     && resultcode == activity.RESULT_OK
                     && data != null) {
-                // TODO: 8/17/2016 nothing here currently, will implement soon
 
             //Storage Permission Request
             } else if (requestcode == TAG_MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
                     && resultcode == activity.RESULT_OK
                     && data != null) {
-                // TODO: 8/17/2016 nothing here currently, will implement soon
 
             //In this scenario, sending the image URI back to the activity
             } else if (requestcode == TAG_RETURN_IMAGE_URL) {

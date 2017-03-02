@@ -142,8 +142,6 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
                     if(validateFields()){
                         triggerSubmit();
                         return true;
-                    } else {
-                        // TODO: 2017-02-16 decide if warning should go here
                     }
                 }
                 return false;
@@ -252,7 +250,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         if(code1Ok && code2Ok && code3Ok && code4Ok && code5Ok && code6Ok){
             fragment_smsverification_verify_button.setEnabled(true);
             fragment_smsverification_verify_button.setTextColor(
-                    ContextCompat.getColor(getActivity(), R.color.Black));
+                    ContextCompat.getColor(getActivity(), R.color.white));
             return true;
         } else {
             fragment_smsverification_verify_button.setEnabled(false);

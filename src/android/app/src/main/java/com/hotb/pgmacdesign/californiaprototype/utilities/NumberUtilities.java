@@ -31,6 +31,26 @@ public class NumberUtilities {
     }
 
     /**
+     * Convert miles to feet
+     * @param m
+     * @return
+     */
+    public static double convertMilesToFeet(double m){
+        double dbl = (m / 0.00019);
+        return dbl;
+    }
+
+    /**
+     * Convert feet to meters
+     * @param f
+     * @return
+     */
+    public static double convertFeetToMeters(double f){
+        double dbl = f * 0.3048;
+        return dbl;
+    }
+
+    /**
      * Checks if a string passed in is a number (IE, "12345" would return true)
      * @param str String to check
      * @return true if number, false if not

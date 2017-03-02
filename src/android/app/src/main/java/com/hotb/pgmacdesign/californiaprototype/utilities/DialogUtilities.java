@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
@@ -482,8 +483,12 @@ public class DialogUtilities {
             String str = s.toString();
             if(StringUtilities.isNullOrEmpty(str)){
                 edit_text_dialog_confirm_button.setEnabled(false);
+                edit_text_dialog_confirm_button.setTextColor(
+                        ContextCompat.getColor(context, R.color.LightGrey));
             } else {
                 edit_text_dialog_confirm_button.setEnabled(true);
+                edit_text_dialog_confirm_button.setTextColor(
+                        ContextCompat.getColor(context, R.color.white));
             }
         }
     }

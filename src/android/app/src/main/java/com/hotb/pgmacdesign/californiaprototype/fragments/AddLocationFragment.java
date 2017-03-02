@@ -132,14 +132,24 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         this.fragment_add_location_cancel_button.setTransformationMethod(null);
         this.fragment_add_location_add_person_button.setTransformationMethod(null);
 
-        this.fragment_add_location_confirm_button.setEnabled(true);
-        this.fragment_add_location_cancel_button.setEnabled(true);
-        this.fragment_add_location_add_person_button.setEnabled(true);
+        enableButtons(true);
 
         this.fragment_add_location_confirm_button.setOnClickListener(this);
         this.fragment_add_location_cancel_button.setOnClickListener(this);
         this.fragment_add_location_add_person_button.setOnClickListener(this);
 
+    }
+
+    private void enableButtons(boolean bool){
+        this.fragment_add_location_confirm_button.setEnabled(bool);
+        this.fragment_add_location_confirm_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.white));
+        this.fragment_add_location_cancel_button.setEnabled(bool);
+        this.fragment_add_location_cancel_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.white));
+        this.fragment_add_location_add_person_button.setEnabled(bool);
+        this.fragment_add_location_add_person_button.setTextColor(
+                ContextCompat.getColor(getActivity(), R.color.white));
     }
 
     private void setupMap(){
@@ -226,12 +236,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         options.title(title);
         this.lastMarkerAdded = googleMap.addMarker(options);
 
-        float xMetersPerInch = 100;
-        if(false){
-            // TODO: 2017-02-24 check from server if we are manually adding radius here
-        } else {
-            xMetersPerInch = getMetersPerInch();
-        }
+        float xMetersPerInch = getMetersPerInch();
 
         // Create the circle.
         CircleOptions options2 = new CircleOptions();

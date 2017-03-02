@@ -697,6 +697,48 @@ public class APICalls {
         );
     }
 
+    /**
+     * Delete a location on a user object
+     *
+     * @param locationId location id to delete
+     */
+    public void deleteLocation(String locationId) {
+        if (!checkForInternetConnectivity()) {
+            return;
+        }
+        Call<CAUser> call = apiInterface.deleteLocation(getAuthToken(),
+                getUserId(), locationId);
+        //Enqueue the call asynchronously
+        call.enqueue(new Callback<CAUser>() {
+                         @Override
+                         public void onResponse(Call<CAUser> call, Response<CAUser> response) {
+                             //Check for response or not
+                             if (!response.isSuccessful()) {
+                                 if (checkForError(response) != null) {
+                                     listener.onTaskComplete(checkForError(response), Constants.TAG_API_ERROR);
+                                 } else {
+                                     listener.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             } else {
+                                 //Response was successful. Send back via listener
+                                 try {
+                                     CAUser responseObject = (CAUser) response.body();
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
+                                 } catch (Exception e) {
+                                     listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
+                                 }
+                             }
+                         }
+
+                         @Override
+                         public void onFailure(Call<CAUser> call, Throwable t) {
+                             t.printStackTrace();
+                             listener.onTaskComplete(t.getMessage(), Constants.TAG_API_CALL_FAILURE);
+                         }
+                     }
+        );
+    }
+
     ///////////
     // Utils //
     ///////////

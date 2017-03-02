@@ -42,7 +42,7 @@ public class StateSelectedEditText extends EditText {
             case FOCUSED:
                 this.setBackground(ContextCompat.getDrawable(
                         MyApplication.getContext(),
-                        R.drawable.custom_background_white_back_black_edges));
+                        R.drawable.custom_background_blue_back_dblue_edges));
                 break;
 
             case NOT_FOCUSED:

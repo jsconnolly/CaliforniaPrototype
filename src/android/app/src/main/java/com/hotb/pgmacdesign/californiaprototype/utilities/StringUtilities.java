@@ -1070,7 +1070,6 @@ public class StringUtilities {
                         return Environment.getExternalStorageDirectory() + "/" + split[1];
                     }
 
-                    // TODO handle non-primary volumes
                 }
                 // DownloadsProvider
                 else if (StringUtilities.isDownloadsDocument(uri)) {
