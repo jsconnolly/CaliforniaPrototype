@@ -69,6 +69,86 @@ $(document).ready(function(){
     }
     
     
+    
+    $('#btnSaveAlert').click(function(e){
+        var addalert = {
+          "name":"",
+          "type": "",
+          "date":"",
+          "loc":[],
+          "location":"",
+          "description":"",
+          "internaldescription":""
+       }
+
+        var alerttitle = $('#alerttitle').val();
+        var alerttype = $('#alerttype').val();
+        var alertlocation = $('#alertcityzip').val();
+        var interagencyinfo = $('#alertinteragencyinfo').val();
+        var publicannouncement = $('#alertpublicannouncement').val();
+        var d = new Date();
+        var n = d.toISOString(); 
+        addalert.date = n;
+        
+        if(alertlocation.length > 0)
+        {
+            
+            
+            addalert.loc[0] = getLatLng(alertlocation).lng;
+            addalert.loc[1] = getLatLng(alertlocation).lat;
+            addalert.name = alerttitle;
+            addalert.type = alerttype;
+            addalert.location = alertlocation;
+            addalert.description = publicannouncement;
+            addalert.internaldescription = interagencyinfo;
+            console.log("Request JSON Add Alert" + JSON.stringify(addalert));
+            console.log("Admin Token " + sessionStorage.getItem("admintoken"));
+            
+            
+                           $.ajax({
+                            type: "POST",
+                            url: APIURL + "admin/alerts",
+                            headers: {
+                            'token': sessionStorage.getItem("admintoken"),
+                            'Content-Type':'application/json'
+                            },
+                            dataType: "json",
+                            data: JSON.stringify(addalert),
+                            })
+                            .done(function (result) {
+                                 console.log(result);
+                                if(result.id !== undefined)
+                                {
+                                    alert("Alert added successfully.");
+                                    $('#alerttitle').val("");
+                                    $('#alerttype').val("");
+                                    $('#alertcityzip').val("");
+                                    $('#alertinteragencyinfo').val("");
+                                    $('#alertpublicannouncement').val("");
+                                    location.reload();
+                                }
+                            })
+                            .fail(function (data, textStatus, xhr) {
+                             alert("There seems to be a problem with adding alert.");
+                             return;
+                            });
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+    });
+    
+    
+    
+    
 });
 
 
