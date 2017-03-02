@@ -1,20 +1,5 @@
-{{#if map}}
-    <div class="map-overlay">
-        {{#if loggedin}}
-            <a href="addlocations.html" class="btn btn-primary btn-location">Add Location</a>
-            {{!--<div class="sos-banner">
-                <h3> Alert Your Emergency Contacts and Emergency Services</h3>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non arcu eget mi egestas semper.
-                </p>
-                <a href="#" class="btn btn-danger btn-inverted">SOS</a>
-            </div>--}}
-        {{/if}}
-        <div id="map" class="user-map"></div>
-    </div>
-{{else}}
-    <div id="map" class="alert-map"></div>
-{{/if}}
+
+<div id="map" class="alert-map"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     /*function initMap() {
@@ -31,11 +16,8 @@
     var map;
 
     function initMap() {
-<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
-=======
 
 
->>>>>>> fixed responsiveness issues, added edit location
 
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 6,
@@ -58,10 +40,7 @@
         };
 
         var infoWindow = new google.maps.InfoWindow({map: map});
-<<<<<<< e3cdf6b5c2b06fc78152367f44896a4dae7009fa
-=======
 
->>>>>>> fixed responsiveness issues, added edit location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -71,7 +50,7 @@
 
             //infoWindow.setPosition(pos);
             //infoWindow.setContent('Location found.');
-            map.setCenter(pos);
+            //map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -79,6 +58,8 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
+
+
        /* var eventType = 'Event Type',
             eventLocation = 'Affected Location',
             eventDetails = 'Event Details';
@@ -96,14 +77,15 @@
             content: contentString
         });*/
 
+
+
        /* var marker = new google.maps.Marker({
             position: map.getCenter(),
             icon: locationMarker,
             draggable: true,
             map: map
         });*/
-        var marker;
-
+        //var marker;
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
     {
@@ -120,7 +102,6 @@
             {
                 /* locations array*/
                 for(i=0;i<result.locations.length;i++)
-
                 {
                     var lmarker =  new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
@@ -141,7 +122,6 @@
             {
                 /* alerts array*/
                 for(i=0;i<result.alerts.length;i++)
-
                 {
                     var d = new Date(result.alerts[i].date);
                     new google.maps.Marker({
@@ -157,6 +137,11 @@
              alert(data.responseJSON.Error);
             });
     }
+
+
+
+
+
        /* marker.addListener('click', function() {
             infowindow.open(map, marker);
         });*/
