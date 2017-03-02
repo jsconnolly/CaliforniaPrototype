@@ -14,25 +14,25 @@ Before you can install this on your phone, you will need to make a few changes o
 
 There are already many well-written guides on enabling USB debugging on your device. Although the process changes slightly depending on the maker of your phone, it still follows the same basic principles:
 
-	1. Find 'Build number' in your settings and tap on it 7 times until you see "You are now a developer"
+   1. Find 'Build number' in your settings and tap on it 7 times until you see "You are now a developer"
 	
-	2. Go back and find Developer Settings and check the USB Debugging option. 
+   2. Go back and find Developer Settings and check the USB Debugging option. 
 
 Here are two tutorials that cover this process in more detail:
 
-    1.<a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
+   1.<a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
 	
-	2.<a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
+   2.<a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
 	
 ####Allowing Installation From Unknown Sources
 
 Because this application is not installed in the <a href='https://play.google.com/store?hl=en'>Google Play Store</a>, the phone automatically blocks installation of the app as it cannot be sure it has passed the security checkpoints needed to prevent malware from being given to you. Luckily, not only is this code malware-free, but changing the settings to allow this is quite simple. Just follow these steps:
 
-    1. Navigate into settings and tap on Security
+   1. Navigate into settings and tap on Security
 	
-	2. Uncheck the option for "Unknown Sources"
+   2. Uncheck the option for "Unknown Sources"
 	
-	3. You will receive a prompt alerting you to what you are doing, simply press Ok.
+   3. You will receive a prompt alerting you to what you are doing, simply press Ok.
 	
 If you need more assistance here, see <a href='https://www.applivery.com/docs/troubleshooting/android-unknown-sources'>this link</a> or <a href='https://android.gadgethacks.com/how-to/android-basics-enable-unknown-sources-sideload-apps-0161947/'>this one</a> 
 
@@ -84,23 +84,23 @@ This application makes use of many different open source dependencies and I high
 
 Below is a list of each dependency and a link to it's documentation and source code:
 
-	* [Retrofit 2.1.0](https://github.com/square/retrofit)
+* <a href='https://github.com/square/retrofit'>Retrofit 2.1.0</a>
 
-	* <a href='https://github.com/square/okhttp'>Okhttp 3.5.0</a>
+* <a href='https://github.com/square/okhttp'>Okhttp 3.5.0</a>
 
-	* <a href='https://github.com/square/retrofit/tree/master/retrofit-converters/gson'>Gson Converter 2.1.0 (Via Retrofit)</a>
+* <a href='https://github.com/square/retrofit/tree/master/retrofit-converters/gson'>Gson Converter 2.1.0 (Via Retrofit)</a>
 
-	* <a href='https://github.com/google/gson'>Gson 2.8.0</a>
+* <a href='https://github.com/google/gson'>Gson 2.8.0</a>
 
-	* <a href='https://github.com/jaredrummler/AnimatedSvgView'>Animated SVG View 1.0.0</a>
+* <a href='https://github.com/jaredrummler/AnimatedSvgView'>Animated SVG View 1.0.0</a>
 
-	* <a href='https://github.com/square/picasso'>Picasso 2.5.2</a>
+* <a href='https://github.com/square/picasso'>Picasso 2.5.2</a>
 
-	* <a href='https://github.com/daimajia/AndroidViewAnimations'>Android View Animations 2.4.0</a>
+* <a href='https://github.com/daimajia/AndroidViewAnimations'>Android View Animations 2.4.0</a>
 
-	* <a href='https://github.com/yshrsmz/KeyboardVisibilityEvent'>Keyboard Visibility Event 2.0.1</a>
+* <a href='https://github.com/yshrsmz/KeyboardVisibilityEvent'>Keyboard Visibility Event 2.0.1</a>
 
-	* <a href='https://github.com/realm/realm-java'>Realm 2.3.0</a>
+* <a href='https://github.com/realm/realm-java'>Realm 2.3.0</a>
 
 	
 	
