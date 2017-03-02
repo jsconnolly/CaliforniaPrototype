@@ -17,6 +17,7 @@
         android:layout_height="@dimen/toolbar_center_tv_height"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
+        android:background="@color/Transparent"
         tools2:ignore="MissingPrefix"
         />
 

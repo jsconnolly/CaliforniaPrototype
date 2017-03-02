@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
@@ -12,6 +13,7 @@
         <item name="android:textColor">@color/Black</item>
         <item name="android:textColorSecondary">@color/Black</item>
         <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColorHint">@color/LightGrey</item>
     </style>
 
 
@@ -78,6 +80,32 @@
         <item name="android:textColorHint">@color/LightGrey</item>
         <item name="android:editTextColor">@color/Black</item>
         <item name="android:editTextBackground">@color/White</item>
+    </style>
+
+
+
+    <!-- For a transparent dialog -->
+    <style name="CustomTransparentDialog" parent="AppTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/Transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@color/Transparent</item>
+    </style>
+
+    <!-- Alert Dialog theme -->
+    <style name="MyAlertDialogTheme" parent="AlertDialog.AppCompat.Light">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorPrimary">@color/Black</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textColorSecondary">@color/Black</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColorHint">@color/LightGrey</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

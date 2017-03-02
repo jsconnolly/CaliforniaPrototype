@@ -21,15 +21,283 @@
 
     <ScrollView
         android:layout_below="@+id/alert_beacon_popup_title"
+        android:layout_above="@+id/fragment_alert_button_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/alert_beacon_popup_body"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/text_size"/>
+            android:layout_height="match_parent">
+
+            <!-- Details text view -->
+            <TextView
+                android:id="@+id/alert_beacon_popup_body"
+                android:layout_above="@+id/fragment_alert_edit_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size"
+                android:gravity="center|center_horizontal"
+                android:layout_marginEnd="@dimen/left_right_side_margins"
+                android:layout_marginStart="@dimen/left_right_side_margins"
+                />
+
+            <!-- edit section -->
+            <LinearLayout
+                android:id="@+id/fragment_alert_edit_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                android:visibility="gone"
+                >
+
+                <!-- Name section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/location_name"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- Name ET -->
+                    <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                        android:id="@+id/fragment_alert_edit_layout_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        />
+                </LinearLayout>
+
+                <!-- Latitude section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/latitude"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- Longitude ET -->
+                    <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                        android:id="@+id/fragment_alert_edit_layout_lat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        />
+                </LinearLayout>
+
+                <!-- Longitude section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/longitude"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- Longitude ET -->
+                    <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                        android:id="@+id/fragment_alert_edit_layout_lng"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        />
+                </LinearLayout>
+
+                <!-- Radius section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/radius_of_alert_in_miles"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- Name ET -->
+                    <com.hotb.pgmacdesign.californiaprototype.customui.StateSelectedEditText
+                        android:id="@+id/fragment_alert_edit_layout_radius"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:textSize="@dimen/text_size"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        />
+                </LinearLayout>
+
+                <!-- SMS Notifications section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="70"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/sms_notifications_enabled"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- SMS Notifications Switch -->
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/fragment_alert_edit_layout_sms_notif"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        android:layout_weight="30"
+                        style="@style/Base.TextAppearance.AppCompat.Widget.Switch"
+                        />
+
+                </LinearLayout>
+
+                <!-- Email Notifications section -->
+                <LinearLayout
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="70"
+                        android:textSize="@dimen/text_size"
+                        android:text="@string/email_notifications_enabled"
+                        android:background="@drawable/custom_background_white_back_lightgrey_edges"
+                        android:paddingStart="@dimen/left_right_side_margins_small"
+                        />
+
+                    <!-- Email Notifications Switch -->
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/fragment_alert_edit_layout_email_notif"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/left_right_side_margins_small"
+                        android:gravity="center_horizontal|end"
+                        android:layout_weight="30"
+                        style="@style/Base.TextAppearance.AppCompat.Widget.Switch"
+                        />
+
+                </LinearLayout>
+
+                <!-- Submit changes to location button -->
+                <Button
+                    android:id="@+id/fragment_alert_button_submit"
+                    android:text="@string/change_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center"
+                    android:gravity="center_horizontal|center"
+                    android:layout_marginTop="@dimen/left_right_side_margins_small"
+                    android:layout_marginBottom="@dimen/left_right_side_margins_small"
+                    android:background="@drawable/multipurpose_button"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
     </ScrollView>
+
+    <!-- Edit and delete buttons -->
+    <LinearLayout
+        android:id="@+id/fragment_alert_button_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/left_right_side_margins"
+        android:layout_marginEnd="@dimen/left_right_side_margins"
+        android:weightSum="100"
+        android:layout_marginBottom="@dimen/left_right_side_margins_small"
+        android:visibility="gone"
+        >
+
+        <!-- Edit button -->
+        <Button
+            android:id="@+id/fragment_alert_edit_button"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/multipurpose_button"
+            android:text="@string/edit_location"
+            />
+
+        <!-- Delete button -->
+        <Button
+            android:id="@+id/fragment_alert_delete_button"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/multipurpose_button"
+            android:text="@string/remove_location"
+            />
+    </LinearLayout>
+
 
 </RelativeLayout>

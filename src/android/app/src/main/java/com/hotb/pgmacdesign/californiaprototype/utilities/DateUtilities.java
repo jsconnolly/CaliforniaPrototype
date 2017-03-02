@@ -5,7 +5,6 @@ import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -144,79 +143,6 @@ public class DateUtilities {
         }
     }
 
-
-    /**
-     * Get the current Date
-     * @return Date object
-     */
-    public static Date getCurrentDate(){
-        return Calendar.getInstance().getTime();
-    }
-
-    /**
-     * Returns the date
-     * @param timestamp This is the long milliseconds date since epoch
-     * @return Returns a date object
-     */
-    public static Date getDate(Long timestamp) {
-        if(timestamp == null)
-            return null;
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp);
-        return cal.getTime();
-    }
-
-    /**
-     * Get the age of the user. Takes in their birthday and calculates it according to today's date
-     * @param birthday Date Object
-     * @return Returns an int of their age (IE 20, 55, 18). If the date is in the future, it will
-     *         return -1 instead.
-     */
-    public static int getAge(Date birthday){
-
-        Calendar now = Calendar.getInstance();
-        Calendar dob = Calendar.getInstance();
-        dob.setTime(birthday);
-
-        //First check for in the future:
-        if (dob.after(now)) {
-            return -1;
-        }
-
-        int year1 = now.get(Calendar.YEAR);
-        int year2 = dob.get(Calendar.YEAR);
-
-        int age = year1 - year2;
-
-        int month1 = now.get(Calendar.MONTH);
-        int month2 = dob.get(Calendar.MONTH);
-
-        if (month2 > month1) {
-            age--;
-
-        } else if (month1 == month2) {
-            int day1 = now.get(Calendar.DAY_OF_MONTH);
-            int day2 = dob.get(Calendar.DAY_OF_MONTH);
-            if (day2 > day1) {
-                age--;
-            }
-        }
-
-        return age;
-    }
-
-    /**
-     * @return Return current day timestamp with YY, MM, dd info ONLY
-     */
-    public static Long getCurrentDayTS() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();
-    }
-
     /**
      * @return Return current day timestamp with YY, MM, dd info ONLY
      */
@@ -224,105 +150,6 @@ public class DateUtilities {
         Date date = new Date();
         long ss = date.getTime();
         return ss;
-    }
-
-    /**
-     * @return Return current year (IE 2015, 2016)
-     */
-    public static int getCurrentMonth() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.MONTH);
-        year += 1; //January returns 0, December returns 11. Add one to return
-        return year;
-    }
-
-    /**
-     * @return Return current year (IE 2015, 2016)
-     */
-    public static int getCurrentYear() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        return year;
-    }
-
-    /**
-     * Calculates the current day of the year and returns an int
-     * @return Day - Day of the year. No time info.
-     */
-    public static int getCurrentDay() {
-        return Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-    }
-
-    /**
-     * Same as the getCurrentDay() method but uses the passed in argument
-     * as a long milliseconds timestamp to calculate vs a day object
-     * @parma timestamp This is the time (in milliseconds from the epoch date)
-     * used to calculate the current day of the year. (IE 365 = Dec 31st)
-     * @return Day Day of the year based on timestamp.
-     */
-    public static Integer getCurrentDay(long timestamp) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp);
-        return cal.get(Calendar.DAY_OF_YEAR);
-    }
-
-    /**
-     * Returns the day of the year (IE 365 = Dec 31st)
-     * @param date This is the date to use to calculate the day of the year
-     * @return Day - Day of the year based on date.
-     */
-    public static Integer getCurrentDay(Date date) {
-        Calendar cal = Calendar.getInstance();
-        if(date != null)
-            cal.setTime(date);
-        return cal.get(Calendar.DAY_OF_YEAR);
-    }
-
-    /**
-     * Determines the Date "date" adjusted by the number of hours passed in.
-     * A Negative int will go back a few hours. This always uses the current
-     * date/ time as opposed to the getDateAdjustedByDays() method below which
-     * uses the passed in Date argument as the base to use.
-     * @param hrs Number of hours to adjust by
-     * @return Returns a date object
-     */
-    public static Date getDateAdjustedByHours(int hrs) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR_OF_DAY, hrs);
-        return cal.getTime();
-    }
-
-    /**
-     * Determines the Date "date" adjusted by "days".
-     * A negative value will return a date in the past.
-     * @param date The date to be adjusted
-     * @param days The number of days to adjust by
-     * @return Returns a date object
-     */
-    public static Date getDateAdjustedByDays(Date date, int days) {
-        Calendar cal = Calendar.getInstance();
-        if(date != null)
-            cal.setTime(date);
-        cal.add(Calendar.DAY_OF_YEAR, days);
-        return cal.getTime();
-    }
-
-    /**
-     * Return the difference between 2 dates (dayTwo - dayOne) in days
-     * @param dayTwo The first day to compare against
-     * @param dayOne The second day to compare against
-     * @return an int of the difference between the 2 days
-     */
-    public static int diffDays(Date dayTwo, Date dayOne) {
-        Calendar calOne = Calendar.getInstance();
-        calOne.setTime(dayOne);
-        long msOne = calOne.getTimeInMillis();
-
-        Calendar calTwo = Calendar.getInstance();
-        calTwo.setTime(dayTwo);
-        long msTwo = calTwo.getTimeInMillis();
-
-        return (int) ((msTwo - msOne) / (1000L * 60L * 60L * 24L));
     }
 
     /**

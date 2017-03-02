@@ -23,10 +23,7 @@ public class FragmentUtilities {
     public static String getFragmentName(int fragmentId){
         switch (fragmentId){
             case Constants.FRAGMENT_MAP:
-                return "Home"; // TODO: 2017-02-23 ask about this one name...
-
-            case Constants.FRAGMENT_HOME:
-                return "Home"; // TODO: 2017-02-23 ask about this one name...
+                return "Map"; //
 
             case Constants.FRAGMENT_EMAIL_LOGIN:
                 return "Login";
@@ -59,9 +56,6 @@ public class FragmentUtilities {
 
     public static boolean isValidFragment(int x){
         switch (x){
-            case Constants.FRAGMENT_HOME:
-                return true;
-
             case Constants.FRAGMENT_MAP:
                 return true;
 

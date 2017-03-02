@@ -3,6 +3,10 @@ package com.hotb.pgmacdesign.californiaprototype.utilities;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.hotb.pgmacdesign.californiaprototype.R;
+import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAMasterObject;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.pojos.PlaceChosen;
 
 import java.util.List;
@@ -89,5 +93,22 @@ public class CaliforniaPrototypeCustomUtils {
         } catch (NullPointerException npe){}
 
         return placeChosen;
+    }
+
+    public static String checkErrorString(Object result) {
+        String str = null;
+        try {
+            CAUser caUser = (CAUser) result;
+            str = caUser.getError();
+        } catch (Exception e){
+            try {
+                CAMasterObject caMasterObject = (CAMasterObject) result;
+                str = caMasterObject.getError();
+            } catch (Exception e1){
+                e1.printStackTrace();
+                str = MyApplication.getContext().getString(R.string.generic_error_text);
+            }
+        }
+        return str;
     }
 }
