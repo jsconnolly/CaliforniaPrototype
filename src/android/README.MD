@@ -20,9 +20,9 @@ There are already many well-written guides on enabling USB debugging on your dev
 
 Here are two tutorials that cover this process in more detail:
 
-   1.<a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
-	
-   2.<a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
+ * <a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
+
+ * <a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
 	
 ####Allowing Installation From Unknown Sources
 
