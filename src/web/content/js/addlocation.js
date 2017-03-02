@@ -22,6 +22,54 @@ function DeleteLocation(locationId)
 }
 
 
+function EditLocation(locationId)
+{
+   
+    // get current location details
+    console.log(locationId);
+    console.log(sessionStorage.getItem("id"));
+    var userlocations =[];
+    $.ajax({
+       url : APIURL + "users/" + sessionStorage.getItem("id"),
+       headers: {
+                'token': sessionStorage.getItem("token"),
+                'Content-Type':'application/json'
+             },
+       method: "GET",
+       async:false,
+       success:function(data){
+             if(data.locations !== undefined)
+             {
+                 
+                 userlocations = data.locations;
+                 console.log(userlocations);
+             }
+       }
+    });
+    
+    
+    
+    // update location details
+    if(userlocations.length > 0)
+    {
+        for(i=0;i<userlocations.length;i++)
+        {
+            if(userlocations[i].id === locationId)
+            {
+                $("#updatedlocationname").val(userlocations[i].displayName);
+                $("#updatedcityzip").val(getReverseGeocodingData(userlocations[i].coordinates.lat,userlocations[i].coordinates.lng));
+                break;
+            }
+        }
+        
+    }
+    
+    $("#editedlocationid").val(locationId);
+    
+    //console.log("in edit");
+
+}
+
 
 
 function getLatLng(cityzip)
@@ -45,7 +93,21 @@ function getLatLng(cityzip)
     return coordinates;
 
 }
+function getReverseGeocodingData(lat, lng) {
+    var zipcode; 
+    $.ajax({
+       url : "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
+       method: "POST",
+       async:false,
+       success:function(data){
+           //console.log(data);
+           zipcode = data.results[0].address_components[6].short_name;
+       }
 
+    });
+    return zipcode;
+
+}
 
 
 
@@ -101,9 +163,6 @@ $(document).ready(function(){
         var cityzip = $('#cityzip').val();
         if(cityzip.length > 0)
         {
-            // Get lat and lng from google maps api
-            //console.log("Latitude" + getLatLng(cityzip).lat);
-            //console.log("Longitude" + getLatLng(cityzip).lng);
 
             addlocation.coordinates = { "lat": getLatLng(cityzip).lat, "lng": getLatLng(cityzip).lng};
             addlocation.displayName = $("#locationname").val();
@@ -151,6 +210,55 @@ $(document).ready(function(){
         }
 
     });
+    
+    
+       $('#editLocationSave').click(function(e){
+           
+           
+           var editedlocationid = $("#editedlocationid").val();
+           
+           if(editedlocationid.length > 0)
+    {
+    
+                var updatelocation = {
+                      "displayName":"",
+                      "coordinates": "",
+                      "alertRadius":"100",
+                      "enablePushNotifications":true,
+                      "enableSMS":true,
+                      "enableEmail":true
+                   }
+
+                 // Save Updated info back
+
+                var updatedcityzip = $("#updatedcityzip").val();
+                updatelocation.displayName = $("#updatedlocationname").val();
+                updatelocation.coordinates = { "lat": getLatLng(updatedcityzip).lat, "lng": getLatLng(updatedcityzip).lng};
+
+                                        $.ajax({
+                                        type: "PUT",
+                                        url: APIURL + "users/" +sessionStorage.getItem("id") + "/locations/" + editedlocationid,
+                                        headers: {
+                                        'token': sessionStorage.getItem("token"),
+                                        'Content-Type':'application/json'
+                                     },
+                                        dataType: "json",
+                                        data: JSON.stringify(updatelocation),
+                                        }).done(function (result) {
+                                            alert("Location updated successfully.");
+                                            location.reload();
+                                        })
+                                        .fail(function (data, textStatus, xhr) {
+                                         //console.log(data.responseJSON.Error);
+                                         alert(data.responseJSON.Error);
+                                         /*console.log("error", data.status);
+                                         console.log("STATUS: "+xhr); */
+                                        });   
+    }
+                             
+    
+})
+
 
 
 });
