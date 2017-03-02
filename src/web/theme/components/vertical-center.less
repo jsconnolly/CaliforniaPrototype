@@ -13,7 +13,8 @@ html, body, .container-table {
    }
 }
 
-.vertical-center {
+@media (min-width: @screen-sm-min){
+    .vertical-center {
    display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -33,3 +34,5 @@ html, body, .container-table {
     -ms-flex-align: center;
     align-items: center;
 }
+
+    }
