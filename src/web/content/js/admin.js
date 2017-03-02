@@ -34,6 +34,41 @@ $(document).ready(function(){
     }
     
     
+    
+    if(sessionStorage.getItem("admintoken") != null)
+    {
+            $.ajax({
+                type: "POST",
+                url: APIURL + "admin/alerts/search",
+                headers: {
+                'token': sessionStorage.getItem("admintoken"),
+                'Content-Type':'application/json'
+             },
+                }).done(function (result) {
+                  //console.log(result);
+                result.sort(date_sort_desc);
+                //console.log(descendingOrder);
+                 for(i = 0; i<result.length;i++)
+                 {
+                     if( i <= 4)
+                    {
+                        var d = new Date(result[i].date); 
+                        var appendedval = "<a href='#' class='admin-current-alert'><div class='well'><div class='row'><div class='col-md-2'>"+ result[i].name +"</div><div class='col-md-2'>" + d.toDateString() +"</div><div class='col-md-8'>"+ result[i].location  +"</div></div></div></a>";
+                 
+                            if(document.getElementById("manualalerts") != null)
+                            {
+                                document.getElementById("manualalerts").innerHTML += appendedval;
+                            }
+                    }
+                 }
+                
+                })
+                .fail(function (data, textStatus, xhr) {
+                 alert(data.responseJSON.Error);
+                });
+    }
+    
+    
 });
 
 
