@@ -1,11 +1,9 @@
 $(document).ready(function(){
 
     var RegisterData = {
-    email: "",
-    password: "",
-    name:"",
-    phone:""
-};
+        email: "",
+        password: ""
+    };
 
     $('#subscribe').click(function(e){
 
@@ -18,7 +16,6 @@ $(document).ready(function(){
             {
                     RegisterData.email = $('#email').val();
                     RegisterData.password = $('#password').val();
-                    RegisterData.name = $("#email").val();
 
                     //console.log("Request JSON" + JSON.stringify(RegisterData));
                     $.ajax({
@@ -66,4 +63,4 @@ $(document).ready(function(){
 
 
     });
-})
+});

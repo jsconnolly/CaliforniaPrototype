@@ -70,11 +70,11 @@ $(document).ready(function(){
 
             }
          
-             if(newemail.length > 0)
+             if(phone.length > 0)
             {
             
-                        var changeemail = {
-                             email:newemail,
+                        var changephone = {
+                             phone:phone,
                        };
                         $.ajax({
                         type: "PUT",
@@ -85,14 +85,14 @@ $(document).ready(function(){
                              },
                         dataType: "json",
                         contentType: "application/json",
-                        data: JSON.stringify(changeemail),
+                        data: JSON.stringify(changephone),
                     }).done(function (result) {
                        console.log(result);
                         //alert("Password Changed successfully");             
                    })
                     .fail(function (data, textStatus, xhr) {
                          //console.log(data.responseJSON.Error);
-                         alert("There seems to be an issue with email change. Please try again");
+                         alert("There seems to be an issue with phone update. Please try again");
                          /*console.log("error", data.status);
                          console.log("STATUS: "+xhr); */
                     });
