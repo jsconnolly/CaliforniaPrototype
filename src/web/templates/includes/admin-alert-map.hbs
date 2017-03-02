@@ -25,7 +25,7 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
-            center: new google.maps.LatLng(33.632478, -117.734862),
+            center: new google.maps.LatLng(36.7468, -119.7726),
             mapTypeId: 'roadmap'
         });
 
@@ -47,7 +47,7 @@
 
             //infoWindow.setPosition(pos);
             //infoWindow.setContent('Location found.');
-            map.setCenter(pos);
+            //map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -57,7 +57,7 @@
         }
 
 
-       
+
         // Get admin alerts from user object and show on google maps
              if(sessionStorage.getItem("admintoken") != null)
             {
@@ -81,7 +81,7 @@
                               title: "Location: " + result[i].location + "\nType: " + result[i].type + "\nName: " + result[i].name + "\nDate: " + d.toDateString()
                             });
                         }
-                    
+
                     })
                     .fail(function (data, textStatus, xhr) {
                      alert(data.responseJSON.Error);
