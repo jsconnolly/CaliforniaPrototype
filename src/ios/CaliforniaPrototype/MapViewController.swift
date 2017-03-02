@@ -63,6 +63,11 @@ class MapViewController: UIViewController {
             mapView.addAnnotation(location)
         }
         
+        guard let alerts = self.user?.alerts else { return }
+        for alert in alerts {
+            mapView.addAnnotation(alert)
+        }
+        
     }
     
     func setupView() {
@@ -191,25 +196,28 @@ extension MapViewController: MKMapViewDelegate {
                 view = dequeuedView
             } else {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.pinTintColor = UIColor.blue
                 view.canShowCallout = true
-                view.leftCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
+                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
             }
+            return view
         }
         
-//        let reuseId = "reuseIdentifier"
-//        if let annotation = annotation as? UserLocation {
-//            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) {
-//                view.annotation = annotation
-//                return view
-//            } else {
-//                let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-//                view.canShowCallout = true
-//                view.isEnabled = true
-//                let button = UIButton(type: .detailDisclosure)
-//                view.rightCalloutAccessoryView = button
-//                return view
-//            }
-//        }
+        if let annotation = annotation as? Alert {
+            let identifier = "alertLoctionPin"
+            var view: MKPinAnnotationView
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+                dequeuedView.annotation = annotation
+                view = dequeuedView
+            } else {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.pinTintColor = UIColor.red
+                view.canShowCallout = true
+                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIView
+            }
+            return view
+        }
+        
         
         return nil
         

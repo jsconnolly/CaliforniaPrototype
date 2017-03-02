@@ -32,9 +32,10 @@ class UserLocation : NSObject {
         self.init(enableSMS: false, enablePushNotifications:false, enableEmail: false, displayName: "", alertRadius: "", id: "", coordinates: [:])
     }
     
-    public func locationFromDictionaryArray(_ dictionaryArray: [[String: Any]]) -> [UserLocation] {
+    public func locationFromDictionaryArray(_ dictionaryArray: [[String: Any]]?) -> [UserLocation]? {
+        guard let jsonArray = dictionaryArray else { return nil }
         var userLocationArray = [UserLocation]()
-        for dictionary in dictionaryArray {
+        for dictionary in jsonArray {
             let location = UserLocation(enableSMS: dictionary["enableSMS"] as? Bool, enablePushNotifications: dictionary["enablePushNotifications"] as? Bool, enableEmail: dictionary["enableEmail"] as? Bool, displayName: dictionary["displayName"] as? String, alertRadius: dictionary["alertRadius"] as? String, id: dictionary["id"] as? String, coordinates: dictionary["coordinates"] as? [String: Double])
             userLocationArray.append(location)
         }
