@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    
+    
+    $('#lblcurrentEmail').text(getCookie("email"));
+    $('#lblcurrentPhone').text(getCookie("phone"));
 
      $('#btnSaveSettings').click(function(e){
         
@@ -6,8 +10,7 @@ $(document).ready(function(){
         var newpassword = $('#newpassword').val();
         var confirmpassword = $('#confirmpassword').val();
         var newemail = $('#email').val();
-         
-         //console.log(oldpassword , newpassword, confirmpassword);
+        
 
         if(oldpassword.length > 0 && newpassword.length > 0 && confirmpassword.length > 0)
         {
@@ -48,6 +51,7 @@ $(document).ready(function(){
             if(newemail.length > 0)
             {
             
+                 
                         var changeemail = {
                              email:newemail,
                        };
@@ -108,4 +112,21 @@ $(document).ready(function(){
 
 
 
-})
+});
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+} 
