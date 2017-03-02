@@ -84,6 +84,7 @@ public class APICalls {
                                  //Response was successful. Send back via listener
                                  try {
                                      CAUser responseObject = (CAUser) response.body();
+                                     persistData(responseObject);
                                      listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
