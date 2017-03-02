@@ -28,7 +28,11 @@ $(document).ready(function(){
                     data: JSON.stringify(changepassword),
                 }).done(function (result) {
                    // console.log(result);
-                    alert("Password Changed successfully");             
+                    alert("Password Changed successfully"); 
+                    $('#oldpassword').val("");
+                    $('#newpassword').val("");
+                    $('#confirmpassword').val("");
+                    
                })
                 .fail(function (data, textStatus, xhr) {
                      //console.log(data.responseJSON.Error);

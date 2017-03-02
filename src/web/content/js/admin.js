@@ -29,10 +29,7 @@ $(document).ready(function(){
                 
                 })
                 .fail(function (data, textStatus, xhr) {
-                 //console.log(data.responseJSON.Error);
                  alert(data.responseJSON.Error);
-                 /*console.log("error", data.status);
-                 console.log("STATUS: "+xhr); */
                 });
     }
     
@@ -40,8 +37,8 @@ $(document).ready(function(){
 });
 
 
-var date_sort_desc = function (date1, date2) {
-  if (date1 > date2) return -1;
-  if (date1 < date2) return 1;
+var date_sort_desc = function (a, b) {
+  if (a.date > b.date) return -1;
+  if (a.date < b.date) return 1;
   return 0;
 };
