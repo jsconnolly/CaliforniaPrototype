@@ -1,9 +1,14 @@
 .map-banner {
     background: @gray-lighter;
-    padding: 30px 0;
-
+    padding: 15px 0;
+    @media (min-width: @screen-sm-min) {
+        padding: 30px 0;
+    }
     .btn {
-        margin-top: 30px;
+        margin-top: 10px;
+        @media (min-width: @screen-sm-min) {
+            margin-top: 30px;
+        }
     }
 }
 
@@ -27,7 +32,7 @@
         display: block;
     }
 
-    span{
+    span {
         display: block;
 
         &.added-location {
@@ -45,11 +50,13 @@
 .user-block-h {
     position: relative;
 
-    span, strong {
+    span,
+    strong {
         display: block;
         text-align: left;
 
-        &.glyphicon, img {
+        &.glyphicon,
+        img {
             font-size: 60px;
             max-width: 60px;
             max-height: 60px;
@@ -59,7 +66,18 @@
 
     .user-block-h-content {
         padding-left: 70px;
+    }
+}
 
+.settings {
+    button {
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+        @media (min-width: @screen-xs-min) {
+            width: auto;
+            display: inline-block;
+        }
     }
 }
 

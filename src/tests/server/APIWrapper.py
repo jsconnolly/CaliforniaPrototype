@@ -2,14 +2,17 @@
 # http://docs.python-requests.org/en/latest/user/quickstart/
 import requests
 # Documentation for parsing, serialization, and deserialization:
-import simplejson as json
+import json
 import time
+
 
 # User Model
 class User:
 	#Begin class {
 	# String
 	id = None
+	# String
+	password = None
 	# String
 	email = None
 	# String
@@ -26,26 +29,18 @@ class User:
 	zip = None
 	# String / DateObject
 	date = None
-	# Array of Locations
-	locations = None
-	# Array of Contacts
-	contacts = None
-	# String
-	token = None
 
-	def __init__(self, email, name, phone, address, city, state, zip, date, locations, contacts, token, id):
+	def __init__(self, id, email, phone, password, name, address, city, state, zip, date):
+		self.id = id
 		self.email = email
-		self.name = name
 		self.phone = phone
+		self.password = password
+		self.name = name
 		self.address = address
 		self.city = city
 		self.state = state
 		self.zip = zip
 		self.date = date
-		self.locations = locations
-		self.contacts = contacts
-		self.token = token
-		self.id = id
 
 	def __setattr__(self, *args, **kwargs):
 		return super().__setattr__(*args, **kwargs)
@@ -75,6 +70,8 @@ class Constants:
 	EMAIL_SIGNIN = "/signin"
 	# Post Request
 	PHONE_SIGNIN = "/phoneSignin"
+	# Post Request
+	FORGOT_PASSWORD = "/forgotPassword"
 	# Get Request / REQUIRES TOKEN HEADER STRING
 	GET_USER_BY_EMAIL = "/email/" # + Append Email
 	# Get Request / REQUIRES TOKEN HEADER STRING
@@ -93,17 +90,68 @@ class Constants:
 	ADD_LOCATION = "/locations"
 	# Put Request / REQUIRES TOKEN HEADER STRING
 	UPDATE_LOCATION = "/locations/" # + Append User ID
-	# Put Request / REQUIRES TOKEN HEADER STRING
-	# ADD_CONTACT = "/contacts" ///////////////////////////////////////May be broken, wait on tests
-	# Put Request / REQUIRES TOKEN HEADER STRING
-	# UPDATE_CONTACT = "/contacts/" # + Append User ID/////////////////May be broken, wait on tests
-			# End User Endpoints }
+
+					# End User Endpoints }
 		# End User Path }
 
 	START_TEST_STR = "Starting test at: "
 	END_TEST_STR = "Finished test at: "
 	ERROR_STRING = "Unknown Error"
 	EXCEPTION_STRING = "Parse Exception"
+
+	# Test Users:
+	# Test User 1:
+	name = 'Universal Test'
+	email = 'test@hotbsoftware.com'
+	phone = '8885552222'
+	address = '540 Tester Dr'
+	password = 'password123'
+	city = 'Testvine'
+	state = 'CA'
+	zip = '92618'
+	date = '2017-03-01T22:47:59.848Z'
+	id = '58b74f9fc4d2090015177094'
+
+	# Test User 2:
+	name2 = 'Universal Test'
+	email2 = 'test2@hotbsoftware.com'
+	phone2 = '8885554444'
+	address2 = '540 Tester Dr'
+	password2 = 'password123'
+	city2 = 'Testvine'
+	state2 = 'CA'
+	zip2 = '92618'
+	date2 = '2017-03-01T22:48:49.943Z'
+	id2 = '58b74fd1c4d2090015177095'
+
+	# Test User 1 Dictionary / Map
+	User1 = {
+		'email' : email,
+		'password' : password,
+		'name' : name,
+		'phone' : phone,
+		'address' : address,
+		'city' : city,
+		'state' : state,
+		'zip' : zip,
+		'id' : id,
+		'date' : date
+	}
+
+	# Test User 1 Dictionary / Map
+	User2 = {
+		'email' : email,
+		'password' : password,
+		'name' : name,
+		'phone' : phone,
+		'address' : address,
+		'city' : city,
+		'state' : state,
+		'zip' : zip,
+		'id' : id,
+		'date' : date
+	}
+
 	#--End class }
 
 # Web Utility builders (IE Headers)
@@ -203,9 +251,9 @@ class WebCalls:
 	# Pass 'None' / Null if param is not used (IE, pass None for myHeaders if not needed)
 	def makePutRequest(self, myHeaders, bodyObject):
 		if myHeaders is None:
-			request = requests.put(self.strUrlBase, data=bodyObject)
+			request = requests.put(self.strUrlBase, data=json.dumps(bodyObject))
 		else:
-			request = requests.put(self.strUrlBase, data=bodyObject, headers=myHeaders)
+			request = requests.put(self.strUrlBase, data=json.dumps(bodyObject), headers=myHeaders)
 
 		jsonResponse = request.json()
 		return (jsonResponse)
@@ -214,9 +262,9 @@ class WebCalls:
 	# Pass 'None' / Null if param is not used (IE, pass None for myHeaders if not needed)
 	def makeDeleteRequest(self, myHeaders, bodyObject):
 		if myHeaders is None:
-			request = requests.delete(self.strUrlBase, data=bodyObject)
+			request = requests.delete(self.strUrlBase, data=json.dumps(bodyObject))
 		else:
-			request = requests.delete(self.strUrlBase, data=bodyObject, headers=myHeaders)
+			request = requests.delete(self.strUrlBase, data=json.dumps(bodyObject), headers=myHeaders)
 
 		jsonResponse = request.json()
 		return (jsonResponse)
@@ -225,6 +273,37 @@ class WebCalls:
 #Various Utilities
 class Utilities:
 	#--Begin class {
+
+
+	# Attempt to login user1. If this succeeds, it will return an auth token, if not, returns None (null)
+	@staticmethod
+	def loginUser1():
+		User1 = Constants.User1
+		headers = WebBuilders.getHeaders(None)
+		urlBase = Constants.BASE_URL + Constants.USERS + Constants.EMAIL_SIGNIN
+		api = WebCalls(urlBase)
+		response = api.makePostRequest(headers, User1)
+		objectResponse = Utilities.convertJsonToObject(response)
+		authToken = Utilities.getTokenFromResponse(objectResponse)
+		return authToken
+
+
+	# Attempt to login user2. If this succeeds, it will return an auth token, if not, returns None (null)
+	@staticmethod
+	def loginUser2():
+		try :
+			User2 = Constants.User2
+			headers = WebBuilders.getHeaders(None)
+			urlBase = Constants.BASE_URL + Constants.USERS + Constants.EMAIL_SIGNIN
+			api = WebCalls(urlBase)
+			response = api.makePostRequest(headers, User2)
+			objectResponse = Utilities.convertJsonToObject(response)
+			authToken = Utilities.getTokenFromResponse(objectResponse)
+			return authToken
+
+		except :
+			return None
+
 	# Print, auto-cast into string
 	@staticmethod
 	def printStr(oneThingToPrint):

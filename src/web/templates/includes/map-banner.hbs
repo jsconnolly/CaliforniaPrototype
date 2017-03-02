@@ -1,4 +1,4 @@
-<div class="map-banner hidden-sm hidden-xs">
+<div class="map-banner">
     <div class="container">
         {{#if loggedin}}
             <form data-toggle="validator" role="form" id="phonenotificationform" style="display:none">
@@ -45,15 +45,15 @@
 </div>
 
 <script type="text/javascript">
-    
-    
+
+
 if(getCookie("phone").length === 0)
 {
     document.getElementById("phonenotificationform").removeAttribute("style");
     document.getElementById("phonenotificationform").style.visibility = "visible";
 }
-    
-    
+
+
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -68,7 +68,7 @@ function getCookie(cname) {
         }
     }
     return "";
-} 
+}
 
 
 

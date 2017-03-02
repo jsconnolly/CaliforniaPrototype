@@ -13,11 +13,23 @@
 
     <color name="Transparent">#00000000</color>
 
-    <color name="SemiTransparentRed">#50FF0000</color>
+    <!-- Semi transparent colors for map random sets -->
     <color name="SemiTransparentBlue">#30191970</color>
+    <color name="SemiTransparentSalmon">#30FFA07A</color>
+    <color name="SemiTransparentViolet">#30EE82EE</color>
+    <color name="SemiTransparentOrchid">#30DA70D6</color>
+    <color name="SemiTransparentChocolate">#30D2691E</color>
+    <color name="SemiTransparentGreen">#30228B22</color>
+    <color name="SemiTransparentLightBlue">#301E90FF</color>
+    <color name="SemiTransparentDarkBlue">#3000008B</color>
+    <color name="SemiTransparentKakhi">#30BDB76B</color>
+    <color name="SemiTransparentFuchsia">#30FF00FF</color>
+
+    <!-- For alerts / Emergencies -->
+    <color name="SemiTransparentRed">#50FF0000</color>
     <color name="ErrorMessageOrange">#F5A528</color>
-    <color name="CaliforniaGold">#FFD700</color>
-    <color name="CaliforniaBlue">#000080</color>
+
+
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
@@ -78,7 +90,7 @@
     <color name="Goldenrod">#DAA520</color>
     <color name="Orchid">#DA70D6</color>
     <color name="Thistle">#D8BFD8</color>
-    <color name="LightGrey">#D3D3D3</color>
+    <color name="LightGrey">#d6d7d9</color>
     <color name="LightGreyFaded">#77D3D3D3</color>
     <color name="Tan">#D2B48C</color>
     <color name="Chocolate">#D2691E</color>
@@ -178,7 +190,11 @@
     <color name="navy">#000080</color>
 
 
-    <color name="colorPrimary">#000080</color>
-    <color name="colorPrimaryDark">#000066</color>
-    <color name="colorAccent">#FFD700</color>
+    <color name="colorPrimary">#0071bc</color>
+    <color name="colorPrimaryDark">#205493</color>
+    <color name="colorPrimaryDarkest">#112e51</color>
+    <color name="colorAccent">#e31c3d</color>
+    <color name="colorAccent2">#981b1e</color>
+
+
 </resources>

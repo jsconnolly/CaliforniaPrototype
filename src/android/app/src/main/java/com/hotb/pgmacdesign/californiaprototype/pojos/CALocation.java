@@ -8,10 +8,12 @@ import com.google.gson.annotations.SerializedName;
  */
 public class CALocation extends CAMasterObject{
 
+    @SerializedName("id")
+    private String id;
     @SerializedName("displayName")
     private String displayName;
     @SerializedName("alertRadius")
-    private String alertRadius;
+    private String alertRadius;  // In Miles, as per meeting with Jason on: 2017-02-27 15:00
     @SerializedName("enablePushNotifications")
     private Boolean enablePushNotifications;
     @SerializedName("enableSMS")
@@ -20,6 +22,24 @@ public class CALocation extends CAMasterObject{
     private Boolean enableEmail;
     @SerializedName("coordinates")
     private Coordinates coordinates;
+    //Intentionally not serialized. Can either be marker or circleId here
+    private String circleId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -79,6 +99,14 @@ public class CALocation extends CAMasterObject{
     }
 
     public static class Coordinates {
+
+        public Coordinates(){}
+
+        public Coordinates(double lat, double lng){
+            this.lat = lat;
+            this.lng = lng;
+        }
+
         @SerializedName("lat")
         private double lat;
         @SerializedName("lng")

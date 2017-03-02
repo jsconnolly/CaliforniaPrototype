@@ -4,14 +4,14 @@ $(document).ready(function(){
         email: "",
         password: ""
     };
-    
+
     var LoginAdminData = {
         email: "",
         password: ""
     };
 
 
-
+   var LoginResponse = { token:"", id:""};
     $('#loginbtn').click(function(e){
         var password = $('#password').val();
         var username = $('#username').val();
@@ -37,9 +37,7 @@ $(document).ready(function(){
                         // Store
                         sessionStorage.setItem("token", result.token);
                         sessionStorage.setItem("id", result.id);
-
                     }
-                
                 setCookie("id",result.id,1);
                 setCookie("token",result.token,1);
                 setCookie("phone",result.phone,1);
@@ -60,15 +58,13 @@ $(document).ready(function(){
         }
         else
         {
-
             //alert("Please enter email and password.");
             return;
         }
-
     });
-    
-    
-    
+
+
+
     $('#btnAdminLogin').click(function(e){
         var password = $('#adminpassword').val();
         var username = $('#adminusername').val();
@@ -96,7 +92,7 @@ $(document).ready(function(){
                         sessionStorage.setItem("adminid", result.id);
 
                     }
-                
+
                 setCookie("adminid",result.id,1);
                 setCookie("admintoken",result.token,1);
                 //LoginResponse.token = result.token;
@@ -124,9 +120,9 @@ $(document).ready(function(){
         }
 
     });
-    
-    
-    
+
+
+
 })
 
 
@@ -136,4 +132,4 @@ function setCookie(cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+ d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-} 
+}

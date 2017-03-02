@@ -24,7 +24,10 @@ import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
+import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
@@ -45,6 +48,9 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
             fragment_smsverification_code_box_6;
     private Button fragment_smsverification_verify_button;
 
+    //API Interface
+    private APICalls api;
+    private String phoneNumber, code;
 
     public SMSVerificationFragment() {}
 
@@ -56,6 +62,9 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.api = new APICalls(getActivity(), this);
+        this.phoneNumber = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PHONE_NUMBER, null);
         //Utilize instanceState here
     }
 
@@ -133,8 +142,6 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
                     if(validateFields()){
                         triggerSubmit();
                         return true;
-                    } else {
-                        // TODO: 2017-02-16 decide if warning should go here
                     }
                 }
                 return false;
@@ -143,11 +150,20 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
     }
 
     private void setUserData(){
-        String phoneNumber = MyApplication.getSharedPrefsInstance().getString(
-                Constants.USER_PHONE_NUMBER, null);
         if(StringUtilities.isNullOrEmpty(phoneNumber)){
-            fragment_smsverification_user_number_tv.setText("");
+            //Phone number did not persist, have them enter it once more
+            L.Toast(getActivity(), getString(R.string.phone_number_didnt_save));
+            switchFragment(Constants.FRAGMENT_EMAIL_LOGIN);
+            return;
         } else {
+            //Phone number persisted correctly
+            phoneNumber = StringUtilities.keepNumbersOnly(phoneNumber);
+            phoneNumber = phoneNumber.trim();
+            try{
+                if(!phoneNumber.startsWith("1")){
+                    phoneNumber = "1" + phoneNumber;
+                }
+            } catch (Exception e){}
             phoneNumber = StringUtilities.formatStringLikePhoneNumber(phoneNumber);
             fragment_smsverification_user_number_tv.setText(phoneNumber);
         }
@@ -167,8 +183,18 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         String code6 = fragment_smsverification_code_box_6.getText().toString();
         code6 = code6.trim();
 
-        //todo setup link to server here once implemented
-        onTaskComplete(null, 0);
+        String verifCode = code1 + code2 + code3 + code4 + code5 + code6;
+        ProgressBarUtilities.showSVGProgressDialog(getActivity(), false,
+                Constants.PROGRESS_BAR_TIMEOUT);
+        phoneNumber = StringUtilities.keepNumbersOnly(phoneNumber);
+        phoneNumber = phoneNumber.trim();
+        try{
+            if(!phoneNumber.startsWith("1")){
+                phoneNumber = "1" + phoneNumber;
+            }
+        } catch (Exception e){}
+        this.code = verifCode;
+        this.api.registerWithPhone(phoneNumber, verifCode);
     }
 
     /**
@@ -224,7 +250,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
         if(code1Ok && code2Ok && code3Ok && code4Ok && code5Ok && code6Ok){
             fragment_smsverification_verify_button.setEnabled(true);
             fragment_smsverification_verify_button.setTextColor(
-                    ContextCompat.getColor(getActivity(), R.color.Black));
+                    ContextCompat.getColor(getActivity(), R.color.black));
             return true;
         } else {
             fragment_smsverification_verify_button.setEnabled(false);
@@ -399,20 +425,48 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
 
     @Override
     public void onResume() {
-        L.m("onResume in smsverificationfragment");
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_SMS_VERIFICATION) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.sms_verification), null, false, null);
+                    getString(R.string.sms_verification), null, false, null, null);
         }
         super.onResume();
     }
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
-        // TODO: 2017-02-24 insert check from server here
-        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
-        switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
+
+        switch(customTag){
+            case Constants.TAG_API_ERROR:
+                //API Call error
+                String str = CaliforniaPrototypeCustomUtils.checkErrorString(result);
+                if(str.equals(getString(R.string.api_response_incorrect_credentials))){
+                    this.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                } else if(str.equalsIgnoreCase(getString(R.string.record_already_exists))){
+                    if(StringUtilities.isNullOrEmpty(phoneNumber) || StringUtilities.isNullOrEmpty(code)){
+                        this.onTaskComplete(null, Constants.TAG_API_CALL_FAILURE);
+                    } else {
+                        ProgressBarUtilities.showSVGProgressDialog(getActivity());
+                        api.loginWithPhone(phoneNumber, code);
+                    }
+                } else {
+                    L.Toast(getActivity(), str);
+                }
+                break;
+
+            case Constants.TAG_API_CALL_FAILURE:
+                //API Call error, unknown
+                L.Toast(getActivity(), getString(R.string.generic_error_text));
+                break;
+
+            case Constants.TAG_CA_USER:
+                //Successful login
+                switchFragment(Constants.FRAGMENT_PERMISSIONS_REQUEST);
+                break;
+        }
+
+
+
     }
 }
 

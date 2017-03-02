@@ -101,13 +101,26 @@ public class RetrofitClient {
         Interceptor interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder()
+                        //This is where you would add headers if need be. An example would be:
+                        .addHeader("Content-Type", "application/json")
+                        .build(); //Finally, build it
+                return chain.proceed(newRequest);
+            }
+        };
+
+        /*
+        //First create the interceptor, which will be used in the Retrofit call
+        Interceptor interceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
                 Request.Builder builder = chain.request().newBuilder();
                 builder.headers(buildHeaders());
                 Request newRequest = builder.build();
                 return chain.proceed(newRequest);
             }
         };
-
+         */
         //Next, we set the logging level
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(logLevel);
