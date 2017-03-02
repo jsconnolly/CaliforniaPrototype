@@ -18,7 +18,7 @@ else {
     var app = express();
     var config = require('./config.json');
     var user = require('./routes/user');
-    var incident = require('./routes/incident');
+    var alert = require('./routes/alert');
     var bodyParser = require('body-parser');
 
     app.use(bodyParser.json());
@@ -29,6 +29,7 @@ else {
         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
         next();
     });
+    app.delete('/users/:id', user.unsubscribe);
     app.delete('/users/:id/locations/:lid', user.deleteLocation);
     app.post('/users/verifyPhone', user.webPhoneCode);    
     app.post('/admin/alerts/', user.addAlert);
@@ -55,18 +56,12 @@ else {
     });
 
 var cronJob = cron.job(config.cron, function(){
-    incident.importIncident();
+    alert.importAlert();
 }); 
 cronJob.start();
 
 
-/*
-    setInterval(function () {
-        console.log('test');
-        incident.importIncident();
-        console.log('test end');
-    }, config.cron * 60 * 1000);
-*/
+
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.send({
