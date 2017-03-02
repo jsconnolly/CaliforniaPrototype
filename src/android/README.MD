@@ -20,9 +20,9 @@ There are already many well-written guides on enabling USB debugging on your dev
 
 Here are two tutorials that cover this process in more detail:
 
-    <a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
+    1.<a href='https://www.howtogeek.com/129728/how-to-access-the-developer-options-menu-and-enable-usb-debugging-on-android-4.2/'>Option 1</a>   
 	
-	<a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
+	2.<a href='http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909'>Option 2</a>
 	
 ####Allowing Installation From Unknown Sources
 
@@ -84,23 +84,23 @@ This application makes use of many different open source dependencies and I high
 
 Below is a list of each dependency and a link to it's documentation and source code:
 
-	<a href='https://github.com/square/retrofit'>Retrofit 2.1.0</a>
+	* [Retrofit 2.1.0](https://github.com/square/retrofit)
 
-	<a href='https://github.com/square/okhttp'>Okhttp 3.5.0</a>
+	* <a href='https://github.com/square/okhttp'>Okhttp 3.5.0</a>
 
-	<a href='https://github.com/square/retrofit/tree/master/retrofit-converters/gson'>Gson Converter 2.1.0 (Via Retrofit)</a>
+	* <a href='https://github.com/square/retrofit/tree/master/retrofit-converters/gson'>Gson Converter 2.1.0 (Via Retrofit)</a>
 
-	<a href='https://github.com/google/gson'>Gson 2.8.0</a>
+	* <a href='https://github.com/google/gson'>Gson 2.8.0</a>
 
-	<a href='https://github.com/jaredrummler/AnimatedSvgView'>Animated SVG View 1.0.0</a>
+	* <a href='https://github.com/jaredrummler/AnimatedSvgView'>Animated SVG View 1.0.0</a>
 
-	<a href='https://github.com/square/picasso'>Picasso 2.5.2</a>
+	* <a href='https://github.com/square/picasso'>Picasso 2.5.2</a>
 
-	<a href='https://github.com/daimajia/AndroidViewAnimations'>Android View Animations 2.4.0</a>
+	* <a href='https://github.com/daimajia/AndroidViewAnimations'>Android View Animations 2.4.0</a>
 
-	<a href='https://github.com/yshrsmz/KeyboardVisibilityEvent'>Keyboard Visibility Event 2.0.1</a>
+	* <a href='https://github.com/yshrsmz/KeyboardVisibilityEvent'>Keyboard Visibility Event 2.0.1</a>
 
-	<a href='https://github.com/realm/realm-java'>Realm 2.3.0</a>
+	* <a href='https://github.com/realm/realm-java'>Realm 2.3.0</a>
 
 	
 	
