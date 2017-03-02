@@ -15,11 +15,13 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
     
     @IBOutlet weak var smsSwitch: UISwitch!
     @IBOutlet weak var emailSwitch: UISwitch!
+    @IBOutlet weak var udpateButton: RoundedRectButton!
     
     var location: UserLocation?
     private var radiusArray = [Int]()
     private var radiousPickerView = UIPickerView()
     private var spinner = UIActivityIndicatorView()
+    private var enableButton = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,36 +43,56 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
     }
     
     @IBAction func smsSwitchChanged(_ sender: Any) {
-        
+        self.enableUpdateButton()
     }
     
     @IBAction func emailSwitchChanged(_ sender: Any) {
-        
+        self.enableUpdateButton()
+    }
+    
+    func enableUpdateButton() {
+       self.enableButton = true
     }
     
     @IBAction func updateButtonTapped(_ sender: Any) {
-        
-        guard let displayName = locationNameTextField.text, let radiusText = radiusTextField.text else { return }
-        if displayName.isEmpty || displayName == " " || radiusText.isEmpty || radiusText == " " {
-            let alert = CustomAlertControllers.controllerWith(title: "Error", message: "You must enter a location name and radius for this location if you wish to update it.")
-            let okAlert = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(okAlert)
-            self.present(alert, animated: true, completion: nil)
+        if self.enableButton {
+            guard let displayName = locationNameTextField.text, let radiusText = radiusTextField.text else { return }
+            if displayName.isEmpty || displayName == " " || radiusText.isEmpty || radiusText == " " {
+                let alert = CustomAlertControllers.controllerWith(title: "Error", message: "You must enter a location name and radius for this location if you wish to update it.")
+                let okAlert = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(okAlert)
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let smsOn = self.smsSwitch.isOn
+                let emailOn = self.emailSwitch.isOn
+                guard let coordinates = location?.coordinates else { return }
+                self.showAndStartSpinner()
+                APIManager.sharedInstance.updateLocation(displayName: displayName, coordinates: coordinates, alertRadius: radiusText, enablePushNotifications: false, enableSMS: smsOn, enableEmail: emailOn, locationId: self.location?.id, success: { (response) in
+                    DispatchQueue.main.async {
+                        self.stopAndRemoveSpinner()
+                        self.notifyUser(title: "Success", message: "Profile updated successfully.", timeToDissapear: 1.5)
+                    }
+                    
+                }, failure: { (error) in
+                    self.stopAndRemoveSpinner()
+                    DispatchQueue.main.async {
+                        self.stopAndRemoveSpinner()
+                        let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error saving the location, please try saving again.")
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alert.addAction(okAction)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                })
+            }
         } else {
-            let smsOn = self.smsSwitch.isOn
-            let emailOn = self.emailSwitch.isOn
-            guard let coordinates = location?.coordinates else { return }
-            self.showAndStartSpinner()
-            APIManager.sharedInstance.updateLocation(displayName: displayName, coordinates: coordinates, alertRadius: radiusText, enablePushNotifications: false, enableSMS: smsOn, enableEmail: emailOn, locationId: self.location?.id, success: { (response) in
-                self.stopAndRemoveSpinner()
-                
-            }, failure: { (error) in
-                self.stopAndRemoveSpinner()
-                
-            })
+            self.notifyUser(title: "No Changes", message: "In order to update, you must change the location title or radius.", timeToDissapear: 3.0)
         }
-        
-        
+    }
+    
+    //MARK: - UITextFieldDelegate methods
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        self.enableUpdateButton()
+        return true
     }
     
     //MARK: - UIPickerView Data soure and delegate methods
@@ -87,6 +109,7 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.enableUpdateButton()
         self.radiusTextField.text = "\(self.radiusArray[row])" + ".0"
     }
     
@@ -106,5 +129,24 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.window?.endEditing(true)
+    }
+    
+    //MARK: - Alert method
+    func notifyUser(title: String, message: String, timeToDissapear: Double) -> Void
+    {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "OK",
+                                         style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+        
+        // Delay the dismissal by timeToDissapear seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeToDissapear) {
+            alert.dismiss(animated: true, completion: nil)
+        }
     }
 }

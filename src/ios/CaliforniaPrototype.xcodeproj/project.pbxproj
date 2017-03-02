@@ -57,6 +57,9 @@
 		9CD8BEF81E68949500F2EBE8 /* AlertDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF61E68949500F2EBE8 /* AlertDetailViewController.xib */; };
 		9CD8BEFB1E6894B400F2EBE8 /* UserLocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF91E6894B400F2EBE8 /* UserLocationDetailViewController.swift */; };
 		9CD8BEFC1E6894B400F2EBE8 /* UserLocationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD8BEFA1E6894B400F2EBE8 /* UserLocationDetailViewController.xib */; };
+		9CD8BEFE1E68D34000F2EBE8 /* RoundedRectSecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEFD1E68D34000F2EBE8 /* RoundedRectSecondaryButton.swift */; };
+		9CD8BF001E68D76100F2EBE8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEFF1E68D76100F2EBE8 /* StringExtension.swift */; };
+		9CD8BF051E68E33100F2EBE8 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BF041E68E33100F2EBE8 /* UserManager.swift */; };
 		9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */; };
 		9CD9FBCA1E67485400F1238E /* PhonePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */; };
 		9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBCB1E67762000F1238E /* UserLocation.swift */; };
@@ -117,6 +120,9 @@
 		9CD8BEF61E68949500F2EBE8 /* AlertDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDetailViewController.xib; sourceTree = "<group>"; };
 		9CD8BEF91E6894B400F2EBE8 /* UserLocationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocationDetailViewController.swift; sourceTree = "<group>"; };
 		9CD8BEFA1E6894B400F2EBE8 /* UserLocationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserLocationDetailViewController.xib; sourceTree = "<group>"; };
+		9CD8BEFD1E68D34000F2EBE8 /* RoundedRectSecondaryButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedRectSecondaryButton.swift; sourceTree = "<group>"; };
+		9CD8BEFF1E68D76100F2EBE8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9CD8BF041E68E33100F2EBE8 /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonePasswordViewController.swift; sourceTree = "<group>"; };
 		9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhonePasswordViewController.xib; sourceTree = "<group>"; };
 		9CD9FBCB1E67762000F1238E /* UserLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocation.swift; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				9C32A2E21E5D10380099ABF6 /* RoundedRectButton.swift */,
+				9CD8BEFD1E68D34000F2EBE8 /* RoundedRectSecondaryButton.swift */,
 				9CBB472E1E5E145500D351AA /* OutlinedTextField.swift */,
 				9CA5184E1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift */,
 				9CA518501E5F5F2B002B2250 /* CustomAlertBackground.swift */,
@@ -168,6 +175,7 @@
 			children = (
 				9CA518461E5F52A4002B2250 /* UIColorExtension.swift */,
 				9C48D4BF1E6608680011E462 /* ErrorExtensions.swift */,
+				9CD8BEFF1E68D76100F2EBE8 /* StringExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -237,6 +245,35 @@
 			name = "Map Tab";
 			sourceTree = "<group>";
 		};
+		9CD8BF011E68E2E600F2EBE8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9C48D4BB1E65E93D0011E462 /* User.swift */,
+				9CD9FBCB1E67762000F1238E /* UserLocation.swift */,
+				9CD8BEF31E6882B100F2EBE8 /* Alert.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		9CD8BF021E68E2F800F2EBE8 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9C48D4B71E65E8130011E462 /* NetworkOperations.swift */,
+				9C48D4B91E65E8660011E462 /* APIManager.swift */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+		9CD8BF031E68E31900F2EBE8 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9CD8BF041E68E33100F2EBE8 /* UserManager.swift */,
+				9CD8BF021E68E2F800F2EBE8 /* Networking */,
+				9CD8BF011E68E2E600F2EBE8 /* Models */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		9CE3C2CF1E5CF36B00B7C6A3 = {
 			isa = PBXGroup;
 			children = (
@@ -259,11 +296,7 @@
 			children = (
 				9CE3C2F01E5CF61800B7C6A3 /* CaliforniaPrototype.entitlements */,
 				9CE3C2DB1E5CF36B00B7C6A3 /* AppDelegate.swift */,
-				9C48D4B71E65E8130011E462 /* NetworkOperations.swift */,
-				9C48D4B91E65E8660011E462 /* APIManager.swift */,
-				9C48D4BB1E65E93D0011E462 /* User.swift */,
-				9CD9FBCB1E67762000F1238E /* UserLocation.swift */,
-				9CD8BEF31E6882B100F2EBE8 /* Alert.swift */,
+				9CD8BF031E68E31900F2EBE8 /* Managers */,
 				9C32A2DC1E5CF8050099ABF6 /* LandingViewController.swift */,
 				9C32A2DD1E5CF8050099ABF6 /* LandingViewController.xib */,
 				9CA5184D1E5F5845002B2250 /* Onboarding */,
@@ -388,7 +421,9 @@
 			files = (
 				9C48D4BC1E65E93D0011E462 /* User.swift in Sources */,
 				9C32A2DE1E5CF8050099ABF6 /* LandingViewController.swift in Sources */,
+				9CD8BF051E68E33100F2EBE8 /* UserManager.swift in Sources */,
 				9CA518511E5F5F2B002B2250 /* CustomAlertBackground.swift in Sources */,
+				9CD8BF001E68D76100F2EBE8 /* StringExtension.swift in Sources */,
 				9CA518541E5F64DA002B2250 /* NotificationsPermissionViewController.swift in Sources */,
 				9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */,
 				9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */,
@@ -418,6 +453,7 @@
 				9C48D4C71E6623EA0011E462 /* RegisterChoiceViewController.swift in Sources */,
 				9C48D4BA1E65E8660011E462 /* APIManager.swift in Sources */,
 				9CA5184F1E5F5EF9002B2250 /* CustomPermissionsAlertView.swift in Sources */,
+				9CD8BEFE1E68D34000F2EBE8 /* RoundedRectSecondaryButton.swift in Sources */,
 				9CD8BEF41E6882B100F2EBE8 /* Alert.swift in Sources */,
 				9CA518681E5FC3F6002B2250 /* MapViewController.swift in Sources */,
 				9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */,

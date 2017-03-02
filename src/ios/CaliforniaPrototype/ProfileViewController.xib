@@ -134,16 +134,22 @@
                         <action selector="smsSwitchChanged:" destination="-1" eventType="valueChanged" id="UxU-25-aSg"/>
                     </connections>
                 </switch>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OsN-TI-eJN">
-                    <rect key="frame" x="167" y="354" width="40" height="34"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OsN-TI-eJN" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="542" width="343" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="o5r-7M-svO"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="Save"/>
                     <connections>
                         <action selector="saveButtonTapped:" destination="-1" eventType="touchUpInside" id="4ni-AG-RCo"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMz-w0-BQP">
-                    <rect key="frame" x="160" y="617" width="55" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMz-w0-BQP" customClass="RoundedRectSecondaryButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                    <rect key="frame" x="16" y="612" width="343" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="sdk-5c-Ij0"/>
+                    </constraints>
                     <state key="normal" title="Log Out"/>
                     <connections>
                         <action selector="logoutButtonTapped:" destination="-1" eventType="touchUpInside" id="wPz-j0-HnJ"/>
@@ -154,6 +160,7 @@
             <constraints>
                 <constraint firstItem="htE-Bl-c9R" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="09Q-r9-4DH"/>
                 <constraint firstAttribute="trailing" secondItem="EjF-wP-1A8" secondAttribute="trailing" constant="16" id="1VB-sE-VoD"/>
+                <constraint firstItem="OsN-TI-eJN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="2q7-IF-RFV"/>
                 <constraint firstAttribute="bottom" secondItem="OMz-w0-BQP" secondAttribute="bottom" constant="20" id="3Zx-my-VL2"/>
                 <constraint firstItem="gZj-AJ-4ZE" firstAttribute="leading" secondItem="PAY-At-6db" secondAttribute="leading" id="5RE-7v-onn"/>
                 <constraint firstAttribute="trailing" secondItem="gZj-AJ-4ZE" secondAttribute="trailing" constant="16" id="5wr-oF-L7v"/>
@@ -169,11 +176,14 @@
                 <constraint firstItem="lrd-Lm-FNN" firstAttribute="leading" secondItem="CBg-Gu-aco" secondAttribute="trailing" constant="8" id="GtF-md-R0X"/>
                 <constraint firstItem="770-Bs-jYc" firstAttribute="leading" secondItem="YeI-Uu-bc3" secondAttribute="trailing" constant="16" id="HE8-gp-sU3"/>
                 <constraint firstItem="PAY-At-6db" firstAttribute="centerY" secondItem="htE-Bl-c9R" secondAttribute="centerY" id="Ha9-dj-0NS"/>
+                <constraint firstItem="OMz-w0-BQP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="L5V-gq-aNj"/>
                 <constraint firstItem="YeI-Uu-bc3" firstAttribute="centerY" secondItem="770-Bs-jYc" secondAttribute="centerY" id="LMg-rq-uwH"/>
                 <constraint firstItem="qgE-AI-PwE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="MSc-wE-b7X"/>
                 <constraint firstAttribute="trailing" secondItem="770-Bs-jYc" secondAttribute="trailing" constant="16" id="MrD-BT-WrX"/>
                 <constraint firstItem="LJa-pf-t5G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="QbG-6L-hHd"/>
-                <constraint firstItem="OsN-TI-eJN" firstAttribute="top" secondItem="YeI-Uu-bc3" secondAttribute="bottom" constant="30" id="TDi-Ih-kEZ"/>
+                <constraint firstItem="OMz-w0-BQP" firstAttribute="top" secondItem="OsN-TI-eJN" secondAttribute="bottom" constant="35" id="aPB-WT-cIg"/>
+                <constraint firstAttribute="trailing" secondItem="OsN-TI-eJN" secondAttribute="trailing" constant="16" id="bFd-zv-3Wb"/>
+                <constraint firstAttribute="trailing" secondItem="OMz-w0-BQP" secondAttribute="trailing" constant="16" id="bvj-wI-zgh"/>
                 <constraint firstItem="CBg-Gu-aco" firstAttribute="centerY" secondItem="lrd-Lm-FNN" secondAttribute="centerY" id="cjf-2L-4dO"/>
                 <constraint firstItem="EjF-wP-1A8" firstAttribute="top" secondItem="B2P-n0-i8k" secondAttribute="bottom" constant="5" id="ggC-kq-461"/>
                 <constraint firstItem="PAY-At-6db" firstAttribute="leading" secondItem="htE-Bl-c9R" secondAttribute="trailing" constant="8" id="iIp-uL-N7G"/>

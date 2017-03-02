@@ -15,6 +15,7 @@
                 <outlet property="locationNameTextField" destination="rWe-Ky-M6o" id="hqz-jP-Qkl"/>
                 <outlet property="radiusTextField" destination="977-4V-9uy" id="qah-cR-t6W"/>
                 <outlet property="smsSwitch" destination="qMB-2I-nNE" id="VTr-hc-6a9"/>
+                <outlet property="udpateButton" destination="F5l-DK-f63" id="Trd-B8-a8B"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -72,7 +73,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F5l-DK-f63" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
-                    <rect key="frame" x="16" y="310" width="343" height="35"/>
+                    <rect key="frame" x="16" y="597" width="343" height="35"/>
                     <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="S0i-Bq-o8J"/>
@@ -101,6 +102,7 @@
                 <constraint firstItem="rWe-Ky-M6o" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="Pbg-y4-LG2"/>
                 <constraint firstItem="qMB-2I-nNE" firstAttribute="centerY" secondItem="CI7-PR-My1" secondAttribute="centerY" id="XMg-fC-GhM"/>
                 <constraint firstItem="CI7-PR-My1" firstAttribute="top" secondItem="977-4V-9uy" secondAttribute="bottom" constant="20" id="Xf3-CQ-BzG"/>
+                <constraint firstAttribute="bottom" secondItem="F5l-DK-f63" secondAttribute="bottom" constant="35" id="a2C-Fy-bav"/>
                 <constraint firstItem="977-4V-9uy" firstAttribute="top" secondItem="eUh-a5-aX3" secondAttribute="bottom" constant="8" id="apA-Dd-b3E"/>
                 <constraint firstItem="F5l-DK-f63" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="bJE-0H-U6K"/>
                 <constraint firstItem="B59-3P-fVu" firstAttribute="centerY" secondItem="mdS-2Z-OfW" secondAttribute="centerY" id="bde-fP-K4O"/>
@@ -110,7 +112,6 @@
                 <constraint firstItem="rWe-Ky-M6o" firstAttribute="top" secondItem="FfY-J2-HtX" secondAttribute="bottom" constant="8" id="h2I-9O-dpo"/>
                 <constraint firstItem="B59-3P-fVu" firstAttribute="leading" secondItem="mdS-2Z-OfW" secondAttribute="trailing" constant="15" id="ipM-1R-mKV"/>
                 <constraint firstItem="eUh-a5-aX3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="lAe-f5-CbU"/>
-                <constraint firstItem="F5l-DK-f63" firstAttribute="top" secondItem="mdS-2Z-OfW" secondAttribute="bottom" constant="45" id="p13-nL-qnl"/>
                 <constraint firstAttribute="trailing" secondItem="qMB-2I-nNE" secondAttribute="trailing" constant="16" id="upi-zu-xxL"/>
                 <constraint firstItem="977-4V-9uy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="yUJ-8i-j67"/>
                 <constraint firstAttribute="trailing" secondItem="F5l-DK-f63" secondAttribute="trailing" constant="16" id="yrv-Mk-MvB"/>

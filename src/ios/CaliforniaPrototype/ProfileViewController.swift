@@ -232,6 +232,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Logout
 
     @IBAction func logoutButtonTapped(_ sender: Any) {
+        UserManager.logoutAndCleanUserInfo()
+        let mapNavVC = self.tabBarController?.viewControllers?[0] as! UINavigationController
+        //let mapVC = mapNavVC.topViewController as! MapViewController()
+        self.tabBarController?.selectedIndex = 0
+        
     }
     
     

@@ -64,7 +64,7 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                 guard let token = response["token"] else { return }
                 guard let id = response["id"] else { return }
                 _ = Keychain.set(key: "token", value: token as! String)
-                _ = Keychain.set(key: "id", value: id as! String)
+                _ = Keychain.set(key: "userId", value: id as! String)
                 UserDefaultManager.setLoggedInStatus(true)
                 DispatchQueue.main.async {
                     self.dismiss(animated: true, completion: nil)

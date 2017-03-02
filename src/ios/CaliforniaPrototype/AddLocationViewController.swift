@@ -22,8 +22,8 @@ class AddLocationViewController: UIViewController {
     
     @IBOutlet weak var addLocationButton: RoundedRectButton!
     @IBOutlet weak var cancelAddLocationButton: RoundedRectButton!
-//    @IBOutlet weak var addPersonToLocationButton: RoundedRectButton!
     @IBOutlet weak var addAnotherLocationButton: RoundedRectButton!
+    @IBOutlet weak var doneButton: RoundedRectButton!
     
     
     fileprivate var searchResultsArray = [MKMapItem]()
@@ -122,6 +122,8 @@ class AddLocationViewController: UIViewController {
         
         self.addAnotherLocationButton.alpha = 1.0
         self.addAnotherLocationButton.isHidden = false
+        self.doneButton.alpha = 1.0
+        self.doneButton.isHidden = false
         
         self.successfulLocationAddView.frame.origin = CGPoint(x: 0, y: 0)
         self.successfulLocationAddView.frame.size.width = self.view.frame.size.width
@@ -157,7 +159,7 @@ class AddLocationViewController: UIViewController {
     
     @IBAction func addAnotherLocationButtonTapped(_ sender: Any) {
         self.addAnotherLocationButton.alpha = 0.0
-//        self.addPersonToLocationButton.alpha = 0.0
+        self.doneButton.alpha = 0.0
         self.successfulLocationAddView.alpha = 0.0
         self.tableViewBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.35, animations: { 
@@ -165,37 +167,15 @@ class AddLocationViewController: UIViewController {
         }) { (completed) in
             if completed {
                 self.successfulLocationAddView.removeFromSuperview()
-//                self.addPersonToLocationButton.isHidden = true
                 self.addAnotherLocationButton.isHidden = true
+                self.doneButton.isHidden = true
             }
         }
     }
     
-    @IBAction func addPersonToLocationButtonTapped(_ sender: Any) {
-    
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
-    
-//    func saveLocation() {
-//        print(self.selectedLocation?.placemark)
-//        self.spinner.activityIndicatorViewStyle = .gray
-//        self.spinner.center = self.view.center
-//        self.spinner.hidesWhenStopped = true
-//        self.spinner.startAnimating()
-//        self.view.addSubview(self.spinner)
-//        guard let coords = self.selectedLocation?.placemark.coordinate else { return }
-//        let coordinates = ["lat": Double(coords.latitude), "lng": Double(coords.longitude)]
-//        var placeName = String()
-//        if let name = self.selectedLocation?.name {
-//            placeName = name
-//        } else {
-//            placeName = ""
-//        }
-//        APIManager.sharedInstance.addLocation(displayName: placeName, coordinates: coordinates, alertRadius: "10.0", enablePushNotifications: false, enableSMS: false, enableEmail: false, success: { (response) in
-//            print(response)
-//        }) { (error) in
-//            print(error)
-//        }
-//    }
     
 }
 

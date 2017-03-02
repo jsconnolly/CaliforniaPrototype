@@ -44,13 +44,18 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setupView()
-        if UserDefaultManager.getLoggedInStatus() {
+        if !UserDefaultManager.getLoggedInStatus() {
+            DispatchQueue.main.async {
+                let onboardingNavVC = UINavigationController(rootViewController: LandingViewController())
+                self.tabBarController?.present(onboardingNavVC, animated: true, completion: nil)
+            }
+        } else {
             self.getUser()
         }
     }
     
     func getUser() {
-        APIManager.sharedInstance.getUserWithId(id: Keychain.get(key: "id") as! String, success: { (response) in
+        APIManager.sharedInstance.getUserWithId(id: Keychain.get(key: "userId") as! String, success: { (response) in
             self.user = response
             self.populateLocations()
         }) { (error) in
