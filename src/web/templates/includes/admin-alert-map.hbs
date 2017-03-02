@@ -1,0 +1,93 @@
+{{#if map}}
+    <div class="map-overlay">
+        {{#if loggedin}}
+            <a href="addlocations.html" class="btn btn-primary btn-location">Add Location</a>
+            {{!--<div class="sos-banner">
+                <h3> Alert Your Emergency Contacts and Emergency Services</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non arcu eget mi egestas semper.
+                </p>
+                <a href="#" class="btn btn-danger btn-inverted">SOS</a>
+            </div>--}}
+        {{/if}}
+        <div id="map" class="user-map"></div>
+    </div>
+{{else}}
+    <div id="map" class="alert-map"></div>
+{{/if}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var map;
+
+    function initMap() {
+
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: new google.maps.LatLng(33.632478, -117.734862),
+            mapTypeId: 'roadmap'
+        });
+
+        var alertMarker = {
+            path: 'M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0',
+            fillColor: '#d9534f',
+            fillOpacity: 1,
+            scale: .08
+        };
+
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            //infoWindow.setPosition(pos);
+            //infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+
+       
+        // Get admin alerts from user object and show on google maps
+             if(sessionStorage.getItem("admintoken") != null)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/admin/alerts/search",
+                    headers: {
+                    'token': sessionStorage.getItem("admintoken"),
+                    'Content-Type':'application/json'
+                 },
+                    }).done(function (result) {
+                    console.log(result);
+                        /* alerts array*/
+                        for(i=0;i<result.length;i++)
+                        {
+                            var d = new Date(result[i].date);
+                            new google.maps.Marker({
+                              position: new google.maps.LatLng(result[i].loc[1], result[i].loc[0]),
+                              map:map,
+                              icon:alertMarker,
+                              title: "Location: " + result[i].location + "\nType: " + result[i].type + "\nName: " + result[i].name + "\nDate: " + d.toDateString()
+                            });
+                        }
+                    
+                    })
+                    .fail(function (data, textStatus, xhr) {
+                     alert(data.responseJSON.Error);
+                    });
+            }
+
+    }
+</script>
+{{maps api-keys.GoogleMapsAPI}}
