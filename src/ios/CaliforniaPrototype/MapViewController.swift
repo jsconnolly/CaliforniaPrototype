@@ -224,8 +224,16 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        let asdf = view.annotation as! UserLocation
-        print(asdf)
+        if let annotation = view.annotation as? UserLocation {
+            let userLocationDetailVC = UserLocationDetailViewController()
+            userLocationDetailVC.location = annotation
+            self.navigationController?.pushViewController(userLocationDetailVC, animated: true)
+        }
+        if let annotation = view.annotation as? Alert {
+            let alertDetailVC = AlertDetailViewController()
+            alertDetailVC.alert = annotation
+            self.navigationController?.pushViewController(alertDetailVC, animated: true)
+        }
     }
     
     

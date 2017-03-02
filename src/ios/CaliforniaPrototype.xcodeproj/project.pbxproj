@@ -53,6 +53,10 @@
 		9CBC93221E61081700FF733F /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC93201E61081700FF733F /* AddContactViewController.swift */; };
 		9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CBC93211E61081700FF733F /* AddContactViewController.xib */; };
 		9CD8BEF41E6882B100F2EBE8 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF31E6882B100F2EBE8 /* Alert.swift */; };
+		9CD8BEF71E68949500F2EBE8 /* AlertDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF51E68949500F2EBE8 /* AlertDetailViewController.swift */; };
+		9CD8BEF81E68949500F2EBE8 /* AlertDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF61E68949500F2EBE8 /* AlertDetailViewController.xib */; };
+		9CD8BEFB1E6894B400F2EBE8 /* UserLocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD8BEF91E6894B400F2EBE8 /* UserLocationDetailViewController.swift */; };
+		9CD8BEFC1E6894B400F2EBE8 /* UserLocationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD8BEFA1E6894B400F2EBE8 /* UserLocationDetailViewController.xib */; };
 		9CD9FBC91E67485400F1238E /* PhonePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */; };
 		9CD9FBCA1E67485400F1238E /* PhonePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */; };
 		9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9FBCB1E67762000F1238E /* UserLocation.swift */; };
@@ -109,6 +113,10 @@
 		9CBC93201E61081700FF733F /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		9CBC93211E61081700FF733F /* AddContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactViewController.xib; sourceTree = "<group>"; };
 		9CD8BEF31E6882B100F2EBE8 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		9CD8BEF51E68949500F2EBE8 /* AlertDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertDetailViewController.swift; sourceTree = "<group>"; };
+		9CD8BEF61E68949500F2EBE8 /* AlertDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertDetailViewController.xib; sourceTree = "<group>"; };
+		9CD8BEF91E6894B400F2EBE8 /* UserLocationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocationDetailViewController.swift; sourceTree = "<group>"; };
+		9CD8BEFA1E6894B400F2EBE8 /* UserLocationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserLocationDetailViewController.xib; sourceTree = "<group>"; };
 		9CD9FBC71E67485400F1238E /* PhonePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonePasswordViewController.swift; sourceTree = "<group>"; };
 		9CD9FBC81E67485400F1238E /* PhonePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhonePasswordViewController.xib; sourceTree = "<group>"; };
 		9CD9FBCB1E67762000F1238E /* UserLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLocation.swift; sourceTree = "<group>"; };
@@ -221,6 +229,10 @@
 				9CBC931D1E60F58100FF733F /* AddLocationSuccessViewController.xib */,
 				9CBC93201E61081700FF733F /* AddContactViewController.swift */,
 				9CBC93211E61081700FF733F /* AddContactViewController.xib */,
+				9CD8BEF51E68949500F2EBE8 /* AlertDetailViewController.swift */,
+				9CD8BEF61E68949500F2EBE8 /* AlertDetailViewController.xib */,
+				9CD8BEF91E6894B400F2EBE8 /* UserLocationDetailViewController.swift */,
+				9CD8BEFA1E6894B400F2EBE8 /* UserLocationDetailViewController.xib */,
 			);
 			name = "Map Tab";
 			sourceTree = "<group>";
@@ -348,6 +360,7 @@
 				9CBC93231E61081700FF733F /* AddContactViewController.xib in Resources */,
 				9CBB473A1E5E4D3900D351AA /* PhoneVerificationViewController.xib in Resources */,
 				9CA518711E5FC987002B2250 /* AddLocationViewController.xib in Resources */,
+				9CD8BEFC1E6894B400F2EBE8 /* UserLocationDetailViewController.xib in Resources */,
 				9C32A2DF1E5CF8050099ABF6 /* LandingViewController.xib in Resources */,
 				9CA518591E5F7F00002B2250 /* EmailRegistrationViewController.xib in Resources */,
 				9C48D4C81E6623EA0011E462 /* RegisterChoiceViewController.xib in Resources */,
@@ -355,6 +368,7 @@
 				9CBB472D1E5E01D300D351AA /* EmailLoginViewController.xib in Resources */,
 				9CA5186D1E5FC440002B2250 /* ProfileViewController.xib in Resources */,
 				9CA518551E5F64DA002B2250 /* NotificationsPermissionViewController.xib in Resources */,
+				9CD8BEF81E68949500F2EBE8 /* AlertDetailViewController.xib in Resources */,
 				9CE3C2E61E5CF36B00B7C6A3 /* LaunchScreen.storyboard in Resources */,
 				9CBC931F1E60F58100FF733F /* AddLocationSuccessViewController.xib in Resources */,
 				9CBC93191E60A3D000FF733F /* SearchResultsTableViewCell.xib in Resources */,
@@ -379,9 +393,11 @@
 				9CBB472C1E5E01D300D351AA /* EmailLoginViewController.swift in Sources */,
 				9CD9FBCC1E67762000F1238E /* UserLocation.swift in Sources */,
 				9CBC931B1E60DDF300FF733F /* CustomAlertControllers.swift in Sources */,
+				9CD8BEFB1E6894B400F2EBE8 /* UserLocationDetailViewController.swift in Sources */,
 				9CBC93181E60A3D000FF733F /* SearchResultsTableViewCell.swift in Sources */,
 				9CE3C2DC1E5CF36B00B7C6A3 /* AppDelegate.swift in Sources */,
 				9CBB47351E5E1EB300D351AA /* PhoneLoginViewController.swift in Sources */,
+				9CD8BEF71E68949500F2EBE8 /* AlertDetailViewController.swift in Sources */,
 				9CA518581E5F7F00002B2250 /* EmailRegistrationViewController.swift in Sources */,
 				9CA5186C1E5FC440002B2250 /* ProfileViewController.swift in Sources */,
 				9C48D4C31E6622150011E462 /* PhoneRegistrationViewController.swift in Sources */,
