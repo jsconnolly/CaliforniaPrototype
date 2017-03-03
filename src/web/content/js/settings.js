@@ -97,7 +97,7 @@ $(document).ready(function(){
                         data: JSON.stringify(changephone),
                     }).done(function (result) {
                        console.log(result);
-                        //alert("Password Changed successfully");
+                        alert("Password Changed successfully");
                    })
                     .fail(function (data, textStatus, xhr) {
                          //console.log(data.responseJSON.Error);
