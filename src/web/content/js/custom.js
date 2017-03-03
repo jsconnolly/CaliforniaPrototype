@@ -30,10 +30,6 @@ $(document).ready(function() {
       $('.submit').click();
     });
 
-    if($('#lblcurrentPhone').text().length < 1) {
-        $(this).text('none');
-        console.log('blank');
-    }
 
 function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode

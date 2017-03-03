@@ -4,8 +4,8 @@ import APIWrapper
 APIWrapper.Utilities.startTest()
 
 # init variables needed:
-strEmail = "testLDhotbsoftware.com"
-strPW = "password"
+strEmail = APIWrapper.Constants.email
+strPW = APIWrapper.Constants.password
 
 # Base Url + Path + endpoint
 baseUrl = APIWrapper.Constants.BASE_URL \
@@ -26,7 +26,7 @@ loginBody = {
 
 # Use to search
 searchBody = {
-        'email' : strEmail
+        'email' : 'fake_email_should_fail@fake.com'
 }
 
 # Make outbound call - contains user dict. values

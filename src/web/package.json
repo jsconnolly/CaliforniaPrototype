@@ -2,9 +2,9 @@
   "name": "CA-Prototype",
   "description": "Prototype for California Emergency Alert Service.",
   "version": "0.1.1",
-  "homepage": "https://github.com//HOTB-Software/CaliforniaPrototype",
+  "homepage": "https://github.com/HOTB-Software/CaliforniaPrototype",
   "author": {
-    "name": "Kristi Witts",
+    "name": "Kristi Witts, Raghu Jonnala",
     "url": "https://hotbsoftware.com"
   },
   "repository": {

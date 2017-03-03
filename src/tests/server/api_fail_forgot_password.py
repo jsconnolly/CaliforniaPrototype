@@ -3,7 +3,7 @@ import APIWrapper
 # Begin test
 APIWrapper.Utilities.startTest()
 
-strEmail = 'test@hotbsoftware.com'
+strEmail = APIWrapper.Constants.email
 
 # Base Url + Path + endpoint
 baseUrl = APIWrapper.Constants.BASE_URL \
@@ -26,6 +26,6 @@ forgotPasswordNoExistBody = {
 # make outbound call
 response1 = api.makePostRequest(headers, forgotPasswordNoExistBody)
 APIWrapper.Utilities.printStr(response1)
-
+APIWrapper.Utilities.printStr("Expected to fail")
 # End Test
 APIWrapper.Utilities.endTest()
