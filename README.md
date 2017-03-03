@@ -2,17 +2,15 @@
 
 ##Links
 
-<b>Production Server:</b> <a href='insert_link_here_once_we_have_it'>insert_link_here_once_we_have_it</a>
+<b>Admin Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/admin'>Click Here</a>
 
-<b>Admin Website:</b> <a href='insert_link_here_once_we_have_it'>insert_link_here_once_we_have_it</a>
-
-<b>Consumer Website:</b> <a href='insert_link_here_once_we_have_it'>insert_link_here_once_we_have_it</a>
+<b>Consumer Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com'>Click Here</a>
 
 ##User Accounts
 
 <b>Consumer Account:</b> Can be created using any valid email
 
-<b>Admin Account:</b> Username: ProtoAdmin; PW: $fhU65?458
+<b>Admin Account:</b> Username: admin@admin.com; PW: password1
 
 #TECHNICAL APPROACH
 
@@ -83,9 +81,7 @@ Swagger was used to document our RESTful APIs and other technical documentation.
 
 ##g. Complied with Section 508 of the Americans with Disabilities Act and WCAG 2.0;
 
-We created our and implemented our designs and user experience in accordance with standards outlined in Section 508 of the ADA and WCAG 2.0. This included, but was not limited to, ensuring that our application met the following criteria: 
-
-<a href='[insert examples get input from Dan]'>(Samples)</a>
+We created our and implemented our designs and user experience in accordance with standards outlined in Section 508 of the ADA and WCAG 2.0.
 
 ##h. Created or used a design style guide and/or a pattern library;
 
