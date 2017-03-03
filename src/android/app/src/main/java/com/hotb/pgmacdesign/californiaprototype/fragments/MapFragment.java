@@ -68,7 +68,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener, GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -134,16 +134,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.api = new APICalls(getActivity(), this);
         this.phone = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_PHONE_NUMBER, null);
-        L.m("phone = " + phone);
         this.email = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_EMAIL, null);
-        L.m("email = " + email);
         this.id = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_ID, null);
-        L.m("id = " + id);
         this.pw = MyApplication.getSharedPrefsInstance().getString(
                 Constants.USER_PW, null);
-        //Utilize instanceState here
     }
 
     /**
@@ -230,7 +226,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             ProgressBarUtilities.showSVGProgressDialog(getActivity());
             api.getUserById(id);
         } else {
-            L.m("User is null, make them log in again");
             L.toast(getActivity(), getString(R.string.account_null_error));
             switchFragment(Constants.ACTIVITY_ONBOARDING);
         }
@@ -242,7 +237,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      * @param latitude Latitude
      * @param longitude Longitude
      */
-    private void moveCamera(double latitude, double longitude){
+    private void moveCamera(double latitude, double longitude, Boolean animate){
         if(latitude == -1){
             latitude = Constants.DEFAULT_LATITUDE;
         }
@@ -250,8 +245,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             longitude = Constants.DEFAULT_LONGITUDE;
         }
         LatLng latLng = new LatLng(latitude, longitude);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL);
-        this.googleMap.animateCamera(cameraUpdate);
+        int zoom = -1;
+        try {
+            zoom = MyApplication.getSharedPrefsInstance().getInt(Constants.ZOOM_WHEN_CLICKED, -1);
+            MyApplication.getSharedPrefsInstance().clearPref(Constants.ZOOM_WHEN_CLICKED);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        CameraUpdate cameraUpdate = null;
+        if(zoom == -1) {
+            cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL);
+        } else {
+            cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+        }
+
+        if(animate == null){
+            animate = true;
+        }
+        if(animate) {
+            this.googleMap.animateCamera(cameraUpdate);
+        } else {
+            this.googleMap.moveCamera(cameraUpdate);
+        }
     }
 
     /**
@@ -265,6 +281,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.enableScaleBar();
         this.googleMap.setOnCircleClickListener(this);
         this.googleMap.setOnCameraMoveListener(this);
+        this.googleMap.setOnCameraIdleListener(this);
         this.googleMap.setOnMapLongClickListener(this);
         this.googleMap.setIndoorEnabled(false);
         this.googleMap.getUiSettings().setCompassEnabled(true);
@@ -337,7 +354,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(!this.locationIsEnabled){
             L.Toast(getActivity(), getString(R.string.loading_last_known_loc));
         }
-        moveCamera(MyApplication.getLastKnownLat(), MyApplication.getLastKnownLng());
+
+        //Check on where they cliked last
+        double lastSeenLat = MyApplication.getSharedPrefsInstance().getDouble(
+                Constants.LAT_CLICKED, -1);
+        double lastSeenLng = MyApplication.getSharedPrefsInstance().getDouble(
+                Constants.LNG_CLICKED, -1);
+
+        MyApplication.getSharedPrefsInstance().clearPref(Constants.LAT_CLICKED);
+        MyApplication.getSharedPrefsInstance().clearPref(Constants.LNG_CLICKED);
+
+        if(lastSeenLat != -1 && lastSeenLng != -1){
+            moveCamera(lastSeenLat, lastSeenLng, false);
+        } else {
+            moveCamera(MyApplication.getLastKnownLat(), MyApplication.getLastKnownLng(), true);
+        }
         return false;
     }
 
@@ -494,6 +525,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
         clearPersistedObjects();
         if(MyApplication.getDatabaseInstance().persistObject(AlertBeacon.class, beacon)){
+            //Save spot clicked for reloading:
+            CAAlert alert = beacon.getAlert();
+            CALocation location = beacon.getLocation();
+
+            if(alert != null){
+                double[] coords = alert.getLoc();
+                if(coords != null){
+                    if(coords.length > 1 && coords.length < 3){
+                        double lat = coords[1];
+                        double lng = coords[0];
+                        if(lat != 0 && lng != 0){
+                            MyApplication.getSharedPrefsInstance().save(Constants.LAT_CLICKED, lat);
+                            MyApplication.getSharedPrefsInstance().save(Constants.LNG_CLICKED, lng);
+                            try {
+                                MyApplication.getSharedPrefsInstance().save(
+                                        Constants.ZOOM_WHEN_CLICKED,
+                                        (int) googleMap.getCameraPosition().zoom);
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+            if(location != null){
+                CALocation.Coordinates coords = location.getCoordinates();
+                if(coords != null){
+                    double lat = coords.getLat();
+                    double lng = coords.getLng();
+                    if(lat != 0 && lng != 0){
+                        MyApplication.getSharedPrefsInstance().save(Constants.LAT_CLICKED, lat);
+                        MyApplication.getSharedPrefsInstance().save(Constants.LNG_CLICKED, lng);
+                        try {
+                            MyApplication.getSharedPrefsInstance().save(
+                                    Constants.ZOOM_WHEN_CLICKED,
+                                    (int) googleMap.getCameraPosition().zoom);
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            //Switch Fragment
             switchFragment(Constants.FRAGMENT_ALERT_BEACON_POPUP);
         }
     }
@@ -796,5 +871,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
         return false;
+    }
+
+    @Override
+    public void onCameraIdle() {
+        //Unused atm
     }
 }
