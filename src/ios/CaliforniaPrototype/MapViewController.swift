@@ -23,9 +23,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UserDefaultManager.getAddLocationPopupViewed() {
-            self.addLocationOverlayView.isHidden = true
-        }
+        self.addLocationOverlayView.isHidden = true
         
         if !UserDefaultManager.getLoggedInStatus() {
             DispatchQueue.main.async {
@@ -33,7 +31,6 @@ class MapViewController: UIViewController {
                 self.tabBarController?.present(onboardingNavVC, animated: true, completion: nil)
             }
         } else {
-            //self.getUser()
             self.setupLocationManager()
             if let userLocation = self.mapView.userLocation.location {
                 self.centerMapOnLocation(userLocation)
@@ -123,11 +120,11 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedWhenInUse:
-            self.locationManager.requestLocation()
+            self.locationManager.requestAlwaysAuthorization()
         case .authorizedAlways:
-            self.locationManager.requestLocation()
+            self.locationManager.requestAlwaysAuthorization()
         case .notDetermined:
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Would you like to do that now?")
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
             let retry = UIAlertAction(title: "Allow Access", style: .default) { (action:UIAlertAction) in
                 self.locationManager.requestLocation()
             }
@@ -149,16 +146,7 @@ extension MapViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if !self.postponedLocationAcceptance {
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error obtaining your location. \(error.localizedDescription)")
-            let retry = UIAlertAction(title: "Try again", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancel)
-            self.present(alertController, animated: true, completion: nil)
-        }
+
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
