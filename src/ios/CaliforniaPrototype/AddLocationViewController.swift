@@ -259,12 +259,8 @@ extension AddLocationViewController: CLLocationManagerDelegate {
         case .authorizedAlways:
             self.locationManager.requestLocation()
         case .notDetermined:
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Would you like to do that now?")
-            let retry = UIAlertAction(title: "Allow Access", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Not now", style: .cancel) { (action) in
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+            let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
                 self.postponedLocationAcceptance = true
             }
             alertController.addAction(cancel)
@@ -274,23 +270,22 @@ extension AddLocationViewController: CLLocationManagerDelegate {
             let alertController = CustomAlertControllers.controllerWith(message: deniedLocationString)
             self.present(alertController, animated: true, completion: nil)
         case .restricted:
-            let restrictedLocationString = String.localizedStringWithFormat(NSLocalizedString("Your phone seems to be restricted and you cannot use location features. Please ensure that you enable Location Services in your Restriction settings.", comment: "restricted location service"), [:])
-            let alertController = CustomAlertControllers.controllerWith(message: restrictedLocationString)
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+            let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                self.postponedLocationAcceptance = true
+            }
+            alertController.addAction(cancel)
             self.present(alertController, animated: true, completion: nil)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if !self.postponedLocationAcceptance {
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error obtaining your location. \(error.localizedDescription)")
-            let retry = UIAlertAction(title: "Try again", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancel)
-            self.present(alertController, animated: true, completion: nil)
+        let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
+            self.postponedLocationAcceptance = true
         }
+        alertController.addAction(cancel)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

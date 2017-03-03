@@ -75,7 +75,28 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func forgotButtonTapped(_ sender: Any) {
-        
+        guard let emailText = self.emailTextField.text else { return }
+        if emailText.isEmpty || emailText == " " {
+            let alert = CustomAlertControllers.controllerWith(title: "Enter Email", message: "Enter your email and tap on the Forgot My Password button again.")
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+        APIManager.sharedInstance.forgotPassword(emailText, success: { (response) in
+            DispatchQueue.main.async {
+                let alert = CustomAlertControllers.controllerWith(title: "Email Sent", message: "An email has been sent to you, please check your email to reset your password.")
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }) { (error) in
+            DispatchQueue.main.async {
+                let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error sending the email, please try again.")
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {

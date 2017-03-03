@@ -16,8 +16,11 @@ class APIManager {
     
     static let sharedInstance = APIManager()
     
-    let usersBaseURL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users"
-    let locationsBaseURL = "ec2-54-241-144-61.us-west-1.compute.amazonaws.com/locations"
+//    let stagingUsersBaseURL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users"
+//    let stagingLocationsBaseURL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/locations"
+    
+    let usersBaseURL = "http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/users"
+    let locationsBaseURL = "http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/locations"
     
     //MARK: - User related API methods
     func getUserWithPhone(number numberString: String, success: @escaping UserSuccessBlock, failure: @escaping FailureBlock) {
@@ -136,6 +139,19 @@ class APIManager {
                 failure(error)
             } else {
                 //guard let json = response as? [String: Any] else { return }
+                success([:])
+            }
+        }
+    }
+    
+    func forgotPassword(_ email: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
+        let url = usersBaseURL + "/forgotPassword"
+        let body = ["email": email]
+        let defaultHeaders = ["Content-Type": "application/json"]
+        NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
+            if error != nil {
+                failure(error)
+            } else {
                 success([:])
             }
         }

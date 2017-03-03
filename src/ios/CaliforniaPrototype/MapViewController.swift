@@ -125,11 +125,7 @@ extension MapViewController: CLLocationManagerDelegate {
             self.locationManager.requestAlwaysAuthorization()
         case .notDetermined:
             let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
-            let retry = UIAlertAction(title: "Allow Access", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Not now", style: .cancel) { (action) in
+            let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
                 self.postponedLocationAcceptance = true
             }
             alertController.addAction(cancel)
@@ -146,7 +142,12 @@ extension MapViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-
+        let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
+            self.postponedLocationAcceptance = true
+        }
+        alertController.addAction(cancel)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
