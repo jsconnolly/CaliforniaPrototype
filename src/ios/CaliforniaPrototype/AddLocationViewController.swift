@@ -237,12 +237,12 @@ extension AddLocationViewController: UISearchBarDelegate {
         let localSearcher = MKLocalSearch(request: request)
         self.showAndStartSpinner()
         localSearcher.start { (response: MKLocalSearchResponse?, error: Error?) in
-            self.stopAndRemoveSpinner()
             if let response = response {
+                self.stopAndRemoveSpinner()
                 self.searchResultsArray.append(contentsOf: response.mapItems)
                 self.tableView.reloadData()
             } else {
-
+                self.stopAndRemoveSpinner()
             }
         }
     }

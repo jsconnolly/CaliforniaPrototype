@@ -32,6 +32,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
             self.getUser()
         }
     }
+    
     //MARK: - Obtain user and set text fields
     func getUser() {
         self.showAndStartSpinner()
@@ -51,12 +52,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     func setTextFields() {
         self.nameTextField.text = self.user?.name
         self.emailTextField.text = self.user?.email
-        if let phoneNumber = self.user?.phone {
-            var countryCodelessString = phoneNumber
-            self.numberTextField.text = String(countryCodelessString.characters.dropFirst())
-        } else {
-            self.numberTextField.text?.removeAll()
-        }
+        self.numberTextField.text = self.user?.phone
         
         if let hasLocations = self.user?.locations {
             if hasLocations.count != 0 {
@@ -163,7 +159,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
                     self.notifyUser(title: "Success", message: "Profile updated successfully.", timeToDissapear: 2)
                 }
             }, failure: { (error) in
-                print(error)
                 DispatchQueue.main.async {
                     self.stopAndRemoveSpinner()
                     let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error saving your profile, please try saving again.")
@@ -239,10 +234,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func logoutButtonTapped(_ sender: Any) {
         UserManager.logoutAndCleanUserInfo()
-        let mapNavVC = self.tabBarController?.viewControllers?[0] as! UINavigationController
-        //let mapVC = mapNavVC.topViewController as! MapViewController()
         self.tabBarController?.selectedIndex = 0
-        
     }
     
     

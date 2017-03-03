@@ -24,7 +24,7 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     var phoneNumber = String()
     private var spinner = UIActivityIndicatorView()
     private var validCode = String()
-    
+    var fromSignIn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +58,17 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             }
         }
         if valid == true {
+            var number = String()
+            if fromSignIn {
+                number = "1" + self.phoneNumber
+            } else {
+                number = self.phoneNumber
+            }
             self.showAndStartSpinner()
-            let fullPhoneString = "1" + self.phoneNumber
-            APIManager.sharedInstance.signInWithPhone(number: fullPhoneString, password: self.validCode, success: { (response: [String : Any?]) in
-                UserDefaultManager.setLoggedInStatus(true)
+            APIManager.sharedInstance.signInWithPhone(number: number, password: self.validCode, success: { (response: [String : Any?]) in
+                guard let token = response["token"] else { return }
+                guard let id = response["id"] else { return }
+                UserManager.loginAndSave(userId: id as! String, token: token as! String)
                 DispatchQueue.main.async {
                     self.showAndStartSpinner()
                     self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
@@ -81,7 +88,35 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func resendCodeButtonTapped(_ sender: Any) {
-        
+        var number = String()
+        if fromSignIn {
+            number = "1" + self.phoneNumber
+        } else {
+            number = self.phoneNumber
+        }
+        APIManager.sharedInstance.phoneVerification(number, success: { (response: [String : Any?]) in
+            self.spinner.stopAnimating()
+            DispatchQueue.main.async {
+                let alert = CustomAlertControllers.controllerWith(title: "Sent", message: "Your request was sent.")
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }, failure: { (error) in
+            self.spinner.stopAnimating()
+            if error?.code == 404 {
+                DispatchQueue.main.async {
+                    
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let alert = CustomAlertControllers.controllerWith(title: "Error", message: "An error occurred with your request. Please try again.")
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        })
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

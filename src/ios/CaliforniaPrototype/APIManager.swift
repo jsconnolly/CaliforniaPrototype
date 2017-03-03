@@ -19,12 +19,10 @@ class APIManager {
     let usersBaseURL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users"
     let locationsBaseURL = "ec2-54-241-144-61.us-west-1.compute.amazonaws.com/locations"
     
-    let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
-    
     //MARK: - User related API methods
     func getUserWithPhone(number numberString: String, success: @escaping UserSuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/phone/\(numberString)"
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "GET", httpBody: nil, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -37,7 +35,7 @@ class APIManager {
     
     func getUserWithEmail(email emailString: String, success: @escaping UserSuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/email/\(emailString)"
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "GET", httpBody: nil, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -50,7 +48,7 @@ class APIManager {
     
     func getUserWithId(id idString: String, success: @escaping UserSuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/\(idString)"
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "GET", httpBody: nil, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -85,8 +83,9 @@ class APIManager {
     
     func registerUserWithPhone(number numberString: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/phoneCode"
+        let header = ["Content-Type": "application/json"]
         let body = ["phone": numberString]
-        NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
+        NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: header) { (response, error) in
             if error != nil {
                 failure(error)
             } else {
@@ -131,7 +130,7 @@ class APIManager {
     func phoneVerification(_ phoneNumber: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/phoneCode"
         let body = ["phone": phoneNumber]
-        
+        let defaultHeaders = ["Content-Type": "application/json"]
         NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -147,7 +146,7 @@ class APIManager {
         let userId = UserManager.retrieveUserId()
         let url = usersBaseURL + "/\(userId)"
         let body = ["name": nameString, "email": emailString, "phone": phoneString]
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "PUT", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -161,7 +160,7 @@ class APIManager {
     func resetPassword(email emailString: String, password pwdString: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/resetPassword"
         let body = ["email": emailString, "password": pwdString]
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -175,7 +174,7 @@ class APIManager {
     func changePassword(id idString: String, password: String, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let url = usersBaseURL + "/changePassword"
         let body = ["id": idString, "password": password]
-        
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         NetworkOperations().performWebRequest(url: url, httpMethod: "POST", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {
                 failure(error)
@@ -189,6 +188,7 @@ class APIManager {
     //MARK: - Location related methods
     func addLocation(displayName name: String, coordinates: [String: Double], alertRadius: String, enablePushNotifications: Bool, enableSMS: Bool, enableEmail: Bool, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let userId = UserManager.retrieveUserId()
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         let url = usersBaseURL + "/\(userId)" + "/locations"
         let lat = coordinates["lat"]! as Double
         let lng = coordinates["lng"]! as Double
@@ -212,17 +212,18 @@ class APIManager {
     
     func updateLocation(displayName name: String?, coordinates: [String: Double], alertRadius: String?, enablePushNotifications: Bool?, enableSMS: Bool?, enableEmail: Bool?, locationId: String?, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
         let userId = UserManager.retrieveUserId()
+        let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
         guard let locationIdNumber = locationId else { return }
         let url = usersBaseURL + "/\(userId)" + "/locations" + "/\(locationIdNumber)"
         let lat = coordinates["lat"]! as Double
         let lng = coordinates["lng"]! as Double
         let coords : [String: Double] = ["lat": lat, "lng": lng]
-        let body : [String: Any] = ["displayName": name,
+        let body : [String: Any] = ["displayName": name as Any,
                                     "coordinates": coords,
-                                    "alertRadius": alertRadius,
-                                    "enablePushNotifications": enablePushNotifications,
-                                    "enableSMS": enableSMS,
-                                    "enableEmail": enableEmail]
+                                    "alertRadius": alertRadius as Any,
+                                    "enablePushNotifications": enablePushNotifications as Any,
+                                    "enableSMS": enableSMS as Any,
+                                    "enableEmail": enableEmail as Any]
         
         NetworkOperations().performWebRequest(url: url, httpMethod: "PUT", httpBody: body, httpHeaders: defaultHeaders) { (response, error) in
             if error != nil {

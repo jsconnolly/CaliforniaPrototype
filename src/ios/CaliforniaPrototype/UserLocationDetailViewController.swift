@@ -71,7 +71,7 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
                 APIManager.sharedInstance.updateLocation(displayName: displayName, coordinates: coordinates, alertRadius: radiusText, enablePushNotifications: false, enableSMS: smsOn, enableEmail: emailOn, locationId: id, success: { (response) in
                     DispatchQueue.main.async {
                         self.stopAndRemoveSpinner()
-                        self.notifyUser(title: "Success", message: "Profile updated successfully.", timeToDissapear: 1.5)
+                        self.notifyUser(title: "Success", message: "Location updated successfully.", timeToDissapear: 1.5)
                     }
                     
                 }, failure: { (error) in

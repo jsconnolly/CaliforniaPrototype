@@ -16,18 +16,17 @@ class OutlinedTextField: UITextField {
         layer.borderColor = UIColor.textFieldBorderGray().cgColor
     }
     
+    let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5);
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 8,
-                      y: bounds.origin.y,
-                      width: bounds.width - 8,
-                      height: bounds.height)
+        return UIEdgeInsetsInsetRect(bounds, padding)
+    }
+    
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return UIEdgeInsetsInsetRect(bounds, padding)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 8,
-                      y: bounds.origin.y,
-                      width: bounds.width - 8,
-                      height: bounds.height)
+        return UIEdgeInsetsInsetRect(bounds, padding)
     }
-
 }

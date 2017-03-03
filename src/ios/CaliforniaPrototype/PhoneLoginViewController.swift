@@ -45,8 +45,9 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
             APIManager.sharedInstance.phoneVerification(fullPhoneString, success: { (response: [String : Any?]) in
                 self.spinner.stopAnimating()
                 DispatchQueue.main.async {
-                    let phoneVerificationVC = PhonePasswordViewController()
+                    let phoneVerificationVC = PhoneVerificationViewController()
                     phoneVerificationVC.phoneNumber = phoneString
+                    phoneVerificationVC.fromSignIn = true
                     self.navigationController?.pushViewController(phoneVerificationVC, animated: true)
                 }
             }, failure: { (error) in
