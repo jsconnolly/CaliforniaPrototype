@@ -24,13 +24,16 @@
     .btn-location {
         position: absolute;
         width: 100%;
-        max-width: 250px;
+        max-width: 150px;
         margin-left: auto;
         margin-right: auto;
         left: 0;
         right: 0;
         top: 15px;
         z-index: 1;
+        @media (min-width: @screen-sm-min) {
+            max-width: 250px;
+        }
     }
 
     .sos-banner {
