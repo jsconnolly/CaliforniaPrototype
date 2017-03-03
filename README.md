@@ -2,9 +2,9 @@
 
 ##Links
 
-<b>Admin Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/admin'>Click Here</a>
+<b>Admin Website:</b> <a href='http://ca-prototype-hotb.s3-website-us-west-1.amazonaws.com/admin'>Click Here</a>
 
-<b>Consumer Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com'>Click Here</a>
+<b>Consumer Website:</b> <a href='http://ca-prototype-hotb.s3-website-us-west-1.amazonaws.com'>Click Here</a>
 
 ##User Accounts
 
