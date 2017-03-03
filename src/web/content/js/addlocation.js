@@ -13,7 +13,7 @@ function DeleteLocation(locationId)
        async:false,
        success:function(data){
              alert("location deleted successfully");
-             location.reload();
+             location.reload(true);
        }
     });
     
@@ -102,8 +102,28 @@ function getReverseGeocodingData(lat, lng) {
        method: "POST",
        async:false,
        success:function(data){
-           //console.log(data);
-           zipcode = data.results[0].address_components[6].short_name;
+           console.log(data);
+           
+           if(data.results[0].address_components[6].types !== undefined)
+          {
+           if(data.results[0].address_components[6].types[0] === "postal_code")
+           {
+               zipcode = data.results[0].address_components[6].short_name;
+           }
+         }
+         else
+         {
+             if(data.results[0].address_components[7].types[0] === "postal_code")
+           {
+               zipcode = data.results[0].address_components[7].short_name;
+           }
+             
+             
+         }
+           
+           
+           
+           
        }
 
     });
@@ -124,6 +144,7 @@ $(document).ready(function(){
                 type: "GET",
                 url: APIURL + "users/" +sessionStorage.getItem("id"),
                 cache:false,
+                async:false,
                 headers: {
                 'token': sessionStorage.getItem("token"),
                 'Content-Type':'application/json'
@@ -182,6 +203,7 @@ $(document).ready(function(){
 
                             $.ajax({
                             type: "PUT",
+                            async:false,
                             url: APIURL + "users/" +sessionStorage.getItem("id") + "/locations",
                             headers: {
                             'token': sessionStorage.getItem("token"),
@@ -242,6 +264,7 @@ $(document).ready(function(){
 
                                         $.ajax({
                                         type: "PUT",
+                                        async:false,
                                         url: APIURL + "users/" +sessionStorage.getItem("id") + "/locations/" + editedlocationid,
                                         headers: {
                                         'token': sessionStorage.getItem("token"),
@@ -250,8 +273,8 @@ $(document).ready(function(){
                                         dataType: "json",
                                         data: JSON.stringify(updatelocation),
                                         }).done(function (result) {
-                                            //alert("Location updated successfully.");
-                                            //location.reload();
+                                            alert("Location updated successfully.");
+                                            location.reload(true);
                                         })
                                         .fail(function (data, textStatus, xhr) {
                                          //console.log(data.responseJSON.Error);
