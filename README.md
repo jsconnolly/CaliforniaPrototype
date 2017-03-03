@@ -71,6 +71,9 @@ Interview Notes with Gary Winuk can be found <a href='https://s3-us-west-1.amazo
 
 We used at least three (3) user centric design techniques that included: Key Experience Pillar Documents, Online Survey, User Questionnaires following a clickable prototype review and phone interviews with subject matter experts to gather feedback on the Administrative Portal’s features and functions.
 
+In addition to the surveys and interviews above, we created Key Experience Pillar documents to define user stories and use cases. Those can be found for both the consumer <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/User+Experience+Pillars+Document+-+Google+Docs.pdf'>here</a> and the administrator <a href='
+https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/Admin+Experience+Pillars+Document+-+Google+Docs.pdf'>here</a>.
+
 ##e. Used GitHub to document code commits;
 
 A GitHub repository was setup to capture code commits for each developer. We also included design commits and automated testing scripts. We utilized version control by separating branches for each developer as well as managed code merges through individual pull requests.
