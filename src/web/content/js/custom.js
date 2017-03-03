@@ -10,14 +10,6 @@ $(document).ready(function() {
 
     $('.phone').mask('000-000-0000');
 
-    $('#unsubscribe').click(function() {
-        $('#modal').on('show.bs.modal', function(event) {
-            var modal = $(this);
-            modal.find('.modal-title').text('Confirm Unsubscribe');
-            modal.find('.modal-body').text('Are you sure you want to unsubscribe?');
-            modal.find('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> <button type="button" class="btn btn-danger" id="confirmunsubscribe">Unsubscribe</button>');
-        });
-
     });
     /*    $("#deletelocation(" + result.locations[i].id + ")").click(function() {
             $("#modal").on('show.bs.modal', function (event) {
@@ -32,7 +24,16 @@ $(document).ready(function() {
     $('#btnlogout').click(function() {
         sessionStorage.clear();
     });
-});
+
+    $('.form-control').keypress(function(e){
+      if(e.keyCode==13)
+      $('.submit').click();
+    });
+
+    if($('#lblcurrentPhone').text().length < 1) {
+        $(this).text('none');
+        console.log('blank');
+    }
 
 function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode

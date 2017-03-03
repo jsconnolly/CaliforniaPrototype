@@ -201,7 +201,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-verb');
     grunt.loadNpmTasks('grunt-sync-pkg');
     grunt.loadNpmTasks('assemble-less');
-    grunt.loadNpmTasks('assemble');
+    //grunt.loadNpmTasks('assemble');
+    grunt.loadNpmTasks('grunt-assemble');
 
     // Run this task once before running other tasks.
     grunt.registerTask('setup', ['copy:once', 'clean:once']);

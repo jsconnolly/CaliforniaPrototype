@@ -16,7 +16,7 @@ function DeleteLocation(locationId)
              location.reload(true);
        }
     });
-    
+
     //console.log("delete");
 
 }
@@ -24,7 +24,7 @@ function DeleteLocation(locationId)
 
 function EditLocation(locationId)
 {
-   
+
     // get current location details
     console.log(locationId);
     console.log(sessionStorage.getItem("id"));
@@ -46,9 +46,9 @@ function EditLocation(locationId)
              }
        }
     });
-    
-    
-    
+
+
+
     // update location details
     if(userlocations.length > 0)
     {
@@ -61,11 +61,11 @@ function EditLocation(locationId)
                 break;
             }
         }
-        
+
     }
-    
+
     $("#editedlocationid").val(locationId);
-    
+
     //console.log("in edit");
 
 }
@@ -96,14 +96,14 @@ function getLatLng(cityzip)
 
 
 function getReverseGeocodingData(lat, lng) {
-    var zipcode; 
+    var zipcode;
     $.ajax({
        url : "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng,
        method: "POST",
        async:false,
        success:function(data){
            console.log(data);
-           
+
            if(data.results[0].address_components[6].types !== undefined)
           {
            if(data.results[0].address_components[6].types[0] === "postal_code")
@@ -117,13 +117,13 @@ function getReverseGeocodingData(lat, lng) {
            {
                zipcode = data.results[0].address_components[7].short_name;
            }
-             
-             
+
+
          }
-           
-           
-           
-           
+
+
+
+
        }
 
     });
@@ -240,13 +240,13 @@ $(document).ready(function(){
 
 
        $('#editLocationSave').click(function(e){
-           
-           
+
+
            var editedlocationid = $("#editedlocationid").val();
-           
+
            if(editedlocationid.length > 0)
     {
-    
+
                 var updatelocation = {
                       "displayName":"",
                       "coordinates": "",
@@ -281,10 +281,10 @@ $(document).ready(function(){
                                          alert(data.responseJSON.Error);
                                          /*console.log("error", data.status);
                                          console.log("STATUS: "+xhr); */
-                                        });   
+                                        });
     }
-                             
-    
+
+
 })
 
 
@@ -292,9 +292,3 @@ $(document).ready(function(){
 
 
 });
-
-
-
-
-
-

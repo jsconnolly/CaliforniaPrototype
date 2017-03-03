@@ -25,7 +25,9 @@ loggedin: true
             <h3>Change Email Address</h3>
             <div class="form-group">
                 <label>Current Email Address</label>
-                 <p id="lblcurrentEmail"></p>
+                 <p>
+                    <span id="lblcurrentEmail"></span>&nbsp;
+                 </p>
             </div>
             <div class="form-group">
                 <label>New Email Address</label>
@@ -43,7 +45,9 @@ loggedin: true
             <h3>Change Phone Number</h3>
             <div class="form-group">
                 <label>Current Phone Number</label>
-                 <p id="lblcurrentPhone"></p>
+                 <p>
+                    <span id="lblcurrentPhone"></span>&nbsp;
+                 </p>
             </div>
             <div class="form-group">
                 <label>New Phone Number</label>
@@ -71,10 +75,11 @@ loggedin: true
     <div class="row">
         <div class="col-md-12">
            {{!hide if unsubscribed/ show if subscribed}}
-            <button type="button" class="btn btn-danger pull-left" id="btnUnsubscribe" data-toggle="modal" data-target="#modal">Unsubscribe from Service</button>
+            <button type="button" class="btn btn-danger pull-left" id="unsubscribe" data-toggle="modal" data-target="#unsubscribePopup">Unsubscribe from Service</button>
             {{!Show if unsubscribed/ hide if subscribed}}
             <button type="button" class="btn btn-primary pull-left" id="resubscribe" style="display: none">Subscribe to Service</button>
             <button type="button" id="btnSaveSettings" class="btn btn-primary pull-right">Save Changes</button>
         </div>
     </div>
 </form>
+{{> popup-alert id="unsubscribePopup" title="Confirm Unsubscribe" popupContent="Are you sure you want to unsubscribe?" btnCloseText="Cancel" btnConfirm="true" btnConfirmType="danger" btnConfirmId="btnUnsubscribe" btnConfirmText="Unsubscribe" }}

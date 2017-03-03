@@ -1,20 +1,20 @@
 $(document).ready(function(){
-    
-    
+
+
     $('#lblcurrentEmail').text(getCookie("email"));
     $('#lblcurrentPhone').text(getCookie("phone"));
 
      $('#btnSaveSettings').click(function(e){
-        
+
         var oldpassword = $('#oldpassword').val();
         var newpassword = $('#newpassword').val();
         var confirmpassword = $('#confirmpassword').val();
         var newemail = $('#email').val();
-        
+
 
         if(oldpassword.length > 0 && newpassword.length > 0 && confirmpassword.length > 0)
         {
-            
+
                     var changepassword = {
                          id: sessionStorage.getItem("id"),
                          password:newpassword
@@ -32,11 +32,11 @@ $(document).ready(function(){
                     data: JSON.stringify(changepassword),
                 }).done(function (result) {
                    // console.log(result);
-                    alert("Password Changed successfully"); 
+                    alert("Password Changed successfully");
                     $('#oldpassword').val("");
                     $('#newpassword').val("");
                     $('#confirmpassword').val("");
-                    
+
                })
                 .fail(function (data, textStatus, xhr) {
                      //console.log(data.responseJSON.Error);
@@ -46,13 +46,13 @@ $(document).ready(function(){
                 });
 
         }
-         
-         
-         
+
+
+
             if(newemail.length > 0)
             {
-            
-                 
+
+
                         var changeemail = {
                              email:newemail,
                        };
@@ -68,7 +68,7 @@ $(document).ready(function(){
                         data: JSON.stringify(changeemail),
                     }).done(function (result) {
                        console.log(result);
-                        //alert("Password Changed successfully");             
+                        //alert("Password Changed successfully");
                    })
                     .fail(function (data, textStatus, xhr) {
                          //console.log(data.responseJSON.Error);
@@ -78,10 +78,10 @@ $(document).ready(function(){
                     });
 
             }
-         
+
              if(phone.length > 0)
             {
-            
+
                         var changephone = {
                              phone:phone,
                        };
@@ -97,7 +97,7 @@ $(document).ready(function(){
                         data: JSON.stringify(changephone),
                     }).done(function (result) {
                        console.log(result);
-                        //alert("Password Changed successfully");             
+                        //alert("Password Changed successfully");
                    })
                     .fail(function (data, textStatus, xhr) {
                          //console.log(data.responseJSON.Error);
@@ -111,28 +111,40 @@ $(document).ready(function(){
     });
 
      $('#btnUnsubscribe').click(function(e){
-         
-         
-         $.ajax({
-       url : APIURL + "users/" + sessionStorage.getItem("id"),
-       headers: {
-                'token': sessionStorage.getItem("token"),
-                'Content-Type':'application/json'
-             },
-       method: "DELETE",
-       async:false,
-       success:function(data){
-             alert("user unsubcribed successfully");
-             location.reload(true);
-       }
+
+         console.log("here");
+
+         var r = confirm("Are you sure to unsubcribe.");
+        if (r == true)
+        {
+
+            console.log(sessionStorage.getItem("id"));
+            console.log(sessionStorage.getItem("token"));
+            $.ajax({
+               url : APIURL + "users/" + sessionStorage.getItem("id"),
+               headers: {
+                        'token': sessionStorage.getItem("token"),
+                        'Content-Type':'application/json'
+                     },
+               method: "DELETE",
+               cache:false,
+               async:false,
+               success:function(data){
+                     alert("user unsubcribed successfully");
+                     location.href = "/index.html";
+               }
+
+                          });
+        }
+
     });
-         
-         
-         
-         
-         
-         
-     });
+
+
+
+
+
+
+
 
 
 });
