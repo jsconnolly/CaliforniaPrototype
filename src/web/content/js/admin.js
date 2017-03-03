@@ -12,19 +12,23 @@ $(document).ready(function(){
                 }).done(function (result) {
                   //console.log(result);
                 result.sort(date_sort_desc);
-                var arr = [];
+                var imax = 0;
                 //console.log(descendingOrder);
                  for(i = 0; i<result.length;i++)
                  {
                          if(result[i].createdby === "server")
                        {
-                            var d = new Date(result[i].date);
+                           
+                           var d = new Date(result[i].date);
                          var appendedval = "<a href='#' class='admin-api-alert'><div class='well'><h5>" + result[i].name +"<span class='pull-right'>" + d.toDateString() +"</span></h5><p>"+ result[i].type  +"</p></div></a>";
 
                             if(document.getElementById("alerts") != null)
                             {
-
-                                document.getElementById("alerts").innerHTML += appendedval;
+                                if(imax <= 4)
+                                {
+                                   document.getElementById("alerts").innerHTML += appendedval;
+                                   imax++;
+                                }
                             }
 
                        }
@@ -56,7 +60,8 @@ $(document).ready(function(){
                    {
                         
                             var d = new Date(result[i].date);
-                            var appendedval = "<a href='#' class='admin-current-alert'><div class='well'><div class='row'><div class='col-md-2'>"+ result[i].name +"</div><div class='col-md-2'>" + d.toDateString() +"</div><div class='col-md-8'>"+ result[i].location  +"</div></div></div></a>";
+                            var appendedval = "<a href='#' class='admin-current-alert'><div class='well'><div class='row'><div class='col-md-2'>"+ result[i].name +"</div><div class='col-md-2'>"+ result[i].type +"</div><div class='col-md-2'>" + d.toDateString() +"</div><div class='col-md-6'>"+ result[i].location  +"</div></div></div></a>";
+                            console.log(appendedval);
 
                                 if(document.getElementById("manualalerts") != null)
                                 {

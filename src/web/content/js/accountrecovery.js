@@ -26,11 +26,14 @@ $(document).ready(function(){
             contentType: "application/json",
             data: JSON.stringify(AccountRecovery),
             success:function(result){
-                  console.log(result);
-                  //localStorage.setItem("recoveremail",email);
-                  //location.href = "accountrecovery-sent.html";
-                  //$("#recoveryemail").val("");
-                 }
+
+                 },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                 //console.log(result);
+                  localStorage.setItem("recoveremail",email);
+                  location.href = "accountrecovery-sent.html";
+                  $("#recoveryemail").val("");
+                } 
 
              });
 
