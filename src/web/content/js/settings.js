@@ -111,7 +111,6 @@ $(document).ready(function(){
     });
 
      $('#btnUnsubscribe').click(function(e){
-
         {
             console.log(sessionStorage.getItem("id"));
             console.log(sessionStorage.getItem("token"));
@@ -126,7 +125,8 @@ $(document).ready(function(){
                async:false,
                success:function(data){
                      alert("User unsubcribed successfully.");
-                     location.href = "/index.html";
+                     sessionStorage.clear();
+                     location.href = "/login.html";
                }
 
                           });
