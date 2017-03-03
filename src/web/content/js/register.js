@@ -34,8 +34,22 @@ $(document).ready(function(){
                         $('#email').val("");
                         $('#password').val("");
                         $('#confirmpassword').val("");
-                        alert("You have successfully registered. Please log in.");
-                        window.location.href = "login.html";
+                        alert("You have successfully registered.");
+                            if (typeof(Storage) !== "undefined") {
+                            // Store
+                            sessionStorage.setItem("token", result.token);
+                            sessionStorage.setItem("id", result.id);
+                            }
+                            setCookie("id",result.id,1);
+                            setCookie("token",result.token,1);
+                            if(result.phone !== undefined)
+                            {
+                              setCookie("phone",result.phone,1);
+                            }
+                            else {setCookie("phone","",1);}
+                            setCookie("email",result.email,1);
+                       window.location.href = "user/index.html";
+                        //window.location.href = "login.html";
                     }
                })
                 .fail(function (data, textStatus, xhr) {
@@ -64,3 +78,12 @@ $(document).ready(function(){
 
     });
 });
+
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+

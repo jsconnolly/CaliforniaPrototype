@@ -74,12 +74,20 @@
                         for(i=0;i<result.length;i++)
                         {
                             var d = new Date(result[i].date);
-                            new google.maps.Marker({
+                            var m = new google.maps.Marker({
                               position: new google.maps.LatLng(result[i].loc[1], result[i].loc[0]),
                               map:map,
                               icon:alertMarker,
                               title: "Location: " + result[i].location + "\nType: " + result[i].type + "\nName: " + result[i].name + "\nDate: " + d.toDateString()
                             });
+                            
+                            m.addListener('click', function(lmarker) {
+                            var ct = this.title.replace(/\n/g, '<br />');
+                            var iw = new google.maps.InfoWindow({map: this.map, content: ct});
+                            iw.open(this.map, this);
+                            console.warn(iw);
+
+                    });  
                         }
 
                     })
