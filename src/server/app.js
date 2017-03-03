@@ -52,7 +52,7 @@ else {
     app.get('/', function (req, res) {
 
         res.type('html');
-        res.send("<!DOCTYPE html><html><head><title>Hello</title><meta charset=\"utf-8\" /></head><body><p>Hello, World!</p></body></html>");
+        res.send("<!DOCTYPE html><html><head><title>Hello</title><meta charset=\"utf-8\" /></head><body><p>CA Prototype API</p></body></html>");
     });
 
 var cronJob = cron.job(config.cron, function(){

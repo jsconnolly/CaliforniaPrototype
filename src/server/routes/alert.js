@@ -10,39 +10,26 @@ var userDB;
 var db;
 var MongoClient = require('mongodb').MongoClient;
 var util = require('./util');
+fs = require('fs');
 // Connect to the db
 MongoClient.connect(config.db, function (err, db) {
     if (!err) {
         userDB = db.collection('user');
         alertDB = db.collection('alert');
-        util.log("We are all connected");
+        util.log("DB is connected");
     }
 });
 
 exports.importAlert = function () {
 
-/*
-userDB.update(
-      {'_id':{'$ne':'k'} }, 
-      { $set : {active : true} }, 
-      {
-     
-     multi: true
-     
-   },
-       function(err){  
-                    });
-*/
+
+
 
 
     getWildFire();
     getRiverGauges();
     getEarthquakes();
-
-
     createAlerts();
-
-
 
 };
 
@@ -51,9 +38,7 @@ userDB.update(
 
 
 var getWildFire = function () {
-    //var url = 'https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_dyn/MapServer/0/query?f=json&returnIdsOnly=false&returnCountOnly=false&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*';
-    var url='https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_dyn/MapServer/0/query?f=json&returnGeometry=false&spatialRel=esriSpatialRelIntersects&objectIds=1%2C2%2C3%2C4%2C5%2C6&outFields=*&orderByFields=objectid%20ASC';
-    //var url='https://wildfire.cr.usgs.gov/arcgis/rest/services/geomac_dyn/MapServer/0/query?f=json&returnGeometry=false&spatialRel=esriSpatialRelIntersects&objectIds=1%2C2%2C3%2C4%2C5%2C6&where=state%20%3D%20%27CA%27&outFields=*&orderByFields=objectid%20ASC';
+    var url = config.wildfireURL;
     http.get(url, function (res) {
         var body = '';
 
@@ -66,9 +51,9 @@ var getWildFire = function () {
             //console.log("Got a response: ", caResponse.features[0].attributes);
 
             caResponse.features.forEach(function (item, index) {
-                    //if(!item.attributes)return;
-                    var incidentobj = item.attributes;
-if(incidentobj.state.match(/^(CA|ca)$/)){                    
+                //if(!item.attributes)return;
+                var incidentobj = item.attributes;
+                if (incidentobj.state.match(/^(CA|ca)$/)) {
                     var alertobj = {};
                     alertobj.type = "wildfire";
                     alertobj.name = incidentobj.incidentname;
@@ -76,7 +61,7 @@ if(incidentobj.state.match(/^(CA|ca)$/)){
                     alertobj.loc = [incidentobj.longitude, incidentobj.latitude];
                     alertobj.location = incidentobj.state;
                     alertobj.createdby = "server";
-                    alertobj.description = "acres:"+incidentobj.acres;
+                    alertobj.description = "acres:" + incidentobj.acres;
                     alertobj.url = incidentobj.hotlink;
                     alertDB.findOne({ 'name': alertobj.name, "type": "wildfire" }, function (e, result) {
 
@@ -99,8 +84,7 @@ if(incidentobj.state.match(/^(CA|ca)$/)){
 }
 
 var getRiverGauges = function () {
-    //var url = 'https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations/ahps_riv_gauges/MapServer/0/query?f=json&where=state%20%3D%20%27CA%27&returnIdsOnly=false&returnCountOnly=false&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&state=CA';
-    var url = "https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations/ahps_riv_gauges/MapServer/1/query?f=json&returnIdsOnly=false&where=(state%20%3D%20%27CA%27)%20AND%20(1%3D1)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*";
+    var url = config.rivergaugeURL;
     http.get(url, function (res) {
         var body = '';
 
@@ -115,24 +99,24 @@ var getRiverGauges = function () {
                 caResponse.features.forEach(function (item, index) {
 
                     var incidentobj = item.attributes;
-if(incidentobj.status.match(/^(action|near|minor|moderate|major)$/)){                    
-                    var alertobj = {};
-                    alertobj.type = "rivergauge";
-                    alertobj.name = incidentobj.gaugelid;
-                    alertobj.date = (incidentobj.fcstissunc!='N/A')?(new Date(incidentobj.fcstissunc)):(new Date());
-                    alertobj.loc = [incidentobj.longitude, incidentobj.latitude];
-                    alertobj.location = incidentobj.location;
-                    alertobj.createdby = "server";
-                    alertobj.description = "";
-                    alertobj.url = incidentobj.url;
-                    alertDB.findOne({ 'name': alertobj.name, "type": "rivergauge" }, function (e, result) {
+                    if (incidentobj.status.match(/^(action|near|minor|moderate|major)$/)) {
+                        var alertobj = {};
+                        alertobj.type = "rivergauge";
+                        alertobj.name = incidentobj.gaugelid;
+                        alertobj.date = (incidentobj.fcstissunc != 'N/A') ? (new Date(incidentobj.fcstissunc)) : (new Date());
+                        alertobj.loc = [incidentobj.longitude, incidentobj.latitude];
+                        alertobj.location = incidentobj.location;
+                        alertobj.createdby = "server";
+                        alertobj.description = "";
+                        alertobj.url = incidentobj.url;
+                        alertDB.findOne({ 'name': alertobj.name, "type": "rivergauge" }, function (e, result) {
 
 
-                        if (!result) {
-                            alertDB.update(alertobj, alertobj, { upsert: true, })
-                        }
-                    });
-                }
+                            if (!result) {
+                                alertDB.update(alertobj, alertobj, { upsert: true, })
+                            }
+                        });
+                    }
 
                 });
 
@@ -146,8 +130,7 @@ if(incidentobj.status.match(/^(action|near|minor|moderate|major)$/)){
 
 
 var getEarthquakes = function () {
-    var url = 'https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/EarthquakesFromLastSevenDays/MapServer/0/query?f=json&returnIdsOnly=false&where=((region%20LIKE%20%27%25California%25%27)%20AND%20(magnitude%20>%202))%20AND%20(1%3D1)&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100';
-
+    var url = config.earthquakeURL;
     http.get(url, function (res) {
         var body = '';
 
@@ -162,33 +145,33 @@ var getEarthquakes = function () {
                 caResponse.features.forEach(function (item, index) {
 
                     var incidentobj = item.attributes;
-if(parseFloat(incidentobj.magnitude)>3.5){ 
+                    if (parseFloat(incidentobj.magnitude) > 3.5) {
 
 
-                    var alertobj = {};
-                    alertobj.type = "earthquake";
-                    alertobj.name = incidentobj.eqid;
-                    alertobj.date = new Date(incidentobj.datetime);
-                    alertobj.loc = [incidentobj.latitude, incidentobj.longitude];
-                    alertobj.location = incidentobj.region;
-                    alertobj.createdby = "server";
-                    alertobj.description = "magnitude:"+incidentobj.magnitude;
-                    alertobj.url = "";
+                        var alertobj = {};
+                        alertobj.type = "earthquake";
+                        alertobj.name = incidentobj.eqid;
+                        alertobj.date = new Date(incidentobj.datetime);
+                        alertobj.loc = [incidentobj.latitude, incidentobj.longitude];
+                        alertobj.location = incidentobj.region;
+                        alertobj.createdby = "server";
+                        alertobj.description = "magnitude:" + incidentobj.magnitude;
+                        alertobj.url = "";
 
 
-                    alertDB.findOne({ 'name': alertobj.name, "type": "earthquake" }, function (e, result) {
-                        //console.log("result: ", result);
+                        alertDB.findOne({ 'name': alertobj.name, "type": "earthquake" }, function (e, result) {
+                            //console.log("result: ", result);
 
-                         if (!result) {
-                            alertDB.update(alertobj, alertobj, { upsert: true, })
-                        }
+                            if (!result) {
+                                alertDB.update(alertobj, alertobj, { upsert: true, })
+                            }
 
 
 
-                        
-                    });
 
-                }
+                        });
+
+                    }
 
 
                 });
@@ -210,22 +193,33 @@ var createAlerts = function () {
     alertDB.ensureIndex(
         { 'loc': "2dsphere" }, function (err, result) {
 
-            var cursor = userDB.find({'active':true});
+            var cursor = userDB.find({ 'active': true });
 
             // Execute the each command, triggers for each document
             cursor.each(function (err, item) {
-                if (item)
-                    if (item.locations) {
+var flag=true;
+
+try{
+
+    var checklng=item.locations
+    var checklat=item.locations
+}catch(err){
+
+   flag=false;
+}
+//try{
+                if (flag)
+ 
+                    if (item.locations!=null) {
 
 
 
+                        if (item.locations.length > 0){
 
-
-
-                        if (item.locations.length > 0)
                             item.locations.forEach(function (value) {
 
-                                
+
+                               if(value.coordinates)
                                 alertDB.find(
                                     {
                                         'loc':
@@ -244,10 +238,11 @@ var createAlerts = function () {
                                     }
                                 ).toArray(function (err, docs) {
 
-                                    //console.log("err" + err);
                                     if (docs) {
+
+
                                         docs.forEach(function (docValue) {
-                                            //console.log("4" + docValue-item.date);
+
                                             if (!item.alerts) item.alerts = [];
                                             var output = item.alerts.filter(function (value) { return value.name == docValue.name; })
                                             if (output.length == 0) {
@@ -257,11 +252,10 @@ var createAlerts = function () {
                                                 alert.date = docValue.date;
                                                 alert.loc = docValue.loc;
                                                 alert.location = docValue.location;
-                                                if(docValue.description)alert.description=docValue.description;
+                                                if (docValue.description) alert.description = docValue.description;
                                                 item.alerts.push(alert);
                                                 //var emessage = alert.type + ' ' + alert.name + ' at ' + alert.location + ' on ' + alert.date;
-                                                var emessage = 'CA-EMRG-AL: An alert type ' + alert.type + ' has been posted for your location: ' + value.displayName + '. Please visit our site for further info '+'https://goo.gl/ULsA2y'
-                                                console.log("sending");
+                                                var emessage = 'CA-EMRG-AL: An alert type ' + alert.type + ' has been posted for your location: ' + value.displayName + '. Please visit our site for further info ' + 'https://goo.gl/ULsA2y'
 
                                                 if (value.enableSMS && item.phone) {
                                                     util.sendSMS(item.phone, emessage, function (err, o) {
@@ -274,12 +268,16 @@ var createAlerts = function () {
                                                     });
                                                 }
                                                 if (value.enableEmail && item.email) {
-                                                    //if (item.email != "cctech@gmail.com")
+
+                                                    var emailmessage = fs.readFileSync('./templates/ca-prototype-alert.html',{encoding:'utf-8'});
+                                                    emailmessage=emailmessage.replace('((ALERT TYPE))',alert.type);
+                                                    emailmessage=emailmessage.replace('((LOCATION))',value.displayName);
+                                                    
                                                     client.sendEmail({
                                                         to: item.email
                                                         , from: 'noreply@hotbsoftware.com'
                                                         , subject: 'CA Emergency Alert'
-                                                        , message: emessage
+                                                        , message: emailmessage
 
                                                     }, function (err, data, response) {
                                                         if (err) {
@@ -300,19 +298,45 @@ var createAlerts = function () {
 
                                     }
 
-                                    //console.log("Found the following records" + err);
-                                    //console.log(docs);
 
                                 });
 
-                            });
+                            });//for each
+
+                    }
+
+
+
+
+                };
+                
+
+
+
+//}catch(ex){
+    //util.log(ex);
+
+//}
 
 
 
 
 
 
-                    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             });
         });
 

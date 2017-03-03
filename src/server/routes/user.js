@@ -8,30 +8,20 @@ var db;
 var ses = require('node-ses')
     , client = ses.createClient({ key: config.accessKeyId, secret: config.secretAccessKey, amazon: config.emailEndpoint });
 var util = require('./util');
-// Retrieve
-var MongoClient = require('mongodb').MongoClient;
 
+var MongoClient = require('mongodb').MongoClient;
+var fs = require('fs');
 // Connect to the db
 MongoClient.connect(config.db, function (err, db) {
     if (!err) {
         userDB = db.collection('user');
         alertDB = db.collection('alert');
-        console.log("We are connected");
+        util.log("DB is connected");
     }
 });
 
 
-
-exports.test = function (req, res) {
-    var id = req.params.id;
-    var lid = req.params.lid;
-    console.log('Retrieving user: ' + id);
-    console.log('Retrieving location: ' + lid);
-    res.type('html');
-    res.send("<!DOCTYPE html><html><head><title>Hello</title><meta charset=\"utf-8\" /></head><body><p>Hello, World!</p></body></html>");
-
-};
-
+//Registration
 exports.add = function (req, res) {
     var userinfo = req.body;
     if (!userinfo.email && !userinfo.phone) {
@@ -41,7 +31,7 @@ exports.add = function (req, res) {
     userDB.findOne({ $or: [{ 'email': userinfo.email == undefined ? "---" : userinfo.email }, { 'phone': userinfo.phone == undefined ? "---" : userinfo.phone }] }, function (err, item) {
         if (item) {
             if(item.active){
-            res.status(400).send({ 'Error': 'Records already exist' });
+            res.status(400).send({ 'Error': 'Record already exist' });
             return;
 
             }
@@ -54,7 +44,7 @@ exports.add = function (req, res) {
             userinfo.locations = [];
             userinfo.contacts = [];
             userinfo.active=true;
-            //userobj.token=generateToken(userobj.id);
+            
             userDB.insert(userinfo, { safe: true }, function (err, result) {
                 if (err) {
                     res.status(400).send({ 'Error': 'An error has occurred' });
@@ -67,12 +57,13 @@ exports.add = function (req, res) {
                     userobj.id = userobj._id;
                     delete userobj._id;
                     delete userobj.password;
-                    if (userinfo.email)
+                    if (userinfo.email){
+                        var emailmessage = fs.readFileSync('./templates/ca-prototype-welcome.html',{encoding:'utf-8'});
                         client.sendEmail({
                             to: userinfo.email
                             , from: 'noreply@hotbsoftware.com'
                             , subject: 'Registration'
-                            , message: 'Welcome to California Emergency Alert'
+                            , message: emailmessage
 
                         }, function (err, data, response) {
                             if (err) {
@@ -81,6 +72,7 @@ exports.add = function (req, res) {
                                 
                             }
                         });
+                }
                         res.status(200).send(userobj);
 
                 }
@@ -91,16 +83,9 @@ exports.add = function (req, res) {
 
 
     });
-
-
-
-
-
-
-
-
-
 };
+
+
 exports.getUserByPhone = function (req, res) {
     var userinfo = req.body;
     var userheader = req.headers;
@@ -118,10 +103,7 @@ exports.getUserByPhone = function (req, res) {
             res.status(404).send({ 'Error': 'Record not found' });
         }
 
-
     });
-
-
 }
 
 exports.getUserByEmail = function (req, res) {
@@ -312,7 +294,7 @@ exports.phoneCode = function (req, res) {
         } else {
 
             util.sendSMS(userinfo.phone, 'Your phone verification code is: ' + code, function (err, o) {
-                console.log("sms result", err);
+                util.log("sms result", err);
                 if (!err) {
 
 
@@ -347,7 +329,7 @@ exports.webPhoneCode = function (req, res) {
         if (result == null) {
              var code = getRandomIntInclusive(123456, 999999);
             util.sendSMS(userinfo.phone, 'CA-EMRG-AL:Your phone verification code is: ' + code, function (err, o) {
-                console.log("sms result", err);
+                util.log("sms result", err);
                 if (!err) {
                     res.status(200).send({ 'code': code });
                 } else {
@@ -364,7 +346,7 @@ exports.webPhoneCode = function (req, res) {
 }
 
 
-
+//update user endpoint
 exports.update = function (req, res) {
     var userinfo = req.body;
     var userid = null;
@@ -465,20 +447,23 @@ exports.addLocation = function (req, res) {
         res.status(401).send({ 'Error': 'Invalid token' });
         return;
     };
-    console.log(req.params.id);
+    
     try {
         userid = getObjectId(req.params.id);
     } catch (ex) {
         res.status(404).send({ 'Error': 'Record not found' });
         return;
     }
+
+
+    
     userDB.findOne({ '_id': userid,'active':true }, function (e, result) {
         if (result) {
             if (!result.locations) {
                 result.locations = [];
             }
             var output = result.locations.filter(function (value) { return value.displayName == locinfo.displayName; })
-            console.log(output);
+            
             if (output.length == 0) {
                 locinfo.id = (new ObjectID()).toString();
                 result.locations.push(locinfo);
@@ -499,9 +484,8 @@ exports.addLocation = function (req, res) {
         } else {
             res.status(404).send({ 'Error': 'Record not found' });
         }
-
-
     });
+
 }
 
 exports.updateLocation = function (req, res) {
@@ -585,7 +569,7 @@ exports.deleteLocation = function (req, res) {
                 false,
                 function (e, result) {
                     if (e) {
-                        console.log(e);
+                        util.log(e);
                         res.status(500).send({ 'Error': 'Delete failed' });
                         return;
                     }else{
@@ -594,10 +578,7 @@ exports.deleteLocation = function (req, res) {
                     }
                 }
             )
-
-
-
-            
+          
 
         } else {
             res.status(404).send({ 'Error': 'Record not found' });
@@ -622,7 +603,7 @@ exports.addContact = function (req, res) {
         res.status(401).send({ 'Error': 'Invalid token' });
         return;
     };
-    console.log(req.params.id);
+    
     try {
         userid = getObjectId(req.params.id);
     } catch (ex) {
@@ -635,7 +616,7 @@ exports.addContact = function (req, res) {
                 result.contacts = [];
             }
             var output = result.contacts.filter(function (value) { return value.name == locinfo.name; })
-            console.log(output);
+            
             if (output.length == 0) {
                 locinfo.id = (new ObjectID()).toString();
                 result.contacts.push(locinfo);
@@ -702,16 +683,6 @@ exports.updateContact = function (req, res) {
                 }
             )
 
-
-            /**
-            let connection = new SMTPConnection({port:465,secure:false});
-            connection.connect(function(){ 
-            
-            connection.send({from:"jhuang@hotbsoftware.com",to:"cctech@gmail.com"}, "aslkdfaklsdfj");
-            
-            });
-            
-             */
             res.status(200).send({});
 
 
@@ -802,10 +773,6 @@ exports.getAlerts = function (req, res) {
 
     });
 
-
-
-
-
 }
 
 exports.addAlert = function (req, res) {
@@ -840,11 +807,8 @@ exports.addAlert = function (req, res) {
 
     });
 
-
-
-
-
 }
+
 
 var generateToken = function (user) {
     var token = jwt.sign({ user: user }, config.secretKey);
@@ -861,10 +825,7 @@ var verifyToken = function (token) {
     var result = true;
     try {
         var decoded = jwt.decode(token);
-        console.log(JSON.stringify(decoded));
-        //if(decoded.user!=user){
-        //result=false;
-        //}
+
         userDB.findOne({ '_id': getObjectId(decoded.user) }, function (e, result) {
             if (!result) {
                 result = false;
