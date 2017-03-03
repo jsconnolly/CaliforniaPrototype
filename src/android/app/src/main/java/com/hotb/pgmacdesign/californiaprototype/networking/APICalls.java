@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
+import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
 import com.hotb.pgmacdesign.californiaprototype.pojos.CAMasterObject;
@@ -262,9 +263,9 @@ public class APICalls {
                                  //Response was successful. Send back via listener
                                  try {
                                      CAUser responseObject = (CAUser) response.body();
-                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                      responseObject.setPassword(pw);
                                      persistData(responseObject);
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
                                  }
@@ -406,10 +407,9 @@ public class APICalls {
                                  //Response was successful. Send back via listener
                                  try {
                                      CAUser responseObject = (CAUser) response.body();
-                                     persistData(responseObject);
-                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                      responseObject.setPassword(pw);
                                      persistData(responseObject);
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
                                  }
@@ -458,10 +458,9 @@ public class APICalls {
                                  //Response was successful. Send back via listener
                                  try {
                                      CAUser responseObject = (CAUser) response.body();
-                                     persistData(responseObject);
-                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                      responseObject.setPassword(pw);
                                      persistData(responseObject);
+                                     listener.onTaskComplete(responseObject, Constants.TAG_CA_USER);
                                  } catch (Exception e) {
                                      listener.onTaskComplete(e.getMessage(), Constants.TAG_API_CALL_FAILURE);
                                  }
@@ -792,6 +791,9 @@ public class APICalls {
             return;
         }
 
+        try {
+            L.m("RESPONSE = " + new Gson().toJson(responseObject, CAUser.class));
+        } catch (Exception e){e.printStackTrace();}
         String pw = responseObject.getPassword();
         String userId = responseObject.getId();
         String token = responseObject.getToken();

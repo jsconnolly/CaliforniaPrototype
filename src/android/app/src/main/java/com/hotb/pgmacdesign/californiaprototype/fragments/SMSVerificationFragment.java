@@ -435,7 +435,7 @@ public class SMSVerificationFragment extends Fragment implements TextWatcher, On
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
-
+        ProgressBarUtilities.dismissProgressDialog();
         switch(customTag){
             case Constants.TAG_API_ERROR:
                 //API Call error
