@@ -1,21 +1,17 @@
 ---
 title: Admin
 ---
+<script type="text/javascript">
+   if(sessionStorage.getItem("admintoken") === null)
+    {
+        location.href = "index.html"
+    }
 
-<div class="row">
-    <div class="col-md-12">
-        <p>
-            <a href="#" class="btn btn-primary">Date Range</a>
-            <span class="text-muted date-range">Date Range: 88/88/8888 - 88/88/8888</span>
-        </p>
-    </div>
-</div>
+
+</script>
 <div class="row">
     <div class="col-md-8">
-        {{> alert-map }}
-
-        <h3>Create An Alert</h3>
-        {{> alert-create}}
+        {{> admin-alert-map }}
     </div>
     <div class="col-md-4">
         <div class="admin-api">
@@ -26,6 +22,6 @@ title: Admin
 </div>
 <div class="row">
     <div class="col-md-12">
-        {{> admin-current}}
+        {{> admin-manual-alerts}}
     </div>
 </div>

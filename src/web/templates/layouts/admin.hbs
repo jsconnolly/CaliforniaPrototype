@@ -10,16 +10,19 @@
     <!-- Navigation component -->
     {{> nav-admin }}
 
-<div class="content">
-  {{> admin-events }}
 
-    <div class="container">
+  {{!> admin-events }}
+
+    <div class="content container">
       {{> body }}
     </div>
 
     {{> alert-create-modal}}
-    {{> event-create-modal}}
-  </div>
+    {{!> event-create-modal}}
+
+
+  <!-- Popup Alert -->
+  {{> popup-alert}}
 
     <!-- Footer -->
     {{> admin-footer }}

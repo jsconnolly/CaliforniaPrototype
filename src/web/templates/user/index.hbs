@@ -3,18 +3,28 @@ title: User Landing
 loggedin: true
 map: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
 {{> alert-map}}
-<div class="contact-banner">
+
+{{!--<div class="contact-banner">
     <div class="container">
-        <h2>Alert Your Emergency Contacts and Emergency Services</h2>
+        <h3>Alert Your Emergency Contacts and Emergency Services</h3>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non arcu eget mi egestas semper.
         </p>
         <p>
-            <a href="/user/addcontacts.html" class="btn btn-primary">Add Contacts</a>
+            <a href="addcontacts.html" class="btn btn-primary">Add Contacts</a>
         </p>
         <div class="row">
             {{> added-contact}}
         </div>
     </div>
-</div>
+</div>--}}

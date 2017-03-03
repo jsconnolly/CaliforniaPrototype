@@ -1,0 +1,38 @@
+---
+title: Phone Confirmation
+loggedin: true
+---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
+<div class="container-table">
+    <div class="row vertical-center-row">
+      <div class="user-reg col-md-6 col-md-offset-3">
+        <h3>Register for Emergency Notification Service</h3>
+        <p>
+          Enter the confirmation number provided in the text message sent.
+        </p>
+        <form class="form-inline" data-toggle="validator" role="form">
+          <div class="form-group confirmation-number-phone">
+              <label>Confirmation Number</label><br />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode1"  maxlength="1" required />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode2"  maxlength="1" required />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode3"  maxlength="1" required />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode4"  maxlength="1" required />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode5"  maxlength="1" required />
+            <input type="text" class="form-control input-lg confirmation-input" onkeypress="return isNumberKey(event)" id="txtphonecode6"  maxlength="1" required />
+          </div>
+          <button type="button" class="btn btn-primary btn-block submit" id="btnconfirmphone">Confirm</button>
+        </form>
+        <p>
+          You will not receive any emergency notifications until you confirm your phone number.
+        </p>
+      </div>
+    </div>
+  </div>

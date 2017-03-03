@@ -8,13 +8,14 @@ APIWrapper.Utilities.startTest()
 time = str(time.time())
 displayName = "locationTEST@" + time[11:]
 
-strid1 = "58b74f9fc4d2090015177094"
-strid2 = "58b74fd1c4d2090015177095"
-strname = "Universal Test"
-stremail = "test@hotbsoftware.com"
-stremail2 = "test2@hotbsoftware.com"
+strid1 = APIWrapper.Constants.id
+strid2 = APIWrapper.Constants.id2
+strname = APIWrapper.Constants.name
+stremail = APIWrapper.Constants.email
+stremail2 = APIWrapper.Constants.email2
 strtoken1 = APIWrapper.Utilities.loginUser1()
 strtoken2 = APIWrapper.Utilities.loginUser2()
+
 alertRadius = "100"
 enablePushNotifications = True
 enableSMS = False
@@ -60,37 +61,14 @@ testCDMLocation = {
 print("\nTesting add location...")
 print("\nTest one location name : " + displayName + " | Account email : " + stremail + "\n")
 responseDBH = api.makePutRequest(headers, testDBHLocation)
-for i in ['email', 'name']:
-    print("Verifying " + i)
-    assert responseDBH[i] == eval('APIWrapper.Constants.' + i)
-for i in responseDBH['locations'][-1].items():
-    try:
-        if i[0] == "id":
-            pass
-        print("Verifying " + i[0])
-        assert eval(i[0]) == i[1]
-    except:
-        if i[0] == "coordinates":
-            print("     Verifying coordinates properties...")
-            assert eval(i[0] + "DBH") == i[1]
+APIWrapper.Utilities.printStr("Printing response1 " + str(responseDBH))
 
 print("\nTest two location name : " + displayName + " | Account email : " + stremail2 + "\n")
 api = APIWrapper.WebCalls(newURL2)
 headers = APIWrapper.WebBuilders.getHeaders(strtoken2)
 responseCDM = api.makePutRequest(headers, testCDMLocation)
-for i in ['email', 'name']:
-    print("Verifying " + i)
-    assert responseCDM[i] == eval('APIWrapper.Constants.' + i + '2')
-for i in responseCDM['locations'][-1].items():
-    try:
-        if i[0] == "id":
-            pass
-        print("Verifying " + i[0])
-        assert eval(i[0] + '2') == i[1]
-    except:
-        if i[0] == "coordinates":
-            print("     Verifying coordinates properties...")
-            assert eval(i[0] + "CDM") == i[1]
+
+APIWrapper.Utilities.printStr("Printing response2 " + str(responseCDM))
 # End test
 print('\n')
 APIWrapper.Utilities.endTest()

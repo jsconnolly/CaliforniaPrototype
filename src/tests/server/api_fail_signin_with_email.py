@@ -6,8 +6,8 @@ APIWrapper.Utilities.startTest()
 
 #--------------------Login Token-------------------------------------
 # init variables needed:
-strEmail = "test@hotbsoftware.com"
-strPW = "password123"
+strEmail = APIWrapper.Constants.email
+strPW = APIWrapper.Constants.password
 APIWrapper.Utilities.startTest()
 
 # Base Url + Path + endpoint

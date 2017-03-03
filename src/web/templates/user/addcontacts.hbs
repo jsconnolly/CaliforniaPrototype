@@ -2,40 +2,40 @@
 title: Add Contacts
 loggedin: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
 <div class="row">
     <div class="col-md-4">
-        <p>
-            <a href="/user/" class="btn btn-primary btn-block">Back to Map</a>
-        </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Add A Contact</h2>
+        <h3>Add A Contact</h3>
         <p>
             Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor.
         </p>
-        <form>
+        <form data-toggle="validator" role="form">
             <div class="form-group">
                 <label>Contact Name</label>
-                <input type="text" class="form-control" placeholder="First Name, Last Name" />
+                <input type="text" class="form-control" placeholder="First Name, Last Name" required />
             </div>
             <div class="form-group">
                 <label>Contact Phone Number</label>
-                <input type="text" class="form-control" placeholder="888-888-8888" />
+                <input type="text" id="phone" class="form-control phone" placeholder="888-888-8888" data-minlength="12" required />
             </div>
             <div class="form-group">
                 <label>Re-Type Contact Phone Number</label>
-                <input type="text" class="form-control" placeholder="888-888-8888" />
+                <input type="text" class="form-control phone" placeholder="888-888-8888" data-match="#phone" data-match-error="Phone numbers must match" placeholder="888-888-8888" data-minlength="12" required>
+        <div class="help-block with-errors"></div>
             </div>
-            <p class="text-danger">
-                Phone numbers must match
-            </p>
             <button type="submit" class="btn btn-primary btn-block">Add To Contacts</button>
         </form>
     </div>
     <div class="col-md-8">
-        <h2>Your Contacts</h2>
+        <h3>Your Contacts</h3>
         <p>
             Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor. Ut cursus, neque in pretium facilisis, dolor justo ultrices tortor, at consectetur mi erat eget odio.
         </p>

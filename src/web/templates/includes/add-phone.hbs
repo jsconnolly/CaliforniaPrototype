@@ -1,16 +1,16 @@
 <div class="row">
     <div class="user-reg col-md-4 col-md-offset-4">
-        <h2>Get Notifications By Phone</h2>
+        <h3>Get Notifications By Phone</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam erat libero</p>
-        <form action="/user/addlocation.html">
+        <form action="/confirmphone.html" data-toggle="validator" role="form">
             <div class="form-group">
                 <label>Enter Your Phone Number</label>
-                <input type="text" class="form-control" placeholder="888-888-8888" />
+                <input type="text" class="form-control phone" placeholder="888-888-8888" data-minlength="12"  id="txtphone" required/>
             </div>
             <p class="text-muted">
                 Example: 888-888-8888
             </p>
-            <button type="submit" class="btn btn-primary btn-block">Continue</button>
+            <button type="button" class="btn btn-primary btn-block" id="btnaddphone">Continue</button>
         </form>
     </div>
 </div>

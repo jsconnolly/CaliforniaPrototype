@@ -23,11 +23,33 @@
         max-width: 350px;
     }
 
+    .email-error {
+        display: none;
+    }
+
     .confirmation-number {
         .form-control {
+            display: inline-block;
             width: 24.4%;
             max-width: 50px;
             text-align: center;
+            padding: 5px;
+            @media (min-width: @screen-sm-min) {
+                padding: 10px 16px;
+            }
+        }
+        margin: 30px 0 45px;
+    }
+    .confirmation-number-phone {
+        .form-control {
+            display: inline-block;
+            width: 15%;
+            max-width: 50px;
+            text-align: center;
+            padding: 5px;
+            @media (min-width: @screen-sm-min) {
+                padding: 10px 16px;
+            }
         }
         margin: 30px 0 45px;
     }

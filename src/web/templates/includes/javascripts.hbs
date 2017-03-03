@@ -3,18 +3,20 @@
 
 {{! Bootstrap }}
 <script src="{{assets}}/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
 
 {{! Local scripts }}
 <script src="{{assets}}/js/custom.js"></script>
+<script src="{{assets}}/js/validator.js"></script>
+<script src="{{assets}}/js/config.js"></script>
+<script src="{{assets}}/js/register.js"></script>
+<script src="{{assets}}/js/login.js"></script>
+<script src="{{assets}}/js/addlocation.js"></script>
+<script src="{{assets}}/js/settings.js"></script>
+<script src="{{assets}}/js/phonecode.js"></script>
+<script src="{{assets}}/js/confirmphone.js"></script>
+<script src="{{assets}}/js/admin.js"></script>
 
-{{#if production}}
-{{! Twitter }}
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-{{/if}}
-
-<script>
-  $('[data-toggle=popover]').popover({
-    placement: 'right',
-    html: true
-  });
-</script>
+{{! CDN Vendor Scripts }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>

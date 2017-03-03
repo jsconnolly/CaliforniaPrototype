@@ -2,34 +2,72 @@
 title: Add Locations
 loggedin: true
 ---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+ //console.log("Token " + sessionStorage.getItem("token"));
+    if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
+
 <div class="row">
     <div class="col-md-4">
+        <h3>Add A Location</h3>
         <p>
-            <a href="/user/" class="btn btn-primary btn-block">Back to Map</a>
+            Enter a city or zip code below to receive emergancy and non-emergancy notifications for that area.
         </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Add A Location</h2>
-        <p>
-            Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor.
-        </p>
-        <form>
+        <form data-toggle="validator" role="form">
+           <div class="form-group">
+               <label>Name of Location</label>
+               <input type="text" class="form-control" placeholder="home" id="locationname" required />
+               <span class="text-muted">Examples: home, work, relative's home, etc.</span>
+           </div>
             <div class="form-group">
                 <label>City or Zip</label>
-                <input type="text" class="form-control" placeholder="12345" />
+                <input type="text" class="form-control" placeholder="12345" id="cityzip" required />
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Add To Watched Locations</button>
+            <button type="button" class="btn btn-primary btn-block submit" id="addlocation">Add To Watched Locations</button>
         </form>
     </div>
     <div class="col-md-8">
-        <h2>Your Watched Locations</h2>
+        <h3>Your Watched Locations</h3>
         <p>
-            Quisque elementum malesuada sem, rutrum pharetra augue suscipit auctor. Ut cursus, neque in pretium facilisis, dolor justo ultrices tortor, at consectetur mi erat eget odio.
+            Below are your saved locations. You will receive emergancy and non-emergency notifications for events that occur within 100 miles of each location. You can add, edit, or delete locations at any time.
         </p>
         <div class="row">
-            {{> added-location}}
+            <div id="locationsrow"></div>
         </div>
     </div>
+    <input type="hidden" id="editedlocationid">
 </div>
+
+<div class="modal fade" id="editlocation" tabindex="-1" role="dialog" aria-labelledby="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Edit Location</h3>
+      </div>
+      <div class="modal-body">
+         <form>
+            <div class="form-group">
+               <label>Location Name</label>
+               <input type="text" class="form-control" placeholder="" id="updatedlocationname" />
+            </div>
+            <div class="form-group">
+               <label>City or Zip</label>
+               <input type="text" class="form-control" placeholder="" id="updatedcityzip" />
+            </div>
+         </form>
+      </div>
+      <div class="modal-footer text-right">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         <button type="button" class="btn btn-primary" id="editLocationSave">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
