@@ -37,15 +37,23 @@ Because this application is not installed in the <a href='https://play.google.co
 If you need more assistance here, see <a href='https://www.applivery.com/docs/troubleshooting/android-unknown-sources'>this link</a> or <a href='https://android.gadgethacks.com/how-to/android-basics-enable-unknown-sources-sideload-apps-0161947/'>this one</a> 
 
 ####Install the apk File
-Now that the two things stopping us have been resolved, we can install the apk file. First, download the apk from <a href='INSERT_LINK_ONCE_UPLOADED'>this link [][]</a>.
+Now that the two things stopping us have been resolved, we can install the apk file. First, download the apk from <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/CaliforniaPrototype.apk'>this link</a>.
 
 Download it on to your phone directly either by transferring it from another source or just downloading it from the link above while on your mobile device. 
 
 Open the apk file in a <a href='http://www.tomsguide.com/us/pictures-story/518-best-android-file-managers.html#s3'>File Explorer</a> and install it. 
 
+Note, you may also need to install a package installer if that does not work; it depends on the maker of your device. 
+
 ####Final Steps
 
 You should be ready to go at this point. If you have any problems getting it installed, make sure know whether or not your phone is rooted as that can change the installation instructions. 
+
+If you would prefer not to register for a new account, we have a test account you are welcome to log into for observational purposes:
+
+<b>Email:</b> android@hotbsoftware.com
+
+<b>Password:</b> password
 
 ##Code Documentation
 

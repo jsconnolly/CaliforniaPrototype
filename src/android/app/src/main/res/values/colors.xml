@@ -193,8 +193,8 @@
     <color name="colorPrimary">#0071bc</color>
     <color name="colorPrimaryDark">#205493</color>
     <color name="colorPrimaryDarkest">#112e51</color>
-    <color name="colorAccent">#e31c3d</color>
-    <color name="colorAccent2">#981b1e</color>
+    <color name="colorAccent">#e59393</color>
+    <color name="colorAccent2">#e31c3d</color>
 
 
 </resources>
