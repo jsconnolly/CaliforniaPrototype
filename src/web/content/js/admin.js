@@ -65,6 +65,7 @@ $(document).ready(function(){
                                     document.getElementById("manualalerts").innerHTML += appendedval;
                                 }
                         
+                        
                    }
                  }
 

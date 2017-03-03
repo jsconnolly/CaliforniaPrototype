@@ -112,12 +112,7 @@ $(document).ready(function(){
 
      $('#btnUnsubscribe').click(function(e){
 
-         console.log("here");
-
-         var r = confirm("Are you sure to unsubcribe.");
-        if (r == true)
         {
-
             console.log(sessionStorage.getItem("id"));
             console.log(sessionStorage.getItem("token"));
             $.ajax({
@@ -130,7 +125,7 @@ $(document).ready(function(){
                cache:false,
                async:false,
                success:function(data){
-                     alert("user unsubcribed successfully");
+                     alert("User unsubcribed successfully.");
                      location.href = "/index.html";
                }
 
@@ -138,13 +133,6 @@ $(document).ready(function(){
         }
 
     });
-
-
-
-
-
-
-
 
 
 });
@@ -164,4 +152,4 @@ function getCookie(cname) {
         }
     }
     return "";
-} 
+}
