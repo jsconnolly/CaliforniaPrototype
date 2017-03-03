@@ -112,9 +112,9 @@ $(document).ready(function(){
 
      $('#btnUnsubscribe').click(function(e){
          
-         console.log("here");
+         //console.log("here");
          
-         var r = confirm("Are you sure to unsubcribe.");
+        var r = confirm("Are you sure to unsubcribe.");
         if (r == true) 
         {
               
@@ -131,7 +131,8 @@ $(document).ready(function(){
                async:false,
                success:function(data){
                      alert("user unsubcribed successfully");
-                     location.href = "/index.html";
+                     sessionStorage.clear();
+                     location.href = "/login.html";
                }
 
                           });

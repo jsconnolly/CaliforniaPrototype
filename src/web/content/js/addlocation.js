@@ -150,7 +150,7 @@ $(document).ready(function(){
                 'Content-Type':'application/json'
              },
                 }).done(function (result) {
-                //console.log(result);
+                //console.log("Getting all user locations");
                 if(result.locations !== undefined)
                 {
                     //alert("location added successfully");

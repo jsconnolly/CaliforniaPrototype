@@ -88,6 +88,7 @@
                     var lmarker =  new google.maps.Marker({
                       position: new google.maps.LatLng(result.locations[i].coordinates.lat, result.locations[i].coordinates.lng),
                       map: map,
+                      clickable:true,
                       icon:locationMarker,
                       title:result.locations[i].displayName
                     });
@@ -121,18 +122,12 @@
                     m.addListener('click', function(m) {
                         
                         var ct = this.title.replace(/\n/g, '<br />');
-                        
                         var iw = new google.maps.InfoWindow({map: this.map, content: ct});
-                        
-                        
                         iw.open(this.map, this);
                         console.warn(iw);
 
                     });       
-                    /*google.maps.event.addListener(map,'click', function(){
-                        infoWindow.content = m.title;
-                        infoWindow.open(map, m);
-                    });*/
+
                 }
             }
             })
