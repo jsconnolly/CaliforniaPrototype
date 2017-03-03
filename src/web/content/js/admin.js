@@ -12,24 +12,22 @@ $(document).ready(function(){
                 }).done(function (result) {
                   //console.log(result);
                 result.sort(date_sort_desc);
+                var arr = [];
                 //console.log(descendingOrder);
                  for(i = 0; i<result.length;i++)
                  {
-                     
-                     if(result[i].createdby === "server")
-                   {
-                         if( i <= 4)
-                        {
+                         if(result[i].createdby === "server")
+                       {
                             var d = new Date(result[i].date);
-                            var appendedval = "<a href='#' class='admin-api-alert'><div class='well'><h5>" + result[i].name +"<span class='pull-right'>" + d.toDateString() +"</span></h5><p>"+ result[i].type  +"</p></div></a>";
+                         var appendedval = "<a href='#' class='admin-api-alert'><div class='well'><h5>" + result[i].name +"<span class='pull-right'>" + d.toDateString() +"</span></h5><p>"+ result[i].type  +"</p></div></a>";
 
-                                if(document.getElementById("alerts") != null)
-                                {
+                            if(document.getElementById("alerts") != null)
+                            {
 
-                                    document.getElementById("alerts").innerHTML += appendedval;
-                                }
-                        }
-                   }
+                                document.getElementById("alerts").innerHTML += appendedval;
+                            }
+
+                       }
                  }
 
                 })
