@@ -26,7 +26,9 @@
     "tunnel-ssh":"4.1.2",
     "sendmail":"1.1.1",
      "cron":"1.2.1",
-     "node-ses":"2.0.3"
+     "node-ses":"2.0.3",
+     "winston":"2.3.1",
+     "winston-daily-rotate-file":"1.4.4"
   
     
   }
