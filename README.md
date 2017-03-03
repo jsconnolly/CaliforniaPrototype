@@ -2,9 +2,9 @@
 
 ##Links
 
-<b>Admin Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/admin'>Click Here</a>
+<b>Admin Website:</b> <a href='http://ca-prototype-hotb.s3-website-us-west-1.amazonaws.com/admin'>Click Here</a>
 
-<b>Consumer Website:</b> <a href='http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com'>Click Here</a>
+<b>Consumer Website:</b> <a href='http://ca-prototype-hotb.s3-website-us-west-1.amazonaws.com'>Click Here</a>
 
 ##User Accounts
 
@@ -24,14 +24,14 @@ We chose a modern technology stack that utilized open source technologies and im
 
 The project team met daily to review project status, action items and deliverables. Progress was tracked using Aha!, our internal project management and ticketing system, and we relied upon Slack as our collaboration tool. All code updates were committed to Github along with our design iterations and test scripts.
 
-Further information about our process can be found in the California RFI Process Documentation attached <a href='INSERT LINK TO PROCESS DOC PDF'>here</a> and in our responses below.
+Further information about our process can be found in the California RFI Process Documentation attached <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/California+Prototype.pdf'>here</a> and in our responses below.
 
 #ARCHITECTURAL FLOW
--TBD-
+<a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/CaliforniaPrototype-InfrastructureDiagram-Current.jpg'>here</a>
 
 #US DIGITAL SERVICES PLAYBOOK
 
-We followed the US Digital Services Playbook. Our responses to each can be found <a href='[INSERT LINK TO PLAYBOOK RESPONSES]'>here</a>
+We followed the US Digital Services Playbook. Our responses to each can be found <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/Play+Book.pdf'>here</a>
 
 #OTHER REQUESTED ITEMS
 
@@ -57,15 +57,15 @@ We assigned the role of Project Lead to Jason Connolly. Jason acted as the Busin
 
 8. DevOps Engineer – Eric Dobyns
 
-##c. Understood what people needed1, by including people in the prototype development and design process;
+##c. Understood what people needed, by including people in the prototype development and design process;
 
 During our initial discovery process we utilized surveys and questionnaires conducted with consumers and prospective users which helped shape our understanding of user requirements and key features. We also conducted a phone interview with Gary Winuk, former Chief Deputy Director and General Counsel for the Office of Homeland Security (OHS), to review the initial wireframes for the admin portal. His experience and insights were extremely valuable in shaping the features and functions for that side of the platform
 
-We constructed an initial user survey to get feedback on general user experience with emergency notification services. Results of the survey are included <a href='[INSERT LINK TO SURVEY RESULTS]'>here</a>  
+We constructed an initial user survey to get feedback on general user experience with emergency notification services. Results of the survey are included <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/California+Emergency+%26+Non+Emergency+Alerts+Survey+-+Google+Forms+copy.pdf'>here</a>  
 
-We also had users completed questionnaires following a user session with a clickable prototype. A sample of those responses can be found <a href='[INSERT LINK TO QUESTIONNAIRE RESPONSES]'>here</a>.
+We also had users completed questionnaires following a user session with a clickable prototype. A sample of those responses can be found <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/User+Testing+Interview+for+CA+Prototype+-+Google+Docs.pdf'>here</a>.
 
-Interview Notes with Gary Winuk can be found <a href='[INSERT LINK TO Gary Winuk Interview]'>here</a>.
+Interview Notes with Gary Winuk can be found <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/Gary+Winuk+Interview+-+Google+Docs.pdf'>here</a>.
 
 ##d. Used at least a minimum of three (3) “user-centric design” techniques and/or tools;
 
@@ -77,7 +77,7 @@ A GitHub repository was setup to capture code commits for each developer. We als
 
 ##f. Used Swagger to document the RESTful API, and provided a link to the Swagger API;
 
-Swagger was used to document our RESTful APIs and other technical documentation. A link to our Swagger account can be found here [INSERT LINK TO SWAGGER].
+Swagger was used to document our RESTful APIs and other technical documentation. A link to our Swagger account can be found <a href='http://ec2-52-53-93-51.us-west-1.compute.amazonaws.com:8080/'>here</a>.
 
 ##g. Complied with Section 508 of the Americans with Disabilities Act and WCAG 2.0;
 
@@ -85,7 +85,7 @@ We created our and implemented our designs and user experience in accordance wit
 
 ##h. Created or used a design style guide and/or a pattern library;
 
-Following the initial wireframe creation, we created a <a href='[INSERT LINK TO Style guide]'>style guide and color palette</a> that was used throughout the application for consistency and uniformity. 
+Following the initial wireframe creation, we created a <a href='https://s3-us-west-1.amazonaws.com/ca-prototype-hotb-assets/Styleguide.pdf'>style guide and color palette</a> that was used throughout the application for consistency and uniformity. 
 
 ##i. Performed usability tests with people;
 
@@ -93,19 +93,19 @@ We conducted usability tests with both consumer and technical experts. On the co
 
 ##j. Used an iterative approach, where feedback informed subsequent work or versions of the prototype;
 
-Our initial designs were based on Key Experience Pillars documents created for both the consumer and administrator sections of the application. These documents were created and based on feedback we received from our initial consumer survey. We made adjustments to the design and system features following receipt of our user questionnaires and phone interview with Gary Winuk. This is evidenced by the design commitments made to GitHub on <a href='[INSERT LINK HERE]'>02/XX</a> and <a href='[INSERT LINK HERE]'>02/XX</a>.
+Our initial designs were based on Key Experience Pillars documents created for both the consumer and administrator sections of the application. These documents were created and based on feedback we received from our initial consumer survey. We made adjustments to the design and system features following receipt of our user questionnaires and phone interview with Gary Winuk.
 
 ##k. Created a prototype that works on multiple devices, and presents a responsive design;
 
 The prototype works across multiple devices (phones, tablets and PCs) and is supported by multiple browsers and is responsive to the specific device.
 
-##l. Used at least five (5) modern2 and open-source technologies, regardless of architectural layer (frontend, backend, etc.);
+##l. Used at least five (5) modern and open-source technologies, regardless of architectural layer (frontend, backend, etc.);
 
 We used at least five (5) modern and open-source technologies including:
 
 ###Front-End
 
-* Bootstrap
+*Bootstrap
 
 ###API/Back-End
 
@@ -126,7 +126,9 @@ We used at least five (5) modern and open-source technologies including:
 
 ##m. Deployed the prototype on an Infrastructure as a Service (IaaS) or Platform as Service (PaaS) provider, and indicated which provider they used;
 
-We deployed the prototype to AWS using an EC2 instance that was running on XX [Linux, Sensu?] servers connected to a Mongo database.
+Our API is built using dockerized Node.js containers deployed on Amazon EC2 Instances. The EC2 instances are managed with Amazon ECS and auto-scale based on incoming traffic. All incoming traffic is passed through an elastic load balancer which automatically distributes incoming application traffic across multiple Amazon EC2 instances.
+
+Our database is comprised of a MongoDB cluster with three replica sets to ensure high availability in case one of the servers goes down.
 
 ##n. Developed automated unit tests for their code;
 
@@ -134,11 +136,11 @@ We developed automated unit UI tests written in Python that ran on an instance o
 
 ##o. Setup or used a continuous integration system to automate the running of tests and continuously deployed their code to their IaaS or PaaS provider;
 
-We setup Docker to containerize our server environment to handle continuous deployments. Deployments were automatically kicked off and managed through Jenkins following each commitment to a development branch. Automated tests built with Selenium were initiated following each deployment.
+We setup Docker to containerize our server environment to handle continuous deployments. Deployments were automatically kicked off and managed through Jenkins following each commitment to a development branch. Automated tests built with Selenium were initiated following each deployment. Some of these jobs consist of deploying dockerized Node.js containers to our staging and production AWS ECS Clusters; making nightly backups of the staging and production MongoDB databases; executing NPM, Bower and Grunt tasks to build and deploy our website to staging and production AWS S3 buckets; and running automated tests to validate previous updates. In addition to automated tests, our QA engineers conduct manual testing of each update across all platforms. 
 
 ##p. Setup or used configuration management;
 
-Docker files and Jenkins were used to configure deployments. [ERIC/MIKE HELP]
+Jenkins and Docker files were used for configuration management.
 
 ##q. Setup or used continuous monitoring;
 
@@ -150,7 +152,7 @@ We utilized Docker for our containerization.
 
 ##s. Provided sufficient documentation to install and run their prototype on another machine; 
 
-[INSERT SETUP INSTRUCTIONS]--
+See individual README.md files for each component.
 
 ##t. Prototype and underlying platforms used to create and run the prototype are openly licensed and free of charge.
 
