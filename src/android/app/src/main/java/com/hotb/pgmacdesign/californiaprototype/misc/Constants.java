@@ -44,6 +44,9 @@ public class Constants {
     public static final String LOCATION_LATITUDE = "location_latitude";
     public static final String LOCATION_LONGITUDE = "location_longitude";
     public static final String LOCATION_LAST_TIME_SET = "location_last_time_set";
+    public static final String LAT_CLICKED = "lat_clicked";
+    public static final String LNG_CLICKED = "lng_clicked";
+    public static final String ZOOM_WHEN_CLICKED = "zoom_when_clicked";
 
 
     /////////////////////////////////////////////////////////////////

@@ -28,7 +28,7 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
  * Created by pmacdowell on 2017-02-24.
- *   //Removed on 2017-02-27 As per meeting and AHA discussion
+ *   //Removed / Deprecated on 2017-02-27 As per meeting and AHA discussion
  */
 @Deprecated
 public class AddContactFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
