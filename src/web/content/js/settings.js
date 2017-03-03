@@ -111,7 +111,7 @@ $(document).ready(function(){
     });
 
      $('#btnUnsubscribe').click(function(e){
-        {
+        
             console.log(sessionStorage.getItem("id"));
             console.log(sessionStorage.getItem("token"));
             $.ajax({
@@ -130,7 +130,7 @@ $(document).ready(function(){
                }
 
                           });
-        }
+        
 
     });
 

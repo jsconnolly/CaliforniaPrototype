@@ -38,8 +38,8 @@ headers = APIWrapper.WebBuilders.getHeaders(None)
 
 # Login body & login to server
 loginBody = {
-    "email" : "test2@hotbsoftware.com",
-    "password" : "password123"}
+    "email" : APIWrapper.Constants.email2,
+    "password" : APIWrapper.Constants.password2}
 responseLogin = apiLogin.makePostRequest(headers, loginBody)
 token = APIWrapper.Utilities.convertJsonToObject(responseLogin).__dict__['token']
 headers = APIWrapper.WebBuilders.getHeaders(token)
