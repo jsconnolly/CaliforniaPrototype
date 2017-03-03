@@ -25,11 +25,12 @@ $(document).ready(function(){
             type: "POST",
             url: APIURL + "users/signin",
             dataType: "json",
+            cache:false,
             contentType: "application/json",
             data: JSON.stringify(LoginData),
             }).done(function (result) {
             console.log(result);
-            if(result.token !== undefined)
+            if(result.token !== undefined && result.isAdmin === undefined)
             {
             
                 
@@ -40,13 +41,22 @@ $(document).ready(function(){
                     }
                 setCookie("id",result.id,1);
                 setCookie("token",result.token,1);
-                setCookie("phone",result.phone,1);
+                if(result.phone !== undefined)
+                {
+                  setCookie("phone",result.phone,1);
+                }
+                else {setCookie("phone","",1);}
                 setCookie("email",result.email,1);
-                //localStorage.setItem("locations", JSON.stringify(result.locations));
-                //setCookie("locations",JSON.stringify(result.locations),1);
                 $('#password').val("");
                 $('#username').val("");
                 window.location.href = "user/index.html";
+            }
+            else
+            {
+                alert("Invalid login");
+                $('#password').val("");
+                $('#username').val("");
+                
             }
             })
             .fail(function (data, textStatus, xhr) {
@@ -79,11 +89,12 @@ $(document).ready(function(){
             type: "POST",
             url: APIURL + "users/signin",
             dataType: "json",
+            cache:false,
             contentType: "application/json",
             data: JSON.stringify(LoginAdminData),
             }).done(function (result) {
             console.log(result);
-            if(result.token !== undefined)
+            if(result.token !== undefined && result.isAdmin !== undefined)
             {
 
                 if (typeof(Storage) !== "undefined") {
@@ -103,6 +114,13 @@ $(document).ready(function(){
                 $('#password').val("");
                 $('#username').val("");
                 window.location.href = "landing.html";
+            }
+            else
+            {
+                alert("Login Failed");
+                $('#password').val("");
+                $('#username').val("");
+                 
             }
             })
             .fail(function (data, textStatus, xhr) {

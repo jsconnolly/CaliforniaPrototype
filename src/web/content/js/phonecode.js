@@ -32,8 +32,9 @@ $(document).ready(function(){
                    })
                     .fail(function (data, textStatus, xhr) {
                          //console.log(data.responseJSON.Error);
-                         alert("There seems to be an issue with adding a phone. Please try again");
-                        location.href = "/user/index.html";
+                         
+                         alert("There seems to be an issue with adding a phone. Please try again." + data.responseJSON.Error);
+                        //location.href = "/user/index.html";
                          /*console.log("error", data.status);
                          console.log("STATUS: "+xhr); */
                     });

@@ -59,9 +59,6 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-
-            //infoWindow.setPosition(pos);
-            //infoWindow.setContent('Location found.');
             map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -70,30 +67,7 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
-       /* var eventType = 'Event Type',
-            eventLocation = 'Affected Location',
-            eventDetails = 'Event Details';
 
-        var contentString = '<div class="popover top">' +
-            '<div class="arrow"></div>' +
-            '<div class="popover-content">' +
-            '<h5>' + eventType + '</h5>' +
-            + eventLocation + '<br/>' +
-            eventDetails +
-            '</div>' +
-            '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });*/
-
-       /* var marker = new google.maps.Marker({
-            position: map.getCenter(),
-            icon: locationMarker,
-            draggable: true,
-            map: map
-        });*/
-        //var marker;
         // Get locations and alerts from user object and show on google maps
      if(sessionStorage.getItem("id") != null)
     {
@@ -117,6 +91,14 @@
                       icon:locationMarker,
                       title:result.locations[i].displayName
                     });
+                    lmarker.addListener('click', function(lmarker) {
+                        
+                        var ct = this.title.replace(/\n/g, '<br />');
+                        var iw = new google.maps.InfoWindow({map: this.map, content: ct});
+                        iw.open(this.map, this);
+                        console.warn(iw);
+
+                    });  
 
                 }
 
@@ -128,12 +110,29 @@
                 for(i=0;i<result.alerts.length;i++)
                 {
                     var d = new Date(result.alerts[i].date);
-                    new google.maps.Marker({
-                      position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
-                      map:map,
-                      icon:alertMarker,
-                      title: "Location: " + result.alerts[i].location + "\nType: " + result.alerts[i].type + "\nName: " + result.alerts[i].name + "\nDate: " + d.toDateString()
+                    
+                    var m = new google.maps.Marker({
+                        position: new google.maps.LatLng(result.alerts[i].loc[1], result.alerts[i].loc[0]),
+                        map:map,
+                        clickable:true,
+                        icon:alertMarker,
+                        title: "Location: " + result.alerts[i].location + "\nType: " + result.alerts[i].type + "\nName: " + result.alerts[i].name + "\nDate: " + d.toDateString()
                     });
+                    m.addListener('click', function(m) {
+                        
+                        var ct = this.title.replace(/\n/g, '<br />');
+                        
+                        var iw = new google.maps.InfoWindow({map: this.map, content: ct});
+                        
+                        
+                        iw.open(this.map, this);
+                        console.warn(iw);
+
+                    });       
+                    /*google.maps.event.addListener(map,'click', function(){
+                        infoWindow.content = m.title;
+                        infoWindow.open(map, m);
+                    });*/
                 }
             }
             })
@@ -141,9 +140,7 @@
              alert(data.responseJSON.Error);
             });
     }
-       /* marker.addListener('click', function() {
-            infowindow.open(map, marker);
-        });*/
+
 
 
 

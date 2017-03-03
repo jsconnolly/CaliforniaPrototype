@@ -21,6 +21,7 @@ $(document).ready(function(){
                    };
                     $.ajax({
                     type: "POST",
+                    cache:false,
                     url: APIURL + "users/changePassword",
                     headers: {
                             'token': sessionStorage.getItem("token"),
@@ -109,7 +110,29 @@ $(document).ready(function(){
 
     });
 
-
+     $('#btnUnsubscribe').click(function(e){
+         
+         
+         $.ajax({
+       url : APIURL + "users/" + sessionStorage.getItem("id"),
+       headers: {
+                'token': sessionStorage.getItem("token"),
+                'Content-Type':'application/json'
+             },
+       method: "DELETE",
+       async:false,
+       success:function(data){
+             alert("user unsubcribed successfully");
+             location.reload(true);
+       }
+    });
+         
+         
+         
+         
+         
+         
+     });
 
 
 });
