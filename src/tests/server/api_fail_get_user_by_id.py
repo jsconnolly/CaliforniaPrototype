@@ -41,6 +41,7 @@ errorMsg = APIWrapper.WebBuilders.getError(responseObject)
 if errorMsg != APIWrapper.Constants.ERROR_STRING:
     print(errorMsg)
 
+APIWrapper.Utilities.printStr("(intended to fail)")
 
 # End test
 APIWrapper.Utilities.endTest()

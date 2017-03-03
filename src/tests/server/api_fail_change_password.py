@@ -6,8 +6,8 @@ APIWrapper.Utilities.startTest()
 
 #--------------------Login Token-------------------------------------
 # init variables needed:
-strEmail = "test@hotbsoftware.com"
-strPW = "password123"
+strEmail = APIWrapper.Constants.email
+strPW = APIWrapper.Constants.password
 APIWrapper.Utilities.startTest()
 
 # Base Url + Path + endpoint
@@ -73,14 +73,14 @@ api = APIWrapper.WebCalls(baseUrl)
 
 
 # Generate POST / PUT Body
-print ('\nChanging password of user with ID that dosent exist')
+print ('\nChanging password of user with ID that doesn\'t exist')
 passwordFailBody = {
     'id' : '1111111111111111',
     'password' : 'password1'
 }
 #make outbound call
 response0 = api.makePostRequest(headers, passwordFailBody)
-APIWrapper.Utilities.printStr(response0)
+APIWrapper.Utilities.printStr("Intended to fail: " + str(response0))
 
 
 
