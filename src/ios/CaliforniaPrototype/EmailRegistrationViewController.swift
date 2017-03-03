@@ -61,17 +61,24 @@ class EmailRegistrationViewController: UIViewController {
         }
         
         if ValidationMethods().isValidEmail(emailString) && ValidationMethods().isValidPassword(passwordString) {
+            var textName = String()
+            if let name = self.nameTextField.text {
+                if !name.isEmpty {
+                    textName = name
+                } else {
+                    textName = ""
+                }
+            }
             self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             self.spinner.center = self.view.center
             self.spinner.hidesWhenStopped = true
             self.spinner.startAnimating()
             self.view.addSubview(self.spinner)
-            APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: nil, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
+            APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: textName, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
                 self.spinner.stopAnimating()
                 guard let id = response?.id else { return }
                 guard let token = response?.token else { return }
-                _ = Keychain.set(key: "userId", value: id)
-                _ = Keychain.set(key: "token", value: token)
+                UserManager.loginAndSave(userId: id, token: token)
                 DispatchQueue.main.async {
                     self.navigationController?.pushViewController(LocationPermissionsViewController(), animated: true)
                 }

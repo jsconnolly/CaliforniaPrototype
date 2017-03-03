@@ -34,7 +34,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="VnN-fH-BYc">
-                    <rect key="frame" x="16" y="117" width="343" height="293"/>
+                    <rect key="frame" x="16" y="123" width="343" height="223"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBo-LG-6bc">
                             <rect key="frame" x="0.0" y="0.0" width="343" height="65"/>
@@ -103,6 +103,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ik-Hp-Xnz">
                                     <rect key="frame" x="0.0" y="21" width="343" height="30"/>
                                     <state key="normal" title="Register with Email"/>
+                                    <connections>
+                                        <action selector="registerWithEmailButtonTapped:" destination="-1" eventType="touchUpInside" id="Ixa-F0-4QW"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,31 +119,6 @@
                                 <constraint firstAttribute="height" constant="55" id="yPg-sU-2o2"/>
                             </constraints>
                         </view>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kY-jx-kv7">
-                            <rect key="frame" x="0.0" y="238" width="343" height="55"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mu-Dd-d3H">
-                                    <rect key="frame" x="0.0" y="8" width="343" height="17"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uvR-nk-xHK">
-                                    <rect key="frame" x="0.0" y="25" width="343" height="30"/>
-                                    <state key="normal" title="Continue without an account"/>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="9mu-Dd-d3H" secondAttribute="trailing" id="5rT-hX-Caz"/>
-                                <constraint firstItem="9mu-Dd-d3H" firstAttribute="leading" secondItem="9kY-jx-kv7" secondAttribute="leading" id="7Ym-Ce-bqP"/>
-                                <constraint firstItem="9mu-Dd-d3H" firstAttribute="top" secondItem="9kY-jx-kv7" secondAttribute="top" constant="8" id="9lo-v6-Nzx"/>
-                                <constraint firstItem="uvR-nk-xHK" firstAttribute="top" secondItem="9mu-Dd-d3H" secondAttribute="bottom" id="IB7-VL-bVU"/>
-                                <constraint firstAttribute="trailing" secondItem="uvR-nk-xHK" secondAttribute="trailing" id="ZiN-QU-2Pr"/>
-                                <constraint firstAttribute="height" constant="55" id="nPX-Cl-gH5"/>
-                                <constraint firstItem="uvR-nk-xHK" firstAttribute="leading" secondItem="9kY-jx-kv7" secondAttribute="leading" id="owp-bN-cFs"/>
-                            </constraints>
-                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="yAx-t3-GiJ" firstAttribute="leading" secondItem="VnN-fH-BYc" secondAttribute="leading" id="37X-CQ-sTW"/>
@@ -149,8 +127,6 @@
                         <constraint firstAttribute="trailing" secondItem="HAv-Q0-2YW" secondAttribute="trailing" id="PD9-tI-rF1"/>
                         <constraint firstAttribute="trailing" secondItem="yAx-t3-GiJ" secondAttribute="trailing" id="X1d-m4-sui"/>
                         <constraint firstItem="Te3-JB-FjR" firstAttribute="leading" secondItem="VnN-fH-BYc" secondAttribute="leading" id="c5o-oC-k8Z"/>
-                        <constraint firstAttribute="trailing" secondItem="9kY-jx-kv7" secondAttribute="trailing" id="dgW-bP-C44"/>
-                        <constraint firstItem="9kY-jx-kv7" firstAttribute="leading" secondItem="VnN-fH-BYc" secondAttribute="leading" id="iny-Xx-L0C"/>
                         <constraint firstAttribute="trailing" secondItem="Te3-JB-FjR" secondAttribute="trailing" id="taJ-c8-XlE"/>
                         <constraint firstItem="dBo-LG-6bc" firstAttribute="leading" secondItem="VnN-fH-BYc" secondAttribute="leading" id="w4D-zE-23C"/>
                     </constraints>
@@ -177,9 +153,8 @@
                 <constraint firstItem="BGk-zH-Ob0" firstAttribute="centerX" secondItem="mYT-IX-vyc" secondAttribute="centerX" id="fdw-38-wDe"/>
                 <constraint firstItem="VnN-fH-BYc" firstAttribute="leading" secondItem="mYT-IX-vyc" secondAttribute="leading" constant="16" id="hVS-Eg-yhn"/>
                 <constraint firstAttribute="trailing" secondItem="KhI-1t-LIf" secondAttribute="trailing" constant="16" id="jG9-oY-HGY"/>
-                <constraint firstAttribute="bottom" secondItem="VnN-fH-BYc" secondAttribute="bottom" priority="999" constant="267" id="pHZ-05-L5B"/>
                 <constraint firstItem="KhI-1t-LIf" firstAttribute="top" secondItem="mYT-IX-vyc" secondAttribute="top" constant="30" id="rYC-fg-Wmf"/>
-                <constraint firstItem="VnN-fH-BYc" firstAttribute="top" secondItem="Ukw-9q-OTJ" secondAttribute="bottom" constant="24" id="yhH-ZB-TPQ"/>
+                <constraint firstItem="VnN-fH-BYc" firstAttribute="top" secondItem="Ukw-9q-OTJ" secondAttribute="bottom" constant="30" id="yhH-ZB-TPQ"/>
                 <constraint firstAttribute="trailing" secondItem="VnN-fH-BYc" secondAttribute="trailing" constant="16" id="zik-h3-CkR"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="54.5"/>

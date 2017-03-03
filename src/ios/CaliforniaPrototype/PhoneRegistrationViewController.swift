@@ -34,23 +34,19 @@ class PhoneRegistrationViewController: UIViewController, UITextFieldDelegate {
                 self.animateStackSubview(1, to: true)
             }
             
-            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            self.spinner.center = self.view.center
-            self.spinner.hidesWhenStopped = true
-            self.spinner.startAnimating()
-            self.view.addSubview(self.spinner)
+            self.showAndStartSpinner()
             let phoneString = "1" + phoneTextFieldString
             APIManager.sharedInstance.registerUserWithPhone(number: phoneString, success: { (response : [String : Any?]) in
-                self.spinner.stopAnimating()
                 if response["registered"] as! String == "success" {
                     DispatchQueue.main.async {
+                        self.stopAndRemoveSpinner()
                         let verificationVC = PhoneVerificationViewController()
                         verificationVC.phoneNumber = phoneString
                         self.navigationController?.pushViewController(verificationVC, animated: true)
                     }
                 }
             }, failure: { (error) in
-                self.spinner.stopAnimating()
+                self.stopAndRemoveSpinner()
             })
             
         }
@@ -59,6 +55,13 @@ class PhoneRegistrationViewController: UIViewController, UITextFieldDelegate {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func registerWithEmailButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(EmailRegistrationViewController(), animated: true)
+    }
+    
+    
+    
 
     func animateStackSubview(_ viewNumber: Int,to bool: Bool) {
         self.stackView.arrangedSubviews[viewNumber].isHidden = bool
@@ -97,5 +100,19 @@ class PhoneRegistrationViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.window?.endEditing(true)
         self.phoneTextField.layer.borderColor = UIColor.textFieldBorderGray().cgColor
+    }
+    
+    //MARK: - Activity Indicator Methods
+    func showAndStartSpinner() {
+        self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.spinner.center = self.view.center
+        self.spinner.hidesWhenStopped = true
+        self.spinner.startAnimating()
+        self.view.addSubview(self.spinner)
+    }
+    
+    func stopAndRemoveSpinner() {
+        self.spinner.stopAnimating()
+        self.spinner.removeFromSuperview()
     }
 }

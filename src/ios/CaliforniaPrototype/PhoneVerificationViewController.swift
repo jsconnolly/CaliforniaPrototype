@@ -58,14 +58,17 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
             }
         }
         if valid == true {
+            self.showAndStartSpinner()
             let fullPhoneString = "1" + self.phoneNumber
             APIManager.sharedInstance.signInWithPhone(number: fullPhoneString, password: self.validCode, success: { (response: [String : Any?]) in
                 UserDefaultManager.setLoggedInStatus(true)
                 DispatchQueue.main.async {
+                    self.showAndStartSpinner()
                     self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
                 }
             }, failure: { (error) in
                 DispatchQueue.main.async {
+                    self.stopAndRemoveSpinner()
                     let alert = CustomAlertControllers.controllerWith(title: "Error", message: "An error occurred with your request. Please try again.")
                     let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                     alert.addAction(okAction)
@@ -124,6 +127,20 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.window?.endEditing(true)
+    }
+    
+    //MARK: - Activity Indicator Methods
+    func showAndStartSpinner() {
+        self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.spinner.center = self.view.center
+        self.spinner.hidesWhenStopped = true
+        self.spinner.startAnimating()
+        self.view.addSubview(self.spinner)
+    }
+    
+    func stopAndRemoveSpinner() {
+        self.spinner.stopAnimating()
+        self.spinner.removeFromSuperview()
     }
     
 }

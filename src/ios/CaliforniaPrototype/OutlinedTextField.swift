@@ -19,14 +19,14 @@ class OutlinedTextField: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.origin.x + 8,
                       y: bounds.origin.y,
-                      width: bounds.width,
+                      width: bounds.width - 8,
                       height: bounds.height)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.origin.x + 8,
                       y: bounds.origin.y,
-                      width: bounds.width,
+                      width: bounds.width - 8,
                       height: bounds.height)
     }
 

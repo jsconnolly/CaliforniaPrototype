@@ -78,12 +78,17 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func emailLoginButtonTapped(_ sender: Any) {
-        
+        self.navigationController?.pushViewController(EmailLoginViewController(), animated: true)
     }
 
     @IBAction func noAccountButtonTapped(_ sender: Any) {
-        
+        self.navigationController?.pushViewController(RegisterChoiceViewController(), animated: true)
     }
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     
 //MARK: - UITextField delegate methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -106,4 +111,6 @@ class PhoneLoginViewController: UIViewController, UITextFieldDelegate {
         self.view.window?.endEditing(true)
         self.phoneTextField.layer.borderColor = UIColor.textFieldBorderGray().cgColor
     }
+    
+    
 }

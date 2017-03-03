@@ -31,5 +31,9 @@ class RegisterChoiceViewController: UIViewController {
         self.navigationController?.pushViewController(PhoneLoginViewController(), animated: true)
     }
     
+    @IBAction func backButtonTapped(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
 
 }

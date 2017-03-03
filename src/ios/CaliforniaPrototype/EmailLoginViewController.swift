@@ -41,18 +41,6 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-//        if !ValidationMethods().isValidPassword(passwordString) {
-//            self.setTextFieldBorderRed(self.passwordTextField)
-//            if self.stackView.arrangedSubviews[3].isHidden == true {
-//                self.animateStackSubview(3, to: false)
-//            }
-//        } else {
-//            self.setTextFieldBorderBlack(self.passwordTextField)
-//            if self.stackView.arrangedSubviews[3].isHidden == false {
-//                self.animateStackSubview(3, to: true)
-//            }
-//        }
-        
         if ValidationMethods().isValidEmail(emailString) {
             self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
             self.spinner.center = self.view.center
@@ -63,9 +51,7 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                 self.spinner.stopAnimating()
                 guard let token = response["token"] else { return }
                 guard let id = response["id"] else { return }
-                _ = Keychain.set(key: "token", value: token as! String)
-                _ = Keychain.set(key: "userId", value: id as! String)
-                UserDefaultManager.setLoggedInStatus(true)
+                UserManager.loginAndSave(userId: id as! String, token: token as! String)
                 DispatchQueue.main.async {
                     self.dismiss(animated: true, completion: nil)
                 }
@@ -79,6 +65,21 @@ class EmailLoginViewController: UIViewController, UITextFieldDelegate {
                     }
             })
         }
+    }
+    @IBAction func loginWithPhoneButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(PhoneLoginViewController(), animated: true)
+    }
+    
+    @IBAction func createAnAccountButtonTapped(_ sender: Any) {
+        self.navigationController?.pushViewController(RegisterChoiceViewController(), animated: true)
+    }
+    
+    @IBAction func forgotButtonTapped(_ sender: Any) {
+        
+    }
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func animateStackSubview(_ viewNumber: Int,to bool: Bool) {

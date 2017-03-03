@@ -26,9 +26,7 @@ class PhonePasswordViewController: UIViewController {
         APIManager.sharedInstance.signInWithPhone(number: phoneNumber, password: pwdString, success: { (response) in
             guard let token = response["token"] else { return }
             guard let id = response["id"] else { return }
-            _ = Keychain.set(key: "token", value: token as! String)
-            _ = Keychain.set(key: "id", value: id as! String)
-            UserDefaultManager.setLoggedInStatus(true)
+            UserManager.loginAndSave(userId: id as! String, token: token as! String)
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }

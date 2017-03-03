@@ -66,15 +66,15 @@ class UserLocationDetailViewController: UIViewController, UITextFieldDelegate, U
                 let smsOn = self.smsSwitch.isOn
                 let emailOn = self.emailSwitch.isOn
                 guard let coordinates = location?.coordinates else { return }
+                guard let id = location?.id else { return }
                 self.showAndStartSpinner()
-                APIManager.sharedInstance.updateLocation(displayName: displayName, coordinates: coordinates, alertRadius: radiusText, enablePushNotifications: false, enableSMS: smsOn, enableEmail: emailOn, locationId: self.location?.id, success: { (response) in
+                APIManager.sharedInstance.updateLocation(displayName: displayName, coordinates: coordinates, alertRadius: radiusText, enablePushNotifications: false, enableSMS: smsOn, enableEmail: emailOn, locationId: id, success: { (response) in
                     DispatchQueue.main.async {
                         self.stopAndRemoveSpinner()
                         self.notifyUser(title: "Success", message: "Profile updated successfully.", timeToDissapear: 1.5)
                     }
                     
                 }, failure: { (error) in
-                    self.stopAndRemoveSpinner()
                     DispatchQueue.main.async {
                         self.stopAndRemoveSpinner()
                         let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error saving the location, please try saving again.")

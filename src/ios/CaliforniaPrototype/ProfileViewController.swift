@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Obtain user and set text fields
     func getUser() {
         self.showAndStartSpinner()
-        APIManager.sharedInstance.getUserWithId(id: Keychain.get(key: "id") as! String, success: { (response) in
+        APIManager.sharedInstance.getUserWithId(id: UserManager.retrieveUserId(), success: { (response) in
             self.user = response
             DispatchQueue.main.async {
                 self.stopAndRemoveSpinner()
@@ -57,12 +57,18 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         } else {
             self.numberTextField.text?.removeAll()
         }
-        if let emailOn = self.user?.locations?[0].enableEmail {
-            self.emailSwitch.setOn(emailOn, animated: true)
+        
+        if let hasLocations = self.user?.locations {
+            if hasLocations.count != 0 {
+                if let emailOn = hasLocations[0].enableEmail {
+                    self.emailSwitch.setOn(emailOn, animated: true)
+                }
+                if let smsOn = hasLocations[0].enableSMS {
+                    self.smsSwitch.setOn(smsOn, animated: true)
+                }
+            }
         }
-        if let smsOn = self.user?.locations?[0].enableSMS {
-            self.smsSwitch.setOn(smsOn, animated: true)
-        }
+        
         
     }
     

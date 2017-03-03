@@ -20,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CHOOSE A REGISTRATION METHOD" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waC-AN-MQ8">
-                    <rect key="frame" x="16" y="30" width="343" height="19.5"/>
+                    <rect key="frame" x="16" y="35" width="343" height="19.5"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -52,13 +52,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a method for creating an account to set preferences and add locations to monitor." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7N-4k-hbC">
-                    <rect key="frame" x="16" y="57" width="343" height="38.5"/>
+                    <rect key="frame" x="16" y="62" width="343" height="38.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecp-Ad-sMB">
-                    <rect key="frame" x="132" y="547" width="111" height="35"/>
+                    <rect key="frame" x="132" y="452.5" width="111" height="35"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="2aN-Zf-BV3"/>
                     </constraints>
@@ -68,7 +68,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMw-F6-LTA">
-                    <rect key="frame" x="124" y="597" width="127" height="35"/>
+                    <rect key="frame" x="124" y="497.5" width="127" height="35"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="mtY-q4-hrh"/>
                     </constraints>
@@ -78,15 +78,26 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already have an account?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhc-gY-YAz">
-                    <rect key="frame" x="16" y="511" width="343" height="21"/>
+                    <rect key="frame" x="16" y="423.5" width="343" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zs2-83-6x0">
+                    <rect key="frame" x="158" y="615" width="58" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="58" id="5g1-Gn-fEX"/>
+                        <constraint firstAttribute="height" constant="35" id="7kM-0F-0Td"/>
+                    </constraints>
+                    <state key="normal" title="Back"/>
+                    <connections>
+                        <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="n1S-Ka-bnv"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="waC-AN-MQ8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="05x-pm-qgh"/>
+                <constraint firstItem="waC-AN-MQ8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="35" id="05x-pm-qgh"/>
                 <constraint firstItem="waC-AN-MQ8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="2bn-T7-hRC"/>
                 <constraint firstItem="lUi-ub-Smb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="68S-Ux-YEY"/>
                 <constraint firstAttribute="trailing" secondItem="T7N-4k-hbC" secondAttribute="trailing" constant="16" id="Ajf-aE-MBe"/>
@@ -94,11 +105,13 @@
                 <constraint firstItem="T7N-4k-hbC" firstAttribute="top" secondItem="waC-AN-MQ8" secondAttribute="bottom" constant="7.5" id="Hyq-2z-wrl"/>
                 <constraint firstAttribute="trailing" secondItem="waC-AN-MQ8" secondAttribute="trailing" constant="16" id="LNp-xk-b2T"/>
                 <constraint firstAttribute="trailing" secondItem="nhc-gY-YAz" secondAttribute="trailing" constant="16" id="Lbg-hj-sNB"/>
+                <constraint firstItem="Zs2-83-6x0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="MZt-WX-kuo"/>
                 <constraint firstAttribute="trailing" secondItem="lUi-ub-Smb" secondAttribute="trailing" constant="16" id="R3W-qS-GaD"/>
                 <constraint firstItem="lUi-ub-Smb" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="40" id="aQc-GW-UhH"/>
-                <constraint firstItem="EMw-F6-LTA" firstAttribute="top" secondItem="ecp-Ad-sMB" secondAttribute="bottom" constant="15" id="aRn-rj-hjf"/>
-                <constraint firstAttribute="bottom" secondItem="EMw-F6-LTA" secondAttribute="bottom" constant="35" id="gYa-0i-icg"/>
-                <constraint firstItem="ecp-Ad-sMB" firstAttribute="top" secondItem="nhc-gY-YAz" secondAttribute="bottom" constant="15" id="koC-0w-Y1l"/>
+                <constraint firstItem="EMw-F6-LTA" firstAttribute="top" secondItem="ecp-Ad-sMB" secondAttribute="bottom" constant="10" id="aRn-rj-hjf"/>
+                <constraint firstItem="ecp-Ad-sMB" firstAttribute="top" secondItem="nhc-gY-YAz" secondAttribute="bottom" constant="8" id="koC-0w-Y1l"/>
+                <constraint firstAttribute="bottom" secondItem="Zs2-83-6x0" secondAttribute="bottom" constant="17" id="moD-F8-WDz"/>
+                <constraint firstItem="nhc-gY-YAz" firstAttribute="top" secondItem="lUi-ub-Smb" secondAttribute="bottom" constant="30" id="oDv-4k-kKM"/>
                 <constraint firstItem="wK1-AZ-8pO" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-40" id="vPm-EO-6mZ"/>
                 <constraint firstItem="nhc-gY-YAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="y6E-53-Hy0"/>
                 <constraint firstItem="T7N-4k-hbC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="yDu-W5-RXn"/>

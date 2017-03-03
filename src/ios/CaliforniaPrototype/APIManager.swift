@@ -19,7 +19,7 @@ class APIManager {
     let usersBaseURL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/users"
     let locationsBaseURL = "ec2-54-241-144-61.us-west-1.compute.amazonaws.com/locations"
     
-    let defaultHeaders = ["Content-Type": "application/json", "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNThhZGJmZjMzNmIxM2Y0ZWRjMzhlZWVlIiwiaWF0IjoxNDg3ODI1ODY4fQ.g1DUIvQk20gLCwwuGueiMUq3o_XSYmXZ0aD_jMs1o1k"]
+    let defaultHeaders = ["Content-Type": "application/json", "token": UserManager.retrieveUserToken()]
     
     //MARK: - User related API methods
     func getUserWithPhone(number numberString: String, success: @escaping UserSuccessBlock, failure: @escaping FailureBlock) {
@@ -144,7 +144,7 @@ class APIManager {
     
     //MARK: - Edit User
     func updateUser(name nameString: String?, email emailString: String?, phone phoneString: String?, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
-        let userId = Keychain.get(key: "id") as! String
+        let userId = UserManager.retrieveUserId()
         let url = usersBaseURL + "/\(userId)"
         let body = ["name": nameString, "email": emailString, "phone": phoneString]
         
@@ -188,7 +188,7 @@ class APIManager {
     
     //MARK: - Location related methods
     func addLocation(displayName name: String, coordinates: [String: Double], alertRadius: String, enablePushNotifications: Bool, enableSMS: Bool, enableEmail: Bool, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
-        let userId = Keychain.get(key: "id") as! String
+        let userId = UserManager.retrieveUserId()
         let url = usersBaseURL + "/\(userId)" + "/locations"
         let lat = coordinates["lat"]! as Double
         let lng = coordinates["lng"]! as Double
@@ -211,7 +211,7 @@ class APIManager {
     }
     
     func updateLocation(displayName name: String?, coordinates: [String: Double], alertRadius: String?, enablePushNotifications: Bool?, enableSMS: Bool?, enableEmail: Bool?, locationId: String?, success: @escaping AnySuccessBlock, failure: @escaping FailureBlock) {
-        let userId = Keychain.get(key: "id") as! String
+        let userId = UserManager.retrieveUserId()
         guard let locationIdNumber = locationId else { return }
         let url = usersBaseURL + "/\(userId)" + "/locations" + "/\(locationIdNumber)"
         let lat = coordinates["lat"]! as Double

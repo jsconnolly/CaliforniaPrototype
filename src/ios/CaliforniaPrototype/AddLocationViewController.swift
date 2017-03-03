@@ -99,20 +99,14 @@ class AddLocationViewController: UIViewController {
         } else {
             placeName = ""
         }
-        self.spinner.activityIndicatorViewStyle = .gray
-        self.spinner.center = self.view.center
-        self.spinner.hidesWhenStopped = true
-        self.spinner.startAnimating()
-        self.view.addSubview(self.spinner)
+        self.showAndStartSpinner()
         APIManager.sharedInstance.addLocation(displayName: placeName, coordinates: coordinates, alertRadius: "10.0", enablePushNotifications: false, enableSMS: false, enableEmail: false, success: { (response) in
-            self.spinner.stopAnimating()
-            self.spinner.removeFromSuperview()
             DispatchQueue.main.async {
+                self.stopAndRemoveSpinner()
                 self.updateButtonsAfterAddLocation()
             }
         }) { (error) in
-            self.spinner.stopAnimating()
-            self.spinner.removeFromSuperview()
+            self.stopAndRemoveSpinner()
         }
     }
     
@@ -241,7 +235,9 @@ extension AddLocationViewController: UISearchBarDelegate {
         }
         
         let localSearcher = MKLocalSearch(request: request)
+        self.showAndStartSpinner()
         localSearcher.start { (response: MKLocalSearchResponse?, error: Error?) in
+            self.stopAndRemoveSpinner()
             if let response = response {
                 self.searchResultsArray.append(contentsOf: response.mapItems)
                 self.tableView.reloadData()
@@ -372,6 +368,20 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource 
         self.cancelAddLocationButton.alpha = 1.0
         self.addLocationButton.isHidden = false
         self.cancelAddLocationButton.isHidden = false
+    }
+    
+    //MARK: - Activity Indicator Methods
+    func showAndStartSpinner() {
+        self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.spinner.center = self.view.center
+        self.spinner.hidesWhenStopped = true
+        self.spinner.startAnimating()
+        self.view.addSubview(self.spinner)
+    }
+    
+    func stopAndRemoveSpinner() {
+        self.spinner.stopAnimating()
+        self.spinner.removeFromSuperview()
     }
     
     
