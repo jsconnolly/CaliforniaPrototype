@@ -16,12 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+//        UserDefaultManager.setLoggedInStatus(false)
         self.window = UIWindow.init(frame: UIScreen.main.bounds)
-        let landingVC = LandingViewController()
-        let navVC = UINavigationController(rootViewController: landingVC)
-        
-        self.window?.rootViewController = navVC
+        self.window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
         
         return true
