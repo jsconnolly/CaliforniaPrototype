@@ -571,13 +571,10 @@
 			l0-0.5V2.4l0-0.5l0-0.4l0-0.1l-0.1-0.2l0-0.3L24,0.4L24,0z</item>
     </string-array>
     <string-array name="california_trace_color_array">
-        <item>@color/CaliforniaGold</item>
+        <item>@color/colorAccent</item>
     </string-array>
     <string-array name="california_fill_color_array">
-        <item>@color/CaliforniaBlue</item>
+        <item>@color/colorPrimary</item>
     </string-array>
-
-
-
 
 </resources>

@@ -1,59 +1,75 @@
-<div class="map-banner hidden-sm hidden-xs">
+<div class="map-banner" id="map-banner" style="display:none">
     <div class="container">
         {{#if loggedin}}
-
-            <div class="row" id="phoneNotifications">
-                <div class="col-md-6">
-                    <h2>Get Notifications By Phone</h2>
-                    <p>
-                        Aenean tincidunt turpis vitae nunc aliquet gravida. Praesent vitae urna nunc. Praesent quis mi at augue sagittis imperdiet. Praesent sollicitudin libero vel rhoncus vestibulum.
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Enter Your Phone Number</label>
-                        <input type="text" class="form-control" placeholder="888-888-8888" />
-                        <span class="text-muted">Example: 888-888-8888</span>
+            <form data-toggle="validator" role="form" id="phonenotificationform">
+                <div class="row vertical-center" id="phoneNotifications">
+                    <div class="col-md-6">
+                        <h3>Get Notifications By Phone</h3>
+                        <p>
+                            To receive real-time emergency notifications and updates via SMS text messages, please enter your mobile phone number.
+                        </p>
+                        <p class="text-muted">
+                            <i class="small">*message and data rates may apply.</i>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Enter Your Phone Number</label>
+                                    <input type="text" class="form-control phone" placeholder="888-888-8888" data-minlength="12" required id="phoneno"/>
+                                    <span class="text-muted">Example: 888-888-8888</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"><button type="button" class="btn btn-primary btn-block submit" id="btnAddPhoneNumber">Add My Phone Number</button></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <a href="#" class="btn btn-primary btn-block">Add My Phone Number</a>
-                </div>
-            </div>
-
-            <div class="row hidden" id="addContact">
-                <div class="col-md-6">
-                    <h2>Add An Emergency Contact</h2>
-                    <p>
-                        Aenean tincidunt turpis vitae nunc aliquet gravida. Praesent vitae urna nunc. Praesent quis mi at augue sagittis imperdiet. Praesent sollicitudin libero vel rhoncus vestibulum.
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Enter Emergency Contact Number</label>
-                        <input type="text" class="form-control" placeholder="888-888-8888" />
-                        <span class="text-muted">Example: 888-888-8888</span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <a href="#" class="btn btn-primary btn-block">Add Contact</a>
-                </div>
-            </div>
-
+            </form>
         {{else}}
 
-            <div class="row">
+            <div class="row vertical-center">
                 <div class="col-md-9">
-                    <h2>Register To Get Notifications By Email</h2>
+                    <h3>Register To Get Notifications By Email</h3>
                     <p>
-                        Aenean tincidunt turpis vitae nunc aliquet gravida. Praesent vitae urna nunc. Praesent quis mi at augue sagittis imperdiet. Praesent sollicitudin libero vel rhoncus vestibulum.
+                        To receive real-time emergency notifications and updates, please register using your email.
                     </p>
                 </div>
                 <div class="col-md-3">
-                    <a href="/register.html" class="btn btn-primary btn-block">Register</a>
+                    <a href="register.html" class="btn btn-primary btn-block">Register</a>
                 </div>
             </div>
 
         {{/if}}
     </div>
 </div>
+
+<script type="text/javascript">
+
+
+if(getCookie("phone").length === 0)
+{
+    document.getElementById("map-banner").removeAttribute("style");
+    document.getElementById("map-banner").style.visibility = "visible";
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+
+</script>

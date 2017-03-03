@@ -128,15 +128,13 @@ public class PermissionsRequestFragment extends Fragment implements OnTaskComple
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_PERMISSIONS_REQUEST) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.permission_requests_fragment), null, false, null);
+                    getString(R.string.permission_requests_fragment), null, false, null, null);
         }
         super.onResume();
     }
 
     @Override
     public void onTaskComplete(Object result, int customTag) {
-        // TODO: 2017-02-24 insert check from server here
-        L.Toast(getActivity(), getString(R.string.debug_popup_skipping));
         switchFragment(Constants.ACTIVITY_MAIN);
     }
 }

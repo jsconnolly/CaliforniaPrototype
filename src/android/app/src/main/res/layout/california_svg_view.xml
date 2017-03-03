@@ -5,18 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Transparent"
+    android:theme="@style/CustomTransparentDialog"
     >
+
 
     <com.jrummyapps.android.widget.AnimatedSvgView
         android:background="@color/Transparent"
+        android:theme="@style/CustomTransparentDialog"
         android:id="@+id/animated_svg_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:foregroundGravity="center|center_horizontal|center_vertical"
-        lib:animatedSvgFillStart="1000"
-        lib:animatedSvgFillTime="1800"
+        lib:animatedSvgFillStart="500"
+        lib:animatedSvgFillTime="500"
         lib:animatedSvgTraceTime="1000"
         lib:animatedSvgTraceTimePerGlyph="1000"
         lib:animatedSvgImageSizeX="890"
@@ -25,6 +28,14 @@
         lib:animatedSvgTraceColors="@array/california_trace_color_array"
         lib:animatedSvgFillColors="@array/california_fill_color_array"
         />
+
+
+
+<!-- removed for now
+
+
+
+-->
 
     <!--
     WORKING VERSIONS BELOW

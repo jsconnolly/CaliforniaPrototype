@@ -14,12 +14,12 @@ public class CAUser extends CAMasterObject{
     private String token;
     @SerializedName("locations")
     private CALocation[] locations;
+    @SerializedName("alerts")
+    private CAAlert[] alerts;
     @SerializedName("name")
     private String name;
     @SerializedName("email")
     private String email;
-    @SerializedName("phoneNumber")
-    private String phoneNumber;
     @SerializedName("password")
     private String password;
     @SerializedName("phone")
@@ -32,6 +32,14 @@ public class CAUser extends CAMasterObject{
     private String state;
     @SerializedName("zip")
     private String zip;
+
+    public CAAlert[] getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(CAAlert[] alerts) {
+        this.alerts = alerts;
+    }
 
     public String getToken() {
         return token;
@@ -71,14 +79,6 @@ public class CAUser extends CAMasterObject{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getPassword() {

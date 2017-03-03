@@ -6,24 +6,21 @@ layout: admin-login.hbs
 <div class="container-table">
     <div class="row vertical-center-row">
       <div class="login">
-        <h1>Admin Login Header</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-        <form action="/admin/landing.html">
+        <h1>Admin Login</h1>
+        <form>
           <div class="form-group">
-            <label>Username</label>
-            <input type="text" class="form-control" placeholder="username" />
+            <label>Email Address</label>
+            <input type="text" class="form-control" placeholder="email" id="adminusername" />
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control" placeholder="password" />
+            <input type="password" class="form-control" placeholder="password"  id="adminpassword"/>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          <button type="button" class="btn btn-primary btn-block" id="btnAdminLogin">Log In</button>
         </form>
         <p>
-          <a href="/admin/accountrecovery.html">Click here if you have trouble logging in</a>
-        </p>
+      Trouble logging in? <a href="accountrecovery.html">Click here</a>.
+    </p>
       </div>
     </div>
   </div>

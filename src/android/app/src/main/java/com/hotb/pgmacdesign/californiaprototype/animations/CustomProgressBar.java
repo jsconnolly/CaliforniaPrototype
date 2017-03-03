@@ -31,14 +31,15 @@ public class CustomProgressBar extends ProgressDialog {
 
     /**
      * Builder for the Custom Progress bar
+     * NOTE!!! I Utilized the style/CustomTransparentDialog for this to work effectively.
+     * In future projects, it may not be needed, but due to custom styles in this, it was.
      * @param context Context
      * @param cancelable Is cancellable progress bar or not
      * @return ProgressDialog
-     * todo come back and refactor this in
      */
     public static Dialog buildSVGDialog(Context context, boolean cancelable){
-        // TODO: 8/12/2016 checks on nulls
-        Dialog customAlertDialog = new CustomProgressBar(context, SVG_DIALOG);
+
+        Dialog customAlertDialog = new CustomProgressBar(context, CALIFORNIA_SVG_DIALOG);
 
         //customAlertDialog.setIndeterminate(true);
         customAlertDialog.setCancelable(cancelable);
@@ -50,7 +51,6 @@ public class CustomProgressBar extends ProgressDialog {
         window.setBackgroundDrawable(new ColorDrawable(
                 ContextCompat.getColor(context, R.color.Transparent)
         ));
-
 
         return customAlertDialog;
     }
@@ -79,7 +79,7 @@ public class CustomProgressBar extends ProgressDialog {
      * @param whichSelected
      */
     private CustomProgressBar(Context context, int whichSelected) {
-        super(context);
+        super(context, R.style.CustomTransparentDialog);
         this.whichSelected = whichSelected;
     }
 
@@ -90,11 +90,6 @@ public class CustomProgressBar extends ProgressDialog {
         switch (whichSelected){
 
             case SVG_DIALOG:
-                setContentView(R.layout.custom_alert_dialog_svg);
-                animated_svg_view = (AnimatedSvgView) this.findViewById(
-                        R.id.animated_svg_view);
-                break;
-
             case CALIFORNIA_SVG_DIALOG:
                 setContentView(R.layout.california_svg_view);
                 animated_svg_view = (AnimatedSvgView) this.findViewById(

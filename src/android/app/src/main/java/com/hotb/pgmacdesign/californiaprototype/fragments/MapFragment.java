@@ -35,17 +35,23 @@ import com.hotb.pgmacdesign.californiaprototype.R;
 import com.hotb.pgmacdesign.californiaprototype.customui.ScaleBar;
 import com.hotb.pgmacdesign.californiaprototype.listeners.CustomFragmentListener;
 import com.hotb.pgmacdesign.californiaprototype.listeners.MyLocationListener;
+import com.hotb.pgmacdesign.californiaprototype.listeners.OnTaskCompleteListener;
 import com.hotb.pgmacdesign.californiaprototype.misc.Constants;
 import com.hotb.pgmacdesign.californiaprototype.misc.L;
 import com.hotb.pgmacdesign.californiaprototype.misc.MyApplication;
+import com.hotb.pgmacdesign.californiaprototype.networking.APICalls;
 import com.hotb.pgmacdesign.californiaprototype.pojos.AlertBeacon;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAAlert;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CALocation;
+import com.hotb.pgmacdesign.californiaprototype.pojos.CAUser;
 import com.hotb.pgmacdesign.californiaprototype.utilities.AnimationUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.CaliforniaPrototypeCustomUtils;
 import com.hotb.pgmacdesign.californiaprototype.utilities.DisplayManagerUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.FragmentUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.LocationUtilities;
-import com.hotb.pgmacdesign.californiaprototype.utilities.MiscUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.NumberUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.PermissionUtilities;
+import com.hotb.pgmacdesign.californiaprototype.utilities.ProgressBarUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 import com.hotb.pgmacdesign.californiaprototype.utilities.ThreadUtilities;
 
@@ -62,7 +68,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, MyLocationListener.LocationLoadedListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback{
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnCircleClickListener, GoogleMap.OnCameraMoveListener, Handler.Callback, OnTaskCompleteListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener {
 
     //Tag
     public final static String TAG = "MapFragment";
@@ -84,16 +90,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private TextView fragment_map_error_top_tv, fragment_map_error_bottom_tv;
     private ScaleBar mScaleBar;
 
-
     //Variables
     private int DEFAULT_ZOOM_LEVEL = 15;
     private boolean mapHasLoaded, locationIsEnabled;
     private PermissionUtilities.permissionsEnum locPerm = PermissionUtilities
             .permissionsEnum.ACCESS_FINE_LOCATION;
+    private String email, phone, id, pw;
+    private CAUser user;
+    private CALocation[] userSavedLocations;
+    private CAAlert[] emergenciesArray;
+    private List<CAAlert> emergencies;
+    private List<CALocation> userSavedLocationsList;
+    private List<Marker> userSavedLocationMarkers;
+    private List<Circle> emergencyCircles;
 
     //Misc
     private Timer scaleBarTimer;
-
+    private APICalls api;
     private Handler handler;
     private DisplayManagerUtilities dmu;
 
@@ -118,9 +131,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.locationIsEnabled = true;
         this.handler = ThreadUtilities.getHandlerWithCallback(this);
         this.dmu = new DisplayManagerUtilities(getActivity());
-        //Utilize instanceState here
+        this.api = new APICalls(getActivity(), this);
+        this.phone = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PHONE_NUMBER, null);
+        this.email = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_EMAIL, null);
+        this.id = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_ID, null);
+        this.pw = MyApplication.getSharedPrefsInstance().getString(
+                Constants.USER_PW, null);
     }
 
+    /**
+     * OnCreate
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
@@ -129,12 +157,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         return view;
     }
 
+    /**
+     * Setup variables
+     */
     private void initVariables(){
         this.locationListener = new MyLocationListener(MyApplication.getInstance(), this);
         this.alertBeacons = new ArrayList<>();
         this.markersOnMap = new ArrayList<>();
     }
 
+    /**
+     * Setup the ui
+     * @param view
+     */
     private void initUi(View view) {
         setupMap();
 
@@ -152,6 +187,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 R.id.fragment_map_search_error_view);
     }
 
+    /**
+     * Setup the map and initialize it
+     */
     private void setupMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fragment_map_map);
@@ -171,8 +209,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_MAP);
-        L.m("onViewCreated in mapfragment");
+    }
 
+    /**
+     * Last call, init the web calls and set the respective views
+     */
+    private void initWebCalls(){
+        ProgressBarUtilities.showSVGProgressDialog(getActivity(), true);
+        if(!StringUtilities.isNullOrEmpty(email)){
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.getUserByEmail(email);
+        } else if (!StringUtilities.isNullOrEmpty(phone)) {
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.getUserByPhone(phone);
+        } else if (!StringUtilities.isNullOrEmpty(id)){
+            ProgressBarUtilities.showSVGProgressDialog(getActivity());
+            api.getUserById(id);
+        } else {
+            L.toast(getActivity(), getString(R.string.account_null_error));
+            switchFragment(Constants.ACTIVITY_ONBOARDING);
+        }
     }
 
     /**
@@ -181,7 +237,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
      * @param latitude Latitude
      * @param longitude Longitude
      */
-    private void moveCamera(double latitude, double longitude){
+    private void moveCamera(double latitude, double longitude, Boolean animate){
         if(latitude == -1){
             latitude = Constants.DEFAULT_LATITUDE;
         }
@@ -189,8 +245,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             longitude = Constants.DEFAULT_LONGITUDE;
         }
         LatLng latLng = new LatLng(latitude, longitude);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL);
-        this.googleMap.animateCamera(cameraUpdate);
+        int zoom = -1;
+        try {
+            zoom = MyApplication.getSharedPrefsInstance().getInt(Constants.ZOOM_WHEN_CLICKED, -1);
+            MyApplication.getSharedPrefsInstance().clearPref(Constants.ZOOM_WHEN_CLICKED);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        CameraUpdate cameraUpdate = null;
+        if(zoom == -1) {
+            cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL);
+        } else {
+            cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+        }
+
+        if(animate == null){
+            animate = true;
+        }
+        if(animate) {
+            this.googleMap.animateCamera(cameraUpdate);
+        } else {
+            this.googleMap.moveCamera(cameraUpdate);
+        }
     }
 
     /**
@@ -202,7 +279,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         this.googleMap = aGoogleMap;
         this.mapHasLoaded = true;
         this.enableScaleBar();
+        this.googleMap.setOnCircleClickListener(this);
         this.googleMap.setOnCameraMoveListener(this);
+        this.googleMap.setOnCameraIdleListener(this);
         this.googleMap.setOnMapLongClickListener(this);
         this.googleMap.setIndoorEnabled(false);
         this.googleMap.getUiSettings().setCompassEnabled(true);
@@ -215,7 +294,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
         this.onMyLocationButtonClick();
         this.startLocationServices();
-
+        this.initWebCalls();
     }
 
     /**
@@ -231,10 +310,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
-
-
-
-
 
     /**
      * Manage permission results
@@ -272,11 +347,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         } else {
             return true;
         }
-        /*
-        return PermissionUtilities.PermissionsRequestShortcutReturn(getActivity(),
-                new PermissionUtilities.permissionsEnum[]{
-                        PermissionUtilities.permissionsEnum.ACCESS_FINE_LOCATION});
-        */
     }
 
     @Override
@@ -284,7 +354,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if(!this.locationIsEnabled){
             L.Toast(getActivity(), getString(R.string.loading_last_known_loc));
         }
-        moveCamera(MyApplication.getLastKnownLat(), MyApplication.getLastKnownLng());
+
+        //Check on where they cliked last
+        double lastSeenLat = MyApplication.getSharedPrefsInstance().getDouble(
+                Constants.LAT_CLICKED, -1);
+        double lastSeenLng = MyApplication.getSharedPrefsInstance().getDouble(
+                Constants.LNG_CLICKED, -1);
+
+        MyApplication.getSharedPrefsInstance().clearPref(Constants.LAT_CLICKED);
+        MyApplication.getSharedPrefsInstance().clearPref(Constants.LNG_CLICKED);
+
+        if(lastSeenLat != -1 && lastSeenLng != -1){
+            moveCamera(lastSeenLat, lastSeenLng, false);
+        } else {
+            moveCamera(MyApplication.getLastKnownLat(), MyApplication.getLastKnownLng(), true);
+        }
         return false;
     }
 
@@ -373,109 +457,132 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapLongClick(LatLng point) {
-        if(this.lastManuallyDrawnCircle != null){
-            this.lastManuallyDrawnCircle.remove();
+        if(true){
+            //Removed on 2017-02-28 For refactoring purposes
+            return;
         }
-        Projection projection = googleMap.getProjection();
-        float xMetersPerInch = getMetersPerInch(projection);
-
-        // Create the circle.
-        CircleOptions options = new CircleOptions();
-        options.center(point);
-        options.radius(xMetersPerInch);
-        options.strokeColor(R.color.white);
-        options.fillColor(R.color.SemiTransparentBlue);
-        options.clickable(true);
-        this.lastManuallyDrawnCircle = googleMap.addCircle(options);
-        this.googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
-            @Override
-            public void onCircleClick(Circle circle) {
-                //Do whatever here with manually created circle
-                //This Needs to be different than the listener for the alert beacon circles
-            }
-        });
     }
 
     /**
-     * Adds alert beacons to the map that are clickable
-     * @param alertBeacons {@link AlertBeacon}
+     * Triggered when a user clicks on the circle
+     * @param circle
      */
-    private void addAlertBeacons(List<AlertBeacon> alertBeacons){
-        this.alertBeacons = alertBeacons;
-        if(MiscUtilities.isListNullOrEmpty(alertBeacons)){
-            return;
-        }
-
-        for(int i = 0; i < alertBeacons.size(); i++){
-            AlertBeacon beacon = alertBeacons.get(i);
-            double radius = beacon.getCircleRadius();
-            double lat = beacon.getLat();
-            double lng = beacon.getLng();
-
-            if(lat == 0 && lng == 0){
-                continue;
-            }
-
-            Projection projection = googleMap.getProjection();
-            float xMetersPerInch = getMetersPerInch(projection);
-
-            // Create the circle.
-            CircleOptions options = new CircleOptions();
-            options.center(CaliforniaPrototypeCustomUtils.convertToLatLng(lat, lng));
-            if(radius < 50) {
-                //Too small, use the xMeters per inch metric instead
-                options.radius(xMetersPerInch);
-            } else {
-                options.radius(radius);
-            }
-            options.strokeColor(R.color.white);
-            options.fillColor(R.color.SemiTransparentRed);
-            options.clickable(true);
-            Circle aCircle = googleMap.addCircle(options);
-            beacon.setCircleId(aCircle.getId());
-            alertBeacons.set(i, beacon);
-            this.googleMap.setOnCircleClickListener(this);
-        }
-    }
-
     @Override
     public void onCircleClick(Circle circle) {
         if(circle == null){
-            return;
-        }
-        if(MiscUtilities.isListNullOrEmpty(this.alertBeacons)){
             return;
         }
         String id = circle.getId();
         if(StringUtilities.isNullOrEmpty(id)){
             return;
         }
-
-        AlertBeacon beacon = null;
-        for(AlertBeacon beacon1 : this.alertBeacons){
-            String newId = beacon1.getCircleId();
-            if(!StringUtilities.isNullOrEmpty(newId)){
-                if(newId.equals(id)){
-                    beacon = beacon1;
-                }
+        for(CALocation location : userSavedLocationsList){
+            if(location == null){
+                continue;
+            }
+            String str = location.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(location);
+                beacon.setUser(user);
+                beacon.setAlert(null);
+                showPopupForBeacon(beacon);
+                return;
+            }
+        }
+        for(CAAlert alert : emergencies){
+            if(location == null){
+                continue;
+            }
+            String str = alert.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(null);
+                beacon.setUser(user);
+                beacon.setAlert(alert);
+                showPopupForBeacon(beacon);
+                return;
             }
         }
 
-        if(beacon != null){
-            showPopupForBeacon(beacon);
-        }
     }
 
+    /**
+     * Show an alert beacon popup by inflating a new fragment
+     * @param beacon
+     */
     private void showPopupForBeacon(AlertBeacon beacon){
         if(beacon == null){
             return;
         }
-
+        clearPersistedObjects();
         if(MyApplication.getDatabaseInstance().persistObject(AlertBeacon.class, beacon)){
+            //Save spot clicked for reloading:
+            CAAlert alert = beacon.getAlert();
+            CALocation location = beacon.getLocation();
+
+            if(alert != null){
+                double[] coords = alert.getLoc();
+                if(coords != null){
+                    if(coords.length > 1 && coords.length < 3){
+                        double lat = coords[1];
+                        double lng = coords[0];
+                        if(lat != 0 && lng != 0){
+                            MyApplication.getSharedPrefsInstance().save(Constants.LAT_CLICKED, lat);
+                            MyApplication.getSharedPrefsInstance().save(Constants.LNG_CLICKED, lng);
+                            try {
+                                MyApplication.getSharedPrefsInstance().save(
+                                        Constants.ZOOM_WHEN_CLICKED,
+                                        (int) googleMap.getCameraPosition().zoom);
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+            if(location != null){
+                CALocation.Coordinates coords = location.getCoordinates();
+                if(coords != null){
+                    double lat = coords.getLat();
+                    double lng = coords.getLng();
+                    if(lat != 0 && lng != 0){
+                        MyApplication.getSharedPrefsInstance().save(Constants.LAT_CLICKED, lat);
+                        MyApplication.getSharedPrefsInstance().save(Constants.LNG_CLICKED, lng);
+                        try {
+                            MyApplication.getSharedPrefsInstance().save(
+                                    Constants.ZOOM_WHEN_CLICKED,
+                                    (int) googleMap.getCameraPosition().zoom);
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            //Switch Fragment
             switchFragment(Constants.FRAGMENT_ALERT_BEACON_POPUP);
         }
     }
 
+    /**
+     * Clear any persisted objects I want cleared
+     */
+    private void clearPersistedObjects(){
+        MyApplication.getDatabaseInstance().deletePersistedObject(AlertBeacon.class);
+    }
+
+    /**
+     * Enable a sclae bar as an overlay for visual help on location distances
+     */
     private void enableScaleBar(){
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(800, 800);
 
@@ -548,11 +655,226 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         L.m("onResume in mapfragment");
+        clearPersistedObjects();
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_MAP) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.map_fragment_name), null, false, true);
+                    getString(R.string.map_fragment_name), null, false, true, null);
         }
+        initWebCalls();
         super.onResume();
+    }
+
+    /**
+     * Load the user saved locations. this should only ping if the array is not null and >0
+     */
+    private void loadUserSavedLocs(){
+
+        if(this.userSavedLocationMarkers == null){
+            this.userSavedLocationMarkers = new ArrayList<>();
+        }
+        if(this.userSavedLocationsList == null){
+            this.userSavedLocationsList = new ArrayList<>();
+        }
+        //Iterate to remove any previous ones they had saved
+        for(Marker marker : this.userSavedLocationMarkers){
+            marker.remove();
+        }
+
+        //Checking to be sure
+        if(userSavedLocations == null){
+            return;
+        }
+        if(userSavedLocations.length <= 0){
+            return;
+        }
+
+        this.userSavedLocationMarkers = new ArrayList<>();
+        this.userSavedLocationsList = new ArrayList<>();
+
+        for(int i = 0; i < this.userSavedLocations.length; i++){
+            CALocation location = this.userSavedLocations[i];
+            if(location == null){
+                continue;
+            }
+            CALocation.Coordinates coordinates = location.getCoordinates();
+            String name = location.getDisplayName();
+
+            if(coordinates == null){
+                continue;
+            }
+
+
+            double localLat = coordinates.getLat();
+            double localLng = coordinates.getLng();
+
+            if(StringUtilities.isNullOrEmpty(name)){
+                name = "";
+            }
+
+            MarkerOptions markerOptios = new MarkerOptions();
+            markerOptios.draggable(false);
+            markerOptios.title(name);
+            markerOptios.position(new LatLng(localLat, localLng));
+            markerOptios.flat(false);
+
+            Marker marker = googleMap.addMarker(markerOptios);
+            location.setCircleId(marker.getId());
+            this.userSavedLocationMarkers.add(marker);
+            this.userSavedLocationsList.add(location);
+            this.googleMap.setOnMarkerClickListener(this);
+        }
+    }
+
+    private void loadEmergencyAlerts(){
+        if(emergencies == null){
+            emergencies = new ArrayList<>();
+        }
+        if(emergencyCircles == null){
+            emergencyCircles = new ArrayList<>();
+        }
+
+        //Iterate to remove any previous ones they had saved
+        for(Circle circle : this.emergencyCircles){
+            circle.remove();
+        }
+
+        //Checking to be sure
+        if(emergenciesArray == null){
+            return;
+        }
+        if(emergenciesArray.length <= 0){
+            return;
+        }
+
+        this.emergencies = new ArrayList<>();
+        this.emergencyCircles = new ArrayList<>();
+
+        for(int i = 0; i < this.emergenciesArray.length; i++){
+            CAAlert alert = this.emergenciesArray[i];
+            if(alert == null){
+                continue;
+            }
+
+            double lat = 0, lng = 0;
+            double[] aCoords = alert.getLoc();
+
+            if(aCoords != null){
+                if(aCoords.length > 1){
+                    try {
+                        lat = aCoords[1];
+                        lng = aCoords[0];
+                    } catch (Exception e){
+                        lat = lng = 0;
+                    }
+                }
+            }
+
+            //Due to possibility if TONS of alerts popping up, setting small radii here of 2 miles
+            float radius = (float) (NumberUtilities.convertFeetToMeters(
+                    NumberUtilities.convertMilesToFeet(2)));
+
+
+            if(lat == 0 && lng == 0){
+                continue;
+            }
+
+            CircleOptions options = new CircleOptions();
+            options.center(new LatLng(lat, lng));
+            options.radius(radius);
+            options.strokeColor(ContextCompat.getColor(getActivity(), R.color.Red));
+            options.fillColor(ContextCompat.getColor(getActivity(), R.color.SemiTransparentRed));
+            options.clickable(true);
+            Circle circleAdded = googleMap.addCircle(options);
+            alert.setCircleId(circleAdded.getId());
+            this.emergencyCircles.add(circleAdded);
+            this.emergencies.add(alert);
+            this.googleMap.setOnCircleClickListener(this);
+        }
+    }
+
+    /**
+     * Handle responses from the server
+     * @param result
+     * @param customTag
+     */
+    @Override
+    public void onTaskComplete(Object result, int customTag) {
+        ProgressBarUtilities.dismissProgressDialog();
+        switch(customTag){
+            case Constants.TAG_CA_USER:
+                user = (CAUser) result;
+                APICalls.persistData(user);
+
+                CALocation[] locations = user.getLocations();
+                if(locations != null){
+                    if(locations.length > 0){
+                        this.userSavedLocations = locations;
+                        loadUserSavedLocs();
+                    }
+                }
+
+                CAAlert[] alerts = user.getAlerts();
+                if(alerts != null){
+                    if(alerts.length > 0){
+                        this.emergenciesArray = alerts;
+                        loadEmergencyAlerts();
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(marker == null){
+            return false;
+        }
+        String id = marker.getId();
+        if(StringUtilities.isNullOrEmpty(id)){
+            return false;
+        }
+        for(CALocation location : userSavedLocationsList){
+            if(location == null){
+                continue;
+            }
+            String str = location.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(location);
+                beacon.setUser(user);
+                beacon.setAlert(null);
+                showPopupForBeacon(beacon);
+                return false;
+            }
+        }
+        for(CAAlert alert : emergencies){
+            if(location == null){
+                continue;
+            }
+            String str = alert.getCircleId();
+            if(StringUtilities.isNullOrEmpty(str)){
+                continue;
+            }
+            if(str.equals(id)){
+                //Make new popup window here with info:
+                AlertBeacon beacon = new AlertBeacon();
+                beacon.setLocation(null);
+                beacon.setUser(user);
+                beacon.setAlert(alert);
+                showPopupForBeacon(beacon);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onCameraIdle() {
+        //Unused atm
     }
 }

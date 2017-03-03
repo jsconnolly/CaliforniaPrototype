@@ -1,0 +1,85 @@
+---
+title: Settings
+loggedin: true
+---
+<script type="text/javascript">
+ //console.log("ID " + sessionStorage.getItem("id"));
+ //console.log("Token " + sessionStorage.getItem("token"));
+   if(sessionStorage.getItem("id") === null)
+    {
+        location.href = "/login.html"
+    }
+
+
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Settings</h1>
+        </div>
+    </div>
+</div>
+<form class="settings" data-toggle="validator" role="form">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Change Email Address</h3>
+            <div class="form-group">
+                <label>Current Email Address</label>
+                 <p>
+                    <span id="lblcurrentEmail"></span>&nbsp;
+                 </p>
+            </div>
+            <div class="form-group">
+                <label>New Email Address</label>
+                <input type="email" class="form-control email" id="email" placeholder="email" data-error="Please enter a valid email address.">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {{!--<h3>Enable SMS</h3>
+        <div class="checkbox">
+          <label>
+            <input checked data-toggle="toggle" type="checkbox" id="enablesms" data-on="SMS Enabled" data-off="SMS Disabled" data-offstyle="danger" />
+          </label>
+      </div>--}}
+            <h3>Change Phone Number</h3>
+            <div class="form-group">
+                <label>Current Phone Number</label>
+                 <p>
+                    <span id="lblcurrentPhone"></span>&nbsp;
+                 </p>
+            </div>
+            <div class="form-group">
+                <label>New Phone Number</label>
+                <input type="text" class="form-control phone" id="phone" placeholder="888-888-8888" data-minlength="12" data-error="Please enter a valid phone number.">
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Change Password</h3>
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" class="form-control" id="oldpassword" placeholder="current password" data-minlength="12" />
+            </div>
+            <div class="form-group">
+                <label>Enter a New Password</label>
+                <input type="password" id="newpassword" class="form-control" placeholder="password" />
+            </div>
+            <div class="form-group">
+                <label>Re-Type New Password</label>
+                <input type="password" class="form-control" placeholder="password" id="confirmpassword" data-match="#newpassword" data-match-error="Passwords must match." />
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+           {{!hide if unsubscribed/ show if subscribed}}
+            <button type="button" class="btn btn-danger pull-left" id="unsubscribe" data-toggle="modal" data-target="#unsubscribePopup">Unsubscribe from Service</button>
+            {{!Show if unsubscribed/ hide if subscribed}}
+            <button type="button" class="btn btn-primary pull-left" id="resubscribe" style="display: none">Subscribe to Service</button>
+            <button type="button" id="btnSaveSettings" class="btn btn-primary pull-right">Save Changes</button>
+        </div>
+    </div>
+</form>
+{{> popup-alert id="unsubscribePopup" title="Confirm Unsubscribe" popupContent="Are you sure you want to unsubscribe?" btnCloseText="Cancel" btnConfirm="true" btnConfirmType="danger" btnConfirmId="btnUnsubscribe" btnConfirmText="Unsubscribe" }}

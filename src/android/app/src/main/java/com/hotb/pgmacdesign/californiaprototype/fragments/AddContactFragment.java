@@ -28,8 +28,9 @@ import com.hotb.pgmacdesign.californiaprototype.utilities.StringUtilities;
 
 /**
  * Created by pmacdowell on 2017-02-24.
+ *   //Removed / Deprecated on 2017-02-27 As per meeting and AHA discussion
  */
-
+@Deprecated
 public class AddContactFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
 
     public final static String TAG = "AddContactFragment";
@@ -114,9 +115,8 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         ((CustomFragmentListener)getActivity()).setCurrentFragment(Constants.FRAGMENT_ADD_CONTACT);
         if(placeChosen == null){
-            // TODO: 2017-02-24 decide what to do here, do we need this?
+            switchFragment(Constants.FRAGMENT_MAP);
         }
-        L.m("ADD CONTACT FRAGMENT - ON VIEW CREATED");
     }
 
     @Override
@@ -197,7 +197,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         number = StringUtilities.keepNumbersOnly(number);
         number = number.trim();
 
-        // TODO: 2017-02-24 do whatever here with name and number once server is up and running
+
     }
 
     private boolean validateFields(){
@@ -295,7 +295,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         if(((CustomFragmentListener)getActivity()).getCurrentFragment() ==
                 Constants.FRAGMENT_ADD_CONTACT) {
             ((CustomFragmentListener) getActivity()).setToolbarDetails(
-                    getString(R.string.add_a_contact), null, true, false);
+                    getString(R.string.add_a_contact), null, true, false, null);
         }
         super.onResume();
     }
