@@ -112,19 +112,31 @@ $(document).ready(function(){
 
      $('#btnUnsubscribe').click(function(e){
          
+         console.log("here");
          
-         $.ajax({
-       url : APIURL + "users/" + sessionStorage.getItem("id"),
-       headers: {
-                'token': sessionStorage.getItem("token"),
-                'Content-Type':'application/json'
-             },
-       method: "DELETE",
-       async:false,
-       success:function(data){
-             alert("user unsubcribed successfully");
-             location.reload(true);
-       }
+         var r = confirm("Are you sure to unsubcribe.");
+        if (r == true) 
+        {
+              
+            console.log(sessionStorage.getItem("id"));
+            console.log(sessionStorage.getItem("token"));
+            $.ajax({
+               url : APIURL + "users/" + sessionStorage.getItem("id"),
+               headers: {
+                        'token': sessionStorage.getItem("token"),
+                        'Content-Type':'application/json'
+                     },
+               method: "DELETE",
+               cache:false,
+               async:false,
+               success:function(data){
+                     alert("user unsubcribed successfully");
+                     location.href = "/index.html";
+               }
+
+                          });
+        }
+         
     });
          
          
@@ -132,7 +144,7 @@ $(document).ready(function(){
          
          
          
-     });
+     
 
 
 });
