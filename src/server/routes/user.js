@@ -788,6 +788,7 @@ exports.getAlerts = function (req, res) {
                 alert.loc = item.loc;
                 alert.location = item.location;
                 alert.description=item.description;
+                alert.createdby=item.createdby;
                 alerts.push(alert);
 
             });
