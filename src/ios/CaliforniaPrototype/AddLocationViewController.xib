@@ -14,6 +14,7 @@
                 <outlet property="addAnotherLocationButton" destination="0HW-0R-EnJ" id="R5s-Kr-m3X"/>
                 <outlet property="addLocationButton" destination="3kW-cE-Yz3" id="YoV-j2-dCt"/>
                 <outlet property="cancelAddLocationButton" destination="5CG-Ed-nEY" id="tgs-9b-p2P"/>
+                <outlet property="doneButton" destination="rXR-w6-1I0" id="p3M-Zo-l1S"/>
                 <outlet property="locationDetailView" destination="f2U-im-h33" id="mTe-ZM-HGa"/>
                 <outlet property="locationDetailsLabel" destination="mrx-3t-DbO" id="1GQ-5Z-feq"/>
                 <outlet property="mapView" destination="w0S-wG-WkT" id="sKd-PH-l7y"/>
@@ -29,7 +30,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="DFo-wz-eXe">
+                <searchBar contentMode="redraw" placeholder="Landmark, Address, Zip Code" translatesAutoresizingMaskIntoConstraints="NO" id="DFo-wz-eXe">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <textInputTraits key="textInputTraits" spellCheckingType="no"/>
                     <connections>
@@ -52,7 +53,7 @@
                         <action selector="addLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="doC-V2-oqF"/>
                     </connections>
                 </button>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5CG-Ed-nEY" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5CG-Ed-nEY" customClass="RoundedRectSecondaryButton" customModule="CaliforniaPrototype" customModuleProvider="target">
                     <rect key="frame" x="16" y="602" width="343" height="35"/>
                     <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -86,7 +87,7 @@
                         <action selector="addAnotherLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="8oZ-eh-y9h"/>
                     </connections>
                 </button>
-                <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXR-w6-1I0" customClass="RoundedRectButton" customModule="CaliforniaPrototype" customModuleProvider="target">
+                <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rXR-w6-1I0" customClass="RoundedRectSecondaryButton" customModule="CaliforniaPrototype" customModuleProvider="target">
                     <rect key="frame" x="16" y="356" width="343" height="35"/>
                     <color key="backgroundColor" red="0.76078431369999999" green="0.76078431369999999" blue="0.76078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -95,6 +96,9 @@
                     <state key="normal" title="Done">
                         <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="doneButtonTapped:" destination="-1" eventType="touchUpInside" id="ADL-bq-QaR"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

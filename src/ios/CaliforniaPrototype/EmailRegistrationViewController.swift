@@ -13,8 +13,9 @@ class EmailRegistrationViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var emailTextField: OutlinedTextField!
     @IBOutlet weak var passwordTextField: OutlinedTextField!
-    
     @IBOutlet weak var nameTextField: OutlinedTextField!
+    
+    private var spinner = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +59,45 @@ class EmailRegistrationViewController: UIViewController {
                 self.animateStackSubview(5, to: false)
             }
         }
+        
+        if ValidationMethods().isValidEmail(emailString) && ValidationMethods().isValidPassword(passwordString) {
+            var textName = String()
+            if let name = self.nameTextField.text {
+                if !name.isEmpty {
+                    textName = name
+                } else {
+                    textName = ""
+                }
+            }
+            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            self.spinner.center = self.view.center
+            self.spinner.hidesWhenStopped = true
+            self.spinner.startAnimating()
+            self.view.addSubview(self.spinner)
+            APIManager.sharedInstance.registerUserWith(email: emailString, password: passwordString, name: textName, phone: nil, address: nil, city: nil, state: nil, zip: nil, success: { (response) in
+                self.spinner.stopAnimating()
+                guard let id = response?.id else { return }
+                guard let token = response?.token else { return }
+                UserManager.loginAndSave(userId: id, token: token)
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(LocationPermissionsViewController(), animated: true)
+                }
+                
+            }, failure: { (error) in
+                let alert = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error registering, please try again.")
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(okAction)
+                DispatchQueue.main.async {
+                    self.spinner.stopAnimating()
+                    self.present(alert, animated: true, completion: nil)
+                }
+            })
+            
+        }
     }
 
     @IBAction func canelButtonTapped(_ sender: Any) {
-        self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }
 

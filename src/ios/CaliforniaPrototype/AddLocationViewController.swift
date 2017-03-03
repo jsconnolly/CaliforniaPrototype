@@ -22,16 +22,19 @@ class AddLocationViewController: UIViewController {
     
     @IBOutlet weak var addLocationButton: RoundedRectButton!
     @IBOutlet weak var cancelAddLocationButton: RoundedRectButton!
-//    @IBOutlet weak var addPersonToLocationButton: RoundedRectButton!
     @IBOutlet weak var addAnotherLocationButton: RoundedRectButton!
+    @IBOutlet weak var doneButton: RoundedRectButton!
     
     
     fileprivate var searchResultsArray = [MKMapItem]()
     fileprivate var searchTimer: Timer?
+    fileprivate var selectedLocation: MKMapItem?
     
     fileprivate var locationManager = CLLocationManager()
     fileprivate var currentLocation : CLLocation?
     fileprivate var postponedLocationAcceptance = false
+    
+    fileprivate var spinner = UIActivityIndicatorView()
  
     //MARK: - UIViewController delegate methods
     override func viewDidLoad() {
@@ -87,13 +90,34 @@ class AddLocationViewController: UIViewController {
     
     //MARK: - Add Location Functions
     @IBAction func addLocationButtonTapped(_ sender: Any) {
+        
+        guard let coords = self.selectedLocation?.placemark.coordinate else { return }
+        let coordinates = ["lat": Double(coords.latitude), "lng": Double(coords.longitude)]
+        var placeName = String()
+        if let name = self.selectedLocation?.name {
+            placeName = name
+        } else {
+            placeName = ""
+        }
+        self.showAndStartSpinner()
+        APIManager.sharedInstance.addLocation(displayName: placeName, coordinates: coordinates, alertRadius: "10.0", enablePushNotifications: false, enableSMS: false, enableEmail: false, success: { (response) in
+            DispatchQueue.main.async {
+                self.stopAndRemoveSpinner()
+                self.updateButtonsAfterAddLocation()
+            }
+        }) { (error) in
+            self.stopAndRemoveSpinner()
+        }
+    }
+    
+    func updateButtonsAfterAddLocation() {
         self.addLocationButton.alpha = 0.0
         self.cancelAddLocationButton.alpha = 0.0
         
-//        self.addPersonToLocationButton.alpha = 1.0
         self.addAnotherLocationButton.alpha = 1.0
-//        self.addPersonToLocationButton.isHidden = false
         self.addAnotherLocationButton.isHidden = false
+        self.doneButton.alpha = 1.0
+        self.doneButton.isHidden = false
         
         self.successfulLocationAddView.frame.origin = CGPoint(x: 0, y: 0)
         self.successfulLocationAddView.frame.size.width = self.view.frame.size.width
@@ -101,17 +125,17 @@ class AddLocationViewController: UIViewController {
         self.view.addSubview(self.successfulLocationAddView)
         self.successfulLocationAddView.alpha = 1.0
         
-        UIView.animate(withDuration: 0.35, animations: { 
+        UIView.animate(withDuration: 0.35, animations: {
             self.view.layoutIfNeeded()
         }) { (completed) in
-                self.addLocationButton.isHidden = true
-                self.cancelAddLocationButton.isHidden = true
+            self.addLocationButton.isHidden = true
+            self.cancelAddLocationButton.isHidden = true
             
         }
-        
     }
     
     @IBAction func cancelAddLocationButtonTapped(_ sender: Any) {
+        self.selectedLocation = nil
         self.addLocationButton.alpha = 0.0
         self.cancelAddLocationButton.alpha = 0.0
         self.locationDetailView.alpha = 0.0
@@ -129,7 +153,7 @@ class AddLocationViewController: UIViewController {
     
     @IBAction func addAnotherLocationButtonTapped(_ sender: Any) {
         self.addAnotherLocationButton.alpha = 0.0
-//        self.addPersonToLocationButton.alpha = 0.0
+        self.doneButton.alpha = 0.0
         self.successfulLocationAddView.alpha = 0.0
         self.tableViewBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.35, animations: { 
@@ -137,14 +161,14 @@ class AddLocationViewController: UIViewController {
         }) { (completed) in
             if completed {
                 self.successfulLocationAddView.removeFromSuperview()
-//                self.addPersonToLocationButton.isHidden = true
                 self.addAnotherLocationButton.isHidden = true
+                self.doneButton.isHidden = true
             }
         }
     }
     
-    @IBAction func addPersonToLocationButtonTapped(_ sender: Any) {
-    
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
 }
@@ -211,12 +235,14 @@ extension AddLocationViewController: UISearchBarDelegate {
         }
         
         let localSearcher = MKLocalSearch(request: request)
+        self.showAndStartSpinner()
         localSearcher.start { (response: MKLocalSearchResponse?, error: Error?) in
             if let response = response {
+                self.stopAndRemoveSpinner()
                 self.searchResultsArray.append(contentsOf: response.mapItems)
                 self.tableView.reloadData()
             } else {
-
+                self.stopAndRemoveSpinner()
             }
         }
     }
@@ -233,12 +259,8 @@ extension AddLocationViewController: CLLocationManagerDelegate {
         case .authorizedAlways:
             self.locationManager.requestLocation()
         case .notDetermined:
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Would you like to do that now?")
-            let retry = UIAlertAction(title: "Allow Access", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Not now", style: .cancel) { (action) in
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+            let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
                 self.postponedLocationAcceptance = true
             }
             alertController.addAction(cancel)
@@ -248,23 +270,22 @@ extension AddLocationViewController: CLLocationManagerDelegate {
             let alertController = CustomAlertControllers.controllerWith(message: deniedLocationString)
             self.present(alertController, animated: true, completion: nil)
         case .restricted:
-            let restrictedLocationString = String.localizedStringWithFormat(NSLocalizedString("Your phone seems to be restricted and you cannot use location features. Please ensure that you enable Location Services in your Restriction settings.", comment: "restricted location service"), [:])
-            let alertController = CustomAlertControllers.controllerWith(message: restrictedLocationString)
+            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+            let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
+                self.postponedLocationAcceptance = true
+            }
+            alertController.addAction(cancel)
             self.present(alertController, animated: true, completion: nil)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if !self.postponedLocationAcceptance {
-            let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "There was an error obtaining your location. \(error.localizedDescription)")
-            let retry = UIAlertAction(title: "Try again", style: .default) { (action:UIAlertAction) in
-                self.locationManager.requestLocation()
-            }
-            alertController.addAction(retry)
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancel)
-            self.present(alertController, animated: true, completion: nil)
+        let alertController = CustomAlertControllers.controllerWith(title: "Error", message: "It seems you haven't accepted California Prototype to access your location. Please go to Settings->Privacy->Location Services and allow California Protoype to access your location.")
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { (action) in
+            self.postponedLocationAcceptance = true
         }
+        alertController.addAction(cancel)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -326,6 +347,7 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func showDetailsAndOptionsAndCenterMapAt(_ place: MKMapItem) {
+        self.selectedLocation = place
         let point = MKPointAnnotation()
         point.coordinate = place.placemark.coordinate
         point.title = place.name
@@ -341,6 +363,20 @@ extension AddLocationViewController: UITableViewDelegate, UITableViewDataSource 
         self.cancelAddLocationButton.alpha = 1.0
         self.addLocationButton.isHidden = false
         self.cancelAddLocationButton.isHidden = false
+    }
+    
+    //MARK: - Activity Indicator Methods
+    func showAndStartSpinner() {
+        self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.spinner.center = self.view.center
+        self.spinner.hidesWhenStopped = true
+        self.spinner.startAnimating()
+        self.view.addSubview(self.spinner)
+    }
+    
+    func stopAndRemoveSpinner() {
+        self.spinner.stopAnimating()
+        self.spinner.removeFromSuperview()
     }
     
     

@@ -23,7 +23,21 @@
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qch-P1-u0B">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Wy9-Hk-u6w"/>
+                    </connections>
                 </mapView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bh7-ms-pJp">
+                    <rect key="frame" x="324" y="612" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="XjD-3S-u7g"/>
+                        <constraint firstAttribute="width" constant="35" id="rP9-b7-MG5"/>
+                    </constraints>
+                    <state key="normal" image="getLocationIcon"/>
+                    <connections>
+                        <action selector="getLocationButtonTapped:" destination="-1" eventType="touchUpInside" id="A7u-TN-3Uh"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TH5-PY-mG4">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
@@ -109,7 +123,9 @@
                 <constraint firstAttribute="bottom" secondItem="qch-P1-u0B" secondAttribute="bottom" id="EIS-Dh-aCz"/>
                 <constraint firstItem="qch-P1-u0B" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Gdv-bQ-1OW"/>
                 <constraint firstAttribute="bottom" secondItem="TH5-PY-mG4" secondAttribute="bottom" id="KeI-Kv-4Qp"/>
+                <constraint firstAttribute="trailing" secondItem="bh7-ms-pJp" secondAttribute="trailing" constant="16" id="SQQ-M0-S4h"/>
                 <constraint firstItem="qch-P1-u0B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YQF-MO-lsP"/>
+                <constraint firstAttribute="bottom" secondItem="bh7-ms-pJp" secondAttribute="bottom" constant="20" id="bTH-Qg-6sd"/>
                 <constraint firstItem="TH5-PY-mG4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hWG-nW-0Yu"/>
                 <constraint firstAttribute="trailing" secondItem="TH5-PY-mG4" secondAttribute="trailing" id="mFR-0Y-JGq"/>
                 <constraint firstAttribute="trailing" secondItem="vfa-Kp-co6" secondAttribute="trailing" constant="8" id="uT8-FB-Y9n"/>
@@ -118,4 +134,7 @@
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="getLocationIcon" width="41" height="41"/>
+    </resources>
 </document>

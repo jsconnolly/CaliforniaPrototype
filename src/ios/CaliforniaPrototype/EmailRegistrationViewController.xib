@@ -170,9 +170,9 @@
                     </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLL-is-yHL">
-                    <rect key="frame" x="139" y="597" width="96" height="35"/>
+                    <rect key="frame" x="163.5" y="597" width="48" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="96" id="Nnn-9h-GPM"/>
+                        <constraint firstAttribute="width" constant="48" id="edw-oD-w7d"/>
                         <constraint firstAttribute="height" constant="35" id="j7S-sD-AiO"/>
                     </constraints>
                     <state key="normal" title="Cancel"/>

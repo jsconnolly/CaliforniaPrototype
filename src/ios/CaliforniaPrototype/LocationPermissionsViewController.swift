@@ -15,12 +15,12 @@ class LocationPermissionsViewController: UIViewController, CLLocationManagerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationController?.isNavigationBarHidden = true
         self.locationManager.delegate = self
     }
 
     @IBAction func denyButtonTapped(_ sender: Any) {
-        self.navigationController?.pushViewController(NotificationsPermissionViewController(), animated: true)
+        //self.navigationController?.pushViewController(NotificationsPermissionViewController(), animated: true)
+        self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
     }
     
     @IBAction func allowButtonTapped(_ sender: Any) {
@@ -30,9 +30,8 @@ class LocationPermissionsViewController: UIViewController, CLLocationManagerDele
     //MARK: - CLLocationManagerDelegate methods
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
+            self.navigationController?.setViewControllers([TabBarViewController()], animated: true)
             //self.navigationController?.pushViewController(NotificationsPermissionViewController(), animated: true)
-        } else {
-            
         }
     }
 
