@@ -11,7 +11,7 @@ public class Constants {
     /////Misc Strings//
     ///////////////////
 
-    public static final String STAGING_SERVER_URL = "http://ec2-54-241-144-61.us-west-1.compute.amazonaws.com/";
+    public static final String STAGING_SERVER_URL = "http://ec2-54-183-121-3.us-west-1.compute.amazonaws.com/";
     public static final String PHONE_URI_TO_WRITE_TO = "/storage/emulated/0/Download/";
     public static final String FILE_NAME = "debugLoggingData.txt";
 

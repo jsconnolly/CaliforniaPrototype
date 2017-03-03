@@ -12,6 +12,8 @@ class RoundedRectButton: UIButton {
 
     override public func awakeFromNib() {
         layer.cornerRadius = 4.0
+        self.backgroundColor = UIColor.hexStringToUIColor(hex: "0071bc")
+        self.setTitleColor(UIColor.white, for: .normal)
     }
 
 }

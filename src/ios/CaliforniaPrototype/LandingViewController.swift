@@ -17,7 +17,7 @@ class LandingViewController: UIViewController {
     }
     
     @IBAction func continueButtonTapped(_ sender: Any) {
-        self.navigationController?.pushViewController(LocationPermissionsViewController(), animated: true)
+        self.navigationController?.pushViewController(RegisterChoiceViewController(), animated: true)
     }
     
     @IBAction func loginWithPhoneButtonTapped(_ sender: Any) {

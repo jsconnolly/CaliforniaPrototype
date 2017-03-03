@@ -101,7 +101,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zk2-uz-cq2">
-                                    <rect key="frame" x="0.0" y="21" width="343" height="30"/>
+                                    <rect key="frame" x="116" y="21" width="111" height="30"/>
                                     <state key="normal" title="Login with Email"/>
                                     <connections>
                                         <action selector="emailLoginButtonTapped:" destination="-1" eventType="touchUpInside" id="7AC-IS-LQM"/>
@@ -113,10 +113,9 @@
                                 <constraint firstItem="Zk2-uz-cq2" firstAttribute="top" secondItem="2fa-6f-Mfq" secondAttribute="bottom" constant="-4" id="3eN-tQ-iBu"/>
                                 <constraint firstItem="2fa-6f-Mfq" firstAttribute="top" secondItem="fKC-A6-V62" secondAttribute="top" constant="8" id="IlA-0S-ahf"/>
                                 <constraint firstAttribute="trailing" secondItem="2fa-6f-Mfq" secondAttribute="trailing" id="Qxd-Cd-hcs"/>
-                                <constraint firstItem="Zk2-uz-cq2" firstAttribute="leading" secondItem="fKC-A6-V62" secondAttribute="leading" id="RB4-Ms-uy2"/>
                                 <constraint firstItem="2fa-6f-Mfq" firstAttribute="leading" secondItem="fKC-A6-V62" secondAttribute="leading" id="RDI-ee-c06"/>
                                 <constraint firstAttribute="height" constant="55" id="VFD-Qs-sOG"/>
-                                <constraint firstAttribute="trailing" secondItem="Zk2-uz-cq2" secondAttribute="trailing" id="lVt-3c-0VA"/>
+                                <constraint firstItem="Zk2-uz-cq2" firstAttribute="centerX" secondItem="fKC-A6-V62" secondAttribute="centerX" id="jSV-Sb-7Ld"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RWR-lI-e4z">
@@ -129,8 +128,8 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swB-2Q-ihD">
-                                    <rect key="frame" x="0.0" y="25" width="343" height="30"/>
-                                    <state key="normal" title="Continue without an account"/>
+                                    <rect key="frame" x="91.5" y="25" width="160" height="30"/>
+                                    <state key="normal" title="Register for an account"/>
                                     <connections>
                                         <action selector="noAccountButtonTapped:" destination="-1" eventType="touchUpInside" id="pBs-aD-hiA"/>
                                     </connections>
@@ -140,9 +139,8 @@
                             <constraints>
                                 <constraint firstItem="HYZ-4t-O1N" firstAttribute="leading" secondItem="RWR-lI-e4z" secondAttribute="leading" id="483-TC-oYd"/>
                                 <constraint firstItem="swB-2Q-ihD" firstAttribute="top" secondItem="HYZ-4t-O1N" secondAttribute="bottom" id="PT9-Dd-rqS"/>
-                                <constraint firstAttribute="trailing" secondItem="swB-2Q-ihD" secondAttribute="trailing" id="Tpd-bq-RuY"/>
+                                <constraint firstItem="swB-2Q-ihD" firstAttribute="centerX" secondItem="RWR-lI-e4z" secondAttribute="centerX" id="YrL-sc-fqW"/>
                                 <constraint firstAttribute="trailing" secondItem="HYZ-4t-O1N" secondAttribute="trailing" id="aoE-Ha-4rv"/>
-                                <constraint firstItem="swB-2Q-ihD" firstAttribute="leading" secondItem="RWR-lI-e4z" secondAttribute="leading" id="fPk-qL-GOJ"/>
                                 <constraint firstAttribute="height" constant="55" id="jMI-7A-cdA"/>
                                 <constraint firstItem="HYZ-4t-O1N" firstAttribute="top" secondItem="RWR-lI-e4z" secondAttribute="top" constant="8" id="xBQ-ZF-LZB"/>
                             </constraints>
@@ -161,6 +159,17 @@
                         <constraint firstAttribute="trailing" secondItem="IYM-B3-CM6" secondAttribute="trailing" id="zqn-tq-VD8"/>
                     </constraints>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vba-su-D94">
+                    <rect key="frame" x="160" y="612" width="55" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="6dq-Hm-kfM"/>
+                        <constraint firstAttribute="width" constant="55" id="H6x-0i-ASl"/>
+                    </constraints>
+                    <state key="normal" title="Back"/>
+                    <connections>
+                        <action selector="backButtonTapped:" destination="-1" eventType="touchUpInside" id="hea-82-FpK"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -172,9 +181,11 @@
                 <constraint firstAttribute="bottom" secondItem="qmu-qc-tTd" secondAttribute="bottom" priority="999" constant="267" id="Fpf-JZ-yiX"/>
                 <constraint firstItem="eN1-FY-sTk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="JVi-cb-Rzr"/>
                 <constraint firstItem="qmu-qc-tTd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="beT-0e-SGt"/>
+                <constraint firstItem="Vba-su-D94" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fao-k4-K3L"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qmu-qc-tTd" secondAttribute="bottom" constant="16" id="frl-ZC-3Yz"/>
                 <constraint firstAttribute="trailing" secondItem="eN1-FY-sTk" secondAttribute="trailing" constant="16" id="gnM-7w-BnM"/>
                 <constraint firstAttribute="trailing" secondItem="qmu-qc-tTd" secondAttribute="trailing" constant="16" id="vrq-cT-Muk"/>
+                <constraint firstAttribute="bottom" secondItem="Vba-su-D94" secondAttribute="bottom" constant="20" id="zCR-MM-pJx"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
