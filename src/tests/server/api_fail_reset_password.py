@@ -48,7 +48,7 @@ baseUrl = APIWrapper.Constants.BASE_URL \
 
 # Instantiate Object
 api = APIWrapper.WebCalls(baseUrl)
-strPW = "password123"
+strPW = APIWrapper.Constants.password
 # Generate POST / PUT Body
 resetPassCurrentBody = {
 	'email' : 'failtest@test.com',
